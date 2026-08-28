@@ -154,7 +154,6 @@
   .p-visual{position:relative; height:460px; display:flex; align-items:center; justify-content:center; perspective:1400px;}
   .pcard{width:100%; max-width:400px; height:400px; border-radius:32px; background:linear-gradient(160deg,#fff,#f3f5fc); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:center; position:relative; transform-style:preserve-3d; will-change:transform; transition:transform .15s linear;}
   .pcard::before{content:''; position:absolute; inset:18px; border-radius:24px; border:1px solid var(--line);}
-  .pcard-glow{position:absolute; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,var(--blue-glow),var(--blue-dark) 70%); filter:blur(2px); opacity:.9; box-shadow:0 30px 60px -20px rgba(59,91,251,.5); animation:float 7s ease-in-out infinite;}
   .pcard-icon{position:relative; z-index:2; width:104px; height:104px; stroke:#fff; animation:float 7s ease-in-out infinite; animation-delay:.2s; transition:opacity .5s ease;}
   .pcard-canvas{position:absolute; inset:0; width:100%; height:100%; z-index:2; opacity:0; transition:opacity .6s ease;}
   .pcard-canvas.ready{opacity:1;}
@@ -337,7 +336,7 @@
           <div class="p-ctas"><a href="#" class="btn btn-solid" onclick="return false">Shop Now</a><a href="#" class="btn btn-outline" onclick="return false">♡ Save</a></div>
         </div>
         <div class="p-visual reveal">
-          <div class="pcard" data-model="./assets/models/earbuds.glb"><div class="pcard-glow"></div>
+          <div class="pcard" data-model="./assets/models/earbuds.glb">
             <canvas class="pcard-canvas"></canvas>
             <div class="pcard-loader"><div class="spinner"></div></div>
             <svg class="pcard-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="13" width="5" height="8" rx="2.5"/><rect x="17" y="13" width="5" height="8" rx="2.5"/></svg>
@@ -358,7 +357,7 @@
           <div class="p-ctas"><a href="#" class="btn btn-solid" onclick="return false">Shop Now</a><a href="#" class="btn btn-outline" onclick="return false">♡ Save</a></div>
         </div>
         <div class="p-visual reveal">
-          <div class="pcard" data-model="./assets/models/charger.glb"><div class="pcard-glow"></div>
+          <div class="pcard" data-model="./assets/models/charger.glb">
             <canvas class="pcard-canvas"></canvas>
             <div class="pcard-loader"><div class="spinner"></div></div>
             <svg class="pcard-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
@@ -379,7 +378,7 @@
           <div class="p-ctas"><a href="#" class="btn btn-solid" onclick="return false">Shop Now</a><a href="#" class="btn btn-outline" onclick="return false">♡ Save</a></div>
         </div>
         <div class="p-visual reveal">
-          <div class="pcard" data-model="./assets/models/power-bank.glb"><div class="pcard-glow"></div>
+          <div class="pcard" data-model="./assets/models/power-bank.glb">
             <canvas class="pcard-canvas"></canvas>
             <div class="pcard-loader"><div class="spinner"></div></div>
             <svg class="pcard-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 10v4M6 11h6"/></svg>
@@ -400,7 +399,7 @@
           <div class="p-ctas"><a href="#" class="btn btn-solid" onclick="return false">Shop Now</a><a href="#" class="btn btn-outline" onclick="return false">♡ Save</a></div>
         </div>
         <div class="p-visual reveal">
-          <div class="pcard" data-model="./assets/models/car-charger.glb"><div class="pcard-glow"></div>
+          <div class="pcard" data-model="./assets/models/car-charger.glb">
             <canvas class="pcard-canvas"></canvas>
             <div class="pcard-loader"><div class="spinner"></div></div>
             <svg class="pcard-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="5"/><path d="M12 12v3"/><path d="M5 21h14M5 18h14M5 15h14"/></svg>
@@ -421,7 +420,7 @@
           <div class="p-ctas"><a href="#" class="btn btn-solid" onclick="return false">Shop Now</a><a href="#" class="btn btn-outline" onclick="return false">♡ Save</a></div>
         </div>
         <div class="p-visual reveal">
-          <div class="pcard" data-model="./assets/models/galaxy-buds-4-pro.glb"><div class="pcard-glow"></div>
+          <div class="pcard" data-model="./assets/models/galaxy-buds-4-pro.glb">
             <canvas class="pcard-canvas"></canvas>
             <div class="pcard-loader"><div class="spinner"></div></div>
             <svg class="pcard-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="8" cy="12" rx="3" ry="5" transform="rotate(-18 8 12)"/><ellipse cx="16" cy="12" rx="3" ry="5" transform="rotate(18 16 12)"/></svg>
