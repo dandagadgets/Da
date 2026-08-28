@@ -75,6 +75,7 @@ const heroEl = document.getElementById('hero');
 const bookEl = document.getElementById('book');
 
 if (floatCta && heroEl && bookEl && 'IntersectionObserver' in window) {
+  const floatCtaLink = floatCta.querySelector('a');
   let heroVisible = true;
   let bookVisible = false;
   const ctaObserver = new IntersectionObserver(
@@ -83,7 +84,10 @@ if (floatCta && heroEl && bookEl && 'IntersectionObserver' in window) {
         if (entry.target === heroEl) heroVisible = entry.isIntersecting;
         if (entry.target === bookEl) bookVisible = entry.isIntersecting;
       });
-      floatCta.classList.toggle('is-shown', !heroVisible && !bookVisible);
+      const shown = !heroVisible && !bookVisible;
+      floatCta.classList.toggle('is-shown', shown);
+      floatCta.setAttribute('aria-hidden', String(!shown));
+      if (floatCtaLink) floatCtaLink.tabIndex = shown ? 0 : -1;
     },
     { threshold: 0.1 }
   );
