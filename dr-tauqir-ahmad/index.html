@@ -29,6 +29,7 @@
     <a href="#about">About</a>
     <a href="#conditions">Conditions</a>
     <a href="#diagnostics">Diagnostics</a>
+    <a href="#journey">Your Visit</a>
     <a href="#reviews">Reviews</a>
     <a href="#clinic">Clinic &amp; Fees</a>
     <a href="#book" class="nav__cta">Book Appointment</a>
@@ -41,7 +42,7 @@
   <section id="hero" class="hero">
     <div class="hero__bg" aria-hidden="true">
       <svg class="pulse-line" viewBox="0 0 1000 120" preserveAspectRatio="none">
-        <path d="M0,60 L220,60 L260,20 L300,100 L340,60 L380,60 L420,10 L460,110 L500,60 L1000,60" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path class="pulse-path" d="M0,60 L220,60 L260,20 L300,100 L340,60 L380,60 L420,10 L460,110 L500,60 L1000,60" fill="none" stroke="currentColor" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
     <div class="hero__content">
@@ -57,10 +58,10 @@
       <p class="hero__creds" data-reveal>MBBS &middot; FCPS Medicine &middot; Certified in Diabetes &middot; Assistant Professor</p>
 
       <div class="hero__stats" data-reveal>
-        <div class="hstat"><span class="hstat__num">15</span><span class="hstat__label">Yrs Experience</span></div>
-        <div class="hstat"><span class="hstat__num">11</span><span class="hstat__label">Reviews</span></div>
-        <div class="hstat"><span class="hstat__num">5.0</span><span class="hstat__label">★ Rating</span></div>
-        <div class="hstat"><span class="hstat__num">100%</span><span class="hstat__label">Satisfaction</span></div>
+        <div class="hstat"><span class="hstat__num" data-count="15">0</span><span class="hstat__label">Yrs Experience</span></div>
+        <div class="hstat"><span class="hstat__num" data-count="11">0</span><span class="hstat__label">Reviews</span></div>
+        <div class="hstat"><span class="hstat__num" data-count="5" data-decimals="1">0.0</span><span class="hstat__label">★ Rating</span></div>
+        <div class="hstat"><span class="hstat__num" data-count="100" data-suffix="%">0</span><span class="hstat__label">Satisfaction</span></div>
       </div>
 
       <div class="hero__actions" data-reveal>
@@ -125,6 +126,7 @@
 
   <!-- ABOUT -->
   <section id="about" class="about">
+    <div class="blob" aria-hidden="true"></div>
     <div class="about__text" data-reveal>
       <span class="eyebrow">About the doctor</span>
       <h2>15 years of internal medicine, one patient at a time.</h2>
@@ -180,6 +182,19 @@
           PMDC Verified
         </div>
       </div>
+      <div class="gauge-card" data-reveal>
+        <div class="gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge__track" cx="60" cy="60" r="52"/>
+            <circle class="gauge__fill" cx="60" cy="60" r="52"/>
+          </svg>
+          <div class="gauge__center">
+            <span class="gauge__value" data-count="100">0</span>
+            <span class="gauge__denom">/ 100</span>
+          </div>
+        </div>
+        <p class="gauge__label">Patient Satisfaction Score</p>
+      </div>
     </div>
   </section>
 
@@ -224,8 +239,50 @@
     </div>
   </section>
 
+  <!-- YOUR VISIT -->
+  <section id="journey" class="journey">
+    <div class="blob" aria-hidden="true"></div>
+    <span class="eyebrow" data-reveal>How it works</span>
+    <h2 data-reveal>Your visit, start to finish.</h2>
+    <div class="journey__steps">
+      <div class="step" data-reveal>
+        <div class="step__head">
+          <span class="step__num">01</span>
+          <span class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M4 9h16M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+        </div>
+        <h4>Book</h4>
+        <p>Request an appointment online or call the clinic directly &mdash; no extra charge either way.</p>
+      </div>
+      <div class="step" data-reveal>
+        <div class="step__head">
+          <span class="step__num">02</span>
+          <span class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+        </div>
+        <h4>Consult</h4>
+        <p>Meet Dr. Tauqir Ahmad in person at Ayub Teaching Hospital, or over a video consultation.</p>
+      </div>
+      <div class="step" data-reveal>
+        <div class="step__head">
+          <span class="step__num">03</span>
+          <span class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="17" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M9 3h6v3H9z" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 13l2 2 4-4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+        <h4>Diagnose</h4>
+        <p>Relevant tests &mdash; from a simple CBC to an EEG &mdash; are ordered only when they're actually needed.</p>
+      </div>
+      <div class="step" data-reveal>
+        <div class="step__head">
+          <span class="step__num">04</span>
+          <span class="step__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7.5-4.6-9.4-9A5.4 5.4 0 0112 6a5.4 5.4 0 019.4 5c-1.9 4.4-9.4 9-9.4 9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 9v4M10 11h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        </div>
+        <h4>Care Plan</h4>
+        <p>Get a clear diagnosis, treatment plan, and follow-up schedule tailored to your condition.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- CLINIC / FEES / BOOKING -->
   <section id="clinic" class="clinic">
+    <div class="blob" aria-hidden="true"></div>
     <span class="eyebrow" data-reveal>Clinic &amp; appointment</span>
     <h2 data-reveal>Ayub Teaching Hospital, Abbottabad</h2>
 
@@ -358,6 +415,13 @@
     <p class="footer__fine">PMDC Verified &middot; MBBS, FCPS Medicine, Certified in Diabetes</p>
   </div>
 </footer>
+
+<div id="floatCta" class="float-cta">
+  <a href="#book" class="btn btn--primary float-cta__btn">
+    <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M4 9h16M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    Book Appointment
+  </a>
+</div>
 
 <script src="js/main.js"></script>
 </body>
