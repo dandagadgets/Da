@@ -1,8 +1,13 @@
 import * as THREE from 'three';
 import { GLTFLoader } from './three-lib/GLTFLoader.js';
+import { DRACOLoader } from './three-lib/DRACOLoader.js';
 import { GLTFMaterialsPbrSpecularGlossinessExtension } from './three-lib/SpecGlossExtension.js';
 
+var dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('./assets/js/three-lib/draco/');
+
 var loader = new GLTFLoader();
+loader.setDRACOLoader(dracoLoader);
 loader.register(function (parser) { return new GLTFMaterialsPbrSpecularGlossinessExtension(parser); });
 
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
