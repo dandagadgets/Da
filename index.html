@@ -197,24 +197,6 @@
   .split-bar div{height:100%;}
   .split-legend{display:flex; justify-content:space-between; margin-top:12px; font-size:12.5px; font-weight:700; color:var(--gray);}
 
-  /* ---------- BUSINESS PLAN ---------- */
-  .bizplan{padding:100px 0; background:#fff;}
-  .quote-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:70px;}
-  .quote-card{background:linear-gradient(160deg,var(--navy),var(--navy-2)); color:#fff; border-radius:var(--radius); padding:38px 34px;}
-  .quote-card .kicker{color:var(--blue-glow);}
-  .quote-card p{font-size:17px; line-height:1.7; font-weight:500; color:#dfe3f2;}
-  .biz-panels{display:grid; grid-template-columns:1.15fr .85fr; gap:24px;}
-  .invest-legend{display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; margin-top:20px;}
-  .invest-legend li{display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--gray); font-weight:600;}
-  .invest-legend i{width:9px; height:9px; border-radius:2px; flex:none;}
-  .stacked-bar{display:flex; height:22px; border-radius:8px; overflow:hidden; background:var(--bg);}
-  .stacked-bar div{height:100%; width:0%; transition:width 1.4s var(--ease);}
-  .fin-note{margin-top:22px; font-size:13px; color:var(--gray-light); line-height:1.6;}
-  .roi-box{margin-top:26px; display:flex; gap:18px;}
-  .roi-box div{flex:1; background:var(--bg); border-radius:var(--radius-sm); padding:18px; text-align:center;}
-  .roi-box b{font-size:22px; font-weight:900; color:var(--blue); display:block;}
-  .roi-box span{font-size:11.5px; color:var(--gray); font-weight:700;}
-
   /* ---------- CTA band ---------- */
   .cta-band{padding:110px 0; background:linear-gradient(155deg,var(--navy),#1a2340); color:#fff; text-align:center; position:relative; overflow:hidden;}
   .cta-band::before{content:''; position:absolute; width:600px; height:600px; background:radial-gradient(circle,rgba(59,91,251,.35),transparent 70%); top:-260px; left:50%; transform:translateX(-50%); filter:blur(10px);}
@@ -241,7 +223,7 @@
   @media (max-width:1024px){
     .stats-grid{grid-template-columns:repeat(3,1fr);}
     .why-grid{grid-template-columns:repeat(2,1fr);}
-    .ins-grid, .quote-grid, .biz-panels{grid-template-columns:1fr;}
+    .ins-grid{grid-template-columns:1fr;}
     .foot-grid{grid-template-columns:1fr 1fr;}
     .pnav{display:none;}
   }
@@ -283,7 +265,6 @@
       <a href="#products">Products</a>
       <a href="#why">Why Us</a>
       <a href="#insights">Insights</a>
-      <a href="#business-plan">Business Plan</a>
     </div>
     <div class="nav-icons">
       <button class="icon-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
@@ -299,7 +280,6 @@
   <a href="#products">Products</a>
   <a href="#why">Why Us</a>
   <a href="#insights">Insights</a>
-  <a href="#business-plan">Business Plan</a>
 </div>
 
 <main>
@@ -515,58 +495,6 @@
     </div>
   </section>
 
-  <!-- ================= BUSINESS PLAN ================= -->
-  <section id="business-plan" class="bizplan">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="kicker">The Business Plan</span>
-        <h2>Built on a complete 20-chapter feasibility study.</h2>
-        <p>Market research, PESTLE, statistical analysis, break-even and financing were all worked out before writing a single line of code.</p>
-      </div>
-
-      <div class="quote-grid">
-        <div class="quote-card reveal"><span class="kicker">Vision</span><p>"To become one of the most trusted and customer-friendly mobile accessories stores in Karachi by providing quality products and excellent customer service."</p></div>
-        <div class="quote-card reveal"><span class="kicker">Mission</span><p>"To offer affordable and genuine mobile accessories while ensuring customer satisfaction through reliable products, fair prices, and a pleasant shopping experience."</p></div>
-      </div>
-
-      <div class="biz-panels">
-        <div class="panel reveal">
-          <h4>Startup Investment Allocation — PKR 4,800,000</h4>
-          <div class="stacked-bar" id="investBar">
-            <div data-w="18.75" style="background:var(--blue);"></div>
-            <div data-w="47.9" style="background:var(--blue-glow);"></div>
-            <div data-w="10.4" style="background:#8fa0fc;"></div>
-            <div data-w="7.3" style="background:#b7c1fd;"></div>
-            <div data-w="5.7" style="background:#d9defc;"></div>
-            <div data-w="4.2" style="background:#0f1420;"></div>
-            <div data-w="0.8" style="background:var(--gold);"></div>
-            <div data-w="5.0" style="background:var(--green);"></div>
-          </div>
-          <ul class="invest-legend">
-            <li><i style="background:var(--blue);"></i>Shop Deposit — 900,000</li>
-            <li><i style="background:var(--blue-glow);"></i>Initial Inventory — 2,300,000</li>
-            <li><i style="background:#8fa0fc;"></i>Shop Renovation — 500,000</li>
-            <li><i style="background:#b7c1fd;"></i>Furniture &amp; Fixtures — 350,000</li>
-            <li><i style="background:#d9defc;"></i>Computer &amp; POS — 175,000</li>
-            <li><i style="background:#0f1420;"></i>Marketing — 200,000</li>
-            <li><i style="background:var(--gold);"></i>Registration — 40,000</li>
-            <li><i style="background:var(--green);"></i>Working Capital — 275,000</li>
-          </ul>
-        </div>
-        <div class="panel reveal">
-          <h4>Recommended Financing Mix</h4>
-          <div class="split-bar" style="height:20px;"><div class="sf" data-w="60" style="width:60%;background:var(--blue);"></div><div class="sf" data-w="40" style="width:40%;background:#0f1420;"></div></div>
-          <div class="split-legend"><span>Owner Investment · 60%</span><span>Bank Financing · 40%</span></div>
-          <div class="roi-box">
-            <div><b>490</b><span>BREAK-EVEN / MONTH</span></div>
-            <div><b>12–18</b><span>MONTHS TO RECOVER</span></div>
-          </div>
-          <p class="fin-note">A blend of owner capital and bank financing minimizes interest expense while keeping full ownership and enough working capital for daily operations.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ================= CTA ================= -->
   <section id="visit" class="cta-band">
     <div class="wrap">
@@ -608,8 +536,7 @@
         <h5>Company</h5>
         <ul>
           <li><a href="#why">About Us</a></li>
-          <li><a href="#business-plan">Vision &amp; Mission</a></li>
-          <li><a href="#business-plan">Business Plan</a></li>
+          <li><a href="#insights">Market Insights</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -648,7 +575,7 @@
   panel.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ panel.classList.remove('open'); }); });
 
   /* ---- active nav link highlight ---- */
-  var sections = ['home','products','why','insights','business-plan'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var sections = ['home','products','why','insights'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
   var navA = document.querySelectorAll('.nav-links a');
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
@@ -733,7 +660,6 @@
   }
   document.querySelectorAll('.bar-fill').forEach(function(el){ animateFill(el, 'data-w', 'width'); });
   document.querySelectorAll('.sf').forEach(function(el){ animateFill(el, 'data-w', 'width'); });
-  document.querySelectorAll('#investBar > div').forEach(function(el){ animateFill(el, 'data-w', 'width'); });
 
   /* ---- generic reveal (fade + rise, staggered, IntersectionObserver) ---- */
   var revealEls = document.querySelectorAll('.reveal');
