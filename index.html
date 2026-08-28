@@ -215,16 +215,6 @@
   .roi-box b{font-size:22px; font-weight:900; color:var(--blue); display:block;}
   .roi-box span{font-size:11.5px; color:var(--gray); font-weight:700;}
 
-  /* ---------- TEAM ---------- */
-  .team{padding:100px 0; background:var(--bg);}
-  .team-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
-  .team-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:36px 30px; text-align:center; transform-style:preserve-3d;}
-  .avatar{width:78px; height:78px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:24px; color:#fff; background:linear-gradient(155deg,var(--blue-glow),var(--blue-dark));}
-  .team-card h4{font-size:19px; font-weight:800;}
-  .team-card .role{color:var(--blue); font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin:8px 0 14px;}
-  .team-card p{font-size:13.5px; color:var(--gray); line-height:1.65;}
-  .team-footnote{text-align:center; margin-top:48px; font-size:13.5px; color:var(--gray-light); font-weight:600;}
-
   /* ---------- CTA band ---------- */
   .cta-band{padding:110px 0; background:linear-gradient(155deg,var(--navy),#1a2340); color:#fff; text-align:center; position:relative; overflow:hidden;}
   .cta-band::before{content:''; position:absolute; width:600px; height:600px; background:radial-gradient(circle,rgba(59,91,251,.35),transparent 70%); top:-260px; left:50%; transform:translateX(-50%); filter:blur(10px);}
@@ -272,7 +262,6 @@
     .p-num{font-size:80px; top:-40px;}
     .p-visual{height:340px;}
     .why-grid{grid-template-columns:1fr;}
-    .team-grid{grid-template-columns:1fr;}
     .foot-grid{grid-template-columns:1fr; gap:36px;}
     .foot-bottom{flex-direction:column; text-align:center;}
     .foot-bottom .credit{text-align:center;}
@@ -295,7 +284,6 @@
       <a href="#why">Why Us</a>
       <a href="#insights">Insights</a>
       <a href="#business-plan">Business Plan</a>
-      <a href="#team">Team</a>
     </div>
     <div class="nav-icons">
       <button class="icon-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
@@ -312,7 +300,6 @@
   <a href="#why">Why Us</a>
   <a href="#insights">Insights</a>
   <a href="#business-plan">Business Plan</a>
-  <a href="#team">Team</a>
 </div>
 
 <main>
@@ -580,23 +567,6 @@
     </div>
   </section>
 
-  <!-- ================= TEAM ================= -->
-  <section id="team" class="team">
-    <div class="wrap">
-      <div class="sec-head center reveal" style="margin-left:auto;margin-right:auto;">
-        <span class="kicker" style="display:block;text-align:center;">The Founders</span>
-        <h2>Meet the team behind D&amp;A Gadgets</h2>
-        <p>A Business Startup Project combining Economics, Business Mathematics and Statistics.</p>
-      </div>
-      <div class="team-grid">
-        <div class="team-card reveal tilt"><div class="avatar">A</div><h4>Ayan</h4><div class="role">Business Planning &amp; Operations</div><p>Developed the original business idea and product concept, and built the operations, suppliers and organizational plan.</p></div>
-        <div class="team-card reveal tilt"><div class="avatar">A</div><h4>Afnan</h4><div class="role">Financial Analysis &amp; Evaluation</div><p>Led feasibility, cost, break-even, financing and investment planning — the full business mathematics behind the numbers.</p></div>
-        <div class="team-card reveal tilt"><div class="avatar">D</div><h4>Danial</h4><div class="role">Report Writing, Design &amp; Presentation</div><p>Wrote the market research and marketing chapters, and designed the branding, layout and visual identity.</p></div>
-      </div>
-      <p class="team-footnote">Submitted to Sir Salahuddin · Greenwich Global College · PUFP Level 5</p>
-    </div>
-  </section>
-
   <!-- ================= CTA ================= -->
   <section id="visit" class="cta-band">
     <div class="wrap">
@@ -640,7 +610,6 @@
           <li><a href="#why">About Us</a></li>
           <li><a href="#business-plan">Vision &amp; Mission</a></li>
           <li><a href="#business-plan">Business Plan</a></li>
-          <li><a href="#team">Our Team</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -679,7 +648,7 @@
   panel.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ panel.classList.remove('open'); }); });
 
   /* ---- active nav link highlight ---- */
-  var sections = ['home','products','why','insights','business-plan','team'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var sections = ['home','products','why','insights','business-plan'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
   var navA = document.querySelectorAll('.nav-links a');
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
