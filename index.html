@@ -122,14 +122,6 @@
   .marquee-track span{font-weight:800; font-size:15px; color:var(--gray-light); letter-spacing:.03em; white-space:nowrap;}
   @keyframes scroll-left{from{transform:translateX(0);} to{transform:translateX(-50%);}}
 
-  /* ---------- stats band ---------- */
-  .stats-band{padding:88px 0; background:var(--navy); color:#fff;}
-  .stats-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:20px;}
-  .stat-card{text-align:center; padding:22px 10px;}
-  .stat-num{font-size:clamp(26px,3vw,38px); font-weight:900; color:#fff; letter-spacing:-.02em;}
-  .stat-num .accent{color:var(--blue-glow);}
-  .stat-card p{margin-top:10px; font-size:13px; color:#9aa3bd; font-weight:600; line-height:1.5;}
-
   /* ---------- section heads ---------- */
   .sec-head{max-width:640px; margin-bottom:64px;}
   .sec-head.center{margin-left:auto; margin-right:auto; text-align:center;}
@@ -221,7 +213,6 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:1024px){
-    .stats-grid{grid-template-columns:repeat(3,1fr);}
     .why-grid{grid-template-columns:repeat(2,1fr);}
     .ins-grid{grid-template-columns:1fr;}
     .foot-grid{grid-template-columns:1fr 1fr;}
@@ -238,7 +229,6 @@
     .orb{width:190px; height:190px;}
     .orb svg{width:70px; height:70px;}
     .ring-1{width:300px; height:300px;} .ring-2{width:240px; height:240px;}
-    .stats-grid{grid-template-columns:repeat(2,1fr);}
     .product-block{grid-template-columns:1fr; gap:40px; padding:60px 0;}
     .product-block:nth-child(even) .p-visual{order:0;}
     .p-num{font-size:80px; top:-40px;}
@@ -322,16 +312,6 @@
     </div>
   </div>
 
-  <!-- ================= STATS ================= -->
-  <section class="stats-band">
-    <div class="wrap stats-grid">
-      <div class="stat-card reveal"><div class="stat-num"><span class="counter accent" data-target="4.8" data-decimals="1">0</span><span class="accent">M</span></div><p>PKR Startup Investment</p></div>
-      <div class="stat-card reveal"><div class="stat-num"><span class="counter" data-target="1.75" data-decimals="2">0</span>M</div><p>PKR Projected Monthly Revenue</p></div>
-      <div class="stat-card reveal"><div class="stat-num"><span class="counter" data-target="490" data-decimals="0">0</span></div><p>Break-even Customers / Month</p></div>
-      <div class="stat-card reveal"><div class="stat-num"><span class="counter" data-target="900" data-decimals="0">0</span></div><p>Expected Customers / Month</p></div>
-      <div class="stat-card reveal"><div class="stat-num"><span class="counter accent" data-target="122.5" data-decimals="1">0</span><span class="accent">%</span></div><p>Approx. Annual ROI</p></div>
-    </div>
-  </section>
 
   <!-- ================= PRODUCTS ================= -->
   <section id="products" class="products">
@@ -616,32 +596,6 @@
         pblocks[idx].scrollIntoView({behavior:'smooth', block:'center'});
       });
     });
-  }
-
-  /* ---- counters (vanilla rAF tween) ---- */
-  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
-  function animateCounter(el){
-    var target = parseFloat(el.getAttribute('data-target'));
-    var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
-    var duration = 1500, start = null;
-    function step(ts){
-      if(start === null) start = ts;
-      var p = Math.min(1, (ts - start) / duration);
-      el.textContent = (target * easeOutCubic(p)).toFixed(dec);
-      if(p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  var counters = document.querySelectorAll('.counter');
-  if('IntersectionObserver' in window){
-    var cio = new IntersectionObserver(function(entries, obs){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ animateCounter(e.target); obs.unobserve(e.target); }
-      });
-    }, {threshold:0.6});
-    counters.forEach(function(c){ cio.observe(c); });
-  } else {
-    counters.forEach(function(el){ el.textContent = parseFloat(el.getAttribute('data-target')).toFixed(parseInt(el.getAttribute('data-decimals')||'0',10)); });
   }
 
   /* ---- bar / split fills ---- */
