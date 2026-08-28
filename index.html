@@ -171,24 +171,6 @@
   .why-card h4{font-size:19px; font-weight:800; margin-bottom:10px; letter-spacing:-.01em;}
   .why-card p{font-size:14.5px; color:var(--gray); line-height:1.65;}
 
-  /* ---------- INSIGHTS ---------- */
-  .insights{padding:100px 0; background:var(--bg);}
-  .ins-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:60px; align-items:start;}
-  .ins-cards{display:grid; gap:18px;}
-  .ins-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius-sm); padding:26px 28px; display:flex; align-items:center; gap:22px;}
-  .ins-card .big{font-size:38px; font-weight:900; color:var(--blue); min-width:100px;}
-  .ins-card p{font-size:14.5px; color:var(--gray-soft,#4b5163); line-height:1.6;}
-  .panel{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:32px;}
-  .panel h4{font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--gray); font-weight:800; margin-bottom:22px;}
-  .bar-row{margin-bottom:16px;}
-  .bar-row:last-child{margin-bottom:0;}
-  .bar-row .lbl{display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:7px;}
-  .bar-track{height:10px; background:var(--bg); border-radius:100px; overflow:hidden;}
-  .bar-fill{height:100%; width:0%; border-radius:100px; background:linear-gradient(90deg,var(--blue),var(--blue-glow)); transition:width 1.4s var(--ease);}
-  .split-bar{display:flex; height:14px; border-radius:100px; overflow:hidden; margin-top:10px;}
-  .split-bar div{height:100%;}
-  .split-legend{display:flex; justify-content:space-between; margin-top:12px; font-size:12.5px; font-weight:700; color:var(--gray);}
-
   /* ---------- CTA band ---------- */
   .cta-band{padding:110px 0; background:linear-gradient(155deg,var(--navy),#1a2340); color:#fff; text-align:center; position:relative; overflow:hidden;}
   .cta-band::before{content:''; position:absolute; width:600px; height:600px; background:radial-gradient(circle,rgba(59,91,251,.35),transparent 70%); top:-260px; left:50%; transform:translateX(-50%); filter:blur(10px);}
@@ -214,7 +196,6 @@
   /* ---------- responsive ---------- */
   @media (max-width:1024px){
     .why-grid{grid-template-columns:repeat(2,1fr);}
-    .ins-grid{grid-template-columns:1fr;}
     .foot-grid{grid-template-columns:1fr 1fr;}
     .pnav{display:none;}
   }
@@ -254,7 +235,6 @@
       <a href="#home">Home</a>
       <a href="#products">Products</a>
       <a href="#why">Why Us</a>
-      <a href="#insights">Insights</a>
     </div>
     <div class="nav-icons">
       <button class="icon-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
@@ -269,7 +249,6 @@
   <a href="#home">Home</a>
   <a href="#products">Products</a>
   <a href="#why">Why Us</a>
-  <a href="#insights">Insights</a>
 </div>
 
 <main>
@@ -451,35 +430,6 @@
     </div>
   </section>
 
-  <!-- ================= INSIGHTS ================= -->
-  <section id="insights" class="insights">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <span class="kicker">Market Research</span>
-        <h2>What 100 Karachi shoppers told us.</h2>
-        <p>Primary research via questionnaire, analysed with real statistical methods — frequency distribution, dispersion, correlation and probability.</p>
-      </div>
-      <div class="ins-grid">
-        <div class="ins-cards">
-          <div class="ins-card reveal"><span class="big">89%</span><p>of respondents purchase at least one mobile accessory every six months.</p></div>
-          <div class="ins-card reveal"><span class="big">81%</span><p>say product <b>quality</b> matters more to them than the lowest price.</p></div>
-          <div class="ins-card reveal"><span class="big">74%</span><p>prefer buying from a physical store so they can inspect the product first.</p></div>
-          <div class="ins-card reveal"><span class="big">r = .78</span><p>strong positive correlation between purchase frequency and monthly spending.</p></div>
-        </div>
-        <div class="panel reveal">
-          <h4>Age Distribution (n = 100)</h4>
-          <div class="bar-row"><div class="lbl"><span>Under 18</span><span>12%</span></div><div class="bar-track"><div class="bar-fill" data-w="12"></div></div></div>
-          <div class="bar-row"><div class="lbl"><span>18 – 25</span><span>46%</span></div><div class="bar-track"><div class="bar-fill" data-w="46"></div></div></div>
-          <div class="bar-row"><div class="lbl"><span>26 – 35</span><span>28%</span></div><div class="bar-track"><div class="bar-fill" data-w="28"></div></div></div>
-          <div class="bar-row"><div class="lbl"><span>Above 35</span><span>14%</span></div><div class="bar-track"><div class="bar-fill" data-w="14"></div></div></div>
-          <h4 style="margin-top:28px;">Gender Split</h4>
-          <div class="split-bar"><div style="width:61%;background:var(--blue);" class="sf" data-w="61"></div><div style="width:39%;background:var(--blue-light);" class="sf" data-w="39"></div></div>
-          <div class="split-legend"><span>Male · 61%</span><span>Female · 39%</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ================= CTA ================= -->
   <section id="visit" class="cta-band">
     <div class="wrap">
@@ -521,7 +471,6 @@
         <h5>Company</h5>
         <ul>
           <li><a href="#why">About Us</a></li>
-          <li><a href="#insights">Market Insights</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -529,7 +478,6 @@
         <ul>
           <li><a href="#visit">Contact Us</a></li>
           <li><a href="#why">Warranty</a></li>
-          <li><a href="#insights">Market Research</a></li>
           <li><a href="#home">Store Location</a></li>
         </ul>
       </div>
@@ -560,7 +508,7 @@
   panel.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ panel.classList.remove('open'); }); });
 
   /* ---- active nav link highlight ---- */
-  var sections = ['home','products','why','insights'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+  var sections = ['home','products','why'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
   var navA = document.querySelectorAll('.nav-links a');
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
@@ -602,23 +550,6 @@
       });
     });
   }
-
-  /* ---- bar / split fills ---- */
-  function animateFill(el, attr, prop){
-    var w = el.getAttribute('data-w');
-    if('IntersectionObserver' in window){
-      var o = new IntersectionObserver(function(entries, obs){
-        entries.forEach(function(e){
-          if(e.isIntersecting){ el.style[prop] = w + '%'; obs.unobserve(el); }
-        });
-      }, {threshold:0.4});
-      o.observe(el);
-    } else {
-      el.style[prop] = w + '%';
-    }
-  }
-  document.querySelectorAll('.bar-fill').forEach(function(el){ animateFill(el, 'data-w', 'width'); });
-  document.querySelectorAll('.sf').forEach(function(el){ animateFill(el, 'data-w', 'width'); });
 
   /* ---- generic reveal (fade + rise, staggered, IntersectionObserver) ---- */
   var revealEls = document.querySelectorAll('.reveal');
