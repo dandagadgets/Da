@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Patient Safety Day 2026 — Symposium Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;0,900;1,500;1,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #0b2540;
+    --navy-mid: #133a5c;
+    --paper: #faf7ee;
+    --paper-tint: #f2ede0;
+    --orange: #e8720c;
+    --orange-deep: #a84605;
+    --orange-wash: rgba(232,114,12,0.08);
+    --slate: #55606b;
+    --line: rgba(11,37,64,0.16);
+    --backdrop: #dfe2e1;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background: var(--backdrop);
+    font-family: 'Public Sans', -apple-system, Segoe UI, Arial, sans-serif;
+    color: var(--navy);
+    padding: 48px 16px;
+    display:flex;
+    justify-content:center;
+  }
+  .card{
+    width:100%;
+    max-width: 760px;
+    background: var(--paper);
+    box-shadow: 0 30px 60px -25px rgba(11,37,64,0.45), 0 2px 0 rgba(11,37,64,0.06);
+    overflow:hidden;
+  }
+
+  /* ---------- header & footer bands ---------- */
+  .band{
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 100%);
+    color: #eef3f7;
+    text-align:center;
+    padding: 30px 36px 26px;
+  }
+  .band .institute-1{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    font-size: clamp(19px, 3.4vw, 24px);
+    letter-spacing:0.02em;
+    margin:0;
+  }
+  .band .institute-2{
+    font-size: 11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color: #b9c8d6;
+    margin: 6px 0 0;
+  }
+  .committee{
+    display:inline-block;
+    margin-top:16px;
+    font-size: 11px;
+    font-weight:700;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color: var(--navy);
+    background: var(--orange);
+    padding: 6px 16px;
+  }
+  .invite-line{
+    margin: 16px 0 0;
+    font-family:'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight:500;
+    font-size: 14.5px;
+    color: #dbe6ef;
+  }
+  .emblem{ margin: 14px auto 0; display:block; }
+
+  footer.band{ padding: 26px 36px 30px; }
+  footer.band .institute-2{ margin-top:8px; }
+  .footer-tag{
+    font-family:'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--orange);
+    margin: 14px 0 0;
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- ekg divider ---------- */
+  .ekg{ display:block; width:100%; height:22px; }
+
+  /* ---------- hero ---------- */
+  .hero{ padding: 34px 40px 8px; text-align:center; }
+  .eyebrow{
+    font-size: 12px;
+    font-weight:700;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color: var(--orange-deep);
+    margin:0;
+  }
+  h1.title{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:900;
+    font-style:italic;
+    font-size: clamp(38px, 8vw, 58px);
+    line-height:1.02;
+    margin: 10px 0 4px;
+    text-wrap: balance;
+    color: var(--navy);
+  }
+  .underline{ display:block; margin: 2px auto 14px; }
+  .subtitle{
+    font-size: 16.5px;
+    font-weight:600;
+    color: var(--navy);
+    max-width: 46ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+  .observance{
+    font-size: 13.5px;
+    color: var(--slate);
+    margin: 10px 0 20px;
+  }
+  .who-theme{
+    text-align:left;
+    border-left: 4px solid var(--orange);
+    background: var(--orange-wash);
+    padding: 12px 18px;
+    margin: 0 0 26px;
+  }
+  .who-theme .label{
+    font-size:10.5px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase;
+    color: var(--orange-deep); margin:0 0 3px;
+  }
+  .who-theme p{ margin:0; font-size:15px; font-weight:600; color: var(--navy); }
+
+  /* ---------- meta / ticket-stub row ---------- */
+  .meta{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 0 40px;
+  }
+  .meta > div{
+    padding: 18px 14px;
+    text-align:center;
+    border-left: 1px dashed var(--line);
+  }
+  .meta > div:first-child{ border-left:none; }
+  .meta svg{ display:block; margin: 0 auto 8px; }
+  .meta .m-label{
+    font-size:10px; font-weight:800; letter-spacing:0.15em; text-transform:uppercase;
+    color: var(--slate); margin:0 0 4px;
+  }
+  .meta .m-value{
+    font-size: 14.5px; font-weight:700; color: var(--navy); line-height:1.3;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- programme ---------- */
+  .section{ padding: 30px 40px 6px; }
+  .section-head{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:18px;
+  }
+  .section-head h2{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:700; font-size: 22px; margin:0; color: var(--navy);
+  }
+  .section-head .rule{ flex:1; height:1px; background: var(--line); }
+
+  .talk{
+    display:grid;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    padding: 15px 0;
+    border-top: 1px solid var(--line);
+  }
+  .talk:first-of-type{ border-top:none; }
+  .talk .num{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:700; font-style:italic;
+    font-size: 24px; color: var(--orange);
+    font-variant-numeric: tabular-nums;
+  }
+  .talk h3{
+    margin:0 0 4px; font-size: 15.5px; font-weight:700; color: var(--navy); line-height:1.35;
+  }
+  .talk .speaker{ font-size: 13px; color: var(--slate); line-height:1.5; }
+  .talk .speaker b{ color: var(--navy); font-weight:700; }
+
+  .panel{
+    margin: 22px 0 6px;
+    border-left: 4px solid var(--orange);
+    background: var(--orange-wash);
+    padding: 16px 18px;
+  }
+  .panel .label{
+    font-size:10.5px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase;
+    color: var(--orange-deep); margin:0 0 5px;
+  }
+  .panel h3{
+    font-family:'Fraunces', Georgia, serif; font-style:italic; font-weight:600;
+    font-size: 19px; margin:0 0 4px; color: var(--navy);
+  }
+  .panel p{ margin:0; font-size:13px; color: var(--slate); }
+
+  /* ---------- organiser + seal ---------- */
+  .organiser-row{
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding: 28px 40px; border-top: 1px solid var(--line); margin-top: 20px;
+  }
+  .organiser .label{
+    font-size:10.5px; font-weight:800; letter-spacing:0.16em; text-transform:uppercase;
+    color: var(--slate); margin:0 0 6px;
+  }
+  .organiser p{ margin:0 0 3px; font-size: 13.5px; color: var(--navy); line-height:1.5; }
+  .organiser p.org-name{ font-weight:700; }
+  .organiser p.chair{ font-weight:700; color: var(--orange-deep); }
+
+  .seal{
+    flex-shrink:0; width:96px; height:96px; border-radius:50%;
+    border: 2px solid var(--orange);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; color: var(--navy);
+  }
+  .seal .n{ font-family:'Fraunces', Georgia, serif; font-weight:900; font-size:26px; line-height:1; }
+  .seal .u{ font-size:8.5px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; margin-top:2px; }
+  .seal .d{ font-size:7.5px; color:var(--slate); letter-spacing:0.06em; text-transform:uppercase; margin-top:3px; }
+
+  /* ---------- registration ---------- */
+  .registration{
+    margin: 4px 40px 34px;
+    border: 1px solid var(--line);
+    background: var(--paper-tint);
+  }
+  .registration .r-head{
+    background: var(--navy); color:#eef3f7;
+    font-size:11px; font-weight:800; letter-spacing:0.18em; text-transform:uppercase;
+    padding: 10px 18px;
+  }
+  .r-grid{
+    display:grid; grid-template-columns: 1fr 1fr;
+    padding: 16px 18px 4px;
+    gap: 14px 20px;
+  }
+  .r-item .r-label{ font-size:10px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); margin:0 0 4px; }
+  .r-item .r-value{ font-size: 14px; font-weight:700; color: var(--navy); }
+  .r-item .r-value .free{ color: var(--orange-deep); }
+  .r-item a{ color: var(--navy); text-decoration:none; border-bottom: 1px solid var(--orange); }
+
+  .contacts{
+    padding: 4px 18px 16px;
+    display:flex; flex-wrap:wrap; gap: 10px 26px;
+  }
+  .contact{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--navy); }
+  .contact b{ font-weight:700; }
+  .contact a{ color: var(--navy); text-decoration:none; border-bottom:1px solid var(--orange); font-weight:600; font-variant-numeric: tabular-nums; }
+  .call-note{ padding: 0 18px 16px; font-size:11.5px; color:var(--slate); font-style:italic; }
+
+  @media (max-width: 480px){
+    .hero, .section, .organiser-row{ padding-left:22px; padding-right:22px; }
+    .meta{ margin-left:22px; margin-right:22px; grid-template-columns: 1fr; }
+    .meta > div{ border-left:none; border-top:1px dashed var(--line); }
+    .meta > div:first-child{ border-top:none; }
+    .registration{ margin-left:22px; margin-right:22px; }
+    .r-grid{ grid-template-columns: 1fr; }
+    .organiser-row{ flex-direction:column; align-items:flex-start; }
+    .seal{ align-self:center; }
+  }
+
+  @media print{
+    @page{ size: A4; margin: 10mm; }
+    body{ background:#fff; padding:0; }
+    .card{ box-shadow:none; max-width:100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+
+    <header class="band">
+      <svg class="emblem" width="34" height="34" viewBox="0 0 34 34" fill="none">
+        <circle cx="17" cy="17" r="16" stroke="#e8720c" stroke-width="2"/>
+        <path d="M17 10v14M10 17h14" stroke="#eef3f7" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <p class="institute-1">Ayub Medical Complex &nbsp;/&nbsp; Ayub Teaching Hospital</p>
+      <p class="institute-2">Abbottabad</p>
+      <span class="committee">Infection Control Committee</span>
+      <p class="invite-line">cordially invites you to attend</p>
+    </header>
+
+    <svg class="ekg" viewBox="0 0 300 22" preserveAspectRatio="none">
+      <defs>
+        <pattern id="ekg-pattern" width="60" height="22" patternUnits="userSpaceOnUse">
+          <polyline points="0,11 16,11 21,11 24,2 28,20 31,11 44,11 48,4 51,11 60,11"
+                    fill="none" stroke="#e8720c" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/>
+        </pattern>
+      </defs>
+      <rect width="300" height="22" fill="url(#ekg-pattern)"/>
+    </svg>
+
+    <section class="hero">
+      <p class="eyebrow">World Patient Safety Day 2026 — Symposium</p>
+      <h1 class="title">Safe Care<br>for Life</h1>
+      <svg class="underline" width="120" height="10" viewBox="0 0 120 10">
+        <path d="M2 7c15-8 25 4 40-3s25 5 38-1s25 3 38-2" fill="none" stroke="#e8720c" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <p class="subtitle">Improving Safety Across the Journey of Chronic Disease Care</p>
+      <p class="observance">In observance of World Patient Safety Day 2026</p>
+      <div class="who-theme">
+        <p class="label">WHO Theme</p>
+        <p>Safe care for noncommunicable diseases</p>
+      </div>
+    </section>
+
+    <div class="meta">
+      <div>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="15" rx="1" stroke="#0b2540" stroke-width="1.5"/><path d="M3 8h16M7 2v4M15 2v4" stroke="#0b2540" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <p class="m-label">Date</p>
+        <p class="m-value">Thu, 17 Sep 2026</p>
+      </div>
+      <div>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="#0b2540" stroke-width="1.5"/><path d="M11 6.5V11l3.5 2" stroke="#0b2540" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <p class="m-label">Time</p>
+        <p class="m-value">11:00 AM – 2:00 PM</p>
+      </div>
+      <div>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 20s7-7.2 7-12a7 7 0 10-14 0c0 4.8 7 12 7 12z" stroke="#0b2540" stroke-width="1.5"/><circle cx="11" cy="8" r="2.4" stroke="#0b2540" stroke-width="1.5"/></svg>
+        <p class="m-label">Venue</p>
+        <p class="m-value">CME Hall, Ayub Medical Complex</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-head"><h2>Scientific Programme</h2><span class="rule"></span></div>
+
+      <div class="talk">
+        <span class="num">01</span>
+        <div>
+          <h3>C‑Section and Surgical Site Infection</h3>
+          <p class="speaker"><b>Dr. Bushra Khan</b> — Consultant Gynaecologist, MTI, ATH</p>
+        </div>
+      </div>
+      <div class="talk">
+        <span class="num">02</span>
+        <div>
+          <h3>Patients' Medication Safety Across the Diseases — NCDs / CDs</h3>
+          <p class="speaker"><b>Dr. Maqsood A. Bangash</b> — Drug Management Coordinator &amp; Focal Person, Pharmacovigilance, TB Control Programme, Khyber Pakhtunkhwa</p>
+        </div>
+      </div>
+      <div class="talk">
+        <span class="num">03</span>
+        <div>
+          <h3>Antimicrobial Resistance in Pakistan: How to Safeguard the Patients?</h3>
+          <p class="speaker"><b>Dr. Tauqir Ahmad</b> — Consultant Physician, MTI, ATH</p>
+        </div>
+      </div>
+      <div class="talk">
+        <span class="num">04</span>
+        <div>
+          <h3>Getting the Diagnosis Right: Preventing Delayed, Missed and Wrong Diagnosis</h3>
+          <p class="speaker">Keynote Speaker — <b>Prof. Dr. Mohammad Javed</b></p>
+        </div>
+      </div>
+      <div class="talk">
+        <span class="num">05</span>
+        <div>
+          <h3>Breaking the Chain of Infection at the Bedside</h3>
+          <p class="speaker"><b>Mrs. Mehtaab Sikandar</b> — Nursing Director, MTI, ATH</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="label">Followed by · Panel Discussion</p>
+        <h3>&ldquo;How Can We Make Ayub Medical Complex Safer?&rdquo;</h3>
+        <p>Open panel discussion with the speakers and audience</p>
+      </div>
+    </section>
+
+    <div class="organiser-row">
+      <div class="organiser">
+        <p class="label">Organised By</p>
+        <p class="org-name">Infection Prevention &amp; Control Committee</p>
+        <p class="chair">Dr. Tauqir Ahmad, Chairman, Infection Control Committee</p>
+        <p>Ayub Medical Complex / Ayub Teaching Hospital, Abbottabad</p>
+      </div>
+      <div class="seal">
+        <span class="n">3</span>
+        <span class="u">CME Hours</span>
+        <span class="d">Applied · DME, AMC</span>
+      </div>
+    </div>
+
+    <div class="registration">
+      <div class="r-head">Registration</div>
+      <div class="r-grid">
+        <div class="r-item">
+          <p class="r-label">Faculty Fee</p>
+          <p class="r-value">Rs. 1,000</p>
+        </div>
+        <div class="r-item">
+          <p class="r-label">Residents &amp; Nurses</p>
+          <p class="r-value"><span class="free">Free</span></p>
+        </div>
+        <div class="r-item">
+          <p class="r-label">Easypaisa Payment</p>
+          <p class="r-value"><a href="tel:+923441998689">0344‑1998689</a> (Mohammad Shabbir)</p>
+        </div>
+        <div class="r-item">
+          <p class="r-label">After Payment</p>
+          <p class="r-value" style="font-weight:600;font-size:12.5px;color:var(--slate);">Send screenshot to a registration contact below</p>
+        </div>
+      </div>
+      <div class="contacts">
+        <span class="contact"><b>Dr. Abdullah Wahdaan</b> — <a href="tel:+923441998689">0344‑1998689</a></span>
+        <span class="contact"><b>Dr. Mohammad Kamran</b> — <a href="tel:+923156805708">0315‑6805708</a></span>
+      </div>
+      <p class="call-note">Call for registration and send a screenshot of payment to either contact above.</p>
+    </div>
+
+    <svg class="ekg" viewBox="0 0 300 22" preserveAspectRatio="none">
+      <rect width="300" height="22" fill="url(#ekg-pattern)"/>
+    </svg>
+
+    <footer class="band">
+      <p class="institute-1">Ayub Medical Complex &nbsp;/&nbsp; Ayub Teaching Hospital, Abbottabad</p>
+      <p class="institute-2">Infection Control Committee</p>
+      <p class="footer-tag">Together, for safer care.</p>
+    </footer>
+
+  </div>
+</body>
+</html>
