@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Money Printer</title>
+<meta name="description" content="Tap the press, print cash, and upgrade your way from a hand press to a printing empire.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a0c1a;
+    --gold:#f2b632;
+    --gold-light:#ffe19a;
+    --cream:#e9d9ad;
+    --green-panel:#0f2b1c;
+    --green-header:#153a25;
+    --green-card:#153627;
+    --green-border:rgba(255,255,255,0.08);
+    --muted:#8fa393;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0;
+    min-height:100%;
+    background:var(--navy);
+    color:#fff;
+    font-family:'Nunito',system-ui,sans-serif;
+    overflow-x:hidden;
+  }
+  body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+  .app{
+    width:100%;
+    max-width:420px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .top{
+    background:radial-gradient(ellipse at 50% 0%, rgba(242,182,50,0.14), transparent 65%), var(--navy);
+    padding:calc(env(safe-area-inset-top,0px) + 22px) 20px 18px;
+    text-align:center;
+    position:relative;
+  }
+  .resetBtn{
+    position:absolute;
+    top:calc(env(safe-area-inset-top,0px) + 10px);
+    right:14px;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.04);
+    color:var(--muted);
+    font-size:.9rem;
+    cursor:pointer;
+  }
+  .cashVal{
+    font-size:2.9rem;
+    font-weight:900;
+    color:var(--gold);
+    text-shadow:0 0 26px rgba(242,182,50,0.45);
+    letter-spacing:-.01em;
+    line-height:1;
+  }
+  .subStats{
+    margin-top:8px;
+    font-size:.85rem;
+    font-weight:700;
+    color:var(--gold-light);
+    opacity:.85;
+  }
+  .subStats .sep{margin:0 8px;opacity:.6;}
+
+  .formRow{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 20px 6px;
+  }
+  .formName{
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.09em;
+    color:#fff;
+  }
+  .formNext{
+    font-size:.7rem;
+    font-weight:700;
+    color:var(--muted);
+  }
+
+  .machineWrap{
+    position:relative;
+    height:210px;
+    margin:4px 10px 6px;
+    border-radius:20px;
+    background:radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.03), transparent 70%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .machine{
+    position:relative;
+    width:190px;
+    height:150px;
+    transition:transform .08s ease;
+  }
+  .machine.punch{transform:scale(0.96);}
+  .cabinet{
+    position:absolute;
+    left:6px; right:6px; bottom:6px; top:38px;
+    background:linear-gradient(180deg, var(--form-accent-2, #2f8a52), var(--form-accent, #1f6b3f));
+    border-radius:14px;
+    box-shadow:inset 0 -8px 14px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.35);
+  }
+  .slot{
+    position:absolute;
+    left:50%; top:44px;
+    transform:translateX(-50%);
+    width:120px; height:14px;
+    background:#0a1a10;
+    border-radius:8px;
+    box-shadow:inset 0 3px 5px rgba(0,0,0,0.6);
+  }
+  .rollers{
+    position:absolute;
+    left:50%; top:66px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:10px;
+  }
+  .roller{
+    width:34px; height:34px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 60%, #a97316 100%);
+    box-shadow:0 3px 6px rgba(0,0,0,0.4);
+  }
+  .legs{
+    position:absolute;
+    left:22px; right:22px; bottom:-4px;
+    height:10px;
+    background:#0a1a10;
+    border-radius:0 0 6px 6px;
+  }
+  .bill{
+    position:absolute;
+    left:50%; top:96px;
+    width:96px; height:44px;
+    margin-left:-48px;
+    background:linear-gradient(135deg,#eef7ea,#d8ecd2);
+    border:2px solid #8fbb86;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:1.3rem;
+    color:#2c6b3e;
+    transform-origin:top center;
+    transform:translateY(-6px) rotate(-2deg);
+    opacity:0;
+    transition:opacity .15s ease;
+  }
+  .bill.show{opacity:1;}
+  .bill.pop{animation:billPop .5s ease forwards;}
+  @keyframes billPop{
+    0%{transform:translateY(-6px) rotate(-2deg) scale(1); opacity:1;}
+    60%{transform:translateY(30px) rotate(3deg) scale(1.05); opacity:1;}
+    100%{transform:translateY(46px) rotate(3deg) scale(1); opacity:0;}
+  }
+
+  .floatLayer{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+  .floatText{
+    position:absolute;
+    font-weight:800;
+    font-size:1rem;
+    color:var(--gold-light);
+    text-shadow:0 1px 3px rgba(0,0,0,0.5);
+    animation:floatUp 0.9s ease-out forwards;
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0); opacity:1;}
+    100%{transform:translateY(-56px); opacity:0;}
+  }
+
+  .toast{
+    position:absolute;
+    left:50%;
+    top:8px;
+    transform:translate(-50%,-8px);
+    background:rgba(10,12,26,0.92);
+    border:1px solid rgba(242,182,50,0.5);
+    color:var(--gold-light);
+    font-weight:800;
+    font-size:.78rem;
+    padding:8px 14px;
+    border-radius:999px;
+    opacity:0;
+    transition:opacity .3s ease, transform .3s ease;
+    white-space:nowrap;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+
+  .tapBtn{
+    margin:2px 20px 18px;
+    padding:14px;
+    border-radius:16px;
+    border:1.5px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.04);
+    color:var(--cream);
+    font-family:inherit;
+    font-weight:800;
+    font-size:.95rem;
+    letter-spacing:.06em;
+    cursor:pointer;
+  }
+  .tapBtn:active{transform:scale(.98);background:rgba(255,255,255,0.08);}
+
+  .upgradesPanel{
+    background:var(--green-panel);
+    border-radius:22px 22px 0 0;
+    flex:1;
+    padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px);
+  }
+  .upgradesHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--green-header);
+    border-radius:22px 22px 0 0;
+    padding:14px 16px;
+  }
+  .upTitle{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:800;
+    font-size:.85rem;
+    letter-spacing:.06em;
+  }
+  .coinBadge{
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.75rem;
+    color:#3a2600;
+  }
+  .buyModeBtn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--green-border);
+    border-radius:999px;
+    padding:6px 12px;
+    color:#fff;
+    font-family:inherit;
+    font-weight:800;
+    font-size:.72rem;
+    letter-spacing:.04em;
+    cursor:pointer;
+  }
+  .buyModeBtn .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--gold);
+  }
+  .buyModeBtn .chev{opacity:.7;font-size:.65rem;}
+
+  .upgradesList{
+    padding:10px 12px 4px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .upgradeCard{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--green-card);
+    border:1px solid var(--green-border);
+    border-radius:14px;
+    padding:10px 12px;
+  }
+  .upIcon{
+    width:36px;height:36px;
+    flex-shrink:0;
+    border-radius:10px;
+    border:1px solid var(--green-border);
+    background:rgba(255,255,255,0.03);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--cream);
+  }
+  .upInfo{flex:1;min-width:0;}
+  .upName{
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+    font-weight:800;
+    font-size:.86rem;
+  }
+  .upName .lv{
+    font-size:.62rem;
+    font-weight:800;
+    color:var(--muted);
+    letter-spacing:.03em;
+  }
+  .upDesc{
+    font-size:.72rem;
+    color:var(--muted);
+    margin-top:2px;
+    line-height:1.3;
+  }
+  .upPrice{
+    flex-shrink:0;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--green-border);
+    border-radius:10px;
+    padding:8px 12px;
+    font-weight:800;
+    font-size:.82rem;
+    color:#fff;
+    cursor:pointer;
+    font-family:inherit;
+    min-width:64px;
+    text-align:center;
+  }
+  .upPrice:disabled{
+    opacity:.4;
+    cursor:default;
+  }
+  .upPrice:not(:disabled):active{transform:scale(.96);}
+
+  .lockedCard{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    color:var(--muted);
+    font-size:.74rem;
+    font-weight:700;
+    justify-content:center;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="top">
+    <button class="resetBtn" id="resetBtn" title="Reset game">&#8635;</button>
+    <div class="cashVal" id="cashVal">$0</div>
+    <div class="subStats">
+      <span id="tapRateDisplay">$1 / TAP</span><span class="sep">&bull;</span><span id="secRateDisplay">+$0 / SEC</span>
+    </div>
+  </div>
+
+  <div class="formRow">
+    <span class="formName" id="formName">HAND PRESS</span>
+    <span class="formNext" id="formNext">Next form at $1K</span>
+  </div>
+
+  <div class="machineWrap" id="machineWrap">
+    <div class="machine" id="machine">
+      <div class="cabinet"></div>
+      <div class="slot"></div>
+      <div class="rollers" id="rollers">
+        <div class="roller"></div>
+        <div class="roller"></div>
+      </div>
+      <div class="legs"></div>
+      <div class="bill" id="bill">$</div>
+    </div>
+    <div class="floatLayer" id="floatLayer"></div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <button class="tapBtn" id="tapBtn">TAP TO PRINT</button>
+
+  <div class="upgradesPanel">
+    <div class="upgradesHeader">
+      <div class="upTitle"><span class="coinBadge">$</span>UPGRADES</div>
+      <button class="buyModeBtn" id="buyModeBtn"><span class="dot"></span><span id="buyModeLabel">BUY 1</span><span class="chev">&#9662;</span></button>
+    </div>
+    <div class="upgradesList" id="upgradesList"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'moneyPrinterState';
+
+  function safeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function safeSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+
+  const SUFFIXES = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp'];
+  function fmt(n){
+    if (n < 1000) return '$' + (Number.isInteger(n) ? n : n.toFixed(2));
+    let tier = 0;
+    let v = n;
+    while (v >= 1000 && tier < SUFFIXES.length - 1){ v /= 1000; tier++; }
+    const digits = v < 10 ? 2 : v < 100 ? 1 : 0;
+    let s = v.toFixed(digits);
+    if (s.indexOf('.') !== -1) s = s.replace(/0+$/, '').replace(/\.$/, '');
+    return '$' + s + SUFFIXES[tier];
+  }
+
+  const ICONS = {
+    pencil: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-5L16 4l4 4L9 19l-5 1z"/><path d="M14 6l4 4"/></svg>',
+    person: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7.5" r="3"/><path d="M5 20c0-3.5 3.2-6 7-6s7 2.5 7 6"/></svg>',
+    gear: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.4"/><circle cx="12" cy="12" r="7.2"/><path d="M12 2.8v2.4M12 18.8v2.4M21.2 12h-2.4M5.2 12H2.8M18.1 5.9l-1.7 1.7M7.6 16.5l-1.7 1.7M18.1 18.1l-1.7-1.7M7.6 7.6L5.9 5.9"/></svg>',
+    people: '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="2.6"/><path d="M3.5 19c0-3 2.6-5 5.5-5s5.5 2 5.5 5"/><circle cx="17" cy="8.5" r="2.1"/><path d="M14.5 13.3c2.6.2 4.7 2 4.7 4.7"/></svg>',
+    ribbon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="9.5" width="17" height="10.5" rx="1.5"/><path d="M3.5 13.5h17"/><path d="M12 9.5v10.5"/><path d="M12 9.5c-2.4 0-3.6-1.6-3.6-3.2S9.4 3.5 11 3.5c1.4 0 1.9 1.6 1 2.6"/><path d="M12 9.5c2.4 0 3.6-1.6 3.6-3.2S14.6 3.5 13 3.5c-1.4 0-1.9 1.6-1 2.6"/></svg>',
+    coins: '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v5c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V6"/><path d="M5 11v5c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6v-5"/></svg>',
+    factory: '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V11l5 3v-3l5 3V8l5 3v9z"/><path d="M3 20h18"/><path d="M7 8V5M11 8V5"/></svg>',
+    bars: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V13"/><path d="M12 20V8"/><path d="M19 20V4"/></svg>'
+  };
+
+  const FORMS = [
+    { threshold: 0,         name: 'Hand Press',        baseTap: 1,   accent: '#8a5a2c', accent2: '#b3762f', rollers: 2 },
+    { threshold: 1000,      name: 'Desktop Printer',   baseTap: 3,   accent: '#1f6b3f', accent2: '#2f8a52', rollers: 2 },
+    { threshold: 10000,     name: 'Office Press',      baseTap: 8,   accent: '#1c5f6b', accent2: '#2c8496', rollers: 3 },
+    { threshold: 100000,    name: 'Industrial Printer',baseTap: 20,  accent: '#1c4d7a', accent2: '#2c6ea6', rollers: 3 },
+    { threshold: 1000000,   name: 'Money Factory',     baseTap: 60,  accent: '#5a2c8a', accent2: '#7c3fb3', rollers: 4 },
+    { threshold: 10000000,  name: 'Printing Empire',   baseTap: 200, accent: '#8a2c3c', accent2: '#b33f52', rollers: 4 },
+    { threshold: 100000000, name: 'Federal Reserve',   baseTap: 750, accent: '#2c4a8a', accent2: '#3f68b3', rollers: 5 }
+  ];
+
+  const UPGRADES = [
+    { id: 'ink',        name: 'Better Ink',      icon: 'pencil',  type: 'tapMult',    baseCost: 5,      scale: 1.15, effect: 0.5,  unlockAt: 0,       desc: e => `Tap multiplier +${Math.round(e * 100)}% each` },
+    { id: 'apprentice', name: 'Apprentice',      icon: 'person',  type: 'passiveAdd', baseCost: 50,     scale: 1.15, effect: 5,    unlockAt: 0,       desc: e => `Adds $${e}/sec each` },
+    { id: 'rollers',    name: 'Steel Rollers',   icon: 'gear',    type: 'tapMult',    baseCost: 500,    scale: 1.15, effect: 1.0,  unlockAt: 200,     desc: e => `Tap multiplier +${Math.round(e * 100)}% each` },
+    { id: 'intern',     name: 'Intern Team',     icon: 'people',  type: 'passiveAdd', baseCost: 1000,   scale: 1.15, effect: 25,   unlockAt: 300,     desc: e => `Adds $${e}/sec each` },
+    { id: 'ribbon',     name: 'Lucky Ribbon',    icon: 'ribbon',  type: 'globalMult', baseCost: 10000,  scale: 1.2,  effect: 0.10, unlockAt: 3000,    desc: e => `+${Math.round(e * 100)}% to ALL income each` },
+    { id: 'plates',     name: 'Golden Plates',   icon: 'coins',   type: 'tapMult',    baseCost: 25000,  scale: 1.15, effect: 1.5,  unlockAt: 8000,    desc: e => `Tap multiplier +${Math.round(e * 100)}% each` },
+    { id: 'automation', name: 'Automated Press', icon: 'factory', type: 'passiveAdd', baseCost: 20000,  scale: 1.15, effect: 150,  unlockAt: 8000,    desc: e => `Adds $${e}/sec each` },
+    { id: 'factoryline',name: 'Factory Line',    icon: 'bars',    type: 'passiveAdd', baseCost: 500000, scale: 1.15, effect: 1000, unlockAt: 150000,  desc: e => `Adds $${e}/sec each` }
+  ];
+
+  let cash = 0;
+  let totalEarned = 0;
+  let levels = {};
+  let buyMode = '1'; // '1' | '10' | 'max'
+  UPGRADES.forEach(u => { levels[u.id] = 0; });
+
+  function loadState(){
+    try{
+      const raw = safeGet(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (typeof data.cash === 'number') cash = data.cash;
+      if (typeof data.totalEarned === 'number') totalEarned = data.totalEarned;
+      if (data.levels) Object.assign(levels, data.levels);
+      if (data.buyMode) buyMode = data.buyMode;
+    }catch(e){ /* ignore corrupt state */ }
+  }
+  function saveState(){
+    safeSet(STORAGE_KEY, JSON.stringify({ cash, totalEarned, levels, buyMode }));
+  }
+  function resetGame(){
+    cash = 0;
+    totalEarned = 0;
+    UPGRADES.forEach(u => { levels[u.id] = 0; });
+    buyMode = '1';
+    saveState();
+    renderUpgrades();
+    updateAll();
+  }
+
+  function currentFormIndex(){
+    let idx = 0;
+    for (let i = 0; i < FORMS.length; i++){ if (totalEarned >= FORMS[i].threshold) idx = i; }
+    return idx;
+  }
+
+  function tapBonus(){
+    let bonus = 0;
+    UPGRADES.forEach(u => { if (u.type === 'tapMult') bonus += levels[u.id] * u.effect; });
+    return bonus;
+  }
+  function globalBonus(){
+    let bonus = 0;
+    UPGRADES.forEach(u => { if (u.type === 'globalMult') bonus += levels[u.id] * u.effect; });
+    return bonus;
+  }
+  function passiveBase(){
+    let sum = 0;
+    UPGRADES.forEach(u => { if (u.type === 'passiveAdd') sum += levels[u.id] * u.effect; });
+    return sum;
+  }
+  function tapValue(){
+    const form = FORMS[currentFormIndex()];
+    return form.baseTap * (1 + tapBonus()) * (1 + globalBonus());
+  }
+  function passiveIncome(){
+    return passiveBase() * (1 + globalBonus());
+  }
+
+  function costForLevel(u, atLevel){
+    return Math.ceil(u.baseCost * Math.pow(u.scale, atLevel));
+  }
+  function bulkCost(u, count){
+    let total = 0;
+    for (let i = 0; i < count; i++) total += costForLevel(u, levels[u.id] + i);
+    return total;
+  }
+  function maxAffordable(u){
+    let n = 0, total = 0;
+    while (n < 100000){
+      const c = costForLevel(u, levels[u.id] + n);
+      if (total + c > cash) break;
+      total += c;
+      n++;
+    }
+    return { n, total };
+  }
+  function buyQuantityAndCost(u){
+    if (buyMode === '1') return { n: 1, total: costForLevel(u, levels[u.id]) };
+    if (buyMode === '10') return { n: 10, total: bulkCost(u, 10) };
+    return maxAffordable(u);
+  }
+
+  // ---- DOM ----
+  const cashVal = document.getElementById('cashVal');
+  const tapRateDisplay = document.getElementById('tapRateDisplay');
+  const secRateDisplay = document.getElementById('secRateDisplay');
+  const formName = document.getElementById('formName');
+  const formNext = document.getElementById('formNext');
+  const machine = document.getElementById('machine');
+  const rollersEl = document.getElementById('rollers');
+  const bill = document.getElementById('bill');
+  const machineWrap = document.getElementById('machineWrap');
+  const floatLayer = document.getElementById('floatLayer');
+  const toast = document.getElementById('toast');
+  const tapBtn = document.getElementById('tapBtn');
+  const buyModeBtn = document.getElementById('buyModeBtn');
+  const buyModeLabel = document.getElementById('buyModeLabel');
+  const upgradesList = document.getElementById('upgradesList');
+  const resetBtn = document.getElementById('resetBtn');
+
+  function applyFormVisual(){
+    const form = FORMS[currentFormIndex()];
+    machine.style.setProperty('--form-accent', form.accent);
+    machine.style.setProperty('--form-accent-2', form.accent2);
+    rollersEl.innerHTML = '';
+    for (let i = 0; i < form.rollers; i++){
+      const d = document.createElement('div');
+      d.className = 'roller';
+      rollersEl.appendChild(d);
+    }
+    formName.textContent = form.name.toUpperCase();
+    const next = FORMS[currentFormIndex() + 1];
+    formNext.textContent = next ? `Next form at ${fmt(next.threshold)}` : 'Max form reached';
+  }
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  function spawnFloatText(text){
+    const el = document.createElement('div');
+    el.className = 'floatText';
+    el.textContent = text;
+    const x = 40 + Math.random() * 100;
+    el.style.left = x + 'px';
+    el.style.top = '90px';
+    floatLayer.appendChild(el);
+    setTimeout(() => el.remove(), 950);
+  }
+
+  let lastFormIndex = 0;
+  function updateAll(){
+    cashVal.textContent = fmt(cash);
+    tapRateDisplay.textContent = fmt(tapValue()) + ' / TAP';
+    secRateDisplay.textContent = '+' + fmt(passiveIncome()) + ' / SEC';
+
+    const idx = currentFormIndex();
+    if (idx !== lastFormIndex){
+      lastFormIndex = idx;
+      applyFormVisual();
+      showToast('New printer unlocked: ' + FORMS[idx].name + '!');
+    } else {
+      formNext.textContent = FORMS[idx + 1] ? `Next form at ${fmt(FORMS[idx + 1].threshold)}` : 'Max form reached';
+    }
+
+    renderUpgradeCosts();
+  }
+
+  function iconSvg(key){ return ICONS[key] || ''; }
+
+  function renderUpgrades(){
+    upgradesList.innerHTML = '';
+    let nextLocked = null;
+    UPGRADES.forEach((u) => {
+      if (totalEarned < u.unlockAt && levels[u.id] === 0){
+        if (!nextLocked || u.unlockAt < nextLocked.unlockAt) nextLocked = u;
+        return;
+      }
+      const card = document.createElement('div');
+      card.className = 'upgradeCard';
+      card.dataset.id = u.id;
+      card.innerHTML = `
+        <div class="upIcon">${iconSvg(u.icon)}</div>
+        <div class="upInfo">
+          <div class="upName">${u.name} <span class="lv">LV ${levels[u.id]}</span></div>
+          <div class="upDesc">${u.desc(u.effect)}</div>
+        </div>
+        <button class="upPrice" data-id="${u.id}">${fmt(costForLevel(u, levels[u.id]))}</button>`;
+      upgradesList.appendChild(card);
+    });
+    if (nextLocked){
+      const row = document.createElement('div');
+      row.className = 'lockedCard';
+      row.textContent = `🔒 Next upgrade unlocks at ${fmt(nextLocked.unlockAt)} total earned`;
+      upgradesList.appendChild(row);
+    }
+    upgradesList.querySelectorAll('.upPrice').forEach((btn) => {
+      btn.addEventListener('click', () => buyUpgrade(btn.dataset.id));
+    });
+    renderUpgradeCosts();
+  }
+
+  function renderUpgradeCosts(){
+    UPGRADES.forEach((u) => {
+      const btn = upgradesList.querySelector(`.upPrice[data-id="${u.id}"]`);
+      if (!btn) return;
+      const { n, total } = buyQuantityAndCost(u);
+      if (buyMode === 'max'){
+        btn.textContent = n > 0 ? fmt(total) : 'MAX';
+        btn.disabled = n === 0;
+      } else {
+        btn.textContent = fmt(total);
+        btn.disabled = cash < total;
+      }
+      const lv = btn.closest('.upgradeCard').querySelector('.lv');
+      if (lv) lv.textContent = 'LV ' + levels[u.id];
+    });
+  }
+
+  function buyUpgrade(id){
+    const u = UPGRADES.find(x => x.id === id);
+    const { n, total } = buyQuantityAndCost(u);
+    if (n <= 0 || cash < total) return;
+    cash -= total;
+    levels[id] += n;
+    saveState();
+    renderUpgrades();
+    updateAll();
+  }
+
+  const BUY_MODES = ['1', '10', 'max'];
+  buyModeBtn.addEventListener('click', () => {
+    const idx = BUY_MODES.indexOf(buyMode);
+    buyMode = BUY_MODES[(idx + 1) % BUY_MODES.length];
+    buyModeLabel.textContent = buyMode === 'max' ? 'BUY MAX' : 'BUY ' + buyMode;
+    saveState();
+    renderUpgradeCosts();
+  });
+
+  function doTap(){
+    const earned = tapValue();
+    cash += earned;
+    totalEarned += earned;
+    spawnFloatText('+' + fmt(earned));
+    machine.classList.add('punch');
+    bill.classList.remove('pop');
+    bill.classList.add('show');
+    void bill.offsetWidth;
+    bill.classList.add('pop');
+    setTimeout(() => machine.classList.remove('punch'), 90);
+    updateAll();
+    saveState();
+  }
+
+  tapBtn.addEventListener('click', doTap);
+  machineWrap.addEventListener('click', doTap);
+  resetBtn.addEventListener('click', resetGame);
+
+  // ---- passive income loop ----
+  let lastT = null;
+  function frame(t){
+    if (lastT === null) lastT = t;
+    const dt = Math.min((t - lastT) / 1000, 0.25);
+    lastT = t;
+    const inc = passiveIncome() * dt;
+    if (inc > 0){
+      cash += inc;
+      totalEarned += inc;
+    }
+    updateAll();
+    requestAnimationFrame(frame);
+  }
+
+  let saveTimer = setInterval(saveState, 4000);
+
+  loadState();
+  buyModeLabel.textContent = buyMode === 'max' ? 'BUY MAX' : 'BUY ' + buyMode;
+  lastFormIndex = currentFormIndex();
+  applyFormVisual();
+  renderUpgrades();
+  updateAll();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
