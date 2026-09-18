@@ -22,7 +22,7 @@
   *{box-sizing:border-box;}
   html,body{
     margin:0;
-    height:100%;
+    min-height:100%;
     background:var(--bg);
     color:var(--text);
     font-family:'Titillium Web',system-ui,sans-serif;
@@ -32,10 +32,12 @@
     background-image:
       radial-gradient(circle at 50% 0%, rgba(225,6,0,0.12), transparent 55%),
       repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 40px);
-    min-height:100%;
+    min-height:100vh;
+    min-height:100dvh;
     display:flex;
     flex-direction:column;
     align-items:center;
+    justify-content:center;
   }
   header{
     width:100%;
@@ -313,13 +315,24 @@
   const STORAGE_BEST = 'f1ReactionBest';
   const STORAGE_HISTORY = 'f1ReactionHistory';
 
+  function safeGet(key){
+    try{ return localStorage.getItem(key); }catch(e){ return null; }
+  }
+  function safeSet(key, val){
+    try{ localStorage.setItem(key, val); }catch(e){ /* storage unavailable */ }
+  }
+  function safeRemove(key){
+    try{ localStorage.removeItem(key); }catch(e){ /* storage unavailable */ }
+  }
+
   let state = 'idle'; // idle | lighting | set | go | result | jumped
   let timeouts = [];
   let goTime = 0;
   let soundOn = true;
 
-  let best = Number(localStorage.getItem(STORAGE_BEST)) || null;
-  let history = JSON.parse(localStorage.getItem(STORAGE_HISTORY) || '[]');
+  let best = Number(safeGet(STORAGE_BEST)) || null;
+  let history = [];
+  try{ history = JSON.parse(safeGet(STORAGE_HISTORY) || '[]'); }catch(e){ history = []; }
 
   function clearTimeouts(){
     timeouts.forEach(clearTimeout);
@@ -443,8 +456,8 @@
     if(history.length > 20) history = history.slice(-20);
     if(best === null || ms < best) best = ms;
 
-    localStorage.setItem(STORAGE_BEST, String(best));
-    localStorage.setItem(STORAGE_HISTORY, JSON.stringify(history));
+    safeSet(STORAGE_BEST, String(best));
+    safeSet(STORAGE_HISTORY, JSON.stringify(history));
     updateStatsDisplay();
 
     ratingEl.innerHTML = rate(ms);
@@ -471,8 +484,8 @@
   resetBtn.addEventListener('click', () => {
     best = null;
     history = [];
-    localStorage.removeItem(STORAGE_BEST);
-    localStorage.removeItem(STORAGE_HISTORY);
+    safeRemove(STORAGE_BEST);
+    safeRemove(STORAGE_HISTORY);
     updateStatsDisplay();
     ratingEl.textContent = '';
   });
