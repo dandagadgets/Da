@@ -188,9 +188,9 @@
   const G = 2200;
   const MAX_ROPE = 230;
   const MIN_ROPE = 55;
-  const CHAR_R = 17;
-  const RING_OUTER = 20;
-  const RING_INNER = 9;
+  const CHAR_R = 18;
+  const RING_OUTER = 21;
+  const RING_INNER = 10;
   const PPM = 16;
   const WATER_Y = 900;
   const START_X = 60;
@@ -221,6 +221,7 @@
   let character, camera, rings, lastRingX, lastRingY;
   let attached, anchor, ropeLen, theta, omega;
   let holding, state, maxDist, firstGrabDone;
+  let particles, trail;
 
   function spawnRing(){
     const spacing = 150 + Math.random() * 110;
@@ -249,9 +250,26 @@
     maxDist = 0;
     state = 'playing';
     firstGrabDone = false;
+    particles = [];
+    trail = [];
     hint.classList.remove('hidden');
     gameOverPanel.hidden = true;
     distVal.textContent = '0m';
+  }
+
+  function spawnGrabBurst(x, y){
+    for (let i = 0; i < 12; i++){
+      const ang = Math.random() * Math.PI * 2;
+      const spd = 50 + Math.random() * 100;
+      particles.push({
+        x, y,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd - 30,
+        life: 0.45 + Math.random() * 0.3,
+        maxLife: 0.75,
+        size: 2 + Math.random() * 2.2
+      });
+    }
   }
 
   function tryGrab(){
@@ -270,6 +288,7 @@
       theta = Math.atan2(character.x - anchor.x, character.y - anchor.y);
       const ct = Math.cos(theta), st = Math.sin(theta);
       omega = (character.vx * ct - character.vy * st) / ropeLen;
+      spawnGrabBurst(anchor.x, anchor.y);
       if (!firstGrabDone){ firstGrabDone = true; hint.classList.add('hidden'); }
     }
   }
@@ -294,6 +313,27 @@
     gameOverPanel.hidden = false;
   }
 
+  function updateParticles(dt){
+    for (let i = particles.length - 1; i >= 0; i--){
+      const p = particles[i];
+      p.vy += 260 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      p.life -= dt;
+      if (p.life <= 0) particles.splice(i, 1);
+    }
+  }
+
+  function updateTrail(){
+    const speed = attached ? Math.abs(omega * ropeLen) : Math.hypot(character.vx, character.vy);
+    if (speed > 160){
+      trail.push({ x: character.x, y: character.y });
+      if (trail.length > 7) trail.shift();
+    } else if (trail.length){
+      trail.shift();
+    }
+  }
+
   function update(dt){
     if (holding && !attached) tryGrab();
 
@@ -310,6 +350,9 @@
       character.x += character.vx * dt;
       character.y += character.vy * dt;
     }
+
+    updateTrail();
+    updateParticles(dt);
 
     while (lastRingX < character.x + viewW * 1.6) spawnRing();
 
@@ -334,75 +377,179 @@
     ctx.fillRect(0, 0, viewW, viewH);
   }
 
-  function drawClouds(){
-    ctx.fillStyle = 'rgba(255,240,225,0.55)';
-    const factor = 0.25;
-    const spacing = 340;
-    const start = Math.floor((camera.x * factor - 200) / spacing) * spacing;
-    for (let wx = start; wx < camera.x * factor + viewW + 200; wx += spacing){
-      const sx = wx - camera.x * factor;
-      const sy = 70 + 60 * hash(wx * 0.01);
-      ctx.beginPath();
-      ctx.ellipse(sx, sy, 70, 22, 0, 0, Math.PI * 2);
-      ctx.ellipse(sx + 45, sy + 8, 46, 16, 0, 0, Math.PI * 2);
-      ctx.ellipse(sx - 45, sy + 10, 40, 14, 0, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function drawMountainLayer(parallax, baseY, amp, color, seed){
-    ctx.fillStyle = color;
-    const seg = 70;
-    const start = Math.floor((camera.x * parallax) / seg) * seg - seg;
+  function drawSun(){
+    const sx = viewW * 0.78, sy = viewH * 0.16;
+    const glow = ctx.createRadialGradient(sx, sy, 4, sx, sy, 150);
+    glow.addColorStop(0, 'rgba(255,241,196,0.85)');
+    glow.addColorStop(1, 'rgba(255,241,196,0)');
+    ctx.fillStyle = glow;
     ctx.beginPath();
-    ctx.moveTo(start - camera.x * parallax, viewH + 10);
-    for (let wx = start; wx < camera.x * parallax + viewW + seg * 2; wx += seg){
-      const h = amp * (0.4 + 0.6 * hash(wx * 0.02 + seed));
-      const sx = wx - camera.x * parallax;
-      const sy = (baseY - camera.y) - h;
-      ctx.lineTo(sx, sy);
-    }
-    ctx.lineTo((camera.x * parallax + viewW + seg * 2) - camera.x * parallax, viewH + 10);
-    ctx.closePath();
+    ctx.arc(sx, sy, 150, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(sx, sy, 32, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff4d4';
     ctx.fill();
   }
 
-  function drawWater(){
-    const sy = WATER_Y - camera.y;
-    if (sy > viewH) return;
-    const g = ctx.createLinearGradient(0, sy, 0, viewH);
-    g.addColorStop(0, '#1f6f78');
-    g.addColorStop(1, '#0b2a3d');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, sy, viewW, viewH - sy);
-    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-    ctx.lineWidth = 2;
+  function drawClouds(t){
+    const factor = 0.25;
+    const spacing = 340;
+    const drift = t * 0.01;
+    const start = Math.floor((camera.x * factor - drift - 220) / spacing) * spacing;
+    const puffs = [[0, 0, 74, 24], [46, 9, 48, 18], [-46, 11, 42, 16], [12, -11, 34, 14]];
+    for (let wx = start; wx < camera.x * factor + drift + viewW + 220; wx += spacing){
+      const sx = wx - camera.x * factor + drift;
+      const sy = 60 + 70 * hash(wx * 0.013);
+      const op = 0.45 + 0.3 * hash(wx * 0.031);
+      puffs.forEach(([ox, oy, rx, ry]) => {
+        const g = ctx.createRadialGradient(sx + ox, sy + oy, 2, sx + ox, sy + oy, Math.max(rx, ry));
+        g.addColorStop(0, `rgba(255,246,232,${op})`);
+        g.addColorStop(1, 'rgba(255,246,232,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.ellipse(sx + ox, sy + oy, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+  }
+
+  function drawMountainLayer(parallax, baseY, amp, colorTop, colorBottom, rimColor, seed){
+    const seg = 70;
+    const start = Math.floor((camera.x * parallax) / seg) * seg - seg;
+    const end = camera.x * parallax + viewW + seg * 2;
+    const pts = [];
+    for (let wx = start; wx < end; wx += seg){
+      const h = amp * (0.4 + 0.6 * hash(wx * 0.02 + seed));
+      pts.push({ sx: wx - camera.x * parallax, sy: (baseY - camera.y) - h });
+    }
+    if (pts.length < 2) return;
+
     ctx.beginPath();
-    ctx.moveTo(0, sy);
-    ctx.lineTo(viewW, sy);
+    ctx.moveTo(pts[0].sx, viewH + 10);
+    pts.forEach(p => ctx.lineTo(p.sx, p.sy));
+    ctx.lineTo(pts[pts.length - 1].sx, viewH + 10);
+    ctx.closePath();
+    const g = ctx.createLinearGradient(0, baseY - camera.y - amp, 0, baseY - camera.y);
+    g.addColorStop(0, colorTop);
+    g.addColorStop(1, colorBottom);
+    ctx.fillStyle = g;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(pts[0].sx, pts[0].sy);
+    pts.forEach(p => ctx.lineTo(p.sx, p.sy));
+    ctx.strokeStyle = rimColor;
+    ctx.lineWidth = 2;
     ctx.stroke();
   }
 
-  function drawRings(){
+  function drawWater(t){
+    const sy = WATER_Y - camera.y;
+    if (sy > viewH) return;
+    const g = ctx.createLinearGradient(0, sy, 0, viewH);
+    g.addColorStop(0, '#2a8b8f');
+    g.addColorStop(0.4, '#166171');
+    g.addColorStop(1, '#081f30');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, sy, viewW, viewH - sy);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x = 0; x <= viewW; x += 20){
+      const y = sy + Math.sin(x * 0.05 + t * 0.003) * 2;
+      if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    const shimmerX = ((t * 0.05) % (viewW + 300)) - 150;
+    const sg = ctx.createLinearGradient(shimmerX - 90, 0, shimmerX + 90, 0);
+    sg.addColorStop(0, 'rgba(255,255,255,0)');
+    sg.addColorStop(0.5, 'rgba(255,255,255,0.14)');
+    sg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = sg;
+    ctx.fillRect(0, sy, viewW, viewH - sy);
+  }
+
+  function drawRings(t){
+    const mid = (RING_OUTER + RING_INNER) / 2;
+    const bandWidth = RING_OUTER - RING_INNER;
     for (const r of rings){
+      const bob = r.used ? 0 : Math.sin(t * 0.003 + r.x * 0.01) * 4;
       const sx = r.x - camera.x;
-      const sy = r.y - camera.y;
-      if (sx < -40 || sx > viewW + 40) continue;
+      const sy = r.y - camera.y + bob;
+      if (sx < -50 || sx > viewW + 50) continue;
+
+      if (!r.used){
+        const glow = ctx.createRadialGradient(sx, sy, 4, sx, sy, RING_OUTER * 2.2);
+        glow.addColorStop(0, 'rgba(255,214,110,0.35)');
+        glow.addColorStop(1, 'rgba(255,214,110,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(sx, sy, RING_OUTER * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       ctx.save();
-      ctx.globalAlpha = r.used ? 0.35 : 1;
+      ctx.globalAlpha = r.used ? 0.4 : 1;
+
       ctx.beginPath();
-      ctx.arc(sx, sy, RING_OUTER, 0, Math.PI * 2);
-      const g = ctx.createRadialGradient(sx - 6, sy - 6, 2, sx, sy, RING_OUTER);
-      g.addColorStop(0, '#ffe9a8');
-      g.addColorStop(1, r.used ? '#9a8a5a' : '#f0a92e');
-      ctx.fillStyle = g;
-      ctx.fill();
+      ctx.arc(sx + 2, sy + 3, mid, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+      ctx.lineWidth = bandWidth;
+      ctx.stroke();
+
       ctx.beginPath();
-      ctx.arc(sx, sy, RING_INNER, 0, Math.PI * 2);
-      ctx.fillStyle = '#e9d8b4';
-      ctx.fill();
+      ctx.arc(sx, sy, mid, 0, Math.PI * 2);
+      const rg = ctx.createLinearGradient(sx - RING_OUTER, sy - RING_OUTER, sx + RING_OUTER, sy + RING_OUTER);
+      if (r.used){
+        rg.addColorStop(0, '#b9ab84');
+        rg.addColorStop(1, '#7d7458');
+      } else {
+        rg.addColorStop(0, '#ffe9a8');
+        rg.addColorStop(0.5, '#f5b436');
+        rg.addColorStop(1, '#c8791a');
+      }
+      ctx.strokeStyle = rg;
+      ctx.lineWidth = bandWidth;
+      ctx.stroke();
+
+      if (!r.used){
+        ctx.beginPath();
+        ctx.arc(sx, sy, mid, Math.PI * 1.1, Math.PI * 1.6);
+        ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
       ctx.restore();
     }
+  }
+
+  function drawTrail(){
+    for (let i = 0; i < trail.length; i++){
+      const p = trail[i];
+      const sx = p.x - camera.x, sy = p.y - camera.y;
+      const frac = (i + 1) / trail.length;
+      ctx.globalAlpha = frac * 0.22;
+      ctx.beginPath();
+      ctx.arc(sx, sy, CHAR_R * (0.45 + 0.4 * frac), 0, Math.PI * 2);
+      ctx.fillStyle = '#f6a623';
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawParticles(){
+    for (const p of particles){
+      const sx = p.x - camera.x, sy = p.y - camera.y;
+      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+      ctx.fillStyle = '#ffdd88';
+      ctx.beginPath();
+      ctx.arc(sx, sy, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
   }
 
   function drawRope(){
@@ -411,16 +558,22 @@
     const sy = character.y - camera.y;
     const ax = anchor.x - camera.x;
     const ay = anchor.y - camera.y;
+    const mx = (sx + ax) / 2 + (sy - ay) * 0.03;
+    const my = (sy + ay) / 2 + (ax - sx) * 0.03;
     ctx.strokeStyle = 'rgba(255,250,240,0.9)';
     ctx.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(ax, ay);
-    ctx.lineTo(sx, sy);
+    ctx.quadraticCurveTo(mx, my, sx, sy);
     ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(ax, ay, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
   }
 
-  function drawCharacter(){
+  function drawCharacter(t){
     const sx = character.x - camera.x;
     const sy = character.y - camera.y;
     let rot;
@@ -429,63 +582,115 @@
     } else {
       rot = clamp(Math.atan2(character.vy, character.vx) * 0.25, -0.6, 0.6);
     }
+    const dir = character.vx >= 0 ? 1 : -1;
+
     ctx.save();
     ctx.translate(sx, sy);
+
+    // soft ground-independent shadow, always beneath
+    ctx.beginPath();
+    ctx.ellipse(3, CHAR_R * 0.95, CHAR_R * 0.9, CHAR_R * 0.32, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(15,15,25,0.16)';
+    ctx.fill();
+
     ctx.rotate(rot);
 
     // cape
-    const dir = character.vx >= 0 ? -1 : 1;
+    const flutter = Math.sin(t * 0.012 + character.x * 0.01) * 6;
     ctx.beginPath();
-    ctx.moveTo(dir * 4, -6);
-    ctx.quadraticCurveTo(dir * 26, 2, dir * 14, 22);
-    ctx.quadraticCurveTo(dir * 10, 6, dir * 2, 4);
+    ctx.moveTo(-dir * 6, -4);
+    ctx.quadraticCurveTo(-dir * 26, 4 + flutter, -dir * 16, 24 + flutter * 0.6);
+    ctx.quadraticCurveTo(-dir * 10, 10, -dir * 3, 6);
     ctx.closePath();
-    ctx.fillStyle = '#ff6b5b';
+    const capeG = ctx.createLinearGradient(-dir * 26, 0, -dir * 3, 20);
+    capeG.addColorStop(0, '#ff8a72');
+    capeG.addColorStop(1, '#e6483a');
+    ctx.fillStyle = capeG;
     ctx.fill();
 
     // body
     ctx.beginPath();
-    ctx.arc(0, 0, CHAR_R, 0, Math.PI * 2);
-    const bg = ctx.createRadialGradient(-5, -6, 2, 0, 0, CHAR_R);
-    bg.addColorStop(0, '#ffd85c');
-    bg.addColorStop(1, '#f6a623');
-    ctx.fillStyle = bg;
+    ctx.ellipse(0, 0, CHAR_R * 0.98, CHAR_R * 1.06, 0, 0, Math.PI * 2);
+    const bodyG = ctx.createRadialGradient(-CHAR_R * 0.35, -CHAR_R * 0.4, 2, 0, 0, CHAR_R * 1.3);
+    bodyG.addColorStop(0, '#ffe17a');
+    bodyG.addColorStop(0.55, '#f9b737');
+    bodyG.addColorStop(1, '#e28c15');
+    ctx.fillStyle = bodyG;
     ctx.fill();
+
+    // rim light
+    ctx.beginPath();
+    ctx.ellipse(0, 0, CHAR_R * 0.98, CHAR_R * 1.06, 0, Math.PI * 1.1, Math.PI * 1.75);
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
 
     // belly
     ctx.beginPath();
-    ctx.ellipse(0, 5, CHAR_R * 0.55, CHAR_R * 0.4, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, CHAR_R * 0.28, CHAR_R * 0.58, CHAR_R * 0.5, 0, 0, Math.PI * 2);
     ctx.fillStyle = '#fff3d6';
     ctx.fill();
 
     // ears
-    ctx.fillStyle = '#f6a623';
+    [-1, 1].forEach((side) => {
+      ctx.beginPath();
+      ctx.ellipse(side * CHAR_R * 0.62, -CHAR_R * 0.85, 6.5, 8.5, side * 0.4, 0, Math.PI * 2);
+      ctx.fillStyle = '#f2a02a';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(side * CHAR_R * 0.62, -CHAR_R * 0.8, 3.2, 4.6, side * 0.4, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffd9a0';
+      ctx.fill();
+    });
+
+    // blush
+    ctx.fillStyle = 'rgba(255,120,110,0.45)';
     ctx.beginPath();
-    ctx.arc(-10, -13, 5.5, 0, Math.PI * 2);
-    ctx.arc(10, -13, 5.5, 0, Math.PI * 2);
+    ctx.ellipse(-CHAR_R * 0.55, CHAR_R * 0.12, 4.2, 2.6, 0, 0, Math.PI * 2);
+    ctx.ellipse(CHAR_R * 0.55, CHAR_R * 0.12, 4.2, 2.6, 0, 0, Math.PI * 2);
     ctx.fill();
 
     // eyes
-    ctx.fillStyle = '#2c2233';
+    const lookX = dir * 1.6;
+    [-1, 1].forEach((side) => {
+      ctx.beginPath();
+      ctx.ellipse(side * CHAR_R * 0.36, -CHAR_R * 0.08, 4.4, 5.2, 0, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(side * CHAR_R * 0.36 + lookX, -CHAR_R * 0.04, 2.4, 0, Math.PI * 2);
+      ctx.fillStyle = '#2c2233';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(side * CHAR_R * 0.36 + lookX + 0.9, -CHAR_R * 0.18, 0.9, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+    });
+
+    // smile
     ctx.beginPath();
-    ctx.arc(-5, -3, 2.2, 0, Math.PI * 2);
-    ctx.arc(5, -3, 2.2, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.arc(0, CHAR_R * 0.05, CHAR_R * 0.32, 0.15 * Math.PI, 0.85 * Math.PI);
+    ctx.strokeStyle = '#8a4a12';
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
 
     ctx.restore();
   }
 
-  function render(){
+  function render(t){
     ctx.clearRect(0, 0, viewW, viewH);
     drawSky();
-    drawClouds();
-    drawMountainLayer(0.45, WATER_Y + 60, 220, '#3a7a82', 1.7);
-    drawMountainLayer(0.65, WATER_Y + 20, 260, '#2c6068', 4.3);
-    drawMountainLayer(0.85, WATER_Y - 10, 200, '#204a52', 8.1);
-    drawWater();
-    drawRings();
+    drawSun();
+    drawClouds(t);
+    drawMountainLayer(0.45, WATER_Y + 60, 220, '#4a8f96', '#2c5f68', 'rgba(255,214,153,0.5)', 1.7);
+    drawMountainLayer(0.65, WATER_Y + 20, 260, '#356e77', '#1f4a52', 'rgba(255,200,140,0.35)', 4.3);
+    drawMountainLayer(0.85, WATER_Y - 10, 200, '#234f58', '#163840', 'rgba(255,190,130,0.25)', 8.1);
+    drawWater(t);
+    drawRings(t);
+    drawTrail();
+    drawParticles();
     drawRope();
-    drawCharacter();
+    drawCharacter(t);
   }
 
   let lastT = null;
@@ -494,7 +699,7 @@
     const dt = Math.min((t - lastT) / 1000, 0.032);
     lastT = t;
     if (state === 'playing') update(dt);
-    render();
+    render(t);
     requestAnimationFrame(frame);
   }
 
