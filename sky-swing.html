@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Sky Swing</title>
+<meta name="description" content="Swing from ring to ring across a sunset canyon. Hold to grab, release to fly, and see how far you can go before you hit the sea.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff6e6;
+    --ink:#2c2233;
+    --gold:#f6c945;
+    --accent:#ff6b5b;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    height:100%;
+    overflow:hidden;
+    background:#0d1b2a;
+    font-family:'Fredoka',system-ui,sans-serif;
+    color:var(--ink);
+    -webkit-tap-highlight-color:transparent;
+    touch-action:none;
+  }
+  #game{
+    position:fixed;
+    inset:0;
+    display:block;
+  }
+  .hud{
+    position:fixed;
+    top:calc(env(safe-area-inset-top, 0px) + 14px);
+    left:0;
+    right:0;
+    display:flex;
+    justify-content:space-between;
+    padding:0 16px;
+    pointer-events:none;
+  }
+  .pill{
+    background:var(--cream);
+    border-radius:999px;
+    padding:8px 16px;
+    box-shadow:0 6px 16px rgba(13,27,42,.25);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+  }
+  .pill .label{
+    font-size:.62rem;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    color:#8a7f68;
+  }
+  .pill .value{
+    font-size:1.05rem;
+    font-variant-numeric:tabular-nums;
+  }
+  .pill.best .value{color:#c98a1c;}
+  .hint{
+    position:fixed;
+    left:50%;
+    bottom:calc(env(safe-area-inset-bottom, 0px) + 26px);
+    transform:translateX(-50%);
+    background:var(--cream);
+    border-radius:999px;
+    padding:12px 22px;
+    font-weight:600;
+    font-size:.85rem;
+    letter-spacing:.03em;
+    box-shadow:0 8px 20px rgba(13,27,42,.3);
+    white-space:nowrap;
+    transition:opacity .4s ease, transform .4s ease;
+    pointer-events:none;
+  }
+  .hint.hidden{opacity:0;transform:translate(-50%,10px);}
+  .hint .dot{color:var(--accent);}
+
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(13,20,34,.55);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .overlay[hidden]{display:none;}
+  .card{
+    background:var(--cream);
+    border-radius:24px;
+    padding:30px 28px;
+    max-width:320px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 24px 50px rgba(0,0,0,.4);
+  }
+  .card h2{
+    margin:0 0 4px;
+    font-size:1.6rem;
+    color:var(--accent);
+  }
+  .card .newbest{
+    display:inline-block;
+    margin:4px 0 14px;
+    background:var(--gold);
+    color:#5a3c00;
+    font-size:.75rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:4px 12px;
+    border-radius:999px;
+  }
+  .card .row{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 4px;
+    border-top:1px solid rgba(44,34,51,.1);
+    font-weight:600;
+  }
+  .card .row:first-of-type{border-top:none;margin-top:10px;}
+  .card .row .val{font-variant-numeric:tabular-nums;}
+  .card button{
+    margin-top:18px;
+    width:100%;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    font-family:inherit;
+    font-weight:700;
+    font-size:.95rem;
+    letter-spacing:.03em;
+    padding:14px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 10px 20px rgba(255,107,91,.4);
+  }
+  .card button:active{transform:scale(.97);}
+</style>
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<div class="hud">
+  <div class="pill dist">
+    <span class="label">Dist</span>
+    <span class="value" id="distVal">0m</span>
+  </div>
+  <div class="pill best">
+    <span class="label">Best</span>
+    <span class="value" id="bestVal">0m</span>
+  </div>
+</div>
+
+<div class="hint" id="hint">HOLD TO GRAB <span class="dot">&bull;</span> RELEASE TO FLY</div>
+
+<div class="overlay" id="gameOver" hidden>
+  <div class="card">
+    <h2>Splash!</h2>
+    <div id="newBestTag" class="newbest" hidden>New Best!</div>
+    <div class="row"><span>Distance</span><span class="val" id="finalDist">0m</span></div>
+    <div class="row"><span>Best</span><span class="val" id="finalBest">0m</span></div>
+    <button id="retryBtn">Swing Again</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const distVal = document.getElementById('distVal');
+  const bestVal = document.getElementById('bestVal');
+  const hint = document.getElementById('hint');
+  const gameOverPanel = document.getElementById('gameOver');
+  const finalDist = document.getElementById('finalDist');
+  const finalBest = document.getElementById('finalBest');
+  const newBestTag = document.getElementById('newBestTag');
+  const retryBtn = document.getElementById('retryBtn');
+
+  const G = 2200;
+  const MAX_ROPE = 230;
+  const MIN_ROPE = 55;
+  const CHAR_R = 17;
+  const RING_OUTER = 20;
+  const RING_INNER = 9;
+  const PPM = 16;
+  const WATER_Y = 900;
+  const START_X = 60;
+
+  let viewW = 0, viewH = 0, DPR = 1;
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    viewW = window.innerWidth;
+    viewH = window.innerHeight;
+    canvas.width = Math.round(viewW * DPR);
+    canvas.height = Math.round(viewH * DPR);
+    canvas.style.width = viewW + 'px';
+    canvas.style.height = viewH + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+  function hash(n){ const s = Math.sin(n) * 43758.5453; return s - Math.floor(s); }
+
+  function safeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function safeSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+
+  let best = Number(safeGet('skySwingBest')) || 0;
+  bestVal.textContent = best + 'm';
+
+  let character, camera, rings, lastRingX, lastRingY;
+  let attached, anchor, ropeLen, theta, omega;
+  let holding, state, maxDist, firstGrabDone;
+
+  function spawnRing(){
+    const spacing = 150 + Math.random() * 110;
+    const x = lastRingX + spacing;
+    let y = lastRingY + (Math.random() * 170 - 85);
+    y = clamp(y, 70, WATER_Y - 170);
+    rings.push({ x, y, used: false });
+    lastRingX = x;
+    lastRingY = y;
+  }
+
+  function resetGame(){
+    character = { x: START_X, y: -30, vx: 250, vy: 0 };
+    attached = false;
+    anchor = null;
+    ropeLen = 0;
+    theta = 0;
+    omega = 0;
+    rings = [];
+    lastRingX = 260;
+    lastRingY = 120;
+    rings.push({ x: 280, y: 130, used: false });
+    for (let i = 0; i < 6; i++) spawnRing();
+    camera = { x: 0, y: 0 };
+    holding = false;
+    maxDist = 0;
+    state = 'playing';
+    firstGrabDone = false;
+    hint.classList.remove('hidden');
+    gameOverPanel.hidden = true;
+    distVal.textContent = '0m';
+  }
+
+  function tryGrab(){
+    let bestRing = null, bestD = Infinity;
+    for (const r of rings){
+      if (r.used) continue;
+      if (r.x < character.x - 20) continue;
+      const d = Math.hypot(r.x - character.x, r.y - character.y);
+      if (d <= MAX_ROPE && d < bestD){ bestD = d; bestRing = r; }
+    }
+    if (bestRing){
+      anchor = bestRing;
+      bestRing.used = true;
+      attached = true;
+      ropeLen = Math.max(MIN_ROPE, bestD);
+      theta = Math.atan2(character.x - anchor.x, character.y - anchor.y);
+      const ct = Math.cos(theta), st = Math.sin(theta);
+      omega = (character.vx * ct - character.vy * st) / ropeLen;
+      if (!firstGrabDone){ firstGrabDone = true; hint.classList.add('hidden'); }
+    }
+  }
+
+  function release(){
+    if (!attached) return;
+    const ct = Math.cos(theta), st = Math.sin(theta);
+    character.vx = ropeLen * omega * ct;
+    character.vy = -ropeLen * omega * st;
+    attached = false;
+    anchor = null;
+  }
+
+  function crash(){
+    state = 'gameover';
+    const isNew = maxDist > best;
+    if (isNew){ best = maxDist; safeSet('skySwingBest', String(best)); }
+    finalDist.textContent = maxDist + 'm';
+    finalBest.textContent = best + 'm';
+    bestVal.textContent = best + 'm';
+    newBestTag.hidden = !isNew;
+    gameOverPanel.hidden = false;
+  }
+
+  function update(dt){
+    if (holding && !attached) tryGrab();
+
+    if (attached){
+      const alpha = -(G / ropeLen) * Math.sin(theta);
+      omega += alpha * dt;
+      omega *= 0.999;
+      theta += omega * dt;
+      character.x = anchor.x + ropeLen * Math.sin(theta);
+      character.y = anchor.y + ropeLen * Math.cos(theta);
+    } else {
+      character.vy += G * dt;
+      character.vx = clamp(character.vx, -50, 620);
+      character.x += character.vx * dt;
+      character.y += character.vy * dt;
+    }
+
+    while (lastRingX < character.x + viewW * 1.6) spawnRing();
+
+    const dist = Math.max(0, Math.floor((character.x - START_X) / PPM));
+    if (dist > maxDist){
+      maxDist = dist;
+      distVal.textContent = maxDist + 'm';
+    }
+
+    camera.x = character.x - viewW * 0.32;
+    camera.y = clamp(character.y - viewH * 0.42, -400, WATER_Y - viewH * 0.55);
+
+    if (character.y > WATER_Y + 10) crash();
+  }
+
+  function drawSky(){
+    const g = ctx.createLinearGradient(0, 0, 0, viewH);
+    g.addColorStop(0, '#bfe7dd');
+    g.addColorStop(0.45, '#e9d8b4');
+    g.addColorStop(1, '#f3b78f');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, viewW, viewH);
+  }
+
+  function drawClouds(){
+    ctx.fillStyle = 'rgba(255,240,225,0.55)';
+    const factor = 0.25;
+    const spacing = 340;
+    const start = Math.floor((camera.x * factor - 200) / spacing) * spacing;
+    for (let wx = start; wx < camera.x * factor + viewW + 200; wx += spacing){
+      const sx = wx - camera.x * factor;
+      const sy = 70 + 60 * hash(wx * 0.01);
+      ctx.beginPath();
+      ctx.ellipse(sx, sy, 70, 22, 0, 0, Math.PI * 2);
+      ctx.ellipse(sx + 45, sy + 8, 46, 16, 0, 0, Math.PI * 2);
+      ctx.ellipse(sx - 45, sy + 10, 40, 14, 0, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawMountainLayer(parallax, baseY, amp, color, seed){
+    ctx.fillStyle = color;
+    const seg = 70;
+    const start = Math.floor((camera.x * parallax) / seg) * seg - seg;
+    ctx.beginPath();
+    ctx.moveTo(start - camera.x * parallax, viewH + 10);
+    for (let wx = start; wx < camera.x * parallax + viewW + seg * 2; wx += seg){
+      const h = amp * (0.4 + 0.6 * hash(wx * 0.02 + seed));
+      const sx = wx - camera.x * parallax;
+      const sy = (baseY - camera.y) - h;
+      ctx.lineTo(sx, sy);
+    }
+    ctx.lineTo((camera.x * parallax + viewW + seg * 2) - camera.x * parallax, viewH + 10);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawWater(){
+    const sy = WATER_Y - camera.y;
+    if (sy > viewH) return;
+    const g = ctx.createLinearGradient(0, sy, 0, viewH);
+    g.addColorStop(0, '#1f6f78');
+    g.addColorStop(1, '#0b2a3d');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, sy, viewW, viewH - sy);
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, sy);
+    ctx.lineTo(viewW, sy);
+    ctx.stroke();
+  }
+
+  function drawRings(){
+    for (const r of rings){
+      const sx = r.x - camera.x;
+      const sy = r.y - camera.y;
+      if (sx < -40 || sx > viewW + 40) continue;
+      ctx.save();
+      ctx.globalAlpha = r.used ? 0.35 : 1;
+      ctx.beginPath();
+      ctx.arc(sx, sy, RING_OUTER, 0, Math.PI * 2);
+      const g = ctx.createRadialGradient(sx - 6, sy - 6, 2, sx, sy, RING_OUTER);
+      g.addColorStop(0, '#ffe9a8');
+      g.addColorStop(1, r.used ? '#9a8a5a' : '#f0a92e');
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sx, sy, RING_INNER, 0, Math.PI * 2);
+      ctx.fillStyle = '#e9d8b4';
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function drawRope(){
+    if (!attached) return;
+    const sx = character.x - camera.x;
+    const sy = character.y - camera.y;
+    const ax = anchor.x - camera.x;
+    const ay = anchor.y - camera.y;
+    ctx.strokeStyle = 'rgba(255,250,240,0.9)';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(sx, sy);
+    ctx.stroke();
+  }
+
+  function drawCharacter(){
+    const sx = character.x - camera.x;
+    const sy = character.y - camera.y;
+    let rot;
+    if (attached){
+      rot = clamp(theta * 0.6, -1, 1);
+    } else {
+      rot = clamp(Math.atan2(character.vy, character.vx) * 0.25, -0.6, 0.6);
+    }
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(rot);
+
+    // cape
+    const dir = character.vx >= 0 ? -1 : 1;
+    ctx.beginPath();
+    ctx.moveTo(dir * 4, -6);
+    ctx.quadraticCurveTo(dir * 26, 2, dir * 14, 22);
+    ctx.quadraticCurveTo(dir * 10, 6, dir * 2, 4);
+    ctx.closePath();
+    ctx.fillStyle = '#ff6b5b';
+    ctx.fill();
+
+    // body
+    ctx.beginPath();
+    ctx.arc(0, 0, CHAR_R, 0, Math.PI * 2);
+    const bg = ctx.createRadialGradient(-5, -6, 2, 0, 0, CHAR_R);
+    bg.addColorStop(0, '#ffd85c');
+    bg.addColorStop(1, '#f6a623');
+    ctx.fillStyle = bg;
+    ctx.fill();
+
+    // belly
+    ctx.beginPath();
+    ctx.ellipse(0, 5, CHAR_R * 0.55, CHAR_R * 0.4, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff3d6';
+    ctx.fill();
+
+    // ears
+    ctx.fillStyle = '#f6a623';
+    ctx.beginPath();
+    ctx.arc(-10, -13, 5.5, 0, Math.PI * 2);
+    ctx.arc(10, -13, 5.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // eyes
+    ctx.fillStyle = '#2c2233';
+    ctx.beginPath();
+    ctx.arc(-5, -3, 2.2, 0, Math.PI * 2);
+    ctx.arc(5, -3, 2.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function render(){
+    ctx.clearRect(0, 0, viewW, viewH);
+    drawSky();
+    drawClouds();
+    drawMountainLayer(0.45, WATER_Y + 60, 220, '#3a7a82', 1.7);
+    drawMountainLayer(0.65, WATER_Y + 20, 260, '#2c6068', 4.3);
+    drawMountainLayer(0.85, WATER_Y - 10, 200, '#204a52', 8.1);
+    drawWater();
+    drawRings();
+    drawRope();
+    drawCharacter();
+  }
+
+  let lastT = null;
+  function frame(t){
+    if (lastT === null) lastT = t;
+    const dt = Math.min((t - lastT) / 1000, 0.032);
+    lastT = t;
+    if (state === 'playing') update(dt);
+    render();
+    requestAnimationFrame(frame);
+  }
+
+  function pointerDown(e){
+    e.preventDefault();
+    if (state === 'playing'){
+      holding = true;
+      tryGrab();
+    } else if (state === 'gameover'){
+      resetGame();
+    }
+  }
+  function pointerUp(){
+    holding = false;
+    release();
+  }
+
+  canvas.addEventListener('pointerdown', pointerDown);
+  window.addEventListener('pointerup', pointerUp);
+  window.addEventListener('pointercancel', pointerUp);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space'){
+      e.preventDefault();
+      if (e.repeat) return;
+      if (state === 'playing'){ holding = true; tryGrab(); }
+      else if (state === 'gameover'){ resetGame(); }
+    }
+  });
+  window.addEventListener('keyup', (e) => {
+    if (e.code === 'Space'){
+      e.preventDefault();
+      holding = false;
+      release();
+    }
+  });
+
+  retryBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    resetGame();
+  });
+
+  resetGame();
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
