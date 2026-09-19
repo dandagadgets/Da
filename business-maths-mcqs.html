@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Maths Mastery - 211 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-calculator text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">MathsMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">211 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/211</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-square-root-variable text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Business Maths with 211 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    Comprehensive practice covering Algebra, Linear & Simultaneous Equations, Quadratic Equations, Functions, Break-Even Analysis, Simple & Compound Interest, Annuities, Present/Future Value, Profit Functions, Demand & Supply, Derivatives, Marginal Analysis, and Integration.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 211)</option>
+                            <option value="1-15">1. Numbers and Algebraic Expressions (1 - 15)</option>
+                            <option value="16-33">2. Linear Equations (16 - 33)</option>
+                            <option value="34-49">3. Simultaneous Equations (34 - 49)</option>
+                            <option value="50-67">4. Quadratic Equations and Graphs (50 - 67)</option>
+                            <option value="68-79">5. Functions and Relations (68 - 79)</option>
+                            <option value="80-95">6. Break-Even Analysis (80 - 95)</option>
+                            <option value="96-109">7. Simple Interest (96 - 109)</option>
+                            <option value="110-123">8. Compound Interest (110 - 123)</option>
+                            <option value="124-139">9. Discounts and Annuities (124 - 139)</option>
+                            <option value="140-151">10. Present Value and Future Value (140 - 151)</option>
+                            <option value="152-163">11. Profit Functions (152 - 163)</option>
+                            <option value="164-177">12. Demand, Supply and Equilibrium (164 - 177)</option>
+                            <option value="178-189">13. Derivative Basics (178 - 189)</option>
+                            <option value="190-199">14. Marginal Analysis in Business (190 - 199)</option>
+                            <option value="200-211">15. Integration Basics (200 - 211)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 211</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-211)" min="1" max="211" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Mathematics</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 211</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/211</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Business Maths Quiz • 211 Comprehensive Questions</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (211 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "What is a variable in algebra?", options: ["A number that stays fixed", "A symbol that represents a value that can change or is unknown", "The number multiplying a variable", "A statement that two amounts are equal"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+            { id: 2, q: "A constant is a number that:", options: ["changes with the variable", "is always negative", "stays fixed", "cannot be used in business"], answer: 2, cat: "Numbers and Algebraic Expressions" },
+            { id: 3, q: "In the expression 5x, the coefficient is:", options: ["5", "-5", "x", "1"], answer: 0, cat: "Numbers and Algebraic Expressions" },
+            { id: 4, q: "Which statement about an algebraic expression is TRUE?", options: ["It always contains an equals sign", "It does not have an equals sign", "It always has exactly one term", "It can only contain numbers"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+            { id: 5, q: "The expression 3x means:", options: ["3 plus x", "3 multiplied by x", "30 + x", "x raised to the power 3"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+            { id: 6, q: "A business earns Rs. 100 from every product it sells. If it sells 5 products, its revenue is:", options: ["Rs. 50", "Rs. 500", "Rs. 5,000", "Rs. 105"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+            { id: 7, q: "Evaluate 5x when x = 4:", options: ["9", "20", "54", "45"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+            { id: 8, q: "Evaluate 2x + 3 when x = 2:", options: ["5", "10", "7", "12"], answer: 2, cat: "Numbers and Algebraic Expressions" },
+            { id: 9, q: "Which of the following is an equation?", options: ["2x + 3", "2x + 3 = 11", "3x - 2x", "5x"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+            { id: 10, q: "The difference between an algebraic expression and an equation is that:", options: ["an equation has an equals sign", "an expression has an equals sign", "equations contain no numbers", "expressions contain no variables"], answer: 0, cat: "Numbers and Algebraic Expressions" },
+            { id: 11, q: "In the expression 3x + 50, the number 50 is:", options: ["the coefficient", "a variable", "a constant", "the power"], answer: 2, cat: "Numbers and Algebraic Expressions" },
+            { id: 12, q: "Evaluate 3x + 3 when x = -2:", options: ["-3", "-9", "3", "9"], answer: 0, cat: "Numbers and Algebraic Expressions" },
+            { id: 13, q: "The symbol x^2 (x squared) means:", options: ["2 times x", "x multiplied by itself", "x divided by 2", "2 plus x"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+            { id: 14, q: "Evaluate x^2 + 2x + 1 when x = 3:", options: ["13", "14", "16", "10"], answer: 2, cat: "Numbers and Algebraic Expressions" },
+            { id: 15, q: "(3x)^2 is equal to:", options: ["3x^2", "9x^2", "6x^2", "9x"], answer: 1, cat: "Numbers and Algebraic Expressions" },
+
+            { id: 16, q: "A linear equation is an equation in which the highest power of the variable is:", options: ["0", "1", "2", "3"], answer: 1, cat: "Linear Equations" },
+            { id: 17, q: "Which of these is NOT a linear equation?", options: ["2x + 3 = 11", "x - 4 = 9", "x^2 = 9", "3x = 15"], answer: 2, cat: "Linear Equations" },
+            { id: 18, q: "When solving an equation, whatever you do to one side you must:", options: ["do to the other side as well", "never do to the other side", "do only if the number is positive", "do only to the left side"], answer: 0, cat: "Linear Equations" },
+            { id: 19, q: "The main goal when solving an equation is:", options: ["to make both sides bigger", "to get the variable alone", "to remove all the numbers", "to multiply both sides by 10"], answer: 1, cat: "Linear Equations" },
+            { id: 20, q: "Solve x + 5 = 12:", options: ["x = 5", "x = 7", "x = 17", "x = -7"], answer: 1, cat: "Linear Equations" },
+            { id: 21, q: "Solve x - 4 = 9:", options: ["x = 5", "x = 13", "x = 36", "x = -5"], answer: 1, cat: "Linear Equations" },
+            { id: 22, q: "Solve 2x = 8:", options: ["x = 2", "x = 10", "x = 4", "x = 16"], answer: 2, cat: "Linear Equations" },
+            { id: 23, q: "Solve 5x = 25:", options: ["x = 5", "x = 20", "x = 125", "x = -5"], answer: 0, cat: "Linear Equations" },
+            { id: 24, q: "Solve 2x + 3 = 11:", options: ["x = 7", "x = 3", "x = 5", "x = 4"], answer: 3, cat: "Linear Equations" },
+            { id: 25, q: "The general form of a simple linear equation is:", options: ["ax^2 + bx + c = 0", "ax + b = c", "x^2 = k", "y = ax^3"], answer: 1, cat: "Linear Equations" },
+            { id: 26, q: "To solve ax + b = c, the correct order of steps is:", options: ["divide by a first, then subtract b", "subtract b from both sides, then divide both sides by a", "multiply both sides by a, then add b", "add b to both sides, then multiply by a"], answer: 1, cat: "Linear Equations" },
+            { id: 27, q: "Solve 3(x + 2) = 15:", options: ["x = 5", "x = 3", "x = 13", "x = 7"], answer: 1, cat: "Linear Equations" },
+            { id: 28, q: "Solve 2x + 7 = 5x - 8:", options: ["x = 5", "x = -5", "x = 3", "x = 15"], answer: 0, cat: "Linear Equations" },
+            { id: 29, q: "Solve 3x + 4 = x + 12:", options: ["x = 2", "x = 4", "x = 8", "x = 6"], answer: 1, cat: "Linear Equations" },
+            { id: 30, q: "The distributive rule states that a(b + c) = :", options: ["ab + ac", "ab + c", "a + b + c", "abc"], answer: 0, cat: "Linear Equations" },
+            { id: 31, q: "Total cost = 500 + 100Q. If total cost is Rs. 1,500, the quantity Q is:", options: ["10", "100", "5", "20"], answer: 0, cat: "Linear Equations" },
+            { id: 32, q: "Solve 5x - 3 = 3x + 9:", options: ["x = 3", "x = 6", "x = 12", "x = 4"], answer: 1, cat: "Linear Equations" },
+            { id: 33, q: "Solve (x/4) + 3 = 7:", options: ["x = 16", "x = 1", "x = 40", "x = 4"], answer: 0, cat: "Linear Equations" },
+
+            { id: 34, q: "Simultaneous equations are:", options: ["equations solved one at a time", "two or more equations that are solved together", "equations with no variables", "equations with powers higher than 1"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 35, q: "With two unknowns, a single equation:", options: ["is always enough", "is not enough because many answers are possible", "is enough if the numbers are small", "automatically gives two answers"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 36, q: "The three methods of solving simultaneous equations are:", options: ["addition, subtraction and division", "substitution, elimination and graphical", "factorisation, formula and discriminant", "differentiation, integration and graphing"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 37, q: "In mathematics, substitution means:", options: ["removing a variable by adding equations", "replacing one thing with another equal thing", "drawing a graph", "multiplying both equations"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 38, q: "If x + y = 10 and y = 4, then x equals:", options: ["14", "6", "40", "2.5"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 39, q: "If y = 2x and x = 3, then y equals:", options: ["6", "5", "9", "32"], answer: 0, cat: "Simultaneous Equations" },
+            { id: 40, q: "The goal of the elimination method is to:", options: ["make both variables bigger", "remove one variable so only one remains", "multiply both equations", "find the graph first"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 41, q: "Which pair satisfies both x + y = 10 and x - y = 2?", options: ["x = 5, y = 5", "x = 6, y = 4", "x = 7, y = 3", "x = 4, y = 6"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 42, q: "Solve x + y = 10 and x - y = 2:", options: ["x = 8, y = 2", "x = 6, y = 4", "x = 5, y = 5", "x = 7, y = 3"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 43, q: "Solve x + y = 8 and x - y = 2:", options: ["x = 5, y = 3", "x = 6, y = 2", "x = 4, y = 4", "x = 3, y = 5"], answer: 0, cat: "Simultaneous Equations" },
+            { id: 44, q: "Solve 2x + y = 7 and x + y = 5:", options: ["x = 3, y = 2", "x = 2, y = 3", "x = 1, y = 4", "x = 4, y = 1"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 45, q: "Substitution is usually the easiest method when:", options: ["both equations have large coefficients", "one variable is already alone in an equation", "the equations contain no numbers", "neither variable can be made alone"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 46, q: "A shop sells pens at Rs. 20 each and books at Rs. 50 each. It sold 10 items for Rs. 320. How many pens were sold?", options: ["4", "6", "5", "8"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 47, q: "Solve 2x + 3y = 13 and x + y = 5:", options: ["x = 3, y = 2", "x = 2, y = 3", "x = 4, y = 1", "x = 1, y = 4"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 48, q: "Solve x + y = 6 and 3x + 2y = 14:", options: ["x = 4, y = 2", "x = 2, y = 4", "x = 3, y = 3", "x = 5, y = 1"], answer: 1, cat: "Simultaneous Equations" },
+            { id: 49, q: "If you multiply an equation by a number, you must multiply:", options: ["only the terms on the left side", "every term on both sides", "only the coefficient", "nothing unless the number is positive"], answer: 1, cat: "Simultaneous Equations" },
+
+            { id: 50, q: "A quadratic equation is an equation where the highest power of the variable is:", options: ["1", "2", "3", "0"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 51, q: "The general form of a quadratic equation is:", options: ["ax + b = c", "ax^2 + bx + c = 0", "ax^3 + bx = 0", "a + b = x"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 52, q: "The graph of a quadratic equation is called a:", options: ["straight line", "parabola", "circle", "triangle"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 53, q: "For ax^2 + bx + c = 0 to be a quadratic equation, it is essential that:", options: ["a = 0", "a is not equal to 0", "b = 0", "c = 0"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 54, q: "If x^2 = 9, then x equals:", options: ["3 only", "3 or -3", "9", "4.5"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 55, q: "Solve (x - 3)(x - 4) = 0:", options: ["x = 3 or x = 4", "x = -3 or x = -4", "x = 7", "x = 12"], answer: 0, cat: "Quadratic Equations and Graphs" },
+            { id: 56, q: "The zero product rule says that if a × b = 0, then:", options: ["a = b", "a = 0 or b = 0", "a + b = 0", "a - b = 0"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 57, q: "The roots of a quadratic equation are the points where the graph crosses the:", options: ["y-axis", "x-axis", "origin only", "turning point"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 58, q: "For x^2 - 5x + 6 = 0, we need two numbers that multiply to 6 and add to -5. The numbers are:", options: ["2 and 3", "-2 and -3", "1 and 6", "-1 and -6"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 59, q: "Solve x^2 - 7x + 12 = 0:", options: ["x = 3 or x = 4", "x = -3 or x = -4", "x = 2 or x = 6", "x = 12"], answer: 0, cat: "Quadratic Equations and Graphs" },
+            { id: 60, q: "Solve x^2 - 5x + 6 = 0:", options: ["x = 2 or x = 3", "x = -2 or x = -3", "x = 1 or x = 6", "x = 5"], answer: 0, cat: "Quadratic Equations and Graphs" },
+            { id: 61, q: "If the discriminant b^2 - 4ac is greater than 0, the quadratic equation has:", options: ["one repeated answer", "two different real answers", "no real solutions", "exactly one answer"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 62, q: "Solve x^2 + 5x + 6 = 0:", options: ["x = 2 or x = 3", "x = -2 or x = -3", "x = 1 or x = 6", "x = -1 or x = -6"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 63, q: "The turning point of an upward-opening parabola is its:", options: ["maximum point", "minimum point", "intercept", "root"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 64, q: "If the discriminant b^2 - 4ac is negative, the quadratic equation has:", options: ["two different real answers", "one repeated answer", "no real solutions", "four answers"], answer: 2, cat: "Quadratic Equations and Graphs" },
+            { id: 65, q: "Solve x^2 - 3x - 10 = 0:", options: ["x = 5 or x = -2", "x = -5 or x = 2", "x = 10", "x = 3 or x = 10"], answer: 0, cat: "Quadratic Equations and Graphs" },
+            { id: 66, q: "In the equation 2x^2 - 3x + 1 = 0, the values of a, b and c are:", options: ["a = 2, b = 3, c = 1", "a = 2, b = -3, c = 1", "a = 2, b = -3, c = -1", "a = -2, b = -3, c = 1"], answer: 1, cat: "Quadratic Equations and Graphs" },
+            { id: 67, q: "Solve x^2 - x - 6 = 0:", options: ["x = 3 or x = -2", "x = -3 or x = 2", "x = 6 or x = 1", "x = 2 or x = 3"], answer: 0, cat: "Quadratic Equations and Graphs" },
+
+            { id: 68, q: "A function is a special type of relation in which:", options: ["every input has only one output", "every output has only one input", "every input has two outputs", "the input is always larger than the output"], answer: 0, cat: "Functions and Relations" },
+            { id: 69, q: "The domain of a function means:", options: ["all possible output values", "all possible input values", "the turning points of the graph", "the roots of the function"], answer: 1, cat: "Functions and Relations" },
+            { id: 70, q: "The range of a function means:", options: ["all input values", "all output values", "only the intercepts", "only the coefficients"], answer: 1, cat: "Functions and Relations" },
+            { id: 71, q: "If f(x) = 2x + 3, then f(2) equals:", options: ["5", "7", "10", "12"], answer: 1, cat: "Functions and Relations" },
+            { id: 72, q: "If f(x) = 3x - 1, then f(4) equals:", options: ["11", "10", "12", "13"], answer: 0, cat: "Functions and Relations" },
+            { id: 73, q: "Which set of ordered pairs is NOT a function?", options: ["{(1,2),(2,3),(3,4)}", "{(1,2),(2,2),(3,2)}", "{(1,2),(1,3),(2,4)}", "{(2,5),(3,5),(4,5)}"], answer: 2, cat: "Functions and Relations" },
+            { id: 74, q: "Two different inputs can have the same output. This means:", options: ["the relation is not a function", "it is still a function because each input has only one output", "the function is invalid", "the range is empty"], answer: 1, cat: "Functions and Relations" },
+            { id: 75, q: "The vertical line test is used to decide:", options: ["whether a graph is a function", "whether an equation is linear", "whether a number is a coefficient", "whether a parabola opens upwards"], answer: 0, cat: "Functions and Relations" },
+            { id: 76, q: "For the graph of f(x) = 2x + 1, when x = 0 the output is:", options: ["0", "1", "2", "3"], answer: 1, cat: "Functions and Relations" },
+            { id: 77, q: "A relation fails to be a function when:", options: ["one input is connected to two different outputs", "two inputs share the same output", "every input has exactly one output", "outputs are repeated"], answer: 0, cat: "Functions and Relations" },
+            { id: 78, q: "If C(x) = 100x + 500 is a total cost function, then C(10) equals:", options: ["Rs. 1,500", "Rs. 1,000", "Rs. 600", "Rs. 15,000"], answer: 0, cat: "Functions and Relations" },
+            { id: 79, q: "If f(x) = x^2 + 1, then f(3) equals:", options: ["7", "10", "9", "6"], answer: 1, cat: "Functions and Relations" },
+
+            { id: 80, q: "Break-even is the point where a business has:", options: ["maximum profit", "no profit and no loss", "maximum loss", "revenue permanently greater than cost"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 81, q: "A fixed cost is a cost that:", options: ["changes with the number of units produced", "does not change with the number of units produced or sold within the relevant range", "depends on the selling price", "is always zero"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 82, q: "A variable cost:", options: ["changes according to how many units are produced or sold", "never changes", "is another name for rent", "always equals fixed cost"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 83, q: "Money coming into a business from selling products is called:", options: ["cost", "revenue", "profit", "variable cost"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 84, q: "Total cost is calculated as:", options: ["Fixed Cost + Variable Cost x Quantity", "Revenue - Profit", "Selling Price x Quantity", "Fixed Cost - Variable Cost"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 85, q: "Fixed cost = Rs. 500, variable cost per unit = Rs. 100. Total cost for 10 units is:", options: ["Rs. 600", "Rs. 1,000", "Rs. 1,500", "Rs. 5,000"], answer: 2, cat: "Break-Even Analysis" },
+            { id: 86, q: "Revenue = Rs. 10,000 and total cost = Rs. 7,000. The profit is:", options: ["Rs. 3,000", "Rs. 17,000", "Rs. -3,000", "Rs. 7,000"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 87, q: "Contribution per unit equals:", options: ["selling price minus variable cost per unit", "selling price plus variable cost per unit", "fixed cost divided by quantity", "revenue minus fixed cost"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 88, q: "Fixed cost = Rs. 10,000, selling price = Rs. 100, variable cost per unit = Rs. 60. The contribution per unit is:", options: ["Rs. 40", "Rs. 160", "Rs. 100", "Rs. 60"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 89, q: "Fixed cost = Rs. 10,000 and contribution per unit = Rs. 40. The break-even quantity (units) is:", options: ["250", "100", "400", "1,000"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 90, q: "Break-even quantity is 250 units at a selling price of Rs. 100 each. The break-even sales value is:", options: ["Rs. 2,500", "Rs. 25,000", "Rs. 250,000", "Rs. 15,000"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 91, q: "Fixed cost = Rs. 20,000, revenue per order = Rs. 100, variable cost per order = Rs. 40. The break-even calculation gives 333.33 orders, so the business must actually achieve:", options: ["333 orders", "334 orders", "332 orders", "300 orders"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 92, q: "Margin of safety equals:", options: ["actual sales minus break-even sales", "break-even sales minus actual sales", "fixed cost plus variable cost", "revenue minus cost at break-even"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 93, q: "Fixed cost = Rs. 6,000, selling price = Rs. 80, variable cost per unit = Rs. 50. The break-even quantity is:", options: ["120 units", "200 units", "75 units", "100 units"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 94, q: "A business sells 300 units while its break-even point is 250 units. The margin of safety in units is:", options: ["50 units", "550 units", "250 units", "1.2 units"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 95, q: "When a business sells below the break-even point, it makes:", options: ["a profit", "a loss", "exactly zero profit", "profit equal to fixed cost"], answer: 1, cat: "Break-Even Analysis" },
+
+            { id: 96, q: "Interest is:", options: ["the extra money paid or received for borrowing or investing money", "the original money invested", "the final amount only", "a fixed business cost"], answer: 0, cat: "Simple Interest" },
+            { id: 97, q: "In simple interest, the principal (P) is:", options: ["the original amount of money", "the extra money earned", "the rate percent", "the time period"], answer: 0, cat: "Simple Interest" },
+            { id: 98, q: "The formula for simple interest is:", options: ["I = PRT", "I = P(1+R)^T", "I = P + RT", "I = P/R x T"], answer: 0, cat: "Simple Interest" },
+            { id: 99, q: "In the simple interest formula, the rate R must be used as:", options: ["a decimal", "a percentage", "a whole number", "a fraction with denominator 100"], answer: 0, cat: "Simple Interest" },
+            { id: 100, q: "The simple interest on Rs. 10,000 at 5% per year for 1 year is:", options: ["Rs. 500", "Rs. 50", "Rs. 5,000", "Rs. 100"], answer: 0, cat: "Simple Interest" },
+            { id: 101, q: "Rs. 20,000 is invested at 6% simple interest for 3 years. The interest is:", options: ["Rs. 3,600", "Rs. 1,200", "Rs. 36,000", "Rs. 600"], answer: 0, cat: "Simple Interest" },
+            { id: 102, q: "The final amount A in a simple interest problem equals:", options: ["P + I", "P - I", "P x I", "P / I"], answer: 0, cat: "Simple Interest" },
+            { id: 103, q: "A time of 6 months, expressed in years, is:", options: ["0.5 year", "6 years", "0.6 year", "1.5 years"], answer: 0, cat: "Simple Interest" },
+            { id: 104, q: "Rs. 12,000 is invested at 8% per year for 6 months. The simple interest earned is:", options: ["Rs. 480", "Rs. 960", "Rs. 240", "Rs. 5,760"], answer: 0, cat: "Simple Interest" },
+            { id: 105, q: "Interest = Rs. 2,000, principal = Rs. 10,000, rate = 5% per year (0.05). The time in years is:", options: ["4 years", "2 years", "0.4 year", "40 years"], answer: 0, cat: "Simple Interest" },
+            { id: 106, q: "Rs. 10,000 is invested at 10% simple interest for 2 years. The final amount is:", options: ["Rs. 12,000", "Rs. 12,100", "Rs. 11,000", "Rs. 20,000"], answer: 0, cat: "Simple Interest" },
+            { id: 107, q: "A sum earns Rs. 900 simple interest in 3 years at 6% per year. The principal was:", options: ["Rs. 5,000", "Rs. 1,800", "Rs. 15,000", "Rs. 50,000"], answer: 0, cat: "Simple Interest" },
+            { id: 108, q: "Interest = Rs. 1,000, principal = Rs. 5,000, time = 4 years. The simple interest rate is:", options: ["5% per year", "4% per year", "8% per year", "2.5% per year"], answer: 0, cat: "Simple Interest" },
+            { id: 109, q: "If the rate is annual and the time given is 9 months, time in years must be written as:", options: ["0.75", "9", "0.9", "75"], answer: 0, cat: "Simple Interest" },
+
+            { id: 110, q: "In compound interest, interest is calculated on:", options: ["the original principal only", "the money that has grown (principal plus previous interest)", "a fixed amount every year", "the rate alone"], answer: 1, cat: "Compound Interest" },
+            { id: 111, q: "Compound interest is higher than simple interest for the same principal, rate and time because:", options: ["interest itself starts earning interest", "the rate is doubled", "the principal increases", "the time is longer"], answer: 0, cat: "Compound Interest" },
+            { id: 112, q: "In the formula A = P(1 + r/m)^(mt), the letter m represents:", options: ["how many times interest is added in one year", "the number of years", "the annual rate", "the principal"], answer: 0, cat: "Compound Interest" },
+            { id: 113, q: "Interest compounded semi-annually is added:", options: ["once a year", "twice a year", "four times a year", "twelve times a year"], answer: 1, cat: "Compound Interest" },
+            { id: 114, q: "Interest compounded quarterly is added:", options: ["once a year", "twice a year", "four times a year", "twelve times a year"], answer: 2, cat: "Compound Interest" },
+            { id: 115, q: "The compound interest formula A = P(1 + r/m)^(mt) gives the:", options: ["final (future) amount", "interest only", "rate", "principal"], answer: 0, cat: "Compound Interest" },
+            { id: 116, q: "Rs. 10,000 is invested at 10% compounded annually for 1 year. The amount is:", options: ["Rs. 11,000", "Rs. 10,100", "Rs. 10,500", "Rs. 12,100"], answer: 0, cat: "Compound Interest" },
+            { id: 117, q: "Rs. 10,000 invested at 10% compounded annually for 3 years gives an amount of:", options: ["Rs. 13,310", "Rs. 13,000", "Rs. 12,100", "Rs. 13,500"], answer: 0, cat: "Compound Interest" },
+            { id: 118, q: "If the amount after 3 years is Rs. 13,310 from a principal of Rs. 10,000, the compound interest is:", options: ["Rs. 3,310", "Rs. 3,000", "Rs. 2,100", "Rs. 10,000"], answer: 0, cat: "Compound Interest" },
+            { id: 119, q: "Rs. 10,000 is invested at 12% per year, compounded semi-annually, for 2 years. The final amount is approximately:", options: ["Rs. 12,624", "Rs. 12,544", "Rs. 11,200", "Rs. 12,100"], answer: 0, cat: "Compound Interest" },
+            { id: 120, q: "With monthly compounding, the annual rate is:", options: ["divided by 12 and the number of periods is multiplied by 12", "divided by 4 and the number of periods is multiplied by 4", "multiplied by 12", "divided by 2"], answer: 0, cat: "Compound Interest" },
+            { id: 121, q: "Rs. 5,000 invested at 8% compounded annually for 2 years gives an amount of:", options: ["Rs. 5,832", "Rs. 5,800", "Rs. 5,400", "Rs. 6,000"], answer: 0, cat: "Compound Interest" },
+            { id: 122, q: "A principal of Rs. 12,000 grew to an amount of Rs. 12,600 in one year. The compound interest earned is:", options: ["Rs. 600", "Rs. 12,000", "Rs. 24,600", "Rs. 12,600"], answer: 0, cat: "Compound Interest" },
+            { id: 123, q: "Rs. 20,000 invested at 10% compounded semi-annually for 1 year gives an amount of approximately:", options: ["Rs. 22,050", "Rs. 22,000", "Rs. 21,000", "Rs. 24,000"], answer: 0, cat: "Compound Interest" },
+
+            { id: 124, q: "A discount is:", options: ["a reduction in the original or marked price", "an addition to the price", "the selling price", "the variable cost"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 125, q: "The formula for the discount amount is:", options: ["Discount = Marked Price x Discount Rate", "Discount = Marked Price + Discount Rate", "Discount = Sale Price x Discount Rate", "Discount = Marked Price / Discount Rate"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 126, q: "Marked price = Rs. 5,000 and discount = 10%. The discount amount is:", options: ["Rs. 500", "Rs. 50", "Rs. 4,500", "Rs. 5,000"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 127, q: "A shirt priced at Rs. 5,000 receives a 10% discount. The sale price is:", options: ["Rs. 4,500", "Rs. 500", "Rs. 4,000", "Rs. 5,500"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 128, q: "An annuity is:", options: ["a series of equal payments made or received at regular time intervals", "a single large payment", "an irregular payment stream", "a discount on a price"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 129, q: "In an ordinary annuity, payments happen:", options: ["at the end of each period", "at the beginning of each period", "only once", "whenever the borrower wishes"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 130, q: "In an annuity due, payments happen:", options: ["at the beginning of each period", "at the end of each period", "once a year only", "after two periods"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 131, q: "A bag is sold for Rs. 3,600 after a 20% discount. The marked price was:", options: ["Rs. 4,500", "Rs. 4,320", "Rs. 3,600", "Rs. 5,000"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 132, q: "Two successive discounts of 10% and 20% together give a total reduction that is:", options: ["less than 30% of the marked price", "exactly 30% of the marked price", "more than 30% of the marked price", "equal to 10% of the marked price"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 133, q: "Marked price = Rs. 10,000 with successive discounts of 10% then 20%. The final price is:", options: ["Rs. 7,200", "Rs. 7,000", "Rs. 8,000", "Rs. 6,400"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 134, q: "Rs. 1,000 is deposited at the end of each year for 3 years at 10% interest. The future value of this ordinary annuity is:", options: ["Rs. 3,310", "Rs. 3,300", "Rs. 3,000", "Rs. 3,641"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 135, q: "A 10% discount rate, written as a decimal, is:", options: ["0.10", "10", "0.01", "1.0"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 136, q: "On a marked price of Rs. 10,000, successive discounts of 10% and 20% give a total reduction of:", options: ["Rs. 2,800", "Rs. 3,000", "Rs. 2,000", "Rs. 1,000"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 137, q: "An annuity due value equals the ordinary annuity value:", options: ["multiplied by (1 + i)", "divided by (1 + i)", "minus one period's payment", "exactly the same"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 138, q: "With 12% annual interest and monthly payments over 2 years, the interest rate per period is:", options: ["1%", "12%", "2%", "6%"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 139, q: "With monthly payments continuing for 2 years, the number of payment periods n is:", options: ["24", "12", "2", "36"], answer: 0, cat: "Discounts and Annuities" },
+
+            { id: 140, q: "The time value of money means:", options: ["money available today is usually worth more than the same amount received in the future", "money today is worth less than the same amount later", "money never changes value", "future money is always worth more"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 141, q: "Future value (FV) is:", options: ["what your money will be worth later", "what future money is worth today", "the same as present value", "the original principal only"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 142, q: "Present value (PV) is:", options: ["what a future amount is worth today", "what your money will be worth later", "always larger than the future value", "the interest only"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 143, q: "When money moves forward in time we:", options: ["multiply", "divide", "subtract interest", "ignore interest"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 144, q: "When money moves backward in time we:", options: ["divide", "multiply", "add interest", "keep the value the same"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 145, q: "Rs. 10,000 invested at 10% for 2 years, compounded annually, grows to a future value of:", options: ["Rs. 12,100", "Rs. 12,000", "Rs. 11,000", "Rs. 10,000"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 146, q: "From FV = PV(1 + r)^t, the present value formula is:", options: ["PV = FV / (1 + r)^t", "PV = FV x (1 + r)^t", "PV = FV(1 - r)^t", "PV = FV + (1 + r)^t"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 147, q: "FV = Rs. 12,100, rate = 10%, time = 2 years. The present value is:", options: ["Rs. 10,000", "Rs. 11,000", "Rs. 12,100", "Rs. 9,000"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 148, q: "A single future amount is valued using:", options: ["FV = PV(1 + r/m)^(mt)", "the annuity future value formula", "the average of all payments", "FV = P x n"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 149, q: "Equal payments of Rs. 1,000 at the end of each year for 3 years, discounted at 10%, have a present value of about:", options: ["Rs. 2,487", "Rs. 3,000", "Rs. 2,700", "Rs. 2,000"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 150, q: "FV = Rs. 13,310, rate = 10%, time = 3 years. The present value is:", options: ["Rs. 10,000", "Rs. 11,000", "Rs. 13,310", "Rs. 9,000"], answer: 0, cat: "Present Value and Future Value" },
+            { id: 151, q: "Which question requires the present value of an annuity formula?", options: ["What is the value today of a series of equal future payments?", "What is a single amount worth later?", "What is the interest on a principal?", "What is the discount on a price?"], answer: 0, cat: "Present Value and Future Value" },
+
+            { id: 152, q: "Profit equals:", options: ["Revenue - Cost", "Revenue + Cost", "Cost - Revenue", "Revenue x Cost"], answer: 0, cat: "Profit Functions" },
+            { id: 153, q: "A total cost function is usually written as:", options: ["fixed cost + variable cost per unit x quantity", "selling price x quantity", "revenue - profit", "quantity only"], answer: 0, cat: "Profit Functions" },
+            { id: 154, q: "With price p and quantity x, the revenue function is:", options: ["R(x) = p x x", "R(x) = p + x", "R(x) = p - x", "R(x) = x / p"], answer: 0, cat: "Profit Functions" },
+            { id: 155, q: "Price = Rs. 500 and 100 units are sold. The revenue is:", options: ["Rs. 50,000", "Rs. 5,000", "Rs. 500", "Rs. 100"], answer: 0, cat: "Profit Functions" },
+            { id: 156, q: "Fixed cost = Rs. 10,000 and variable cost = Rs. 200 per unit. The total cost for 50 units is:", options: ["Rs. 20,000", "Rs. 10,200", "Rs. 200", "Rs. 10,000"], answer: 0, cat: "Profit Functions" },
+            { id: 157, q: "If the profit function is P(x) = 300x - 10,000, then P(50) equals:", options: ["Rs. 5,000", "Rs. -5,000", "Rs. 15,000", "Rs. 10,000"], answer: 0, cat: "Profit Functions" },
+            { id: 158, q: "If P(x) = 300x - 10,000, then P(20) equals:", options: ["Rs. -4,000", "Rs. 4,000", "Rs. 6,000", "Rs. -6,000"], answer: 0, cat: "Profit Functions" },
+            { id: 159, q: "For the profit function P(x) = 300x - 10,000, the break-even quantity is approximately:", options: ["34 units", "33 units", "30 units", "300 units"], answer: 0, cat: "Profit Functions" },
+            { id: 160, q: "A company sells at Rs. 800 per unit, fixed cost = Rs. 20,000, variable cost = Rs. 300 per unit. The profit from 100 units is:", options: ["Rs. 30,000", "Rs. 80,000", "Rs. 50,000", "Rs. 20,000"], answer: 0, cat: "Profit Functions" },
+            { id: 161, q: "Using the company above (price Rs. 800, fixed cost Rs. 20,000, variable cost Rs. 300), the break-even quantity is:", options: ["40 units", "30 units", "50 units", "20 units"], answer: 0, cat: "Profit Functions" },
+            { id: 162, q: "For P(x) = 300x - 10,000, selling 25 units gives:", options: ["a loss of Rs. 2,500", "a profit of Rs. 2,500", "break-even", "a loss of Rs. 7,500"], answer: 0, cat: "Profit Functions" },
+            { id: 163, q: "On the graph of a profit function, the point where the line crosses the horizontal axis represents:", options: ["the break-even quantity", "maximum profit", "fixed cost", "selling price"], answer: 0, cat: "Profit Functions" },
+
+            { id: 164, q: "Demand means:", options: ["how much people are willing and able to buy at different prices", "how much sellers want to sell", "the total output of a factory", "the fixed costs of a firm"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 165, q: "Supply means:", options: ["how much sellers are willing and able to sell at different prices", "how much buyers want to buy", "the demand side of the market", "the market price only"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 166, q: "According to the law of demand, when price increases, quantity demanded usually:", options: ["decreases", "increases", "stays the same", "doubles"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 167, q: "According to the law of supply, when price increases, quantity supplied usually:", options: ["increases", "decreases", "stays the same", "becomes zero"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 168, q: "Equilibrium is the point where:", options: ["demand equals supply", "demand is greater than supply", "supply is greater than demand", "the price is at its lowest"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 169, q: "A shortage exists when:", options: ["demand is greater than supply", "supply is greater than demand", "demand equals supply", "price is falling"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 170, q: "A surplus exists when:", options: ["supply is greater than demand", "demand is greater than supply", "demand equals supply", "nobody buys the product"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 171, q: "If Qd = 100 - 2P, then when P = 10 the quantity demanded is:", options: ["80 units", "90 units", "20 units", "100 units"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 172, q: "If Qs = 20 + 2P, then when P = 20 the quantity supplied is:", options: ["60 units", "40 units", "80 units", "20 units"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 173, q: "With Qd = 100 - 2P and Qs = 20 + 2P, the equilibrium price is:", options: ["Rs. 20", "Rs. 30", "Rs. 10", "Rs. 40"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 174, q: "With Qd = 100 - 2P and Qs = 20 + 2P at equilibrium, the equilibrium quantity is:", options: ["60 units", "80 units", "40 units", "100 units"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 175, q: "On the standard demand and supply graph, the vertical axis shows:", options: ["price", "quantity", "profit", "cost"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 176, q: "At a certain price, consumers want 60 units but sellers offer only 40 units. The market has a:", options: ["shortage", "surplus", "equilibrium", "maximum profit"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+            { id: 177, q: "With Qd = 120 - 4P and Qs = 20 + 4P, the equilibrium price is:", options: ["Rs. 12.50", "Rs. 10", "Rs. 20", "Rs. 25"], answer: 0, cat: "Demand, Supply and Equilibrium" },
+
+            { id: 178, q: "A derivative tells us:", options: ["how fast something is changing", "the total amount", "the fixed cost", "the average value"], answer: 0, cat: "Derivative Basics" },
+            { id: 179, q: "For the straight line y = 3x + 2, the slope is:", options: ["3", "2", "5", "1"], answer: 0, cat: "Derivative Basics" },
+            { id: 180, q: "The derivative of a constant is:", options: ["0", "1", "the constant itself", "infinity"], answer: 0, cat: "Derivative Basics" },
+            { id: 181, q: "The derivative of x^2 with respect to x is:", options: ["2x", "x", "2", "x^2"], answer: 0, cat: "Derivative Basics" },
+            { id: 182, q: "The derivative of x^3 with respect to x is:", options: ["3x^2", "x^2", "3x", "x^3"], answer: 0, cat: "Derivative Basics" },
+            { id: 183, q: "The power rule states: if y = x^n, then dy/dx =:", options: ["nx^(n-1)", "x^(n-1)", "n x^n", "x^(n+1)"], answer: 0, cat: "Derivative Basics" },
+            { id: 184, q: "The derivative of 5x^4 is:", options: ["20x^3", "5x^3", "4x^3", "20x^4"], answer: 0, cat: "Derivative Basics" },
+            { id: 185, q: "The derivative of 3x^2 + 2x + 7 is:", options: ["6x + 2", "6x + 2 + 7", "3x + 2", "6x + 9"], answer: 0, cat: "Derivative Basics" },
+            { id: 186, q: "The derivative of 4x^3 - 2x + 5 is:", options: ["12x^2 - 2", "12x^2 - 2 + 5", "4x^2 - 2", "12x^3 - 2"], answer: 0, cat: "Derivative Basics" },
+            { id: 187, q: "Wherever the derivative of a function is positive, the function is generally:", options: ["increasing", "decreasing", "flat", "undefined"], answer: 0, cat: "Derivative Basics" },
+            { id: 188, q: "If y = x^2 + 3x, then the derivative at x = 2 is:", options: ["7", "5", "10", "3"], answer: 0, cat: "Derivative Basics" },
+            { id: 189, q: "The stationary point of y = x^2 - 4x + 5 occurs at x =:", options: ["2", "-2", "4", "0"], answer: 0, cat: "Derivative Basics" },
+
+            { id: 190, q: "In business mathematics, 'marginal' means:", options: ["the effect of one more unit", "the total effect", "the average effect", "the fixed effect"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 191, q: "Marginal cost is:", options: ["the extra cost from making one more unit", "the cost of everything produced", "the fixed cost", "the average cost"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 192, q: "Marginal revenue is:", options: ["the extra revenue from selling one more unit", "total revenue", "revenue minus cost", "average revenue"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 193, q: "Marginal profit equals:", options: ["marginal revenue minus marginal cost", "marginal revenue plus marginal cost", "total profit divided by units", "cost minus revenue"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 194, q: "The golden rule of profit maximisation in marginal analysis is:", options: ["MR = MC", "MR > MC", "MR < MC", "MC = 0"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 195, q: "MR = 100 - 0.4x and MC = 20 + 0.1x. Setting MR = MC, the profit-maximising output x is:", options: ["160 units", "200 units", "80 units", "100 units"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 196, q: "Marginal revenue is Rs. 100 and marginal cost is Rs. 60. Producing one extra unit:", options: ["adds Rs. 40 to profit", "adds Rs. 160 to profit", "adds Rs. 40 to loss", "has no effect on profit"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 197, q: "Marginal cost is Rs. 80 and marginal revenue is Rs. 60. Producing one more unit:", options: ["reduces profit by Rs. 20", "increases profit by Rs. 20", "increases profit by Rs. 140", "has no effect on profit"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 198, q: "MR = 80 - 0.2x and MC = 10 + 0.3x. The profit-maximising quantity is:", options: ["140 units", "70 units", "90 units", "180 units"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 199, q: "To confirm that a stationary point is a maximum, we check that the second derivative at that point is:", options: ["negative", "positive", "zero", "equal to the first derivative"], answer: 0, cat: "Marginal Analysis in Business" },
+
+            { id: 200, q: "Integration is:", options: ["the reverse process of differentiation", "the same as differentiation", "multiplication of functions", "division of functions"], answer: 0, cat: "Integration Basics" },
+            { id: 201, q: "The constant C added to an indefinite integral is called the:", options: ["constant of integration", "constant of differentiation", "coefficient", "discriminant"], answer: 0, cat: "Integration Basics" },
+            { id: 202, q: "We add C to an indefinite integral because:", options: ["different functions that differ only by a constant have the same derivative", "the answer must be larger", "C is the coefficient", "the power rule fails"], answer: 0, cat: "Integration Basics" },
+            { id: 203, q: "The integral of x^2 with respect to x is:", options: ["x^3/3 + C", "2x + C", "x^2/2 + C", "x^3 + C"], answer: 0, cat: "Integration Basics" },
+            { id: 204, q: "The integral of x^5 with respect to x is:", options: ["x^6/6 + C", "5x^4 + C", "x^5/5 + C", "x^6 + C"], answer: 0, cat: "Integration Basics" },
+            { id: 205, q: "The integral of 1 with respect to x is:", options: ["x + C", "0 + C", "1 + C", "x^2/2 + C"], answer: 0, cat: "Integration Basics" },
+            { id: 206, q: "The integral of 4x with respect to x is:", options: ["2x^2 + C", "4x^2 + C", "x^2 + C", "8x^2 + C"], answer: 0, cat: "Integration Basics" },
+            { id: 207, q: "The integral of (x + 3) with respect to x is:", options: ["x^2/2 + 3x + C", "x^2 + 3 + C", "x^2/2 + C", "3x + C"], answer: 0, cat: "Integration Basics" },
+            { id: 208, q: "If marginal cost is given, integration is used to find:", options: ["total cost", "fixed cost only", "marginal revenue", "the derivative"], answer: 0, cat: "Integration Basics" },
+            { id: 209, q: "A definite integral always gives:", options: ["a specific number", "a general function with C", "zero", "the derivative"], answer: 0, cat: "Integration Basics" },
+            { id: 210, q: "Marginal cost MC = 4x and fixed cost = Rs. 500. The total cost function is:", options: ["TC = 2x^2 + 500", "TC = 4x^2 + 500", "TC = 2x^2 + C", "TC = 2x + 500"], answer: 0, cat: "Integration Basics" },
+            { id: 211, q: "The definite integral of x from x = 1 to x = 3 equals:", options: ["4", "2", "8", "9"], answer: 0, cat: "Integration Basics" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
