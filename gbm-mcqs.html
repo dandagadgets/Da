@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Business Management Mastery - 215 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-earth-americas text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">GBMMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">215 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/215</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-globe text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Global Business Management with 215 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    Comprehensive practice covering Globalization Foundations, Global Business Environment, International Trade Theories, Global Institutions & Trade Blocs, Market Entry Strategies, Cross-Cultural Management, Digital Transformation, Global Supply Chain, and Business Ethics & Sustainability.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 215)</option>
+                            <option value="1-23">1. Globalization Foundations (1 - 23)</option>
+                            <option value="24-45">2. Global Business Environment & Drivers (24 - 45)</option>
+                            <option value="46-69">3. Globalization Impacts & Strategy (46 - 69)</option>
+                            <option value="70-95">4. International Trade Theories (70 - 95)</option>
+                            <option value="96-119">5. Global Institutions & Trade Blocs (96 - 119)</option>
+                            <option value="120-137">6. Market Entry Strategies (120 - 137)</option>
+                            <option value="138-163">7. Cross-Cultural Management & CQ (138 - 163)</option>
+                            <option value="164-179">8. Digital Transformation & Global Marketing (164 - 179)</option>
+                            <option value="180-193">9. Global Supply Chain Operations (180 - 193)</option>
+                            <option value="194-215">10. Business Ethics, Sustainability & Negotiation (194 - 215)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 215</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-215)" min="1" max="215" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General GBM</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 215</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/215</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Global Business Management Quiz • 215 Comprehensive Questions</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (215 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "What is Globalization?", options: ["a business taking responsibility for its effects on society and the environment", "growing connection and interdependence of countries through trade, investment, technology, and culture", "international reserve assets created by the IMF", "a group of connected businesses and organizations located around an industry or area"], answer: 1, cat: "Globalization Foundations" },
+            { id: 2, q: "Which concept does this example show: Pakistan buys phones from China, receives foreign investment, and communicates globally?", options: ["Globalization", "Due diligence", "Trade liberalization", "Global entrepreneurship"], answer: 0, cat: "Globalization Foundations" },
+            { id: 3, q: "Which concept does this manager situation show: Pakistan buys phones from China, receives foreign investment, and communicates globally?", options: ["Global team", "Cognitive CQ", "Privatization", "Globalization"], answer: 3, cat: "Globalization Foundations" },
+            { id: 4, q: "What is Interdependence?", options: ["a system that records sales when customers buy products", "countries depending on each other so events in one country affect others", "people from different countries or cultural backgrounds working toward a common goal", "reducing restrictions on economic activity"], answer: 1, cat: "Globalization Foundations" },
+            { id: 5, q: "Which concept does this example show: Pakistan depends on China for products while the UK invests in Pakistani businesses?", options: ["Human capital", "Interdependence", "Absolute advantage", "Point of Sale (POS)"], answer: 1, cat: "Globalization Foundations" },
+            { id: 6, q: "Which concept does this manager situation show: Pakistan depends on China for products while the UK invests in Pakistani businesses?", options: ["Interdependence", "Monochronic culture", "Global supply chain", "Internet of Things (IoT)"], answer: 0, cat: "Globalization Foundations" },
+            { id: 7, q: "What is Cultural diffusion?", options: ["studying very large amounts of business information to find patterns and make decisions", "reducing tariffs, quotas, and other barriers to international trade", "protecting nature and resources by reducing pollution and emissions", "spread of ideas, customs, food, and languages from one society to another"], answer: 3, cat: "Globalization Foundations" },
+            { id: 8, q: "Which concept does this example show: the Silk Road spread goods, ideas, knowledge, and culture?", options: ["Comparative advantage", "Global financial integration", "Global supply chain", "Cultural diffusion"], answer: 3, cat: "Globalization Foundations" },
+            { id: 9, q: "Which concept does this manager situation show: the Silk Road spread goods, ideas, knowledge, and culture?", options: ["Special Drawing Rights (SDRs)", "Uncertainty avoidance", "Cultural diffusion", "Licensing"], answer: 2, cat: "Globalization Foundations" },
+            { id: 10, q: "What is Global supply chain?", options: ["the degree to which people accept differences in authority and power", "cooperation between companies without creating a new company", "a new business created and owned together by a foreign and local company", "production and delivery steps that take place across different countries"], answer: 3, cat: "Globalization Foundations" },
+            { id: 11, q: "Which concept does this example show: raw materials come from Country A, manufacturing occurs in B, and packaging in C?", options: ["Polychronic culture", "Global supply chain", "Due diligence", "Local responsiveness"], answer: 1, cat: "Globalization Foundations" },
+            { id: 12, q: "Which concept does this manager situation show: raw materials come from Country A, manufacturing occurs in B, and packaging in C?", options: ["Emerging market", "Global supply chain", "Cost-based pricing", "Cultural hybridization"], answer: 1, cat: "Globalization Foundations" },
+            { id: 13, q: "What is Trade liberalization?", options: ["the idea that production locations change as a product becomes older", "reducing tariffs, quotas, and other barriers to international trade", "producing a product at a lower opportunity cost than another country", "setting price by considering willingness to pay and competitors' prices"], answer: 1, cat: "Globalization Foundations" },
+            { id: 14, q: "Which concept does this example show: governments reduce import barriers so countries can buy and sell more easily?", options: ["Collectivist culture", "Information and Communication Technology (ICT)", "Trade liberalization", "Acquisition"], answer: 2, cat: "Globalization Foundations" },
+            { id: 15, q: "Which concept does this manager situation show: governments reduce import barriers so countries can buy and sell more easily?", options: ["Cognitive CQ", "Cultural literacy", "Job displacement", "Trade liberalization"], answer: 3, cat: "Globalization Foundations" },
+            { id: 16, q: "What is Comparative advantage?", options: ["a business taking responsibility for its effects on society and the environment", "buying and selling through the internet", "producing a product at a lower opportunity cost than another country", "loss of some existing jobs because of automation, outsourcing, or relocation"], answer: 2, cat: "Globalization Foundations" },
+            { id: 17, q: "Which concept does this example show: one country specializes in machinery while another specializes in clothes?", options: ["Cognitive CQ", "Comparative advantage", "Behavioral CQ", "Collectivist culture"], answer: 1, cat: "Globalization Foundations" },
+            { id: 18, q: "Which concept does this manager situation show: one country specializes in machinery while another specializes in clothes?", options: ["Demand forecasting", "Global supply chain", "Comparative advantage", "Acquisition"], answer: 2, cat: "Globalization Foundations" },
+            { id: 19, q: "What is Foreign direct investment (FDI)?", options: ["principles about what is right and wrong in business decisions and actions", "investment in and ownership or control of a long-term business in another country", "what is given up when one choice is made instead of another", "a system that records sales when customers buy products"], answer: 1, cat: "Globalization Foundations" },
+            { id: 20, q: "Which concept does this example show: a Japanese company builds a factory in Pakistan?", options: ["Greenfield investment", "Foreign direct investment (FDI)", "Corporate social responsibility (CSR)", "Low-context culture"], answer: 1, cat: "Globalization Foundations" },
+            { id: 21, q: "Which concept does this manager situation show: a Japanese company builds a factory in Pakistan?", options: ["Cultural homogenization", "Polychronic culture", "Strategic alliance", "Foreign direct investment (FDI)"], answer: 3, cat: "Globalization Foundations" },
+            { id: 22, q: "What is Global financial integration?", options: ["connection of countries through international money and financial markets", "maintaining long-term financial strength through responsible resource use and profitability", "the deepest integration level, with shared political institutions and decision-making", "storing and using data and software through the internet"], answer: 0, cat: "Globalization Foundations" },
+            { id: 23, q: "Which concept does this example show: an investor in Pakistan invests in a company in another country?", options: ["Inventory turnover", "Global financial integration", "Digital transformation", "Business cluster"], answer: 1, cat: "Globalization Foundations" },
+
+            { id: 24, q: "What is Multinational corporation (MNC)?", options: ["a company that operates in more than one country", "meeting today's needs without harming future generations' ability to meet theirs", "a culture emphasizing personal achievement, independence, and individual goals", "technology used to create, store, send, and receive information"], answer: 0, cat: "Global Business Environment & Drivers" },
+            { id: 25, q: "Which concept does this example show: a firm designs in one country, produces in another, and sells worldwide?", options: ["Economic sustainability", "Special Drawing Rights (SDRs)", "Globalization", "Multinational corporation (MNC)"], answer: 3, cat: "Global Business Environment & Drivers" },
+            { id: 26, q: "What is Information and Communication Technology (ICT)?", options: ["giving a foreign business permission to use a brand, products, and the whole business system", "starting and managing a business while seeking opportunities in international markets", "technology used to create, store, send, and receive information", "a system that records sales when customers buy products"], answer: 2, cat: "Global Business Environment & Drivers" },
+            { id: 27, q: "Which concept does this example show: internet, computers, smartphones, and digital communication systems?", options: ["Common market", "Information and Communication Technology (ICT)", "Factor endowment", "Cultural intelligence"], answer: 1, cat: "Global Business Environment & Drivers" },
+            { id: 28, q: "What is E-commerce?", options: ["mixing of cultures to create new cultural forms", "buying and selling through the internet", "a group of connected businesses and organizations located around an industry or area", "how quickly a company sells and replaces its inventory"], answer: 1, cat: "Global Business Environment & Drivers" },
+            { id: 29, q: "Which concept does this example show: a small Pakistani business sells to overseas customers through an online platform?", options: ["E-commerce", "First-mover advantage", "G20", "Active listening"], answer: 0, cat: "Global Business Environment & Drivers" },
+            { id: 30, q: "What is Containerization?", options: ["the benefits gained by entering a new industry or market before competitors", "putting goods into standard containers that move between ships, trucks, and trains", "the degree to which people are comfortable with uncertain or unclear situations", "a culture emphasizing personal achievement, independence, and individual goals"], answer: 1, cat: "Global Business Environment & Drivers" },
+            { id: 31, q: "Which concept does this example show: standard containers make global transportation faster and cheaper?", options: ["Behavioral CQ", "Folkways", "New trade theory", "Containerization"], answer: 3, cat: "Global Business Environment & Drivers" },
+            { id: 32, q: "What is Digital economy?", options: ["a model explaining national competitive advantage through four interacting factors", "building a completely new foreign operation from the beginning", "an economy where many activities depend on digital technology, data, and online platforms", "the idea that production locations change as a product becomes older"], answer: 2, cat: "Global Business Environment & Drivers" },
+            { id: 33, q: "Which concept does this example show: online shopping, digital banking, software, and remote work?", options: ["Common market", "Interdependence", "Environmental sustainability", "Digital economy"], answer: 3, cat: "Global Business Environment & Drivers" },
+            { id: 34, q: "What is Political stability?", options: ["producing a good using fewer resources or at lower cost than another country", "countries depending on each other so events in one country affect others", "stable government, clear laws, and predictable policies", "reaching an agreement between people from different cultural backgrounds"], answer: 2, cat: "Global Business Environment & Drivers" },
+            { id: 35, q: "Which concept does this example show: business confidence and investment increase when political uncertainty is low?", options: ["Mores", "Political stability", "Folkways", "G20"], answer: 1, cat: "Global Business Environment & Drivers" },
+            { id: 36, q: "What is Liberalization?", options: ["an institution that promotes monetary cooperation and financial stability", "the theory that countries export goods using their abundant factors of production", "what is given up when one choice is made instead of another", "reducing restrictions on economic activity"], answer: 3, cat: "Global Business Environment & Drivers" },
+            { id: 37, q: "Which concept does this example show: a country makes it easier for foreign companies to enter its market?", options: ["Folkways", "Joint venture", "Liberalization", "Cultural hybridization"], answer: 2, cat: "Global Business Environment & Drivers" },
+            { id: 38, q: "What is Deregulation?", options: ["people from different countries or cultural backgrounds working toward a common goal", "economies of scale and first-mover advantages help explain trade between similar countries", "giving a foreign business permission to use a brand, products, and the whole business system", "removing unnecessary government rules or restrictions on businesses"], answer: 3, cat: "Global Business Environment & Drivers" },
+            { id: 39, q: "Which concept does this example show: removing unnecessary rules increases competition and business activity?", options: ["Active listening", "Cultural intelligence", "Deregulation", "G20"], answer: 2, cat: "Global Business Environment & Drivers" },
+            { id: 40, q: "What is Privatization?", options: ["transferring a government-owned business or service to private ownership", "producing in the home country and selling in another country", "growing connection and interdependence of countries through trade, investment, technology, and culture", "a system that records sales when customers buy products"], answer: 0, cat: "Global Business Environment & Drivers" },
+            { id: 41, q: "Which concept does this example show: a state-owned service is transferred to a private company?", options: ["Bribery", "Trade liberalization", "Behavioral CQ", "Privatization"], answer: 3, cat: "Global Business Environment & Drivers" },
+            { id: 42, q: "What is Emerging market?", options: ["investment in and ownership or control of a long-term business in another country", "a country whose economy is growing and becoming more developed", "understanding and respecting different cultures and knowing how to interact with them", "norms connected with morality and serious ideas of right and wrong"], answer: 1, cat: "Global Business Environment & Drivers" },
+            { id: 43, q: "Which concept does this example show: countries in Asia, Africa, and Latin America provide new customers and production locations?", options: ["Emerging market", "Global team", "Customs union", "Low-context culture"], answer: 0, cat: "Global Business Environment & Drivers" },
+            { id: 44, q: "What is Market saturation?", options: ["mixing of cultures to create new cultural forms", "quickly sorting products at a distribution centre and sending them onward without long storage", "loss of some existing jobs because of automation, outsourcing, or relocation", "a market already has many customers and finding new ones is difficult"], answer: 3, cat: "Global Business Environment & Drivers" },
+            { id: 45, q: "Which concept does this example show: a smartphone firm enters another country when nearly everyone at home owns one?", options: ["Strategic alliance", "Big Data analytics", "Market-based pricing", "Market saturation"], answer: 3, cat: "Global Business Environment & Drivers" },
+
+            { id: 46, q: "What is Cultural hybridization?", options: ["a new business created and owned together by a foreign and local company", "giving a foreign business permission to use a brand, products, and the whole business system", "government policies that protect domestic businesses from foreign competition", "mixing of cultures to create new cultural forms"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 47, q: "Which concept does this example show: music or food combines elements from two or more cultures?", options: ["Motivational CQ", "Product life-cycle theory", "Cultural hybridization", "Business cluster"], answer: 2, cat: "Globalization Impacts & Strategy" },
+            { id: 48, q: "What is Economies of scale?", options: ["a culture in which people usually communicate directly, clearly, and explicitly", "connection of countries through international money and financial markets", "principles about what is right and wrong in business decisions and actions", "a decrease in average cost per unit as production increases"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 49, q: "Which concept does this example show: producing 100,000 cars spreads certain costs over many units?", options: ["Standardization", "Economies of scale", "Big Data analytics", "Digital transformation"], answer: 1, cat: "Globalization Impacts & Strategy" },
+            { id: 50, q: "What is Job displacement?", options: ["having too little or no stock when customers want to buy", "government policies that protect domestic businesses from foreign competition", "knowledge about different cultures", "loss of some existing jobs because of automation, outsourcing, or relocation"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 51, q: "Which concept does this example show: a factory replaces some workers with machines?", options: ["Foreign direct investment (FDI)", "Job displacement", "Trade surplus", "Conditionality"], answer: 1, cat: "Globalization Impacts & Strategy" },
+            { id: 52, q: "What is Cultural homogenization?", options: ["the theory that countries export goods using their abundant factors of production", "selling directly to customers through online channels without traditional middlemen", "understanding and respecting different cultures and knowing how to interact with them", "cultures becoming more similar as global brands, media, and lifestyles spread"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 53, q: "Which concept does this example show: the same entertainment and fashion appear around the world?", options: ["Cultural homogenization", "Digital economy", "Porter’s Diamond Model", "Cost-based pricing"], answer: 0, cat: "Globalization Impacts & Strategy" },
+            { id: 54, q: "What is Protectionism?", options: ["government policies that protect domestic businesses from foreign competition", "storing and using data and software through the internet", "economies of scale and first-mover advantages help explain trade between similar countries", "meeting today's needs without harming future generations' ability to meet theirs"], answer: 0, cat: "Globalization Impacts & Strategy" },
+            { id: 55, q: "Which concept does this example show: a government places tariffs on imported goods?", options: ["Vendor-managed inventory (VMI)", "Protectionism", "Political union", "Trade liberalization"], answer: 1, cat: "Globalization Impacts & Strategy" },
+            { id: 56, q: "What is Smart globalization?", options: ["production and delivery steps that take place across different countries", "a culture treating time as structured and fixed", "the ability to change behavior and communication for another culture", "using global connections and technology while protecting people, society, and the environment"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 57, q: "Which concept does this example show: global expansion is combined with social fairness and environmental responsibility?", options: ["Big Data analytics", "Digital economy", "Cross-docking", "Smart globalization"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 58, q: "What is Cultural intelligence?", options: ["a culture emphasizing group harmony, family, loyalty, and group goals", "a market already has many customers and finding new ones is difficult", "a company that operates in more than one country", "understanding and working effectively with people from different cultures"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 59, q: "Which concept does this example show: a manager works effectively with employees from Pakistan, Japan, the USA, and China?", options: ["Corporate social responsibility (CSR)", "Licensing", "Absolute advantage", "Cultural intelligence"], answer: 3, cat: "Globalization Impacts & Strategy" },
+            { id: 60, q: "What is Strategic agility?", options: ["an integration level allowing free movement of goods, services, labour, and capital", "the ability to change quickly when the business environment changes", "starting and managing a business while seeking opportunities in international markets", "production and delivery steps that take place across different countries"], answer: 1, cat: "Globalization Impacts & Strategy" },
+            { id: 61, q: "Which concept does this example show: a global firm adapts to political changes and changing customer needs?", options: ["Point of Sale (POS)", "Strategic agility", "Vendor-managed inventory (VMI)", "Environmental sustainability"], answer: 1, cat: "Globalization Impacts & Strategy" },
+            { id: 62, q: "What is Corporate social responsibility (CSR)?", options: ["norms connected with morality and serious ideas of right and wrong", "principles about what is right and wrong in business decisions and actions", "a business taking responsibility for its effects on society and the environment", "selling directly to customers through online channels without traditional middlemen"], answer: 2, cat: "Globalization Impacts & Strategy" },
+            { id: 63, q: "Which concept does this example show: a company considers workers, customers, communities, and pollution, not only profit?", options: ["Corporate social responsibility (CSR)", "Monochronic culture", "Local responsiveness", "Leontief paradox"], answer: 0, cat: "Globalization Impacts & Strategy" },
+            { id: 64, q: "What is Sustainability?", options: ["buying and selling through the internet", "protecting nature and resources by reducing pollution and emissions", "meeting today's needs without harming future generations' ability to meet theirs", "economies of scale and first-mover advantages help explain trade between similar countries"], answer: 2, cat: "Globalization Impacts & Strategy" },
+            { id: 65, q: "Which concept does this example show: a firm reduces pollution, waste, and resource use?", options: ["Point of Sale (POS)", "Cultural literacy", "Sustainability", "Uncertainty avoidance"], answer: 2, cat: "Globalization Impacts & Strategy" },
+            { id: 66, q: "What is Global efficiency?", options: ["using digital technology to change and improve how a business works", "countries depending on each other so events in one country affect others", "using global resources, technology, and production systems to reduce cost and improve performance", "how quickly a company sells and replaces its inventory"], answer: 2, cat: "Globalization Impacts & Strategy" },
+            { id: 67, q: "Which concept does this example show: a company uses an international production system to lower costs?", options: ["Motivational CQ", "Global efficiency", "Due diligence", "World Bank"], answer: 1, cat: "Globalization Impacts & Strategy" },
+            { id: 68, q: "What is Local responsiveness?", options: ["changing products, marketing, or practices to fit a country's needs and culture", "the ability to change quickly when the business environment changes", "maintaining long-term financial strength through responsible resource use and profitability", "the World Bank institution providing grants and very low-cost or interest-free loans to the poorest countries"], answer: 0, cat: "Globalization Impacts & Strategy" },
+            { id: 69, q: "Which concept does this example show: a global brand changes advertising for local customers?", options: ["Stock-out", "Cognitive CQ", "Local responsiveness", "Low-context culture"], answer: 2, cat: "Globalization Impacts & Strategy" },
+
+            { id: 70, q: "What is Mercantilism?", options: ["the belief that national wealth depends on gold and silver and exports should exceed imports", "a group of connected businesses and organizations located around an industry or area", "carefully checking a business, market, or partner before a major decision", "understanding and respecting different cultures and knowing how to interact with them"], answer: 0, cat: "International Trade Theories" },
+            { id: 71, q: "Which concept does this example show: a government uses high tariffs and import restrictions to seek a trade surplus?", options: ["Cognitive CQ", "Strategic agility", "Franchising", "Mercantilism"], answer: 3, cat: "International Trade Theories" },
+            { id: 72, q: "What is Trade surplus?", options: ["the theory that countries export goods using their abundant factors of production", "a situation in which exports are greater than imports", "a business taking responsibility for its effects on society and the environment", "meeting today's needs without harming future generations' ability to meet theirs"], answer: 1, cat: "International Trade Theories" },
+            { id: 73, q: "Which concept does this example show: exports are Rs. 100 billion and imports are Rs. 70 billion?", options: ["Cultural diffusion", "Trade surplus", "Social sustainability", "Heckscher–Ohlin theory"], answer: 1, cat: "International Trade Theories" },
+            { id: 74, q: "What is Absolute advantage?", options: ["the ability to change quickly when the business environment changes", "the degree to which people are comfortable with uncertain or unclear situations", "a culture emphasizing group harmony, family, loyalty, and group goals", "producing a good using fewer resources or at lower cost than another country"], answer: 3, cat: "International Trade Theories" },
+            { id: 75, q: "Which concept does this example show: Pakistan efficiently produces rice while Japan efficiently produces cars?", options: ["Liberalization", "Cultural homogenization", "Absolute advantage", "Product life-cycle theory"], answer: 2, cat: "International Trade Theories" },
+            { id: 76, q: "What is Opportunity cost?", options: ["the desire to interact with and learn from different cultures", "the degree to which people are comfortable with uncertain or unclear situations", "promoting genuine environmentally friendly features of a product or service", "what is given up when one choice is made instead of another"], answer: 3, cat: "International Trade Theories" },
+            { id: 77, q: "Which concept does this example show: watching YouTube is given up when a student studies economics?", options: ["Factor endowment", "Opportunity cost", "Economic union", "Strategic agility"], answer: 1, cat: "International Trade Theories" },
+            { id: 78, q: "What is Heckscher–Ohlin theory?", options: ["electronic tagging used to identify and track products", "a culture emphasizing group harmony, family, loyalty, and group goals", "the theory that countries export goods using their abundant factors of production", "physical devices connected to the internet that collect and share data"], answer: 2, cat: "International Trade Theories" },
+            { id: 79, q: "Which concept does this example show: a labour-abundant country exports labour-intensive clothing?", options: ["Exporting", "Heckscher–Ohlin theory", "Corporate social responsibility (CSR)", "Motivational CQ"], answer: 1, cat: "International Trade Theories" },
+            { id: 80, q: "What is Factor endowment?", options: ["selling directly to customers through online channels without traditional middlemen", "principles about what is right and wrong in business decisions and actions", "connection of countries through international money and financial markets", "the productive resources a country has available"], answer: 3, cat: "International Trade Theories" },
+            { id: 81, q: "Which concept does this example show: a country may be labour-abundant, capital-abundant, or land-abundant?", options: ["Factor endowment", "Multinational corporation (MNC)", "G20", "Adaptation"], answer: 0, cat: "International Trade Theories" },
+            { id: 82, q: "What is Leontief paradox?", options: ["the finding that the capital-abundant US exported apparently labour-intensive goods", "using global resources, technology, and production systems to reduce cost and improve performance", "the ability to change quickly when the business environment changes", "using nearly the same product, branding, and marketing strategy across countries"], answer: 0, cat: "International Trade Theories" },
+            { id: 83, q: "Which concept does this example show: US trade data contradicted the prediction of Heckscher–Ohlin theory?", options: ["Leontief paradox", "Due diligence", "Exporting", "Digital economy"], answer: 0, cat: "International Trade Theories" },
+            { id: 84, q: "What is Human capital?", options: ["buying and selling through the internet", "maintaining long-term financial strength through responsible resource use and profitability", "production and delivery steps that take place across different countries", "the knowledge, skills, and abilities of people"], answer: 3, cat: "International Trade Theories" },
+            { id: 85, q: "Which concept does this example show: highly educated workers make a country competitive?", options: ["Conditionality", "Human capital", "Franchising", "Globalization"], answer: 1, cat: "International Trade Theories" },
+            { id: 86, q: "What is Product life-cycle theory?", options: ["a group of connected businesses and organizations located around an industry or area", "carefully listening to understand actual meaning instead of making quick assumptions", "the idea that production locations change as a product becomes older", "loss of some existing jobs because of automation, outsourcing, or relocation"], answer: 2, cat: "International Trade Theories" },
+            { id: 87, q: "Which concept does this example show: a new product begins at home, is exported, and later may be produced abroad?", options: ["Business ethics", "Cross-docking", "Global team", "Product life-cycle theory"], answer: 3, cat: "International Trade Theories" },
+            { id: 88, q: "What is New trade theory?", options: ["a business taking responsibility for its effects on society and the environment", "electronic tagging used to identify and track products", "connection of countries through international money and financial markets", "economies of scale and first-mover advantages help explain trade between similar countries"], answer: 3, cat: "International Trade Theories" },
+            { id: 89, q: "Which concept does this example show: large markets let aircraft firms reduce average cost?", options: ["Smart globalization", "New trade theory", "Motivational CQ", "Folkways"], answer: 1, cat: "International Trade Theories" },
+            { id: 90, q: "What is First-mover advantage?", options: ["growing connection and interdependence of countries through trade, investment, technology, and culture", "economies of scale and first-mover advantages help explain trade between similar countries", "promoting genuine environmentally friendly features of a product or service", "the benefits gained by entering a new industry or market before competitors"], answer: 3, cat: "International Trade Theories" },
+            { id: 91, q: "Which concept does this example show: an early entrant builds a strong brand and gains customers?", options: ["Franchising", "First-mover advantage", "Direct-to-consumer (D2C)", "Economies of scale"], answer: 1, cat: "International Trade Theories" },
+            { id: 92, q: "What is Porter’s Diamond Model?", options: ["physical devices connected to the internet that collect and share data", "countries depending on each other so events in one country affect others", "the ability to change quickly when the business environment changes", "a model explaining national competitive advantage through four interacting factors"], answer: 3, cat: "International Trade Theories" },
+            { id: 93, q: "Which concept does this example show: skilled workers, demanding customers, supporting industries, and rivalry strengthen an industry?", options: ["Vendor-managed inventory (VMI)", "Porter’s Diamond Model", "E-commerce", "Active listening"], answer: 1, cat: "International Trade Theories" },
+            { id: 94, q: "What is Business cluster?", options: ["promoting genuine environmentally friendly features of a product or service", "a group of connected businesses and organizations located around an industry or area", "understanding and working effectively with people from different cultures", "having too little or no stock when customers want to buy"], answer: 1, cat: "International Trade Theories" },
+            { id: 95, q: "Which concept does this example show: Silicon Valley links technology firms, universities, investors, and skilled workers?", options: ["Business cluster", "Social sustainability", "Point of Sale (POS)", "Smart globalization"], answer: 0, cat: "International Trade Theories" },
+
+            { id: 96, q: "What is World Trade Organization (WTO)?", options: ["the organization that provides rules, negotiations, and dispute processes for international trade", "giving a foreign company permission to use intellectual property for a fee or royalty", "supporting people through fair wages, safety, equality, inclusion, and community development", "producing in the home country and selling in another country"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 97, q: "Which concept does this example show: the WTO reviews trade policies and helps settle trade disagreements?", options: ["Cultural negotiation", "Local responsiveness", "World Trade Organization (WTO)", "Mores"], answer: 2, cat: "Global Institutions & Trade Blocs" },
+            { id: 98, q: "What is International Monetary Fund (IMF)?", options: ["an institution that promotes monetary cooperation and financial stability", "countries depending on each other so events in one country affect others", "using digital technology to change and improve how a business works", "the theory that countries export goods using their abundant factors of production"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 99, q: "Which concept does this example show: the IMF assists a country with a shortage of foreign currency?", options: ["Economies of scale", "International Monetary Fund (IMF)", "Absolute advantage", "Inventory turnover"], answer: 1, cat: "Global Institutions & Trade Blocs" },
+            { id: 100, q: "What is Conditionality?", options: ["conditions requiring a country receiving IMF support to make specified economic changes", "investment in and ownership or control of a long-term business in another country", "the knowledge, skills, and abilities of people", "cultures becoming more similar as global brands, media, and lifestyles spread"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 101, q: "Which concept does this example show: an IMF program may require higher revenue and reduced unnecessary spending?", options: ["Sustainability", "IDA", "Conditionality", "International Monetary Fund (IMF)"], answer: 2, cat: "Global Institutions & Trade Blocs" },
+            { id: 102, q: "What is Special Drawing Rights (SDRs)?", options: ["having too little or no stock when customers want to buy", "investment in and ownership or control of a long-term business in another country", "principles about what is right and wrong in business decisions and actions", "international reserve assets created by the IMF"], answer: 3, cat: "Global Institutions & Trade Blocs" },
+            { id: 103, q: "Which concept does this example show: an SDR allocation strengthens a country’s international reserve position?", options: ["Common market", "Special Drawing Rights (SDRs)", "Economies of scale", "Business cluster"], answer: 1, cat: "Global Institutions & Trade Blocs" },
+            { id: 104, q: "What is World Bank?", options: ["an institution focused mainly on long-term development and poverty reduction", "selling directly to customers through online channels without traditional middlemen", "promoting genuine environmentally friendly features of a product or service", "using global resources, technology, and production systems to reduce cost and improve performance"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 105, q: "Which concept does this example show: it funds schools, roads, water systems, health, and agriculture?", options: ["Business ethics", "E-commerce", "Global entrepreneurship", "World Bank"], answer: 3, cat: "Global Institutions & Trade Blocs" },
+            { id: 106, q: "What is IDA?", options: ["the World Bank institution providing grants and very low-cost or interest-free loans to the poorest countries", "producing a product at a lower opportunity cost than another country", "the desire to interact with and learn from different cultures", "a system in which the supplier helps manage inventory at the buyer's location"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 107, q: "Which concept does this example show: the poorest country receives an interest-free development loan?", options: ["Cultural intelligence", "IDA", "Collectivist culture", "Digital transformation"], answer: 1, cat: "Global Institutions & Trade Blocs" },
+            { id: 108, q: "What is G20?", options: ["buying an existing company in a foreign country", "a forum where major economies discuss global economic issues and coordinate policy", "economies of scale and first-mover advantages help explain trade between similar countries", "a decrease in average cost per unit as production increases"], answer: 1, cat: "Global Institutions & Trade Blocs" },
+            { id: 109, q: "Which concept does this example show: members discuss growth, climate finance, food security, and debt?", options: ["Liberalization", "Demand forecasting", "G20", "Active listening"], answer: 2, cat: "Global Institutions & Trade Blocs" },
+            { id: 110, q: "What is Free trade area (FTA)?", options: ["countries depending on each other so events in one country affect others", "selling directly to customers through online channels without traditional middlemen", "an integration level where members remove internal tariffs but keep separate external trade policies", "a culture in which people usually communicate directly, clearly, and explicitly"], answer: 2, cat: "Global Institutions & Trade Blocs" },
+            { id: 111, q: "Which concept does this example show: NAFTA was an example later replaced by USMCA?", options: ["E-commerce", "Free trade area (FTA)", "Green marketing", "Inventory turnover"], answer: 1, cat: "Global Institutions & Trade Blocs" },
+            { id: 112, q: "What is Customs union?", options: ["an integration level with no internal tariffs and a common external tariff", "conditions requiring a country receiving IMF support to make specified economic changes", "a new business created and owned together by a foreign and local company", "international reserve assets created by the IMF"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 113, q: "Which concept does this example show: MERCOSUR is described as an example?", options: ["Franchising", "Customs union", "Cultural diffusion", "Sustainability"], answer: 1, cat: "Global Institutions & Trade Blocs" },
+            { id: 114, q: "What is Common market?", options: ["a forum where major economies discuss global economic issues and coordinate policy", "normal everyday customs whose violation is usually viewed as unusual rather than seriously wrong", "electronic tagging used to identify and track products", "an integration level allowing free movement of goods, services, labour, and capital"], answer: 3, cat: "Global Institutions & Trade Blocs" },
+            { id: 115, q: "Which concept does this example show: the EU single market supports movement of workers and investment?", options: ["Common market", "Cultural diffusion", "Leontief paradox", "Customs union"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 116, q: "What is Economic union?", options: ["producing in the home country and selling in another country", "economies of scale and first-mover advantages help explain trade between similar countries", "an integration level in which members coordinate fiscal and monetary policies", "a model explaining national competitive advantage through four interacting factors"], answer: 2, cat: "Global Institutions & Trade Blocs" },
+            { id: 117, q: "Which concept does this example show: Eurozone countries use the euro and share the European Central Bank?", options: ["Economic union", "Global team", "Sustainability", "New trade theory"], answer: 0, cat: "Global Institutions & Trade Blocs" },
+            { id: 118, q: "What is Political union?", options: ["economies of scale and first-mover advantages help explain trade between similar countries", "studying very large amounts of business information to find patterns and make decisions", "putting goods into standard containers that move between ships, trucks, and trains", "the deepest integration level, with shared political institutions and decision-making"], answer: 3, cat: "Global Institutions & Trade Blocs" },
+            { id: 119, q: "Which concept does this example show: countries cooperate under shared governance and give up more independent control?", options: ["World Bank", "Product life-cycle theory", "Environmental sustainability", "Political union"], answer: 3, cat: "Global Institutions & Trade Blocs" },
+
+            { id: 120, q: "What is Exporting?", options: ["giving a foreign business permission to use a brand, products, and the whole business system", "a culture emphasizing personal achievement, independence, and individual goals", "using global resources, technology, and production systems to reduce cost and improve performance", "producing in the home country and selling in another country"], answer: 3, cat: "Market Entry Strategies" },
+            { id: 121, q: "Which concept does this example show: a Pakistani clothing company sells clothes produced in Pakistan to the UK?", options: ["Exporting", "Job displacement", "Economic sustainability", "Special Drawing Rights (SDRs)"], answer: 0, cat: "Market Entry Strategies" },
+            { id: 122, q: "What is Licensing?", options: ["a system in which the supplier helps manage inventory at the buyer's location", "producing a product at a lower opportunity cost than another country", "giving a foreign business permission to use a brand, products, and the whole business system", "giving a foreign company permission to use intellectual property for a fee or royalty"], answer: 3, cat: "Market Entry Strategies" },
+            { id: 123, q: "Which concept does this example show: a firm permits another company to use its patent or technology?", options: ["Licensing", "Economic union", "Opportunity cost", "Interdependence"], answer: 0, cat: "Market Entry Strategies" },
+            { id: 124, q: "What is Franchising?", options: ["an economy where many activities depend on digital technology, data, and online platforms", "giving a foreign business permission to use a brand, products, and the whole business system", "the ability to change behavior and communication for another culture", "the World Bank institution providing grants and very low-cost or interest-free loans to the poorest countries"], answer: 1, cat: "Market Entry Strategies" },
+            { id: 125, q: "Which concept does this example show: a restaurant allows a foreign owner to operate using its brand and training?", options: ["Political union", "Cognitive CQ", "Franchising", "Local responsiveness"], answer: 2, cat: "Market Entry Strategies" },
+            { id: 126, q: "What is Joint venture?", options: ["a new business created and owned together by a foreign and local company", "a situation in which exports are greater than imports", "the World Bank institution providing grants and very low-cost or interest-free loans to the poorest countries", "calculating costs and adding a profit to set a price"], answer: 0, cat: "Market Entry Strategies" },
+            { id: 127, q: "Which concept does this example show: partners share costs, risks, profits, and decisions?", options: ["Information and Communication Technology (ICT)", "Behavioral CQ", "Comparative advantage", "Joint venture"], answer: 3, cat: "Market Entry Strategies" },
+            { id: 128, q: "What is Strategic alliance?", options: ["cooperation between companies without creating a new company", "the deepest integration level, with shared political institutions and decision-making", "selling directly to customers through online channels without traditional middlemen", "putting goods into standard containers that move between ships, trucks, and trains"], answer: 0, cat: "Market Entry Strategies" },
+            { id: 129, q: "Which concept does this example show: two firms cooperate in distribution, technology, research, or marketing?", options: ["Direct-to-consumer (D2C)", "Strategic alliance", "Global financial integration", "Product life-cycle theory"], answer: 1, cat: "Market Entry Strategies" },
+            { id: 130, q: "What is Acquisition?", options: ["buying an existing company in a foreign country", "carefully listening to understand actual meaning instead of making quick assumptions", "changing a product or marketing approach to fit a local market", "carefully checking a business, market, or partner before a major decision"], answer: 0, cat: "Market Entry Strategies" },
+            { id: 131, q: "Which concept does this example show: the buyer immediately gains workers, customers, buildings, and distribution channels?", options: ["Acquisition", "Mores", "Factor endowment", "Free trade area (FTA)"], answer: 0, cat: "Market Entry Strategies" },
+            { id: 132, q: "What is Greenfield investment?", options: ["storing and using data and software through the internet", "protecting nature and resources by reducing pollution and emissions", "building a completely new foreign operation from the beginning", "norms connected with morality and serious ideas of right and wrong"], answer: 2, cat: "Market Entry Strategies" },
+            { id: 133, q: "Which concept does this example show: a firm buys land, builds a factory, hires workers, and installs machines?", options: ["Free trade area (FTA)", "Interdependence", "Global team", "Greenfield investment"], answer: 3, cat: "Market Entry Strategies" },
+            { id: 134, q: "What is Direct-to-consumer (D2C)?", options: ["changing a product or marketing approach to fit a local market", "selling directly to customers through online channels without traditional middlemen", "removing unnecessary government rules or restrictions on businesses", "a system that records sales when customers buy products"], answer: 1, cat: "Market Entry Strategies" },
+            { id: 135, q: "Which concept does this example show: a company sells through its own website or app?", options: ["Market-based pricing", "Uncertainty avoidance", "Political stability", "Direct-to-consumer (D2C)"], answer: 3, cat: "Market Entry Strategies" },
+            { id: 136, q: "What is Due diligence?", options: ["carefully checking a business, market, or partner before a major decision", "a system in which the supplier helps manage inventory at the buyer's location", "a new business created and owned together by a foreign and local company", "protecting nature and resources by reducing pollution and emissions"], answer: 0, cat: "Market Entry Strategies" },
+            { id: 137, q: "Which concept does this example show: a company studies local laws and a prospective partner before investing?", options: ["Due diligence", "Digital transformation", "Bribery", "Deregulation"], answer: 0, cat: "Market Entry Strategies" },
+
+            { id: 138, q: "What is Folkways?", options: ["normal everyday customs whose violation is usually viewed as unusual rather than seriously wrong", "supporting people through fair wages, safety, equality, inclusion, and community development", "a system in which the supplier helps manage inventory at the buyer's location", "countries depending on each other so events in one country affect others"], answer: 0, cat: "Cross-Cultural Management & CQ" },
+            { id: 139, q: "Which concept does this example show: greeting styles, clothing expectations, and table manners?", options: ["Protectionism", "Joint venture", "Folkways", "Porter’s Diamond Model"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+            { id: 140, q: "What is Mores?", options: ["the World Bank institution providing grants and very low-cost or interest-free loans to the poorest countries", "norms connected with morality and serious ideas of right and wrong", "storing and using data and software through the internet", "calculating costs and adding a profit to set a price"], answer: 1, cat: "Cross-Cultural Management & CQ" },
+            { id: 141, q: "Which concept does this example show: honesty, respect, and not stealing?", options: ["Big Data analytics", "Individualistic culture", "Mores", "Point of Sale (POS)"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+            { id: 142, q: "What is Individualistic culture?", options: ["stable government, clear laws, and predictable policies", "growing connection and interdependence of countries through trade, investment, technology, and culture", "producing a product at a lower opportunity cost than another country", "a culture emphasizing personal achievement, independence, and individual goals"], answer: 3, cat: "Cross-Cultural Management & CQ" },
+            { id: 143, q: "Which concept does this example show: employees communicate directly and focus on personal success?", options: ["Digital economy", "Individualistic culture", "Greenfield investment", "Active listening"], answer: 1, cat: "Cross-Cultural Management & CQ" },
+            { id: 144, q: "What is Collectivist culture?", options: ["growing connection and interdependence of countries through trade, investment, technology, and culture", "a culture emphasizing group harmony, family, loyalty, and group goals", "maintaining long-term financial strength through responsible resource use and profitability", "studying very large amounts of business information to find patterns and make decisions"], answer: 1, cat: "Cross-Cultural Management & CQ" },
+            { id: 145, q: "Which concept does this example show: a manager avoids publicly embarrassing employees?", options: ["Opportunity cost", "Collectivist culture", "Environmental sustainability", "Corporate social responsibility (CSR)"], answer: 1, cat: "Cross-Cultural Management & CQ" },
+            { id: 146, q: "What is High-context culture?", options: ["an institution focused mainly on long-term development and poverty reduction", "a culture emphasizing group harmony, family, loyalty, and group goals", "a culture in which meaning depends on relationships, situation, tone, and shared understanding", "the finding that the capital-abundant US exported apparently labour-intensive goods"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+            { id: 147, q: "Which concept does this example show: a refusal may be communicated indirectly to protect relationships?", options: ["Market saturation", "Vendor-managed inventory (VMI)", "High-context culture", "Comparative advantage"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+            { id: 148, q: "What is Low-context culture?", options: ["a culture treating time as structured and fixed", "a culture in which people usually communicate directly, clearly, and explicitly", "stable government, clear laws, and predictable policies", "reducing restrictions on economic activity"], answer: 1, cat: "Cross-Cultural Management & CQ" },
+            { id: 149, q: "Which concept does this example show: “No, I cannot do this” normally means exactly that?", options: ["Smart globalization", "Low-context culture", "World Trade Organization (WTO)", "Factor endowment"], answer: 1, cat: "Cross-Cultural Management & CQ" },
+            { id: 150, q: "What is Power distance?", options: ["norms connected with morality and serious ideas of right and wrong", "a model explaining national competitive advantage through four interacting factors", "the degree to which people accept differences in authority and power", "growing connection and interdependence of countries through trade, investment, technology, and culture"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+            { id: 151, q: "Which concept does this example show: in a high-power-distance culture employees may hesitate to question a boss?", options: ["Power distance", "Cost-based pricing", "Digital transformation", "Acquisition"], answer: 0, cat: "Cross-Cultural Management & CQ" },
+            { id: 152, q: "What is Cultural literacy?", options: ["protecting nature and resources by reducing pollution and emissions", "understanding and respecting different cultures and knowing how to interact with them", "spread of ideas, customs, food, and languages from one society to another", "using global connections and technology while protecting people, society, and the environment"], answer: 1, cat: "Cross-Cultural Management & CQ" },
+            { id: 153, q: "Which concept does this example show: a manager learns local customs and adapts communication?", options: ["Foreign direct investment (FDI)", "Big Data analytics", "Cultural intelligence", "Cultural literacy"], answer: 3, cat: "Cross-Cultural Management & CQ" },
+            { id: 154, q: "What is Global team?", options: ["the ability to change quickly when the business environment changes", "reaching an agreement between people from different cultural backgrounds", "a culture treating time more flexibly and often prioritizing relationships", "people from different countries or cultural backgrounds working toward a common goal"], answer: 3, cat: "Cross-Cultural Management & CQ" },
+            { id: 155, q: "Which concept does this example show: a manager in the USA works with employees in Pakistan and designers in Japan?", options: ["Global team", "World Bank", "Containerization", "Business cluster"], answer: 0, cat: "Cross-Cultural Management & CQ" },
+            { id: 156, q: "What is Uncertainty avoidance?", options: ["the degree to which people are comfortable with uncertain or unclear situations", "cooperation between companies without creating a new company", "connection of countries through international money and financial markets", "producing a good using fewer resources or at lower cost than another country"], answer: 0, cat: "Cross-Cultural Management & CQ" },
+            { id: 157, q: "Which concept does this example show: some cultures prefer clear rules while others accept flexibility?", options: ["Conditionality", "Joint venture", "Economies of scale", "Uncertainty avoidance"], answer: 3, cat: "Cross-Cultural Management & CQ" },
+            { id: 158, q: "What is Cognitive CQ?", options: ["removing unnecessary government rules or restrictions on businesses", "a system in which the supplier helps manage inventory at the buyer's location", "carefully checking a business, market, or partner before a major decision", "knowledge about different cultures"], answer: 3, cat: "Cross-Cultural Management & CQ" },
+            { id: 159, q: "Which concept does this example show: knowing that a culture prefers formal communication?", options: ["IDA", "Interdependence", "Emerging market", "Cognitive CQ"], answer: 3, cat: "Cross-Cultural Management & CQ" },
+            { id: 160, q: "What is Motivational CQ?", options: ["normal everyday customs whose violation is usually viewed as unusual rather than seriously wrong", "reducing restrictions on economic activity", "countries depending on each other so events in one country affect others", "the desire to interact with and learn from different cultures"], answer: 3, cat: "Cross-Cultural Management & CQ" },
+            { id: 161, q: "Which concept does this example show: a manager wants to understand colleagues from another country?", options: ["Containerization", "New trade theory", "Motivational CQ", "Joint venture"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+            { id: 162, q: "What is Behavioral CQ?", options: ["the theory that countries export goods using their abundant factors of production", "changing products, marketing, or practices to fit a country's needs and culture", "the ability to change behavior and communication for another culture", "meeting today's needs without harming future generations' ability to meet theirs"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+            { id: 163, q: "Which concept does this example show: a leader changes communication style when working with a new culture?", options: ["High-context culture", "Franchising", "Behavioral CQ", "Exporting"], answer: 2, cat: "Cross-Cultural Management & CQ" },
+
+            { id: 164, q: "What is Digital transformation?", options: ["principles about what is right and wrong in business decisions and actions", "using digital technology to change and improve how a business works", "normal everyday customs whose violation is usually viewed as unusual rather than seriously wrong", "the organization that provides rules, negotiations, and dispute processes for international trade"], answer: 1, cat: "Digital Transformation & Global Marketing" },
+            { id: 165, q: "Which concept does this example show: a shop adds a website, app, digital payments, and customer-data analysis?", options: ["Uncertainty avoidance", "Big Data analytics", "Franchising", "Digital transformation"], answer: 3, cat: "Digital Transformation & Global Marketing" },
+            { id: 166, q: "What is Big Data analytics?", options: ["giving a foreign business permission to use a brand, products, and the whole business system", "quickly sorting products at a distribution centre and sending them onward without long storage", "studying very large amounts of business information to find patterns and make decisions", "storing and using data and software through the internet"], answer: 2, cat: "Digital Transformation & Global Marketing" },
+            { id: 167, q: "Which concept does this example show: a company analyzes purchases to identify its most popular product?", options: ["Special Drawing Rights (SDRs)", "Big Data analytics", "Economic sustainability", "Liberalization"], answer: 1, cat: "Digital Transformation & Global Marketing" },
+            { id: 168, q: "What is Cloud computing?", options: ["storing and using data and software through the internet", "having too little or no stock when customers want to buy", "a country whose economy is growing and becoming more developed", "putting goods into standard containers that move between ships, trucks, and trains"], answer: 0, cat: "Digital Transformation & Global Marketing" },
+            { id: 169, q: "Which concept does this example show: employees in different countries access the same information online?", options: ["Cloud computing", "First-mover advantage", "Cognitive CQ", "Job displacement"], answer: 0, cat: "Digital Transformation & Global Marketing" },
+            { id: 170, q: "What is Internet of Things (IoT)?", options: ["an integration level where members remove internal tariffs but keep separate external trade policies", "physical devices connected to the internet that collect and share data", "a forum where major economies discuss global economic issues and coordinate policy", "a culture in which meaning depends on relationships, situation, tone, and shared understanding"], answer: 1, cat: "Digital Transformation & Global Marketing" },
+            { id: 171, q: "Which concept does this example show: a smartwatch sends information to an app?", options: ["Cost-based pricing", "Strategic agility", "Internet of Things (IoT)", "High-context culture"], answer: 2, cat: "Digital Transformation & Global Marketing" },
+            { id: 172, q: "What is Standardization?", options: ["using nearly the same product, branding, and marketing strategy across countries", "giving a foreign business permission to use a brand, products, and the whole business system", "a company that operates in more than one country", "putting goods into standard containers that move between ships, trucks, and trains"], answer: 0, cat: "Digital Transformation & Global Marketing" },
+            { id: 173, q: "Which concept does this example show: a company keeps the same logo and global brand image?", options: ["Individualistic culture", "Political stability", "Deregulation", "Standardization"], answer: 3, cat: "Digital Transformation & Global Marketing" },
+            { id: 174, q: "What is Adaptation?", options: ["a culture emphasizing group harmony, family, loyalty, and group goals", "changing a product or marketing approach to fit a local market", "knowledge about different cultures", "having too little or no stock when customers want to buy"], answer: 1, cat: "Digital Transformation & Global Marketing" },
+            { id: 175, q: "Which concept does this example show: a food company changes flavors for local tastes?", options: ["Franchising", "Sustainability", "Adaptation", "Cultural intelligence"], answer: 2, cat: "Digital Transformation & Global Marketing" },
+            { id: 176, q: "What is Cost-based pricing?", options: ["calculating costs and adding a profit to set a price", "putting goods into standard containers that move between ships, trucks, and trains", "a culture emphasizing personal achievement, independence, and individual goals", "a situation in which exports are greater than imports"], answer: 0, cat: "Digital Transformation & Global Marketing" },
+            { id: 177, q: "Which concept does this example show: Cost + Profit = Price?", options: ["Cultural hybridization", "Information and Communication Technology (ICT)", "Big Data analytics", "Cost-based pricing"], answer: 3, cat: "Digital Transformation & Global Marketing" },
+            { id: 178, q: "What is Market-based pricing?", options: ["the idea that production locations change as a product becomes older", "the knowledge, skills, and abilities of people", "stable government, clear laws, and predictable policies", "setting price by considering willingness to pay and competitors' prices"], answer: 3, cat: "Digital Transformation & Global Marketing" },
+            { id: 179, q: "Which concept does this example show: a company considers local demand and competitor prices?", options: ["Leontief paradox", "Collectivist culture", "Monochronic culture", "Market-based pricing"], answer: 3, cat: "Digital Transformation & Global Marketing" },
+
+            { id: 180, q: "What is Cross-docking?", options: ["a culture treating time more flexibly and often prioritizing relationships", "quickly sorting products at a distribution centre and sending them onward without long storage", "the belief that national wealth depends on gold and silver and exports should exceed imports", "a forum where major economies discuss global economic issues and coordinate policy"], answer: 1, cat: "Global Supply Chain Operations" },
+            { id: 181, q: "Which concept does this example show: Walmart sends shampoo from a distribution centre directly to stores?", options: ["G20", "Cross-docking", "Due diligence", "Stock-out"], answer: 1, cat: "Global Supply Chain Operations" },
+            { id: 182, q: "What is Inventory turnover?", options: ["an integration level where members remove internal tariffs but keep separate external trade policies", "the degree to which people are comfortable with uncertain or unclear situations", "how quickly a company sells and replaces its inventory", "having too little or no stock when customers want to buy"], answer: 2, cat: "Global Supply Chain Operations" },
+            { id: 183, q: "Which concept does this example show: high turnover means products sell quickly and spend less time in storage?", options: ["Inventory turnover", "Social sustainability", "Heckscher–Ohlin theory", "Power distance"], answer: 0, cat: "Global Supply Chain Operations" },
+            { id: 184, q: "What is Point of Sale (POS)?", options: ["the idea that production locations change as a product becomes older", "a system that records sales when customers buy products", "storing and using data and software through the internet", "economies of scale and first-mover advantages help explain trade between similar countries"], answer: 1, cat: "Global Supply Chain Operations" },
+            { id: 185, q: "Which concept does this example show: a shampoo sale is recorded when the customer checks out?", options: ["Green marketing", "Cultural negotiation", "Big Data analytics", "Point of Sale (POS)"], answer: 3, cat: "Global Supply Chain Operations" },
+            { id: 186, q: "What is RFID?", options: ["quickly sorting products at a distribution centre and sending them onward without long storage", "a decrease in average cost per unit as production increases", "electronic tagging used to identify and track products", "the benefits gained by entering a new industry or market before competitors"], answer: 2, cat: "Global Supply Chain Operations" },
+            { id: 187, q: "Which concept does this example show: tags help a business know where products are?", options: ["Cognitive CQ", "Cost-based pricing", "Comparative advantage", "RFID"], answer: 3, cat: "Global Supply Chain Operations" },
+            { id: 188, q: "What is Demand forecasting?", options: ["an integration level in which members coordinate fiscal and monetary policies", "physical devices connected to the internet that collect and share data", "predicting how much customers are likely to buy in the future", "a culture treating time as structured and fixed"], answer: 2, cat: "Global Supply Chain Operations" },
+            { id: 189, q: "Which concept does this example show: last summer’s water sales help estimate future demand?", options: ["Market-based pricing", "Cost-based pricing", "Economic union", "Demand forecasting"], answer: 3, cat: "Global Supply Chain Operations" },
+            { id: 190, q: "What is Stock-out?", options: ["an economy where many activities depend on digital technology, data, and online platforms", "having too little or no stock when customers want to buy", "an integration level allowing free movement of goods, services, labour, and capital", "electronic tagging used to identify and track products"], answer: 1, cat: "Global Supply Chain Operations" },
+            { id: 191, q: "Which concept does this example show: customers cannot buy because the product is unavailable?", options: ["Point of Sale (POS)", "First-mover advantage", "Stock-out", "Environmental sustainability"], answer: 2, cat: "Global Supply Chain Operations" },
+            { id: 192, q: "What is Vendor-managed inventory (VMI)?", options: ["technology used to create, store, send, and receive information", "the belief that national wealth depends on gold and silver and exports should exceed imports", "storing and using data and software through the internet", "a system in which the supplier helps manage inventory at the buyer's location"], answer: 3, cat: "Global Supply Chain Operations" },
+            { id: 193, q: "Which concept does this example show: a beverage supplier sees low stock and arranges replenishment?", options: ["Vendor-managed inventory (VMI)", "Cultural hybridization", "Low-context culture", "Political union"], answer: 0, cat: "Global Supply Chain Operations" },
+
+            { id: 194, q: "What is Business ethics?", options: ["a market already has many customers and finding new ones is difficult", "giving a foreign business permission to use a brand, products, and the whole business system", "selling directly to customers through online channels without traditional middlemen", "principles about what is right and wrong in business decisions and actions"], answer: 3, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 195, q: "Which concept does this example show: a company refuses bribes and does not mislead customers?", options: ["Trade surplus", "Joint venture", "Mores", "Business ethics"], answer: 3, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 196, q: "What is Bribery?", options: ["giving money, gifts, or favors to obtain an unfair business advantage", "government policies that protect domestic businesses from foreign competition", "a culture treating time as structured and fixed", "spread of ideas, customs, food, and languages from one society to another"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 197, q: "Which concept does this example show: a firm pays an official to receive unfair treatment?", options: ["Bribery", "Adaptation", "Due diligence", "Leontief paradox"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 198, q: "What is Green marketing?", options: ["the degree to which people are comfortable with uncertain or unclear situations", "the finding that the capital-abundant US exported apparently labour-intensive goods", "promoting genuine environmentally friendly features of a product or service", "technology used to create, store, send, and receive information"], answer: 2, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 199, q: "Which concept does this example show: a company advertises recycled materials and lower plastic use?", options: ["Cultural negotiation", "Leontief paradox", "Green marketing", "Trade surplus"], answer: 2, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 200, q: "What is Environmental sustainability?", options: ["protecting nature and resources by reducing pollution and emissions", "buying an existing company in a foreign country", "the ability to change quickly when the business environment changes", "international reserve assets created by the IMF"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 201, q: "Which concept does this example show: a business recycles, uses renewable energy, and protects biodiversity?", options: ["Environmental sustainability", "Green marketing", "Business ethics", "Strategic alliance"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 202, q: "What is Social sustainability?", options: ["an integration level in which members coordinate fiscal and monetary policies", "transferring a government-owned business or service to private ownership", "changing products, marketing, or practices to fit a country's needs and culture", "supporting people through fair wages, safety, equality, inclusion, and community development"], answer: 3, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 203, q: "Which concept does this example show: a company provides safe working conditions and equal opportunities?", options: ["Cross-docking", "Social sustainability", "Human capital", "Adaptation"], answer: 1, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 204, q: "What is Economic sustainability?", options: ["an integration level in which members coordinate fiscal and monetary policies", "maintaining long-term financial strength through responsible resource use and profitability", "using global connections and technology while protecting people, society, and the environment", "the theory that countries export goods using their abundant factors of production"], answer: 1, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 205, q: "Which concept does this example show: a firm balances innovation, productivity, and long-term profit?", options: ["Active listening", "International Monetary Fund (IMF)", "Economic sustainability", "Cultural negotiation"], answer: 2, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 206, q: "What is Global entrepreneurship?", options: ["a business taking responsibility for its effects on society and the environment", "starting and managing a business while seeking opportunities in international markets", "the belief that national wealth depends on gold and silver and exports should exceed imports", "producing a good using fewer resources or at lower cost than another country"], answer: 1, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 207, q: "Which concept does this example show: an online startup sells through e-commerce to customers abroad?", options: ["Global entrepreneurship", "Low-context culture", "International Monetary Fund (IMF)", "Polychronic culture"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 208, q: "What is Cultural negotiation?", options: ["reaching an agreement between people from different cultural backgrounds", "a model explaining national competitive advantage through four interacting factors", "building a completely new foreign operation from the beginning", "a culture treating time as structured and fixed"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 209, q: "Which concept does this example show: negotiators respect values, communicate clearly, and seek a win-win outcome?", options: ["Market saturation", "Cultural negotiation", "Greenfield investment", "Stock-out"], answer: 1, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 210, q: "What is Monochronic culture?", options: ["a market already has many customers and finding new ones is difficult", "setting price by considering willingness to pay and competitors' prices", "removing unnecessary government rules or restrictions on businesses", "a culture treating time as structured and fixed"], answer: 3, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 211, q: "Which concept does this example show: people value punctuality, schedules, one task at a time, and deadlines?", options: ["Monochronic culture", "Market saturation", "Human capital", "Greenfield investment"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 212, q: "What is Polychronic culture?", options: ["selling directly to customers through online channels without traditional middlemen", "a culture treating time more flexibly and often prioritizing relationships", "countries depending on each other so events in one country affect others", "physical devices connected to the internet that collect and share data"], answer: 1, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 213, q: "Which concept does this example show: people handle several activities and may be flexible with schedules?", options: ["Polychronic culture", "Trade surplus", "G20", "Cross-docking"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 214, q: "What is Active listening?", options: ["an integration level allowing free movement of goods, services, labour, and capital", "growing connection and interdependence of countries through trade, investment, technology, and culture", "carefully listening to understand actual meaning instead of making quick assumptions", "setting price by considering willingness to pay and competitors' prices"], answer: 2, cat: "Business Ethics, Sustainability & Negotiation" },
+            { id: 215, q: "Which concept does this example show: a negotiator checks meaning before reacting to an indirect statement?", options: ["Active listening", "Political stability", "Uncertainty avoidance", "IDA"], answer: 0, cat: "Business Ethics, Sustainability & Negotiation" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
