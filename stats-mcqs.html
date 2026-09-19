@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Mastery - 200 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-chart-pie text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">StatsMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">200 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/200</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-graduation-cap text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Statistics with 200 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    Comprehensive practice covering Descriptive & Inferential Statistics, Graphs, Central Tendency, Dispersion, Correlation, Regression, Probability, Sampling, and Hypothesis Testing.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Category / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Topics (Questions 1 - 200)</option>
+                            <option value="1-10">1. Intro & Basic Concepts (1 - 10)</option>
+                            <option value="11-20">2. Data Types & Primary/Secondary (11 - 20)</option>
+                            <option value="21-40">3. Frequency Distribution & Numerical (21 - 40)</option>
+                            <option value="41-50">4. Bar Charts & Pie Charts (41 - 50)</option>
+                            <option value="51-60">5. Graphs & Coordinate Geometry (51 - 60)</option>
+                            <option value="61-70">6. Advanced Charts & Proportions (61 - 70)</option>
+                            <option value="71-90">7. Central Tendency (Mean, Median, Mode) (71 - 90)</option>
+                            <option value="91-110">8. Dispersion, Variance & Standard Deviation (91 - 110)</option>
+                            <option value="111-120">9. Correlation Analysis (111 - 120)</option>
+                            <option value="121-130">10. Regression Analysis (121 - 130)</option>
+                            <option value="131-150">11. Probability Rules & Numerical (131 - 150)</option>
+                            <option value="151-170">12. Data Reliability & Sampling Techniques (151 - 170)</option>
+                            <option value="171-180">13. Hypothesis Testing & Errors (171 - 180)</option>
+                            <option value="181-200">14. Z-test, T-test, ANOVA & Chi-Square (181 - 200)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 200</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-200)" min="1" max="200" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Statistics</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 200</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/200</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Statistics Quiz • 200 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (200 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "What is statistics?", options: ["Guesswork", "Science of collecting and analyzing data", "Copying competitors", "Ignoring customers"], answer: 1, cat: "Intro & Basic Concepts" },
+            { id: 2, q: "Why is statistics important?", options: ["Helps in decision making", "Avoid teamwork", "Reduces profits", "Stops innovation"], answer: 0, cat: "Intro & Basic Concepts" },
+            { id: 3, q: "Who uses statistics?", options: ["Researchers and businesses", "Only politicians", "Only customers", "Competitors only"], answer: 0, cat: "Intro & Basic Concepts" },
+            { id: 4, q: "Which type of statistics summarizes past data?", options: ["Descriptive", "Inferential", "Guesswork", "Random"], answer: 0, cat: "Intro & Basic Concepts" },
+            { id: 5, q: "Which type of statistics predicts population from sample?", options: ["Descriptive", "Inferential", "Guesswork", "Random"], answer: 1, cat: "Intro & Basic Concepts" },
+            { id: 6, q: "If 50 customers’ waiting times are collected to find average, which type of statistics is used?", options: ["Descriptive", "Inferential", "Guesswork", "Random"], answer: 0, cat: "Intro & Basic Concepts" },
+            { id: 7, q: "A sample of 100 students is used to predict performance of 1000 students. Which type of statistics?", options: ["Descriptive", "Inferential", "Guesswork", "Random"], answer: 1, cat: "Intro & Basic Concepts" },
+            { id: 8, q: "If average call waiting time is 5 minutes, and company decides to add staff, which type of statistics is applied?", options: ["Descriptive", "Inferential", "Guesswork", "Random"], answer: 0, cat: "Intro & Basic Concepts" },
+            { id: 9, q: "Why is guesswork not enough in business?", options: ["Lacks accuracy", "Improve profits", "Builds teamwork", "Ensures innovation"], answer: 0, cat: "Intro & Basic Concepts" },
+            { id: 10, q: "What is the first step in statistics?", options: ["Collecting data", "Ignoring Customers", "Analyzing data", "Avoiding teamwork"], answer: 0, cat: "Intro & Basic Concepts" },
+
+            { id: 11, q: "What is data in statistics?", options: ["Facts and figures for analysis", "Company logo", "Vision statement", "Customer survey"], answer: 0, cat: "Data Types" },
+            { id: 12, q: "Why is data important?", options: ["Helps identify patterns", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Data Types" },
+            { id: 13, q: "Who collects primary data?", options: ["Researcher", "Competitor", "Politician", "Customer"], answer: 0, cat: "Data Types" },
+            { id: 14, q: "What is secondary data?", options: ["Data collected by others", "Data collected First hand", "Company logo", "Vision statement"], answer: 0, cat: "Data Types" },
+            { id: 15, q: "A researcher interviews 50 people. What type of data?", options: ["Secondary data", "Primary data", "Random", "Guesswork"], answer: 1, cat: "Data Types" },
+            { id: 16, q: "Company uses census data for analysis. What type of data?", options: ["Secondary data", "Primary data", "Random", "Guesswork"], answer: 0, cat: "Data Types" },
+            { id: 17, q: "A survey of 200 customers is conducted by researcher. What type of data?", options: ["Secondary data", "Primary data", "Random", "Guesswork"], answer: 1, cat: "Data Types" },
+            { id: 18, q: "What is quantitative data?", options: ["Data in words", "Data in numbers", "Vision statement", "Company logo"], answer: 1, cat: "Data Types" },
+            { id: 19, q: "What is qualitative data?", options: ["Data in words", "Data in numbers", "Vision statement", "Company logo"], answer: 0, cat: "Data Types" },
+            { id: 20, q: "Who uses qualitative data?", options: ["Researcher in interviews", "Politician", "Competitor", "Customers only"], answer: 0, cat: "Data Types" },
+
+            { id: 21, q: "What is frequency distribution?", options: ["Organizing data into categories", "Ignoring raw data", "Copying competitors", "Avoiding teamwork"], answer: 0, cat: "Frequency Distribution" },
+            { id: 22, q: "Why is frequency distribution used?", options: ["To organize and analyze data", "To confuse data", "To reduce profits", "To avoid teamwork"], answer: 0, cat: "Frequency Distribution" },
+            { id: 23, q: "Which type of frequency distribution is best for small datasets?", options: ["Ungrouped", "Grouped", "Cumulative", "Random"], answer: 0, cat: "Frequency Distribution" },
+            { id: 24, q: "Which type of frequency distribution is best for large datasets?", options: ["Grouped", "Ungrouped", "Cumulative", "Random"], answer: 0, cat: "Frequency Distribution" },
+            { id: 25, q: "What does cumulative frequency show?", options: ["Running total of frequencies", "Only one value", "Ignoring customers", "Copying competitors"], answer: 0, cat: "Frequency Distribution" },
+            { id: 26, q: "Numerical: Data = 10,20,20,30,10,40,20. Frequency of 20?", options: ["1", "2", "3", "4"], answer: 2, cat: "Frequency Distribution" },
+            { id: 27, q: "Numerical: Data = 5,4,7,8,9,10,5,7,8,9. Frequency of 7?", options: ["1", "2", "3", "4"], answer: 1, cat: "Frequency Distribution" },
+            { id: 28, q: "Numerical: Class intervals 0–10=2, 10–20=4, 20–30=4. Total frequency?", options: ["8", "10", "12", "14"], answer: 1, cat: "Frequency Distribution" },
+            { id: 29, q: "What is the importance of frequency distribution?", options: ["Easy understanding", "Better comparison", "Decision making", "All of the above"], answer: 3, cat: "Frequency Distribution" },
+            { id: 30, q: "Who uses frequency distribution?", options: ["Statisticians and researchers", "Politicians", "Competitors", "Customers only"], answer: 0, cat: "Frequency Distribution" },
+
+            { id: 31, q: "What is frequency distribution?", options: ["Organizing data into categories", "Ignoring raw data", "Copying competitors", "Avoiding teamwork"], answer: 0, cat: "Frequency Distribution" },
+            { id: 32, q: "Why is frequency distribution used?", options: ["To organize and analyze data", "To confuse data", "To reduce profits", "To avoid teamwork"], answer: 0, cat: "Frequency Distribution" },
+            { id: 33, q: "Which type of frequency distribution is best for small datasets?", options: ["Ungrouped", "Grouped", "Cumulative", "Random"], answer: 0, cat: "Frequency Distribution" },
+            { id: 34, q: "Which type of frequency distribution is best for large datasets?", options: ["Grouped", "Ungrouped", "Cumulative", "Random"], answer: 0, cat: "Frequency Distribution" },
+            { id: 35, q: "What does cumulative frequency show?", options: ["Running total of frequencies", "Only one value", "Ignoring customers", "Copying competitors"], answer: 0, cat: "Frequency Distribution" },
+            { id: 36, q: "Numerical: Data = 10,20,20,30,10,40,20. Frequency of 20?", options: ["1", "2", "3", "4"], answer: 2, cat: "Frequency Distribution" },
+            { id: 37, q: "Numerical: Data = 5,4,7,8,9,10,5,7,8,9. Frequency of 7?", options: ["1", "2", "3", "4"], answer: 1, cat: "Frequency Distribution" },
+            { id: 38, q: "Numerical: Class intervals 0–10=2, 10–20=4, 20–30=4. Total frequency?", options: ["8", "10", "12", "14"], answer: 1, cat: "Frequency Distribution" },
+            { id: 39, q: "What is the importance of frequency distribution?", options: ["Easy understanding", "Better comparison", "Decision making", "All of the above"], answer: 3, cat: "Frequency Distribution" },
+            { id: 40, q: "Who uses frequency distribution?", options: ["Statisticians and researchers", "Politicians", "Competitors", "Customers only"], answer: 0, cat: "Frequency Distribution" },
+
+            { id: 41, q: "What is a bar chart?", options: ["Graph with bars showing frequency", "Circle diagram", "Company logo", "Vision statement"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 42, q: "What is a pie chart?", options: ["Circle divided into angles", "Graph with bars", "Company logo", "Vision statement"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 43, q: "Why are charts important?", options: ["Easy comparison of categories", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 44, q: "Numerical: If total frequency=12, Red=1. Angle for Red?", options: ["30°", "60°", "90°", "120°"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 45, q: "Numerical: If Yellow=2 out of 12, percentage?", options: ["16.6%", "20%", "25%", "30%"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 46, q: "Numerical: If Green=4 out of 12, angle?", options: ["120°", "90°", "60°", "30°"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 47, q: "Which chart is best for showing proportions?", options: ["Pie chart", "Bar chart", "Histogram", "Line graph"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 48, q: "Which chart is best for showing frequency comparison?", options: ["Bar chart", "Pie chart", "Histogram", "Line graph"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 49, q: "Who uses charts in statistics?", options: ["Businesses and researchers", "Politicians only", "Customers only", "Competitors only"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 50, q: "What is the main difference between bar chart and pie chart?", options: ["Bars vs circle angles", "Both same", "Company logo", "Vision statement"], answer: 0, cat: "Bar & Pie Charts" },
+
+            { id: 51, q: "What is a graph in statistics?", options: ["Diagram showing relationship between variables", "Company logo", "Vision statement", "Random guess"], answer: 0, cat: "Graphs & Variables" },
+            { id: 52, q: "Which axis represents independent variable?", options: ["X-axis", "Y-axis", "Z-axis", "None"], answer: 0, cat: "Graphs & Variables" },
+            { id: 53, q: "Which axis represents dependent variable?", options: ["Y-axis", "X-axis", "Z-axis", "None"], answer: 0, cat: "Graphs & Variables" },
+            { id: 54, q: "Why are graphs important?", options: ["Easy visualization of data", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Graphs & Variables" },
+            { id: 55, q: "Numerical: If water intake (cups) is plotted against days, which axis shows days?", options: ["X-axis", "Y-axis", "Z-axis", "None"], answer: 0, cat: "Graphs & Variables" },
+            { id: 56, q: "Numerical: Screen time vs sleep hours graph shows negative slope. What does it mean?", options: ["More screen time reduces sleep", "More screen time increases sleep", "No relation", "Random guess"], answer: 0, cat: "Graphs & Variables" },
+            { id: 57, q: "Numerical: If graph shows points (2,4), (3,6), (4,8), what relation exists?", options: ["Positive linear", "Negative linear", "No relation", "Random guess"], answer: 0, cat: "Graphs & Variables" },
+            { id: 58, q: "Which graph shows both positive and negative values?", options: ["Coordinate graph", "Bar chart", "Pie chart", "Histogram"], answer: 0, cat: "Graphs & Variables" },
+            { id: 59, q: "Who uses graphs in statistics?", options: ["Researchers and analysts", "Politicians only", "Customers only", "Competitors only"], answer: 0, cat: "Graphs & Variables" },
+            { id: 60, q: "What is the benefit of graphs?", options: ["Quick understanding of data", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Graphs & Variables" },
+
+            { id: 61, q: "What is a bar chart?", options: ["Graph with bars showing frequency", "Circle diagram", "Company logo", "Vision statement"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 62, q: "What is a pie chart?", options: ["Circle divided into angles", "Graph with bars", "Company logo", "Vision statement"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 63, q: "Why are charts important?", options: ["Easy comparison of categories", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 64, q: "Numerical: If total frequency=12, Red=1. Angle for Red?", options: ["30°", "60°", "90°", "120°"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 65, q: "Numerical: If Yellow=2 out of 12, percentage?", options: ["16.6%", "20%", "25%", "30%"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 66, q: "Numerical: If Green=4 out of 12, angle?", options: ["120°", "90°", "60°", "30°"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 67, q: "Which chart is best for showing proportions?", options: ["Pie chart", "Bar chart", "Histogram", "Line graph"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 68, q: "Which chart is best for showing frequency comparison?", options: ["Bar chart", "Pie chart", "Histogram", "Line graph"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 69, q: "Who uses charts in statistics?", options: ["Businesses and researchers", "Politicians only", "Customers only", "Competitors only"], answer: 0, cat: "Bar & Pie Charts" },
+            { id: 70, q: "What is the main difference between bar chart and pie chart?", options: ["Bars vs circle angles", "Both same", "Company logo", "Vision statement"], answer: 0, cat: "Bar & Pie Charts" },
+
+            { id: 71, q: "What is arithmetic mean?", options: ["Sum of values ÷ number of values", "Middle value", "Most frequent value", "Random guess"], answer: 0, cat: "Central Tendency" },
+            { id: 72, q: "What is median?", options: ["Middle value of ordered data", "Average of values", "Most frequent value", "Random guess"], answer: 0, cat: "Central Tendency" },
+            { id: 73, q: "What is mode?", options: ["Most frequent value", "Average of values", "Middle value", "Random guess"], answer: 0, cat: "Central Tendency" },
+            { id: 74, q: "Numerical: Data = 20,30,40,50,60; f=5,8,10,4,3. Mean?", options: ["37.33", "40", "35", "30"], answer: 0, cat: "Central Tendency" },
+            { id: 75, q: "Numerical: Data = 12,18,25,30,35,40,45. Median?", options: ["25", "30", "35", "40"], answer: 1, cat: "Central Tendency" },
+            { id: 76, q: "Numerical: Data = 8,10,10,15,18,22,25,30. Median?", options: ["15", "16.5", "18", "20"], answer: 1, cat: "Central Tendency" },
+            { id: 77, q: "Which measure is affected most by extreme values?", options: ["Mean", "Median", "Mode", "None"], answer: 0, cat: "Central Tendency" },
+            { id: 78, q: "Which measure is best for categorical data?", options: ["Mode", "Mean", "Median", "None"], answer: 0, cat: "Central Tendency" },
+            { id: 79, q: "Which measure divides data into two equal halves?", options: ["Median", "Mean", "Mode", "None"], answer: 0, cat: "Central Tendency" },
+            { id: 80, q: "Which measure is called average?", options: ["Mean", "Median", "Mode", "None"], answer: 0, cat: "Central Tendency" },
+
+            { id: 81, q: "What is a class interval?", options: ["Range of values grouped together", "Single value", "Company logo", "Vision statement"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 82, q: "What is cumulative frequency?", options: ["Running total of frequencies", "Single value", "Random guess", "None"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 83, q: "Numerical: Class 0–10=5, 10–20=9, 20–30=12, 30–40=8, 40–50=6. Total frequency?", options: ["40", "30", "20", "50"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 84, q: "Numerical: Same data, ½n=20. Median class?", options: ["20–30", "10–20", "30–40", "40–50"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 85, q: "Numerical: Median = 20+(20–14)/12×10. Answer?", options: ["25", "20", "30", "22"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 86, q: "Which formula is used for grouped median?", options: ["L+(½n–C.F)/f×h", "Σx/n", "Σfx/Σf", "None"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 87, q: "Which value is L in median formula?", options: ["Lower limit of median class", "Upper limit of median class", "Frequency", "None"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 88, q: "What is h in median formula?", options: ["Class size", "Frequency", "Cumulative frequency", "None"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 89, q: "What is f in median formula?", options: ["Frequency of median class", "Cumulative frequency", "Class size", "None"], answer: 0, cat: "Grouped Data & Median" },
+            { id: 90, q: "Why is median useful?", options: ["Not affected by extreme values", "Easy to calculate", "Always equal to mean", "None"], answer: 0, cat: "Grouped Data & Median" },
+
+            { id: 91, q: "What is range?", options: ["Maximum – Minimum", "Average of values", "Most frequent value", "Random guess"], answer: 0, cat: "Dispersion & SD" },
+            { id: 92, q: "What is variance?", options: ["Average of squared deviations from mean", "Middle value", "Most frequent value", "Random guess"], answer: 0, cat: "Dispersion & SD" },
+            { id: 93, q: "What is standard deviation?", options: ["Square root of variance", "Average of values", "Middle value", "Random guess"], answer: 0, cat: "Dispersion & SD" },
+            { id: 94, q: "Why is dispersion important?", options: ["Shows spread of data", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Dispersion & SD" },
+            { id: 95, q: "Which measure is simplest?", options: ["Range", "Variance", "Standard deviation", "None"], answer: 0, cat: "Dispersion & SD" },
+            { id: 96, q: "Numerical: Data = 40,12. Range?", options: ["28", "30", "25", "20"], answer: 0, cat: "Dispersion & SD" },
+            { id: 97, q: "Numerical: Company A data → Variance=50. Standard deviation?", options: ["7.07", "10", "5", "8"], answer: 0, cat: "Dispersion & SD" },
+            { id: 98, q: "Numerical: Company B variance=200. Standard deviation?", options: ["14.14", "10", "20", "15"], answer: 0, cat: "Dispersion & SD" },
+            { id: 99, q: "Which company is more risky if SD is higher?", options: ["Company B", "Company A", "Both same", "None"], answer: 0, cat: "Dispersion & SD" },
+            { id: 100, q: "Which measure is best for consistency check?", options: ["Standard deviation", "Mean", "Median", "Mode"], answer: 0, cat: "Dispersion & SD" },
+
+            { id: 101, q: "What does variance measure?", options: ["Spread of data around mean", "Middle value", "Most frequent value", "None"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 102, q: "What does SD show?", options: ["Average deviation from mean", "Middle value", "Most frequent value", "None"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 103, q: "Numerical: Data values 50,60,55,70,65. Mean=60. Σ(x–x̄)²=250. Variance?", options: ["50", "60", "55", "45"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 104, q: "Numerical: Same data. Standard deviation?", options: ["7.07", "10", "8", "6"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 105, q: "Numerical: Company B data Σ(x–x̄)²=1000, n=5. Variance?", options: ["200", "100", "250", "150"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 106, q: "Numerical: Same data. Standard deviation?", options: ["14.14", "12", "10", "15"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 107, q: "Which measure is used in risk analysis?", options: ["Standard deviation", "Mean", "Median", "Mode"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 108, q: "Which measure is used in comparing performance of companies?", options: ["Variance and SD", "Mean", "Median", "Mode"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 109, q: "Why is range less reliable?", options: ["Uses only extreme values", "Uses all values", "Always equal to mean", "None"], answer: 0, cat: "Variance & Risk Analysis" },
+            { id: 110, q: "Why is SD more reliable than range?", options: ["Uses all data values", "Uses only extremes", "Always equal to mean", "None"], answer: 0, cat: "Variance & Risk Analysis" },
+
+            { id: 111, q: "What does correlation measure?", options: ["Relationship between two variables", "Middle value", "Spread of data", "Random guess"], answer: 0, cat: "Correlation Analysis" },
+            { id: 112, q: "What is Pearson’s correlation coefficient symbol?", options: ["r", "x̄", "σ", "μ"], answer: 0, cat: "Correlation Analysis" },
+            { id: 113, q: "What is the range of correlation coefficient?", options: ["–1 to +1", "0 to 1", "–∞ to +∞", "0 to 100"], answer: 0, cat: "Correlation Analysis" },
+            { id: 114, q: "Numerical: If r=+0.9, what type of correlation?", options: ["Strong positive", "Strong negative", "No correlation", "Random guess"], answer: 0, cat: "Correlation Analysis" },
+            { id: 115, q: "Numerical: If r=–0.8, what type of correlation?", options: ["Strong negative", "Strong positive", "No correlation", "Random guess"], answer: 0, cat: "Correlation Analysis" },
+            { id: 116, q: "Numerical: If r=0, what does it mean?", options: ["No correlation", "Strong positive", "Strong negative", "Random guess"], answer: 0, cat: "Correlation Analysis" },
+            { id: 117, q: "Which correlation means variables move in same direction?", options: ["Positive correlation", "Negative correlation", "No correlation", "Random guess"], answer: 0, cat: "Correlation Analysis" },
+            { id: 118, q: "Which correlation means variables move in opposite direction?", options: ["Negative correlation", "Positive correlation", "No correlation", "Random guess"], answer: 0, cat: "Correlation Analysis" },
+            { id: 119, q: "Who uses correlation in business?", options: ["Analysts and researchers", "Politicians only", "Customers only", "Competitors only"], answer: 0, cat: "Correlation Analysis" },
+            { id: 120, q: "Why is correlation important?", options: ["Helps in prediction", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Correlation Analysis" },
+
+            { id: 121, q: "What is regression analysis?", options: ["Predicting dependent variable from independent variable", "Middle value", "Spread of data", "Random guess"], answer: 0, cat: "Regression Analysis" },
+            { id: 122, q: "What is regression equation?", options: ["Y = a + bX", "Σx/n", "Σfx/Σf", "L+(½n–C.F)/f×h"], answer: 0, cat: "Regression Analysis" },
+            { id: 123, q: "In regression, what is Y?", options: ["Dependent variable", "Independent variable", "Mean", "Mode"], answer: 0, cat: "Regression Analysis" },
+            { id: 124, q: "In regression, what is X?", options: ["Independent variable", "Dependent variable", "Mean", "Mode"], answer: 0, cat: "Regression Analysis" },
+            { id: 125, q: "Numerical: If a=2, b=3, X=4. Y=?", options: ["14", "12", "10", "8"], answer: 0, cat: "Regression Analysis" },
+            { id: 126, q: "Numerical: If regression equation Y=1.3+0.9X, find Y when X=6.", options: ["6.7", "7.7", "8.7", "9.7"], answer: 0, cat: "Regression Analysis" },
+            { id: 127, q: "Numerical: If regression equation Y=5+2X, find Y when X=10.", options: ["25", "20", "15", "30"], answer: 0, cat: "Regression Analysis" },
+            { id: 128, q: "What does slope (b) represent?", options: ["Change in Y per unit change in X", "Middle value", "Spread of data", "Random guess"], answer: 0, cat: "Regression Analysis" },
+            { id: 129, q: "What does intercept (a) represent?", options: ["Value of Y when X=0", "Middle value", "Spread of data", "Random guess"], answer: 0, cat: "Regression Analysis" },
+            { id: 130, q: "Why is regression important?", options: ["Helps in forecasting", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Regression Analysis" },
+
+            { id: 131, q: "What is probability?", options: ["Favourable outcomes ÷ Total outcomes", "Middle value", "Spread of data", "Random guess"], answer: 0, cat: "Probability Concepts" },
+            { id: 132, q: "What is the probability scale?", options: ["0 to 1", "–1 to +1", "0 to 100", "–∞ to +∞"], answer: 0, cat: "Probability Concepts" },
+            { id: 133, q: "What does probability 0 mean?", options: ["Impossible event", "Certain event", "Random guess", "None"], answer: 0, cat: "Probability Concepts" },
+            { id: 134, q: "What does probability 1 mean?", options: ["Certain event", "Impossible event", "Random guess", "None"], answer: 0, cat: "Probability Concepts" },
+            { id: 135, q: "Numerical: Tossing a coin. Probability of Head?", options: ["0.5", "0.25", "0.75", "1"], answer: 0, cat: "Probability Concepts" },
+            { id: 136, q: "Numerical: Rolling a die. Probability of getting 4?", options: ["1/6", "1/4", "1/3", "1/2"], answer: 0, cat: "Probability Concepts" },
+            { id: 137, q: "Numerical: Rolling a die. Probability of getting even number?", options: ["3/6 = 0.5", "2/6 = 0.33", "4/6 = 0.66", "1/6 = 0.16"], answer: 0, cat: "Probability Concepts" },
+            { id: 138, q: "What is classical probability?", options: ["Equally likely outcomes", "Based on past data", "Based on intuition", "Random guess"], answer: 0, cat: "Probability Concepts" },
+            { id: 139, q: "What is empirical probability?", options: ["Based on past data", "Equally likely outcomes", "Based on intuition", "Random guess"], answer: 0, cat: "Probability Concepts" },
+            { id: 140, q: "What is subjective probability?", options: ["Based on intuition or belief", "Equally likely outcomes", "Based on past data", "Random guess"], answer: 0, cat: "Probability Concepts" },
+
+            { id: 141, q: "Numerical: Bag has 5 black and 10 white balls. Probability of black?", options: ["1/3", "1/2", "2/3", "1/4"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 142, q: "Numerical: Same bag. Probability of white?", options: ["2/3", "1/3", "1/2", "1/4"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 143, q: "Numerical: Deck of 52 cards. Probability of King?", options: ["4/52 = 1/13", "1/26", "1/52", "2/13"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 144, q: "Numerical: Lottery has 10 prizes and 90 blanks. Probability of prize?", options: ["0.1", "0.9", "0.5", "0.25"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 145, q: "Numerical: Same lottery. Probability of blank?", options: ["0.9", "0.1", "0.5", "0.25"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 146, q: "What is addition rule of probability?", options: ["P(A∪B)=P(A)+P(B)–P(A∩B)", "P(A∩B)=P(A)×P(B)", "Σx/n", "None"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 147, q: "What is multiplication rule of probability?", options: ["P(A∩B)=P(A)×P(B)", "P(A∪B)=P(A)+P(B)", "Σfx/Σf", "None"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 148, q: "Numerical: Probability of A=0.4, B=0.3. If independent, P(A∩B)?", options: ["0.12", "0.7", "0.1", "0.5"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 149, q: "Numerical: Probability of A=0.5, B=0.5. If mutually exclusive, P(A∪B)?", options: ["1.0", "0.25", "0.75", "0.5"], answer: 0, cat: "Probability Rules & Application" },
+            { id: 150, q: "Why is probability important in business?", options: ["Reduces risk and uncertainty", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Probability Rules & Application" },
+
+            { id: 151, q: "What is data reliability?", options: ["Accuracy, consistency, trustworthiness", "Random guess", "Middle value", "Spread of data"], answer: 0, cat: "Data Reliability & Sampling" },
+            { id: 152, q: "Why is reliable data important?", options: ["Better decisions", "Reduce risks", "Understand customers", "All of the above"], answer: 3, cat: "Data Reliability & Sampling" },
+            { id: 153, q: "Which factor improves reliability?", options: ["Proper sample selection", "Ignoring customers", "Copying competitors", "Random guess"], answer: 0, cat: "Data Reliability & Sampling" },
+            { id: 154, q: "How can businesses reduce errors?", options: ["Increase sample size", "Use correct sampling methods", "Collect accurate information", "All of the above"], answer: 3, cat: "Data Reliability & Sampling" },
+            { id: 155, q: "Numerical: Restaurant collects feedback from 100 customers. If 80 responses are consistent, reliability percentage?", options: ["80%", "70%", "60%", "50%"], answer: 0, cat: "Data Reliability & Sampling" },
+            { id: 156, q: "Numerical: Company surveys 500 customers, 450 responses match. Reliability?", options: ["90%", "80%", "70%", "60%"], answer: 0, cat: "Data Reliability & Sampling" },
+            { id: 157, q: "Numerical: Out of 200 surveys, 150 are accurate. Reliability?", options: ["75%", "80%", "70%", "65%"], answer: 0, cat: "Data Reliability & Sampling" },
+            { id: 158, q: "What is simple random sampling?", options: ["Every member has equal chance", "Only one group selected", "Based on intuition", "Random guess"], answer: 0, cat: "Data Reliability & Sampling" },
+            { id: 159, q: "Example of simple random sampling?", options: ["Bank selects 500 customers randomly", "Interview every 10th customer", "Survey students from each faculty", "Select company branches"], answer: 0, cat: "Data Reliability & Sampling" },
+            { id: 160, q: "What is systematic sampling?", options: ["Selecting members at fixed interval after random start", "Every member equal chance", "Dividing into strata", "Dividing into clusters"], answer: 0, cat: "Data Reliability & Sampling" },
+
+            { id: 161, q: "Example of systematic sampling?", options: ["Interview every 10th supermarket customer", "Bank selects 500 customers randomly", "Survey students from faculties", "Select company branches"], answer: 0, cat: "Sampling Techniques" },
+            { id: 162, q: "What is stratified sampling?", options: ["Dividing population into groups and selecting samples from each", "Selecting clusters", "Random guess", "None"], answer: 0, cat: "Sampling Techniques" },
+            { id: 163, q: "Example of stratified sampling?", options: ["Surveying students from Business, IT, Engineering", "Interview every 10th customer", "Select company branches", "Random guess"], answer: 0, cat: "Sampling Techniques" },
+            { id: 164, q: "What is cluster sampling?", options: ["Dividing population into clusters and selecting some clusters", "Dividing into strata", "Random guess", "None"], answer: 0, cat: "Sampling Techniques" },
+            { id: 165, q: "Example of cluster sampling?", options: ["Selecting company branches for employee surveys", "Surveying students from faculties", "Interview every 10th customer", "Random guess"], answer: 0, cat: "Sampling Techniques" },
+            { id: 166, q: "Numerical: Population=1000, sample=100 selected randomly. Sampling method?", options: ["Simple random", "Systematic", "Stratified", "Cluster"], answer: 0, cat: "Sampling Techniques" },
+            { id: 167, q: "Numerical: Population=2000, every 20th person selected. Sampling method?", options: ["Systematic", "Random", "Stratified", "Cluster"], answer: 0, cat: "Sampling Techniques" },
+            { id: 168, q: "Numerical: Population=3000, divided into 3 groups, 100 selected from each. Sampling method?", options: ["Stratified", "Random", "Systematic", "Cluster"], answer: 0, cat: "Sampling Techniques" },
+            { id: 169, q: "Numerical: Company has 10 branches, selects 3 branches for survey. Sampling method?", options: ["Cluster", "Random", "Stratified", "Systematic"], answer: 0, cat: "Sampling Techniques" },
+            { id: 170, q: "Why is sampling important?", options: ["Saves time and cost", "Provides reliable results", "Reduces bias", "All of the above"], answer: 3, cat: "Sampling Techniques" },
+
+            { id: 171, q: "What is a hypothesis?", options: ["Assumption about population parameter", "Middle value", "Spread of data", "Random guess"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 172, q: "What is null hypothesis (H₀)?", options: ["No change/difference", "Change exists", "Random guess", "None"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 173, q: "What is alternate hypothesis (H₁)?", options: ["Change/difference exists", "No change", "Random guess", "None"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 174, q: "What is Type I error?", options: ["Reject H₀ when true", "Fail to reject H₀ when false", "Random guess", "None"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 175, q: "What is Type II error?", options: ["Fail to reject H₀ when false", "Reject H₀ when true", "Random guess", "None"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 176, q: "Numerical: If α=0.05, what is probability of Type I error?", options: ["5%", "1%", "10%", "0%"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 177, q: "Numerical: If α=0.01, what is probability of Type I error?", options: ["1%", "5%", "10%", "0%"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 178, q: "Numerical: If sample mean=52, population mean=50, difference=2. What hypothesis is tested?", options: ["Alternate (H₁)", "Null (H₀)", "Random guess", "None"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 179, q: "Why is hypothesis testing important?", options: ["Validates claims with evidence", "Avoid teamwork", "Reduce profits", "Stop innovation"], answer: 0, cat: "Hypothesis Testing" },
+            { id: 180, q: "Which step comes first in hypothesis testing?", options: ["State H₀ & H₁", "Select α", "Choose test", "Decision rule"], answer: 0, cat: "Hypothesis Testing" },
+
+            { id: 181, q: "What is Z-test used for?", options: ["When population σ is known", "When σ unknown", "For categorical data", "Random guess"], answer: 0, cat: "Z-test & T-test" },
+            { id: 182, q: "Formula for Z-test?", options: ["(X̄–μ)/(σ/√n)", "Σx/n", "Σfx/Σf", "None"], answer: 0, cat: "Z-test & T-test" },
+            { id: 183, q: "Numerical: μ=50,000, X̄=52,000, σ=6000, n=36. Z=?", options: ["2", "1.5", "3", "0.5"], answer: 0, cat: "Z-test & T-test" },
+            { id: 184, q: "Numerical: If Z=2, critical ±1.96. Decision?", options: ["Reject H₀", "Accept H₀", "Random guess", "None"], answer: 0, cat: "Z-test & T-test" },
+            { id: 185, q: "Numerical: If Z=1.5, critical ±1.96. Decision?", options: ["Accept H₀", "Reject H₀", "Random guess", "None"], answer: 0, cat: "Z-test & T-test" },
+            { id: 186, q: "What is T-test used for?", options: ["When population σ unknown", "When σ known", "For categorical data", "Random guess"], answer: 0, cat: "Z-test & T-test" },
+            { id: 187, q: "Formula for T-test?", options: ["(x̄–μ)/(s/√n)", "Σx/n", "Σfx/Σf", "None"], answer: 0, cat: "Z-test & T-test" },
+            { id: 188, q: "Numerical: μ=50, x̄=51, s=2.71, n=10. t=?", options: ["1.17", "2.5", "30.5", "0.5"], answer: 0, cat: "Z-test & T-test" },
+            { id: 189, q: "Numerical: If t=1.17, critical=2.262. Decision?", options: ["Accept H₀", "Reject H₀", "Random guess", "None"], answer: 0, cat: "Z-test & T-test" },
+            { id: 190, q: "Numerical: If t=3, critical=2.262. Decision?", options: ["Reject H₀", "Accept H₀", "Random guess", "None"], answer: 0, cat: "Z-test & T-test" },
+
+            { id: 191, q: "What does ANOVA test?", options: ["Difference between 3 or more means", "Difference between 2 means", "Middle value", "Random guess"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 192, q: "Formula for F-ratio?", options: ["MSB/MSW", "Σx/n", "Σfx/Σf", "None"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 193, q: "Numerical: SSB=800, df₁=2. MSB=?", options: ["400", "200", "100", "800"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 194, q: "Numerical: SSW=24, df₂=9. MSW=?", options: ["2.66", "3", "4", "22.66"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 195, q: "Numerical: F=400/2.66=150, critical=4.26. Decision?", options: ["Reject H₀", "Accept H₀", "Random guess", "None"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 196, q: "What does Chi-Square test analyze?", options: ["Frequencies (observed vs expected)", "Means", "Variance", "Random guess"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 197, q: "Formula for Chi-Square?", options: ["Σ(O–E)²/E", "Σx/n", "Σfx/Σf", "None"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 198, q: "Numerical: Coffee preference data χ²=8.32, critical=7.813. Decision?", options: ["Reject H₀", "Accept H₀", "Random guess", "None"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 199, q: "Numerical: If χ²=6, critical=7.813. Decision?", options: ["Accept H₀", "Reject H₀", "Random guess", "None"], answer: 0, cat: "ANOVA & Chi-Square" },
+            { id: 200, q: "Numerical: If observed=40, expected=30. (O–E)²/E=?", options: ["3.33", "2.5", "4", "53.33"], answer: 0, cat: "ANOVA & Chi-Square" }
+        ];
+
+        // --- APP STATE ---
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of 200`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= 200) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered category.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
