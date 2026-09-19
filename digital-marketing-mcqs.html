@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Marketing Mastery - 210 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-bullhorn text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">MarketingMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">210 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/210</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-hashtag text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Digital Marketing with 210 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    Comprehensive practice covering Digital Strategy & RACE, Traditional vs Digital Marketing, SEO, Keyword Research, Social Media, Content Creation & Tools, Email Marketing, SEM/PPC & Display Ads, A/B Testing, Personal Branding, and Cybersecurity & Campaign Collaboration.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 210)</option>
+                            <option value="1-19">1. Digital Marketing Foundations & Strategy (1 - 19)</option>
+                            <option value="20-37">2. Traditional vs Digital Marketing (20 - 37)</option>
+                            <option value="38-49">3. Website & Technical SEO (38 - 49)</option>
+                            <option value="50-65">4. On-Page, Off-Page & Local SEO (50 - 65)</option>
+                            <option value="66-80">5. Keyword Research & Search Intent (66 - 80)</option>
+                            <option value="81-90">6. Keyword Strategy, PPC Copy & Ad Quality (81 - 90)</option>
+                            <option value="91-108">7. Social Media Marketing (91 - 108)</option>
+                            <option value="109-122">8. Content Creation & Formats (109 - 122)</option>
+                            <option value="123-137">9. Content Planning, Distribution & Tools (123 - 137)</option>
+                            <option value="138-154">10. Email Marketing (138 - 154)</option>
+                            <option value="155-168">11. SEM, PPC & Display Advertising (155 - 168)</option>
+                            <option value="169-177">12. A/B Testing (169 - 177)</option>
+                            <option value="178-192">13. Personal Branding & Digital Ethics (178 - 192)</option>
+                            <option value="193-210">14. Cybersecurity, Data Ethics & Campaign Collaboration (193 - 210)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 210</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-210)" min="1" max="210" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Marketing</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 210</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/210</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Digital Marketing Quiz • 210 Comprehensive Questions</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (210 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "A startup wants to reach new markets while talking WITH customers, not at them. Which tool set fits best?", options: ["Social media and email", "Newspapers and brochures", "Billboards and posters", "TV and radio"], answer: 0, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 2, q: "A business sees its click numbers the same day an ad runs. Which benefit of digital marketing is this?", options: ["Reach new markets", "Engage customers", "Turn interest into sales", "Measure results in real time"], answer: 3, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 3, q: "What is the key difference between owned media and paid media?", options: ["Owned media never reaches customers", "Paid media is controlled by Google", "Owned media costs more than paid media", "The brand controls owned media without paying per display"], answer: 3, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 4, q: "A customer hears about a brand, buys once, then returns again and again. This path is the...", options: ["Customer journey", "Search intent", "Value proposition", "Content calendar"], answer: 0, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 5, q: "Which pair correctly matches a hardware device with a software program?", options: ["Website and email", "Ad and poster", "Customer and channel", "Tablet and browser"], answer: 3, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 6, q: "A partner earns a commission on every sale she brings to your store. This is...", options: ["Email automation", "Earned media", "Display advertising", "Affiliate and partnership marketing"], answer: 3, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 7, q: "Which RACE stage best describes a campaign whose only goal is bringing previous buyers back every month?", options: ["Engage", "Reach", "Convert", "Act"], answer: 0, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 8, q: "A brand offers members-only discounts that no other brand gives online. Which OVP benefit is this?", options: ["Personalization", "Exclusivity", "Convenience", "Credibility"], answer: 1, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 9, q: "A manager writes the objective 'get more customers this year.' Which SMART element is clearly missing?", options: ["Emotional", "Ethical", "Specific", "Sensorial"], answer: 2, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 10, q: "Which software category watches what people say about a brand on social platforms?", options: ["Content management", "Keyword planner", "Social listening", "CRM"], answer: 2, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 11, q: "A team's objectives are unclear and results are hard to measure. Which fix pair fits both?", options: ["SMART objectives and dashboards", "Higher budgets and more ads", "Print media and radio", "More channels and longer campaigns"], answer: 0, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 12, q: "Which scenario best shows the Convert stage of RACE?", options: ["A customer shares a post with friends", "A visitor reads a blog for ten minutes", "A user sees a brand post on Facebook", "A visitor signs up for a free trial after clicking an ad"], answer: 3, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 13, q: "Which example is best classified as earned media?", options: ["A sponsored Instagram post", "A paid search ad", "A customer shares your post and it spreads without payment", "Your company blog"], answer: 2, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 14, q: "Tesco Homeplus's billboard campaign combined physical posters with...", options: ["Email newsletters", "Radio jingles", "QR codes that linked to an online store", "TV spots"], answer: 2, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 15, q: "Which sequence correctly turns a stranger into a repeat buyer using RACE?", options: ["Convert, Engage, Reach, Act", "Engage, Convert, Act, Reach", "Reach, Act, Convert, Engage", "Act, Reach, Engage, Convert"], answer: 2, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 16, q: "Which is the correct order of the strategic process in the notes?", options: ["Deliver, Define, Select", "Define Opportunity, Select Approach, Deliver and Optimize", "Optimize, Select, Define", "Select Approach, Define Opportunity, Optimize"], answer: 1, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 17, q: "eBay connects individual sellers with individual buyers globally. Which model from the notes describes this?", options: ["OVP", "B2C", "C2C", "RACE"], answer: 2, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 18, q: "A strategy fails because teams lack skills and departments do not share data. Which fix pair addresses this?", options: ["More ads and lower prices", "New branding and new colors", "Clear roles and cross-department collaboration", "Faster pages and fewer menus"], answer: 2, cat: "Digital Marketing Foundations & Strategy" },
+            { id: 19, q: "Why do the notes tie the future of digital marketing to personalization, automation and ethical data use?", options: ["Tailored, automated experiences depend on trusted customer data", "Ethics matter only for print advertising", "Personal data has no business value", "Automation removes the need for data"], answer: 0, cat: "Digital Marketing Foundations & Strategy" },
+
+            { id: 20, q: "A campaign uses only newspapers, radio and billboards with no internet. This is...", options: ["Digital marketing", "Affiliate marketing", "Traditional marketing", "Email marketing"], answer: 2, cat: "Traditional vs Digital Marketing" },
+            { id: 21, q: "Which is radio advertising's main strength according to the notes?", options: ["Visual storytelling", "Detailed content and permanence", "Real-time measurement", "Local targeting and frequency"], answer: 3, cat: "Traditional vs Digital Marketing" },
+            { id: 22, q: "Which channel gives repeated exposure but can carry only short messages?", options: ["Email", "Outdoor advertising", "Print media", "Direct mail"], answer: 1, cat: "Traditional vs Digital Marketing" },
+            { id: 23, q: "Which is listed as a weak point of traditional marketing?", options: ["Real-time data", "No precise targeting", "Low production cost", "Two-way communication"], answer: 1, cat: "Traditional vs Digital Marketing" },
+            { id: 24, q: "How is direct mail described in the notes?", options: ["Cheap, digital and instant", "Personal outreach that is costly and declining", "Global and scalable", "Visual and viral"], answer: 1, cat: "Traditional vs Digital Marketing" },
+            { id: 25, q: "A magazine ad is best matched with which traditional strength?", options: ["Real-time tracking", "Precise targeting", "Frequency and local reach", "Detailed content and permanence"], answer: 3, cat: "Traditional vs Digital Marketing" },
+            { id: 26, q: "Which pair correctly contrasts traditional and digital communication?", options: ["Two-way vs one-way", "One-way vs two-way", "Silent vs loud", "Paid vs free"], answer: 1, cat: "Traditional vs Digital Marketing" },
+            { id: 27, q: "In the paid, owned and earned framework, which statement is correct?", options: ["All three perform the same job", "Paid drives reach, owned builds loyalty, earned adds credibility", "Paid builds loyalty, owned drives reach", "Earned drives reach, paid adds credibility"], answer: 1, cat: "Traditional vs Digital Marketing" },
+            { id: 28, q: "Which example best shows traditional and digital integration?", options: ["An email links to a blog post", "A website shows banner ads", "A billboard carries no contact information", "A TV commercial shows a QR code leading to the online store"], answer: 3, cat: "Traditional vs Digital Marketing" },
+            { id: 29, q: "Which challenge belongs to digital channels rather than traditional ones?", options: ["Long campaign cycles", "Slow and indirect feedback", "Digital fatigue and ad-blocking", "High production costs"], answer: 2, cat: "Traditional vs Digital Marketing" },
+            { id: 30, q: "Digital channels are 'dynamic and adaptable' while traditional channels are 'static.' What does this mean in practice?", options: ["Digital campaigns change quickly from analytics; traditional ones are hard to change", "Digital ads can never be changed", "Both change at exactly the same speed", "Traditional ads adapt faster than digital ones"], answer: 0, cat: "Traditional vs Digital Marketing" },
+            { id: 31, q: "A brand keeps one consistent message across print, TV and Instagram for one smooth experience. This is...", options: ["Keyword-driven sales", "Earned-only strategy", "Silent marketing", "Omnichannel experience"], answer: 3, cat: "Traditional vs Digital Marketing" },
+            { id: 32, q: "Which combination uses paid, owned and earned media for reach AND credibility?", options: ["Boost a post, publish on your own site, let customer reviews spread", "Only buy TV commercials", "Only reply to emails", "Only print flyers"], answer: 0, cat: "Traditional vs Digital Marketing" },
+            { id: 33, q: "Traditional measurement relies on estimates rather than real-time data. Which consequence follows directly?", options: ["Reach is perfectly targeted", "Decisions are instant and precise", "Costs always decrease", "Decisions depend on guesses and slow feedback"], answer: 3, cat: "Traditional vs Digital Marketing" },
+            { id: 34, q: "Coca-Cola combines offline sponsorships with digital hashtags and influencer campaigns. What is the main purpose?", options: ["Replacing social media", "Maximum visibility by joining awareness and engagement", "Avoiding measurement", "Eliminating all digital spending"], answer: 1, cat: "Traditional vs Digital Marketing" },
+            { id: 35, q: "Which outcome is the best example of earned media?", options: ["You pay for a sponsored post", "You email your subscriber list", "You publish on your own blog", "A customer's post about your brand goes viral without payment"], answer: 3, cat: "Traditional vs Digital Marketing" },
+            { id: 36, q: "Why do the notes recommend mixing traditional awareness with digital engagement?", options: ["Traditional builds trust while digital produces measurable engagement", "Both channels work only on television", "Traditional is cheaper and digital is slower", "Digital replaces the need for trust"], answer: 0, cat: "Traditional vs Digital Marketing" },
+            { id: 37, q: "What is the conclusion of this chapter's comparison?", options: ["Traditional channels are always cheaper", "Traditional and digital channels complete each other in an integrated strategy", "Digital makes traditional channels useless", "Only one channel should ever be used"], answer: 1, cat: "Traditional vs Digital Marketing" },
+
+            { id: 38, q: "SEO, social media and paid search all connect back to the...", options: ["Poster", "Billboard", "Website", "Radio spot"], answer: 2, cat: "Website & Technical SEO" },
+            { id: 39, q: "The lock icon in a browser mainly signals that the site uses...", options: ["Alt text", "HTTPS", "SEO", "Sitemap"], answer: 1, cat: "Website & Technical SEO" },
+            { id: 40, q: "What does a search engine crawler do?", options: ["Sends marketing emails", "Blocks all visitors permanently", "Reads and indexes pages so they appear in results", "Designs the website logo"], answer: 2, cat: "Website & Technical SEO" },
+            { id: 41, q: "Clear, simple menus that keep visitors from getting lost reflect the principle of...", options: ["Clear and concise navigation", "Analytics integration", "Consistent branding", "HTTPS security"], answer: 0, cat: "Website & Technical SEO" },
+            { id: 42, q: "Descriptive URLs, internal links and consistent metadata are rules of good...", options: ["Cold email", "Website structure", "Print design", "Paid media"], answer: 1, cat: "Website & Technical SEO" },
+            { id: 43, q: "In this chapter, SEO is a long-term process built on relevance, user experience and...", options: ["Authority", "Ad budget", "Price", "Team size"], answer: 0, cat: "Website & Technical SEO" },
+            { id: 44, q: "Why is the website called the digital hub?", options: ["It replaces social media entirely", "It only stores product photos", "It is always the cheapest channel", "It integrates and links all other marketing channels"], answer: 3, cat: "Website & Technical SEO" },
+            { id: 45, q: "A site works perfectly on phones, yet Google indexes almost none of its pages. What is the most likely missing piece?", options: ["Longer written content", "More navigation menus", "More colors and images", "Technical setup such as sitemap and crawlability"], answer: 3, cat: "Website & Technical SEO" },
+            { id: 46, q: "Backlinks from other websites belong to which pillar of SEO?", options: ["Off-page", "On-page", "Technical", "Local"], answer: 0, cat: "Website & Technical SEO" },
+            { id: 47, q: "Image alt text is part of which pillar of SEO?", options: ["On-page", "Earned", "Technical", "Off-page"], answer: 0, cat: "Website & Technical SEO" },
+            { id: 48, q: "robots.txt tells Google...", options: ["The ad budget", "How to design the logo", "What it may or may not crawl", "The office address"], answer: 2, cat: "Website & Technical SEO" },
+            { id: 49, q: "Google being able to save your pages is called...", options: ["Filtering", "Indexing", "Boosting", "Spamming"], answer: 1, cat: "Website & Technical SEO" },
+
+            { id: 50, q: "A user types 'buy running shoes.' Which search intent is this?", options: ["Informational", "Emotional", "Transactional", "Navigational"], answer: 2, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 51, q: "A user types 'YouTube login.' Which search intent is this?", options: ["Navigational", "Informational", "Geo-targeted", "Transactional"], answer: 0, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 52, q: "In Google Search Console, the number of times people SAW your site in results is...", options: ["Bounce rate", "Impressions", "Dwell time", "Clicks"], answer: 1, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 53, q: "Which is a local SEO step from the notes?", options: ["Keep NAP consistent", "Increase ad spend", "Buy quality backlinks", "Boost top posts"], answer: 0, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 54, q: "Google Business Profile is the current name of...", options: ["Google My Business", "Google Ads", "Search Console", "Google Analytics"], answer: 0, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 55, q: "Why do search engines treat backlinks as trust votes?", options: ["They raise the ad budget automatically", "They replace written content", "Quality links from trusted sites raise your authority", "They improve page colors"], answer: 2, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 56, q: "Which is listed as a common SEO mistake?", options: ["Keyword stuffing", "Optimizing for mobile", "Building quality backlinks", "Updating content regularly"], answer: 0, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 57, q: "Dwell time in the notes measures...", options: ["How many backlinks exist", "How fast pages load", "How long visitors stay on the page", "How many ads are shown"], answer: 2, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 58, q: "Content freshness and keyword alignment belong to which pillar?", options: ["Off-page SEO", "Technical SEO", "Local SEO", "On-page SEO"], answer: 3, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 59, q: "Which is the correct order of the SEO implementation steps?", options: ["Tracking, on-page, audit, local SEO", "Keyword research, audit, tracking, backlinks", "Backlinks, tracking, audit, on-page", "Audit, keyword research, on-page, backlinks, local SEO, tracking"], answer: 3, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 60, q: "Duplicate content and low-quality spam backlinks most likely cause...", options: ["Better dwell time", "Higher impressions", "Higher ad rank", "Ranking penalties and lost trust"], answer: 3, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 61, q: "A local shop appears in 'near me' searches with photos and reviews. Which set of actions most likely produced this?", options: ["Paid for display ads only", "Bought thousands of followers", "Claimed Google Business Profile, consistent NAP, photos and reviews", "Ran a radio campaign"], answer: 2, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 62, q: "Canonical tags matter most when...", options: ["The website changes fonts", "The brand runs email ads", "Similar pages exist and Google must know the original", "The site has no images"], answer: 2, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 63, q: "Structured data helps Google display...", options: ["More advertisements", "Faster downloads", "Rich snippets", "Higher budgets"], answer: 2, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 64, q: "Which statement about keyword density is correct according to the notes?", options: ["Density replaces content quality", "Maximizing density is the fastest ranking rule", "Focus on user intent and readability, not density", "Density decides the ad cost"], answer: 2, cat: "On-Page, Off-Page & Local SEO" },
+            { id: 65, q: "Google Search Console reports an indexing issue on half your pages. Which step was most likely skipped?", options: ["Submitting the sitemap", "Writing meta keywords", "Adding image alt text", "Building more backlinks"], answer: 0, cat: "On-Page, Off-Page & Local SEO" },
+
+            { id: 66, q: "Keywords are described in the notes as the bridge between...", options: ["Customer intent and digital visibility", "TV and radio audiences", "Price and profit", "Staff and office costs"], answer: 0, cat: "Keyword Research & Search Intent" },
+            { id: 67, q: "'Shoes' — short, broad and highly competitive — is a...", options: ["Short-tail keyword", "Stopword", "Long-tail keyword", "Branded keyword"], answer: 0, cat: "Keyword Research & Search Intent" },
+            { id: 68, q: "Which tool gives search volume, competition and CPC data?", options: ["Google Earth", "Canva", "Excel", "Google Ads Keyword Planner"], answer: 3, cat: "Keyword Research & Search Intent" },
+            { id: 69, q: "What do negative keywords do?", options: ["Replace all positive keywords", "Automatically lower every bid", "Make headlines stronger", "Stop your ads from showing for unwanted words"], answer: 3, cat: "Keyword Research & Search Intent" },
+            { id: 70, q: "Ubersuggest is best known for...", options: ["Generating long-tail keyword ideas", "Printing posters", "Sending email campaigns", "Editing video content"], answer: 0, cat: "Keyword Research & Search Intent" },
+            { id: 71, q: "Why does keyword research matter at the Reach and Act stages of RACE?", options: ["It attracts visitors and encourages engagement", "It replaces all content", "It only reduces costs", "It works only for print"], answer: 0, cat: "Keyword Research & Search Intent" },
+            { id: 72, q: "Two keywords have equal volume and relevance. Which criterion from the notes breaks the tie?", options: ["Posting time", "Ad color", "Font style", "Intent and cost efficiency"], answer: 3, cat: "Keyword Research & Search Intent" },
+            { id: 73, q: "'Pizza near Lahore' is an example of a...", options: ["Branded keyword", "Stopword", "Geo-targeted keyword", "Short-tail keyword"], answer: 2, cat: "Keyword Research & Search Intent" },
+            { id: 74, q: "Finding keywords competitors rank for but you do not is called...", options: ["Negative keyword removal", "Keyword gap discovery", "Seed expansion", "Intent grouping"], answer: 1, cat: "Keyword Research & Search Intent" },
+            { id: 75, q: "What is the main risk of skipping negative keywords?", options: ["Wasting budget on irrelevant clicks", "Losing all organic rankings", "Adding quality backlinks", "Raising the conversion rate"], answer: 0, cat: "Keyword Research & Search Intent" },
+            { id: 76, q: "Why do long-tail keywords usually convert better?", options: ["They always have the highest volume", "They are shorter and cheaper", "They are more specific, so user intent is clearer", "They need no content"], answer: 2, cat: "Keyword Research & Search Intent" },
+            { id: 77, q: "Which comparison of 'best running shoes for men' vs 'shoes' is correct?", options: ["The long-tail always has higher volume", "They are identical in intent", "The short-tail always converts better", "The long-tail is more specific and conversion-oriented; the short-tail is broader but more competitive"], answer: 3, cat: "Keyword Research & Search Intent" },
+            { id: 78, q: "Which order matches the keyword research process?", options: ["Objectives, seed keywords, tools, grouping, competition and volume, selection", "Tools, objectives, grouping", "Selection, grouping, objectives", "Seed keywords, objectives, selection"], answer: 0, cat: "Keyword Research & Search Intent" },
+            { id: 79, q: "Why is relying only on high-volume keywords a mistake?", options: ["It builds backlinks by itself", "Volume without matching intent and competition can waste budget and miss conversions", "It automatically lowers CPC", "High volume always means high profit"], answer: 1, cat: "Keyword Research & Search Intent" },
+            { id: 80, q: "A brand wants to avoid direct, costly competition on keywords. Which tactic helps most?", options: ["Bid on every possible keyword", "Study competitor gaps and refine the keyword list", "Remove all keywords", "Copy competitor ads word for word"], answer: 1, cat: "Keyword Research & Search Intent" },
+
+            { id: 81, q: "In the pillar-cluster model, cluster pages link back to the...", options: ["Competitor homepage", "Email list", "Ad account", "Pillar page"], answer: 3, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 82, q: "Ad copy means the...", options: ["Video length", "Image size", "Landing page code", "Text of the ad"], answer: 3, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 83, q: "Informational keywords and blog posts map to which journey stage?", options: ["Decision", "Retention", "Awareness", "Payment"], answer: 2, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 84, q: "CTA stands for...", options: ["Click Through Average", "Customer Target Area", "Call To Action", "Cost To Advertise"], answer: 2, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 85, q: "According to the notes, what most improves Quality Score and ad rank?", options: ["Relevance between ad copy, keyword and landing page", "Longer headlines", "Higher bids alone", "Brighter images"], answer: 0, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 86, q: "Transactional and branded keywords on landing pages match which journey stage?", options: ["Awareness", "Decision", "Retention", "Consideration"], answer: 1, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 87, q: "How does PowerPoint help keyword planning?", options: ["Sending the ads automatically", "Hosting webinars", "Tracking sales in real time", "Visualizing keyword clusters and content hierarchies with flowcharts"], answer: 3, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 88, q: "A landing page converts poorly despite a relevant keyword. Which fix addresses intent and conversion best?", options: ["Lengthen the text", "Align the page with the journey stage and add a clear CTA", "Remove all CTAs", "Add more images"], answer: 1, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 89, q: "Why do primary keywords belong in titles, meta descriptions and headings?", options: ["They replace internal links", "They are the strongest visibility and click signals; secondary keywords fit naturally in the body", "They make the text shorter", "They hide content from users"], answer: 1, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+            { id: 90, q: "Which metric trio best shows whether a keyword-based ad campaign is profitable?", options: ["Font size, color and layout", "Impressions alone", "CTR, CPC and conversion rate", "Backlinks, images and reviews"], answer: 2, cat: "Keyword Strategy, PPC Copy & Ad Quality" },
+
+            { id: 91, q: "Meta Suite manages which platforms as one ecosystem?", options: ["Facebook, Instagram and Messenger", "Google and Amazon ads", "TikTok, Snapchat and X", "LinkedIn and YouTube"], answer: 0, cat: "Social Media Marketing" },
+            { id: 92, q: "Why does user-generated content build authenticity and trust?", options: ["Real customers share real experiences instead of brand claims", "It is always paid for", "It is fully automated", "It avoids all content"], answer: 0, cat: "Social Media Marketing" },
+            { id: 93, q: "A hybrid social media approach means...", options: ["Deleting underperforming posts", "Using paid ads only", "Using organic posts only", "Posting organic content and boosting the best posts"], answer: 3, cat: "Social Media Marketing" },
+            { id: 94, q: "Micro-influencers often deliver...", options: ["Guaranteed sales", "The largest possible reach", "Higher engagement with focused audiences", "Free television exposure"], answer: 2, cat: "Social Media Marketing" },
+            { id: 95, q: "During a social media crisis, the notes say delete criticism only if it...", options: ["Contains typos", "Sounds negative", "Is written by a stranger", "Breaks policy"], answer: 3, cat: "Social Media Marketing" },
+            { id: 96, q: "In the clothing brand case, the Meta Ads objective was...", options: ["Brand awareness only", "Follower growth", "Website traffic and conversions", "Email signups"], answer: 2, cat: "Social Media Marketing" },
+            { id: 97, q: "A fitness brand targets users aged 20-40 interested in health within 10 km. Which two targeting types combine?", options: ["Emotional and visual", "Demographic and behavioral", "Paid and organic", "Lookalike and custom"], answer: 1, cat: "Social Media Marketing" },
+            { id: 98, q: "Which metric equals actions taken after clicking, such as purchases or sign-ups?", options: ["Impressions", "Frequency", "Reach", "Conversion rate"], answer: 3, cat: "Social Media Marketing" },
+            { id: 99, q: "Why do brands build lookalike audiences?", options: ["To remove old followers", "To find people similar to existing customers", "To lower every cost", "To replace all content"], answer: 1, cat: "Social Media Marketing" },
+            { id: 100, q: "The university page posts testimonials every Monday morning. This mainly shows the value of...", options: ["Buying followers", "Deleting old content", "Consistency and timing", "Ignoring insights"], answer: 2, cat: "Social Media Marketing" },
+            { id: 101, q: "Which Meta Suite feature handles messages and comments in one place?", options: ["Lookalike tool", "Creator Studio", "Unified inbox", "Auction Insights"], answer: 2, cat: "Social Media Marketing" },
+            { id: 102, q: "Declining organic reach happens mainly because...", options: ["Posts are too short", "Brands post too often", "Ads are banned", "Platform algorithms change"], answer: 3, cat: "Social Media Marketing" },
+            { id: 103, q: "What is the point of 'balancing automation with authenticity'?", options: ["Automate everything completely", "Use automation for efficiency but keep messages genuine", "Remove automation entirely", "Never respond to audiences"], answer: 1, cat: "Social Media Marketing" },
+            { id: 104, q: "Which sequence best matches social media's role across RACE?", options: ["Hashtags for Reach, comments for Act, CTAs for Convert, community management for Engage", "Posts for Convert, ads for Engage", "Messaging for Reach, hashtags for Convert", "Ads for Reach only, likes for Convert"], answer: 0, cat: "Social Media Marketing" },
+            { id: 105, q: "A sponsored post co-authored with an influencer on Meta requires...", options: ["No labels at all", "Secret payments", "Full disclosure through branded content tools", "Deleting all comments"], answer: 2, cat: "Social Media Marketing" },
+            { id: 106, q: "Which response best handles a social media crisis?", options: ["Pause the whole brand", "Monitor mentions, respond with empathy, keep criticism unless it breaks policy", "Ignore all comments", "Delete every negative post"], answer: 1, cat: "Social Media Marketing" },
+            { id: 107, q: "Why is ROI difficult to measure for engagement campaigns?", options: ["Engagement never drives sales", "Engagement happens only offline", "Engagement creates no data", "Engagement's business value, like loyalty and trust, is not a direct sales number"], answer: 3, cat: "Social Media Marketing" },
+            { id: 108, q: "A post with strong organic engagement is boosted and reaches five times more users at low cost. This illustrates...", options: ["The organic-plus-paid hybrid strategy", "Pure earned media only", "Email drip campaigns", "Display advertising"], answer: 0, cat: "Social Media Marketing" },
+
+            { id: 109, q: "Which pairing of future trend and application is correct?", options: ["Short-form video with Reels and Shorts", "AI personalization with cassette ads", "AR/VR with print posters", "Voice search with fax messages"], answer: 0, cat: "Content Creation & Formats" },
+            { id: 110, q: "Carousel posts work best for...", options: ["Hosting offline events", "Sending private emails", "Storytelling and tutorials", "Printing catalogs"], answer: 2, cat: "Content Creation & Formats" },
+            { id: 111, q: "Live streams are mainly used for...", options: ["Offline sales calls", "Scheduled mass emails", "Letter campaigns", "Real-time interaction such as launches and Q&A"], answer: 3, cat: "Content Creation & Formats" },
+            { id: 112, q: "Infographics present...", options: ["Only raw text", "Only audio files", "Unorganized data dumps", "Complex information as simple visual graphics"], answer: 3, cat: "Content Creation & Formats" },
+            { id: 113, q: "A persona is a...", options: ["Profile of an ideal customer", "Fixed ad budget", "Company logo", "Single social post"], answer: 0, cat: "Content Creation & Formats" },
+            { id: 114, q: "Subtitles in videos mainly help viewers who watch...", options: ["From print", "Only photos", "In the dark", "Without sound"], answer: 3, cat: "Content Creation & Formats" },
+            { id: 115, q: "Which step checks quality, consistency, grammar and brand fit?", options: ["Design visuals", "Review and edit", "Brainstorm ideas", "Publish on platforms"], answer: 1, cat: "Content Creation & Formats" },
+            { id: 116, q: "Which platform pairing from the notes is correct?", options: ["Facebook = podcasts only; YouTube = letters", "TikTok = trends and viral content; LinkedIn = professional insights", "Instagram = banking; X = cooking", "TikTok = tax documents; LinkedIn = selfies"], answer: 1, cat: "Content Creation & Formats" },
+            { id: 117, q: "Turning a webinar into short video clips is an example of...", options: ["Plagiarism", "Repurposing", "Boosting", "Keyword stuffing"], answer: 1, cat: "Content Creation & Formats" },
+            { id: 118, q: "Why is a strong hook essential at the start of a caption or video?", options: ["It shortens the video", "It grabs attention in the first seconds", "It submits the post automatically", "It replaces the CTA"], answer: 1, cat: "Content Creation & Formats" },
+            { id: 119, q: "Hashtag clusters are...", options: ["The header rows of a content calendar", "Paid audience groups", "Email subscriber segments", "Groups of related hashtags used together"], answer: 3, cat: "Content Creation & Formats" },
+            { id: 120, q: "In the content creation process, what comes immediately after drafting captions and scripts?", options: ["Publishing the post", "Designing the visual content", "Reviewing grammar", "Measuring results"], answer: 1, cat: "Content Creation & Formats" },
+            { id: 121, q: "The Always-On strategy means...", options: ["Maintaining continuous presence by mixing planned and real-time content", "Posting once a month", "Deleting old content each week", "Buying followers"], answer: 0, cat: "Content Creation & Formats" },
+            { id: 122, q: "Which order matches the content creation process?", options: ["Design, brainstorm, publish", "Brainstorm, draft, design, review, optimize, publish", "Publish, review, draft", "Draft, publish, design, review"], answer: 1, cat: "Content Creation & Formats" },
+
+            { id: 123, q: "A brand posts the same image size on Instagram, Facebook and LinkedIn. Which best practice did it miss?", options: ["Adjusting image sizes for each platform", "Adding CTAs", "Using trending audio", "Using emojis"], answer: 0, cat: "Content Planning, Distribution & Tools" },
+            { id: 124, q: "Which metric trio most directly shows whether content drives business action?", options: ["Hashtag count alone", "Font, color and emojis", "Link clicks, CTR and conversions", "Follower count alone"], answer: 2, cat: "Content Planning, Distribution & Tools" },
+            { id: 125, q: "Why does repurposing 'extend the value' of existing content?", options: ["It deletes old content", "It removes analytics", "It raises the ad budget", "One asset becomes several formats, saving time and reaching new audiences"], answer: 3, cat: "Content Planning, Distribution & Tools" },
+            { id: 126, q: "In the distribution matrix, a customer re-sharing your post is...", options: ["Owned media", "Dark content", "Earned media", "Paid media"], answer: 2, cat: "Content Planning, Distribution & Tools" },
+            { id: 127, q: "Which caption tactic is most likely to raise comments?", options: ["Posting no text", "Copying a competitor's caption", "Using hashtags only", "Asking the audience a direct question"], answer: 3, cat: "Content Planning, Distribution & Tools" },
+            { id: 128, q: "Viewers leave a video within the first three seconds. Which video best practice was missed?", options: ["Capturing attention immediately with a strong opening", "Using smooth transitions", "Adding subtitles", "Ending with a CTA"], answer: 0, cat: "Content Planning, Distribution & Tools" },
+            { id: 129, q: "Which shows platform-specific planning?", options: ["Identical text on every platform", "Only links posted everywhere", "Reels designed for Instagram and long-form tutorials for YouTube", "No publishing at all"], answer: 2, cat: "Content Planning, Distribution & Tools" },
+            { id: 130, q: "A content calendar is a schedule of...", options: ["Which ads to delete", "Monthly office rent", "When content will be published", "What staff get paid"], answer: 2, cat: "Content Planning, Distribution & Tools" },
+            { id: 131, q: "Which tool manages Facebook and Instagram posts plus analytics?", options: ["Photoshop", "Excel only", "Google Maps", "Meta Business Suite"], answer: 3, cat: "Content Planning, Distribution & Tools" },
+            { id: 132, q: "Which benefit directly stops last-minute content creation?", options: ["Faster internet", "A bigger budget", "A planned calendar", "More employees"], answer: 2, cat: "Content Planning, Distribution & Tools" },
+            { id: 133, q: "Which tool is designed for visual planning of social feeds?", options: ["Later.com", "Notepad", "Calculator", "Printer"], answer: 0, cat: "Content Planning, Distribution & Tools" },
+            { id: 134, q: "Hootsuite's three core functions are...", options: ["Design, print and mail", "Search, email and fax", "Scheduling, monitoring and analytics", "Billing, payroll and rent"], answer: 2, cat: "Content Planning, Distribution & Tools" },
+            { id: 135, q: "When is the best time to publish, according to the notes?", options: ["When platform analytics show the audience is most active", "At completely random times", "Only on weekends", "At midnight"], answer: 0, cat: "Content Planning, Distribution & Tools" },
+            { id: 136, q: "Why does consistent posting build algorithmic trust?", options: ["Regular activity signals reliability, so platforms reward the page with more reach", "It stops paid ads", "It reduces content costs", "Algorithms ignore posting schedules"], answer: 0, cat: "Content Planning, Distribution & Tools" },
+            { id: 137, q: "Which tool combo best covers design plus direct publishing?", options: ["Canva with social platform integration", "Calculator and printer", "GPS and map", "Fax machine and letter"], answer: 0, cat: "Content Planning, Distribution & Tools" },
+
+            { id: 138, q: "Email is called a push channel because...", options: ["It uses television ads", "The message reaches customers without them visiting the site", "It prints physical letters", "Customers must visit the website first"], answer: 1, cat: "Email Marketing" },
+            { id: 139, q: "What is the main job of a welcome series?", options: ["Send daily spam", "Raise subscription prices", "Introduce new subscribers with brand info and early offers", "Delete inactive contacts"], answer: 2, cat: "Email Marketing" },
+            { id: 140, q: "Which email type often achieves the highest conversion rate?", options: ["Daily newsletters", "Blank test emails", "Seasonal thank-you notes", "Abandoned cart reminders"], answer: 3, cat: "Email Marketing" },
+            { id: 141, q: "A house list is...", options: ["An ad account", "The office directory", "Your own subscriber database", "A rented broker list"], answer: 2, cat: "Email Marketing" },
+            { id: 142, q: "Opt-in means customers...", options: ["Never receive any email", "Are added to lists automatically", "Pay a fee to unsubscribe", "Willingly give permission to receive emails"], answer: 3, cat: "Email Marketing" },
+            { id: 143, q: "Which is an email service provider example from the notes?", options: ["Calculator", "Photoshop", "Google Earth", "Mailchimp"], answer: 3, cat: "Email Marketing" },
+            { id: 144, q: "What is the key difference between opt-in and opt-out?", options: ["They are exactly the same", "Opt-out needs permission first", "Opt-in is always illegal", "Opt-in requires customer permission first; opt-out adds customers automatically"], answer: 3, cat: "Email Marketing" },
+            { id: 145, q: "A customer wants fewer emails but not zero. Which feature solves this?", options: ["Spam filter", "Preference center", "A/B test", "Bounce report"], answer: 1, cat: "Email Marketing" },
+            { id: 146, q: "Which scenario is an inbound email?", options: ["A customer sends a complaint and the team responds", "A newsletter is scheduled", "The brand sends a seasonal offer", "A welcome series arrives"], answer: 0, cat: "Email Marketing" },
+            { id: 147, q: "Why is renting opt-in lists risky?", options: ["Audiences may not know your brand, so you must state who sent the email to avoid compliance risk", "It guarantees conversions", "It always builds your house list", "It costs nothing"], answer: 0, cat: "Email Marketing" },
+            { id: 148, q: "Two trusted brands share one message to promote a product together. This is...", options: ["A house list", "Co-branded email", "An ESP feature", "Spam"], answer: 1, cat: "Email Marketing" },
+            { id: 149, q: "What does an abandoned-cart automation do?", options: ["Ends the subscription", "Blocks the sender", "Deletes the shopping cart", "Reminds customers who left items without paying"], answer: 3, cat: "Email Marketing" },
+            { id: 150, q: "Which metric counts emails that never reached the inbox?", options: ["Open rate", "Bounce rate", "Click rate", "Conversion rate"], answer: 1, cat: "Email Marketing" },
+            { id: 151, q: "Why does sender reputation affect deliverability?", options: ["Reputation changes the font size", "A weak reputation or authentication makes spam filters block your emails", "It removes all bounces", "It raises the open rate"], answer: 1, cat: "Email Marketing" },
+            { id: 152, q: "Which sequence best describes lifecycle-based automation?", options: ["Pay, send, delete", "Print, mail, fax", "Delete, re-engage, retain", "Nurture new users, activate hesitant buyers, retain active customers, re-engage dormant subscribers"], answer: 3, cat: "Email Marketing" },
+            { id: 153, q: "Which metric shows the real money impact of email marketing?", options: ["Revenue per email or subscriber", "Delivery rate", "Spam complaints", "Open rate"], answer: 0, cat: "Email Marketing" },
+            { id: 154, q: "B2B lead nurturing sends educational content and webinars to...", options: ["Build trust until the customer is ready to buy", "Shrink the subscriber list", "Replace all sales activity", "Stop all email contact"], answer: 0, cat: "Email Marketing" },
+
+            { id: 155, q: "SEM ads appear when...", options: ["Customers open letters", "People search keywords on Google", "People watch TV", "Users print posters"], answer: 1, cat: "SEM, PPC & Display Advertising" },
+            { id: 156, q: "In PPC, the advertiser pays when...", options: ["The ad is designed", "The campaign ends", "The ad is seen once", "Someone clicks the ad"], answer: 3, cat: "SEM, PPC & Display Advertising" },
+            { id: 157, q: "Which parts make up a search ad?", options: ["Audio, video and playlist", "Logo, font and color", "Headline, description, link and call-to-action", "Photo, caption and tag"], answer: 2, cat: "SEM, PPC & Display Advertising" },
+            { id: 158, q: "Display ads appear on...", options: ["Newspapers and magazines", "Websites, mobile apps and YouTube", "Buses and trains", "Radio and TV only"], answer: 1, cat: "SEM, PPC & Display Advertising" },
+            { id: 159, q: "Which paid type is best for immediate sales?", options: ["Radio spots", "SEM", "Display advertising", "Billboards"], answer: 1, cat: "SEM, PPC & Display Advertising" },
+            { id: 160, q: "Which paid type is mostly for brand awareness, not instant sales?", options: ["Display advertising", "SEM", "Text ads", "PPC search ads"], answer: 0, cat: "SEM, PPC & Display Advertising" },
+            { id: 161, q: "What is the main disadvantage of display ads?", options: ["They reach no audience", "People ignore banners and click rates are low", "They replace SEO", "They cost nothing"], answer: 1, cat: "SEM, PPC & Display Advertising" },
+            { id: 162, q: "Ads stop as soon as the budget runs out. This belongs to...", options: ["Print media", "Display ads", "SEM", "All organic media"], answer: 2, cat: "SEM, PPC & Display Advertising" },
+            { id: 163, q: "Why does SEM drive sales effectively?", options: ["It runs forever", "It targets people already searching for products", "It works completely offline", "It needs no keywords"], answer: 1, cat: "SEM, PPC & Display Advertising" },
+            { id: 164, q: "Which statement correctly differentiates SEM and display advertising?", options: ["They are identical in purpose", "SEM is text ads targeting active searchers for sales; display is visual ads for awareness", "Display ads never reach people", "Display targets active searchers and SEM builds awareness"], answer: 1, cat: "SEM, PPC & Display Advertising" },
+            { id: 165, q: "A new brand wants people to remember it while they browse the web. Which is most suitable?", options: ["Email newsletters", "Direct mail", "SEM only", "Display advertising"], answer: 3, cat: "SEM, PPC & Display Advertising" },
+            { id: 166, q: "A premium bag seller sees high impressions but almost no clicks on display ads. Which reasoning fits the notes?", options: ["The price is too low", "The ads are too cheap", "Measurement should stop", "Banner ads are often ignored, so creative quality matters more"], answer: 3, cat: "SEM, PPC & Display Advertising" },
+            { id: 167, q: "Which measurement set fully answers whether paid ads are working?", options: ["Impressions alone", "Staff and office costs", "Colors, fonts and layouts", "Clicks, views, cost and sales"], answer: 3, cat: "SEM, PPC & Display Advertising" },
+            { id: 168, q: "Why do companies accept paid advertising's cost?", options: ["It requires no budget", "Faster results and easier measurement than free methods", "It lasts forever", "It never targets anyone"], answer: 1, cat: "SEM, PPC & Display Advertising" },
+
+            { id: 169, q: "In A/B testing, Version A is the...", options: ["Sample", "Winner", "Variation", "Control"], answer: 3, cat: "A/B Testing" },
+            { id: 170, q: "Testing 'Buy Now' vs 'Shop Now' tests a...", options: ["Price display", "Call-to-action button", "Headline", "Page layout"], answer: 1, cat: "A/B Testing" },
+            { id: 171, q: "What is the core purpose of A/B testing?", options: ["Buying more ads", "Comparing two versions to choose the better performer", "Deleting weak pages", "Guessing the best design"], answer: 1, cat: "A/B Testing" },
+            { id: 172, q: "A/B testing helps marketers decide based on...", options: ["Random weather", "One person's opinion", "Data, not guesses", "Luck alone"], answer: 2, cat: "A/B Testing" },
+            { id: 173, q: "What is step 2 of the A/B testing process?", options: ["Create a hypothesis", "Split the audience", "Analyze results", "Design the two versions"], answer: 0, cat: "A/B Testing" },
+            { id: 174, q: "Why must the audience split be random?", options: ["Each group sees one version, keeping results unbiased", "It saves money", "It ends the test early", "It removes all data"], answer: 0, cat: "A/B Testing" },
+            { id: 175, q: "Which limits A/B testing according to the notes?", options: ["External factors never matter", "It changes everything at once", "It works with zero data", "It needs enough traffic and time, and changes are incremental"], answer: 3, cat: "A/B Testing" },
+            { id: 176, q: "Which order matches the A/B testing process?", options: ["Split, hypothesis, objective", "Measure, versions, hypothesis", "Objective, hypothesis, versions, random split, measure, implement", "Hypothesis, objective, implement"], answer: 2, cat: "A/B Testing" },
+            { id: 177, q: "Version B beats Version A by 3%, but the sample is very small. What is the safest conclusion?", options: ["Stop all testing forever", "B is definitely better", "Results may be unreliable; the test lacks enough traffic", "A is always best"], answer: 2, cat: "A/B Testing" },
+
+            { id: 178, q: "Which platform is best for professional branding?", options: ["Pinterest", "Roblox", "Snapchat", "LinkedIn"], answer: 3, cat: "Personal Branding & Digital Ethics" },
+            { id: 179, q: "Personal branding highlights skills, values, expertise and...", options: ["Shoe size", "Salary", "Personality", "Address"], answer: 2, cat: "Personal Branding & Digital Ethics" },
+            { id: 180, q: "For professionals, social media acts as a...", options: ["Digital resume", "Shopping list", "Bank statement", "Travel ticket"], answer: 0, cat: "Personal Branding & Digital Ethics" },
+            { id: 181, q: "People trust individuals more than...", options: ["Local markets", "Faceless brands", "Small shops", "Online stores"], answer: 1, cat: "Personal Branding & Digital Ethics" },
+            { id: 182, q: "Which pair correctly contrasts personal and corporate branding?", options: ["Personal ignores identity", "Individual and emotional connection vs organization and structured messaging", "Corporate focuses on individuals", "They are exactly the same"], answer: 1, cat: "Personal Branding & Digital Ethics" },
+            { id: 183, q: "Which content approach serves personal branding best?", options: ["Value-giving posts with honest experiences, not only self-promotion", "Only reposts", "Only selfies", "Only advertisements"], answer: 0, cat: "Personal Branding & Digital Ethics" },
+            { id: 184, q: "A professional's messages change tone and topic across platforms. Which mistake is this?", options: ["Copying others", "No niche focus", "Inconsistency", "Overpromotion"], answer: 2, cat: "Personal Branding & Digital Ethics" },
+            { id: 185, q: "Which tool supports a consistent visual identity?", options: ["GPS", "Canva", "Calculator", "Printer"], answer: 1, cat: "Personal Branding & Digital Ethics" },
+            { id: 186, q: "Which metrics best measure personal brand growth?", options: ["Follower-deletion count", "Electricity bill and rent", "Lunch cost and shoe size", "Engagement rates and network growth"], answer: 3, cat: "Personal Branding & Digital Ethics" },
+            { id: 187, q: "Which platform-purpose pairing is correct?", options: ["Twitter (X) = thought leadership; YouTube = expertise sharing", "Twitter = cooking; Instagram = tax files", "YouTube = banking; LinkedIn = selfies", "LinkedIn = gaming; X = weather"], answer: 0, cat: "Personal Branding & Digital Ethics" },
+            { id: 188, q: "Why is personal branding called a long-term digital investment?", options: ["It pays back within one day", "It builds authority and opportunities gradually over time", "It replaces every ad forever", "It needs no content at all"], answer: 1, cat: "Personal Branding & Digital Ethics" },
+            { id: 189, q: "Which ethical rule most directly protects credibility?", options: ["Post more frequently", "Copy famous profiles", "Avoid misinformation and stay professional", "Share private data"], answer: 2, cat: "Personal Branding & Digital Ethics" },
+            { id: 190, q: "Which outcome shows personal branding working at the career level?", options: ["Recruiters reach out organically because of strong visibility", "A post gets deleted", "The office grows", "Ads cost less"], answer: 0, cat: "Personal Branding & Digital Ethics" },
+            { id: 191, q: "Overpromotion means...", options: ["Too much self-advertising that pushes value aside", "Free products only", "No advertising at all", "Hidden profiles"], answer: 0, cat: "Personal Branding & Digital Ethics" },
+            { id: 192, q: "Which practice best follows digital ethics?", options: ["Protecting user privacy", "Selling user data", "Sharing fake news", "Spying without consent"], answer: 0, cat: "Personal Branding & Digital Ethics" },
+
+            { id: 193, q: "Ransomware is software that...", options: ["Locks your data and demands money", "Backs up files automatically", "Blocks all advertisements", "Speeds up your website"], answer: 0, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 194, q: "Phishing attacks work mainly through...", options: ["Offline posters", "Fake messages that steal information", "Updated systems", "Stronger passwords"], answer: 1, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 195, q: "Identity theft means...", options: ["Breaking a printer", "Losing the office key", "Writing a wrong address", "Stealing someone's identity"], answer: 3, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 196, q: "A campaign is best defined as...", options: ["An email template", "A planned series of activities promoting a product, service or idea", "A single television ad", "A logo design"], answer: 1, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 197, q: "Which is a collaboration tool from the notes?", options: ["Bicycle", "Fridge", "Slack", "Calculator"], answer: 2, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 198, q: "In data security, integrity means...", options: ["Only some people can see data", "Data is deleted monthly", "Data stays correct and unchanged", "Data becomes public"], answer: 2, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 199, q: "Which is an ethical issue listed in the notes?", options: ["Using strong passwords", "Updating systems", "Misuse of personal data", "Running audits"], answer: 2, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 200, q: "Why must organizations follow regulations like GDPR?", options: ["To raise ad budgets", "To avoid social media", "They have legal and ethical responsibility to protect customer data", "To print more brochures"], answer: 2, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 201, q: "Which is a planning step for collaborative campaigns?", options: ["Assign roles", "Close accounts", "Paint walls", "Buy furniture"], answer: 0, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 202, q: "Which group is a stakeholder in collaborative campaigns?", options: ["Designers", "Pilots", "Farmers", "Delivery drivers"], answer: 0, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 203, q: "Which practice best protects against malware?", options: ["Disable antivirus", "Share passwords", "Update systems regularly", "Click unknown links"], answer: 2, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 204, q: "Which CIA pairing is correct?", options: ["Availability = data is deleted", "Integrity = data is hidden", "Confidentiality = data is public", "Confidentiality = only the right people see data; Availability = data is available when needed"], answer: 3, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 205, q: "Why do data breaches cause reputational loss?", options: ["They change the font", "They break customer trust in the company", "They add backlinks", "They lower product prices"], answer: 1, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 206, q: "Encryption provides security by...", options: ["Making data public", "Coding data so only the right people can read it", "Slowing the website", "Deleting all sensitive data"], answer: 1, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 207, q: "Which collaboration challenge most directly slows campaign delivery?", options: ["Less workload", "Better planning", "Communication gaps", "Too many new ideas"], answer: 2, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 208, q: "Which order matches campaign planning?", options: ["Audience, goals, timelines, content", "Set goals, identify audience, assign roles, create content, set timelines", "Assign roles, goals, content", "Timelines, goals, roles"], answer: 1, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 209, q: "Which challenge of collaboration is listed in the notes?", options: ["Too many ideas", "Perfect timing", "Zero workload", "Conflicts of ideas"], answer: 3, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" },
+            { id: 210, q: "Why does collaborative planning lead to more effective campaigns?", options: ["No deadlines at all", "Diverse ideas, better problem-solving and reduced workload", "One department only", "Fewer people involved"], answer: 1, cat: "Cybersecurity, Data Ethics & Campaign Collaboration" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
