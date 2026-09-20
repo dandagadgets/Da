@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGC Business Mathematics Mastery - 200 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-calculator text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">GGCMathsMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">200 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/200</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-square-root-variable text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master GGC Business Mathematics (GGBM5203) with 200 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    An original question bank written from scratch, following the Greenwich Global College Business Mathematics (GGBM5203) course outline: Algebra, Linear & Simultaneous Equations, Quadratic Equations, Functions, Break-Even Analysis, Simple & Compound Interest, Discounts & Annuities, Present/Future Value, Profit Functions, Demand & Supply, Derivatives, Marginal Analysis, Integration, Graphical Analysis, Modelling, Field Work, Presentations, and Ethics.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 200)</option>
+                            <option value="1-8">1. Orientation & Diagnostic Skills (1 - 8)</option>
+                            <option value="9-20">2. Numbers & Algebraic Expressions (9 - 20)</option>
+                            <option value="21-36">3. Linear Equations & Simultaneous Systems (21 - 36)</option>
+                            <option value="37-50">4. Quadratic Equations & Graphs (37 - 50)</option>
+                            <option value="51-62">5. Functions and Relations (51 - 62)</option>
+                            <option value="63-74">6. Break-Even Analysis (63 - 74)</option>
+                            <option value="75-84">7. Simple Interest (75 - 84)</option>
+                            <option value="85-96">8. Compound Interest (85 - 96)</option>
+                            <option value="97-108">9. Discounts and Annuities (97 - 108)</option>
+                            <option value="109-120">10. Present & Future Value (109 - 120)</option>
+                            <option value="121-130">11. Profit Functions (121 - 130)</option>
+                            <option value="131-140">12. Demand & Supply Equilibrium (131 - 140)</option>
+                            <option value="141-152">13. Derivatives Basics (141 - 152)</option>
+                            <option value="153-162">14. Marginal Analysis in Business (153 - 162)</option>
+                            <option value="163-172">15. Integration Basics (163 - 172)</option>
+                            <option value="173-180">16. Graphical Analysis & Business Predictions (173 - 180)</option>
+                            <option value="181-186">17. Business Problem Modelling & Collaboration (181 - 186)</option>
+                            <option value="187-192">18. Field Observation & Applied Marginal Analysis (187 - 192)</option>
+                            <option value="193-196">19. Presentations & Reporting Results (193 - 196)</option>
+                            <option value="197-200">20. Portfolio, Reflection & Ethics (197 - 200)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 200</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-200)" min="1" max="200" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">GGC Business Mathematics</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 200</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/200</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive GGC Business Mathematics Quiz • 200 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (200 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "Business Mathematics primarily helps managers to:", options: ["make logical, quantitative decisions using mathematical reasoning", "avoid using data in decisions", "replace accounting entirely", "eliminate the need for forecasting"], answer: 0, cat: "Orientation & Diagnostic Skills" },
+            { id: 2, q: "Numerical: Simplify 8 + 3 × 4 using the correct order of operations.", options: ["44", "20", "32", "12"], answer: 1, cat: "Orientation & Diagnostic Skills" },
+            { id: 3, q: "Numerical: What is 15% of 400?", options: ["40", "50", "60", "70"], answer: 2, cat: "Orientation & Diagnostic Skills" },
+            { id: 4, q: "A diagnostic quiz at the start of a course is mainly used to:", options: ["assign final grades", "identify students' existing baseline skills", "replace the term project", "determine attendance"], answer: 1, cat: "Orientation & Diagnostic Skills" },
+            { id: 5, q: "Which skill is a prerequisite for solving algebraic business problems?", options: ["Basic arithmetic operations (addition, subtraction, multiplication, division)", "Advanced calculus only", "Computer programming", "Public speaking"], answer: 0, cat: "Orientation & Diagnostic Skills" },
+            { id: 6, q: "Numerical: Evaluate (6 − 2)² ÷ 4.", options: ["2", "4", "8", "16"], answer: 1, cat: "Orientation & Diagnostic Skills" },
+            { id: 7, q: "Why is quantitative reasoning considered essential for business decision-making?", options: ["It allows decisions to be based on logical, numerical evidence rather than guesswork", "It removes the need for any data", "It only applies to accountants", "It guarantees profit"], answer: 0, cat: "Orientation & Diagnostic Skills" },
+            { id: 8, q: "Numerical: A worksheet has 25 questions and a student answers 20 correctly. What percentage is correct?", options: ["70%", "75%", "80%", "85%"], answer: 2, cat: "Orientation & Diagnostic Skills" },
+
+            { id: 9, q: "In algebra, a variable is:", options: ["a symbol representing a quantity that can change", "a number that never changes", "a type of chart", "an equals sign"], answer: 0, cat: "Numbers & Algebraic Expressions" },
+            { id: 10, q: "In the expression 7x + 3, the coefficient of x is:", options: ["3", "7", "10", "x"], answer: 1, cat: "Numbers & Algebraic Expressions" },
+            { id: 11, q: "A constant in an algebraic expression is a term that:", options: ["contains a variable raised to a power", "does not contain a variable", "is always negative", "is always equal to zero"], answer: 1, cat: "Numbers & Algebraic Expressions" },
+            { id: 12, q: "Numerical: Simplify 4x + 3x − 2x.", options: ["5x", "9x", "x", "7x"], answer: 0, cat: "Numbers & Algebraic Expressions" },
+            { id: 13, q: "Numerical: Simplify 3(2x + 5).", options: ["6x + 5", "6x + 15", "5x + 15", "2x + 15"], answer: 1, cat: "Numbers & Algebraic Expressions" },
+            { id: 14, q: "Numerical: Evaluate 2x² when x = 3.", options: ["6", "9", "12", "18"], answer: 3, cat: "Numbers & Algebraic Expressions" },
+            { id: 15, q: "Which of the following is a like term to 5xy?", options: ["-2xy", "5x", "5y", "5x²y"], answer: 0, cat: "Numbers & Algebraic Expressions" },
+            { id: 16, q: "Numerical: Simplify (5x + 2) − (3x − 4).", options: ["2x + 6", "2x − 2", "8x − 2", "2x + 2"], answer: 0, cat: "Numbers & Algebraic Expressions" },
+            { id: 17, q: "An algebraic expression differs from an algebraic equation because an expression:", options: ["always contains two variables", "has no equals sign", "cannot contain constants", "must equal zero"], answer: 1, cat: "Numbers & Algebraic Expressions" },
+            { id: 18, q: "Numerical: Factorize 6x + 12 fully using its greatest common factor.", options: ["6(x + 2)", "3(2x + 4)", "2(3x + 6)", "x(6 + 12/x)"], answer: 0, cat: "Numbers & Algebraic Expressions" },
+            { id: 19, q: "Numerical: If x = 4, evaluate 3x² − 2x + 1.", options: ["37", "39", "41", "45"], answer: 2, cat: "Numbers & Algebraic Expressions" },
+            { id: 20, q: "Why are algebraic expressions useful in business mathematics?", options: ["They let general relationships be modelled using symbols instead of only fixed numbers", "They eliminate the need for numerical data", "They only apply to accounting", "They replace the need for graphs"], answer: 0, cat: "Numbers & Algebraic Expressions" },
+
+            { id: 21, q: "A linear equation in one variable has the general form:", options: ["ax + b = 0, where a ≠ 0", "ax² + bx + c = 0", "y = a/x", "x + y ≥ 0"], answer: 0, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 22, q: "Numerical: Solve for x: 3x + 6 = 21.", options: ["3", "5", "7", "9"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 23, q: "Numerical: Solve for x: 2x − 4 = 10.", options: ["5", "6", "7", "8"], answer: 2, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 24, q: "Numerical: Solve for x: (x/3) + 5 = 9.", options: ["9", "10", "12", "15"], answer: 2, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 25, q: "A system of simultaneous linear equations has a unique solution when:", options: ["the two lines are parallel", "the two lines intersect at exactly one point", "the two lines never touch", "both equations are identical"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 26, q: "Numerical: Solve the system x + y = 10 and x − y = 4. What is the value of x?", options: ["5", "6", "7", "8"], answer: 2, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 27, q: "Numerical: Using the same system (x + y = 10, x − y = 4), what is the value of y?", options: ["2", "3", "4", "5"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 28, q: "Numerical: Solve the system 2x + y = 11 and x − y = 1. What is the value of x?", options: ["3", "4", "5", "6"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 29, q: "Numerical: Using the same system (2x + y = 11, x − y = 1), what is the value of y?", options: ["2", "3", "4", "5"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 30, q: "The method of solving simultaneous equations by eliminating one variable through addition or subtraction is called:", options: ["the substitution method", "the graphing method", "the elimination method", "the factoring method"], answer: 2, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 31, q: "The method of solving simultaneous equations by expressing one variable in terms of the other and substituting is called:", options: ["the elimination method", "the substitution method", "the graphing method", "the quadratic method"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 32, q: "Numerical: A company sells x units of Product A and y units of Product B. If x + y = 50 and 2x + 3y = 120, find y.", options: ["10", "15", "20", "25"], answer: 2, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 33, q: "Graphically, the solution to a system of two linear equations is represented by:", options: ["the area between the two lines", "the point where the two lines intersect", "the y-intercept of either line", "the slope of either line"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 34, q: "If two linear equations represent parallel lines, the system has:", options: ["exactly one solution", "no solution", "infinitely many solutions", "two solutions"], answer: 1, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 35, q: "If two linear equations represent the exact same line, the system has:", options: ["no solution", "exactly one solution", "infinitely many solutions", "exactly two solutions"], answer: 2, cat: "Linear Equations & Simultaneous Systems" },
+            { id: 36, q: "Why are simultaneous equations useful in business analysis, such as break-even or demand-supply problems?", options: ["They allow two related conditions to be solved together to find a common solution", "They eliminate the need for algebra", "They only work with whole numbers", "They replace the need for graphs entirely"], answer: 0, cat: "Linear Equations & Simultaneous Systems" },
+
+            { id: 37, q: "The standard form of a quadratic equation is:", options: ["ax + b = 0, where a ≠ 0", "ax² + bx + c = 0, where a ≠ 0", "y = mx + c", "a/x + b = 0"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 38, q: "The graph of a quadratic equation is a:", options: ["straight line", "parabola", "circle", "hyperbola"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 39, q: "Numerical: Solve x² − 9 = 0.", options: ["x = 3 only", "x = -3 only", "x = 3 or x = -3", "x = 9"], answer: 2, cat: "Quadratic Equations & Graphs" },
+            { id: 40, q: "Numerical: Solve x² − 5x + 6 = 0.", options: ["x = 1 or x = 6", "x = 2 or x = 3", "x = -2 or x = -3", "x = 6 only"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 41, q: "Numerical: Solve x² + 2x − 8 = 0.", options: ["x = 4 or x = -2", "x = -4 or x = 2", "x = 2 or x = 8", "x = -2 or x = 4"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 42, q: "The quadratic formula is:", options: ["x = [−b ± √(b² − 4ac)] / 2a", "x = −b / a", "x = (a + b + c) / 2", "x = b² − 4ac"], answer: 0, cat: "Quadratic Equations & Graphs" },
+            { id: 43, q: "In the quadratic formula, the expression (b² − 4ac) is called the:", options: ["coefficient", "discriminant", "constant term", "intercept"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 44, q: "If the discriminant of a quadratic equation is negative, the equation has:", options: ["two distinct real roots", "exactly one real root", "no real roots", "infinitely many roots"], answer: 2, cat: "Quadratic Equations & Graphs" },
+            { id: 45, q: "If the discriminant of a quadratic equation equals zero, the equation has:", options: ["two distinct real roots", "exactly one real (repeated) root", "no real roots", "three real roots"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 46, q: "If the discriminant of a quadratic equation is positive, the equation has:", options: ["no real roots", "exactly one real root", "two distinct real roots", "an undefined number of roots"], answer: 2, cat: "Quadratic Equations & Graphs" },
+            { id: 47, q: "On the graph of a parabola opening upward (a > 0), the vertex represents:", options: ["the maximum point of the curve", "the minimum point of the curve", "the y-intercept only", "the x-intercept only"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 48, q: "On the graph of a parabola opening downward (a < 0), the vertex represents:", options: ["the minimum point of the curve", "the maximum point of the curve", "the y-intercept only", "the origin"], answer: 1, cat: "Quadratic Equations & Graphs" },
+            { id: 49, q: "Numerical: For the quadratic equation x² − 4x + 4 = 0, what is the discriminant?", options: ["0", "4", "16", "-16"], answer: 0, cat: "Quadratic Equations & Graphs" },
+            { id: 50, q: "Why are quadratic equations relevant to business, such as in profit or revenue models?", options: ["Many cost, revenue, and profit relationships are non-linear and best modelled with a curve", "All business relationships are linear", "Quadratic equations cannot be graphed", "They replace the need for algebra"], answer: 0, cat: "Quadratic Equations & Graphs" },
+
+            { id: 51, q: "A function is best defined as a relation in which:", options: ["every input has exactly one output", "every output has exactly one input", "inputs and outputs are unrelated", "there are no inputs"], answer: 0, cat: "Functions and Relations" },
+            { id: 52, q: "In function notation f(x), 'x' represents the:", options: ["output (dependent variable)", "input (independent variable)", "slope of the function", "constant term"], answer: 1, cat: "Functions and Relations" },
+            { id: 53, q: "Numerical: If f(x) = 3x + 2, find f(4).", options: ["10", "12", "14", "16"], answer: 2, cat: "Functions and Relations" },
+            { id: 54, q: "Numerical: If f(x) = x² − 1, find f(5).", options: ["20", "22", "24", "26"], answer: 2, cat: "Functions and Relations" },
+            { id: 55, q: "Numerical: If f(x) = 2x + 7, find the value of x when f(x) = 15.", options: ["3", "4", "5", "6"], answer: 1, cat: "Functions and Relations" },
+            { id: 56, q: "The domain of a function refers to:", options: ["the set of all valid input values", "the set of all possible output values", "the slope of the function", "the y-intercept only"], answer: 0, cat: "Functions and Relations" },
+            { id: 57, q: "The range of a function refers to:", options: ["the set of all valid input values", "the set of all possible output values", "the x-intercept only", "the domain squared"], answer: 1, cat: "Functions and Relations" },
+            { id: 58, q: "Which of these represents a linear function?", options: ["f(x) = 3x + 5", "f(x) = x² + 5", "f(x) = 1/x", "f(x) = √x"], answer: 0, cat: "Functions and Relations" },
+            { id: 59, q: "A relation that is NOT a function would have:", options: ["exactly one output for every input", "at least one input mapped to more than one output", "no inputs at all", "only positive outputs"], answer: 1, cat: "Functions and Relations" },
+            { id: 60, q: "Numerical: A revenue function is R(x) = 20x, where x is units sold. What is R(50)?", options: ["500", "800", "1,000", "1,200"], answer: 2, cat: "Functions and Relations" },
+            { id: 61, q: "Why is understanding functions important for interpreting cost and revenue relationships in business?", options: ["Functions describe how one business quantity depends on another, such as cost depending on output", "Functions only apply to abstract mathematics", "Functions eliminate the need for graphs", "Functions cannot represent business data"], answer: 0, cat: "Functions and Relations" },
+            { id: 62, q: "A vertical line test is used to determine whether a graph represents:", options: ["a linear equation", "a function", "a quadratic equation", "an annuity"], answer: 1, cat: "Functions and Relations" },
+
+            { id: 63, q: "The break-even point is the level of output at which:", options: ["total revenue equals total cost", "total revenue is at its maximum", "variable cost is zero", "fixed cost is at its maximum"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 64, q: "The formula for break-even quantity is:", options: ["Fixed Cost ÷ (Selling Price − Variable Cost per unit)", "Fixed Cost × Selling Price", "Total Cost ÷ Total Revenue", "Selling Price − Fixed Cost"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 65, q: "Numerical: Fixed cost = Rs. 8,000, selling price = Rs. 50, variable cost per unit = Rs. 30. What is the break-even quantity?", options: ["300", "350", "400", "450"], answer: 2, cat: "Break-Even Analysis" },
+            { id: 66, q: "Numerical: Fixed cost = Rs. 15,000, selling price = Rs. 100, variable cost = Rs. 70. What is the break-even quantity?", options: ["400", "450", "500", "550"], answer: 2, cat: "Break-Even Analysis" },
+            { id: 67, q: "At output levels below the break-even point, a business experiences:", options: ["a profit", "a loss", "zero fixed cost", "maximum revenue"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 68, q: "At output levels above the break-even point, a business experiences:", options: ["a loss", "a profit", "zero variable cost", "zero revenue"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 69, q: "'Contribution margin per unit' is calculated as:", options: ["Selling price per unit − Variable cost per unit", "Selling price per unit + Fixed cost", "Fixed cost ÷ units sold", "Total revenue − Total cost"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 70, q: "Numerical: Selling price = Rs. 40, variable cost = Rs. 25. What is the contribution margin per unit?", options: ["10", "12", "15", "20"], answer: 2, cat: "Break-Even Analysis" },
+            { id: 71, q: "Numerical: Fixed cost = Rs. 12,000 and contribution margin per unit = Rs. 40. What is the break-even quantity?", options: ["250", "300", "350", "400"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 72, q: "Break-even analysis is most useful for businesses when:", options: ["deciding the minimum sales volume needed to avoid a loss", "calculating employee salaries", "designing a company logo", "setting up a social media page"], answer: 0, cat: "Break-Even Analysis" },
+            { id: 73, q: "On a break-even chart, the point where the total revenue line crosses the total cost line represents:", options: ["the maximum profit point", "the break-even point", "the fixed cost level", "the variable cost level"], answer: 1, cat: "Break-Even Analysis" },
+            { id: 74, q: "Why is break-even analysis considered a form of linear modelling?", options: ["Both the cost and revenue functions are typically assumed to increase at a constant rate", "It always involves a parabola", "It requires calculus to solve", "It ignores fixed costs entirely"], answer: 0, cat: "Break-Even Analysis" },
+
+            { id: 75, q: "Simple interest is calculated using the formula:", options: ["I = P × R × T", "I = P / (R × T)", "I = P(1 + R)^T", "I = P + R + T"], answer: 0, cat: "Simple Interest" },
+            { id: 76, q: "In the simple interest formula, 'P' represents:", options: ["the interest rate", "the principal amount", "the time period", "the total interest"], answer: 1, cat: "Simple Interest" },
+            { id: 77, q: "Numerical: Principal = Rs. 20,000, rate = 8% per year, time = 3 years. What is the simple interest?", options: ["3,600", "4,200", "4,800", "5,200"], answer: 2, cat: "Simple Interest" },
+            { id: 78, q: "Numerical: Principal = Rs. 15,000, rate = 6% per year, time = 2 years. What is the simple interest?", options: ["1,200", "1,500", "1,800", "2,000"], answer: 2, cat: "Simple Interest" },
+            { id: 79, q: "Numerical: A loan of Rs. 10,000 earns Rs. 1,500 simple interest over 3 years. What is the annual interest rate?", options: ["4%", "5%", "6%", "7.5%"], answer: 1, cat: "Simple Interest" },
+            { id: 80, q: "Numerical: If a time period is given as 6 months, in the simple interest formula this should be expressed as:", options: ["6 years", "0.5 years", "2 years", "60 years"], answer: 1, cat: "Simple Interest" },
+            { id: 81, q: "In simple interest calculations, interest is earned on:", options: ["the original principal only, throughout the loan period", "the principal plus all previously earned interest", "only the final year's balance", "nothing; simple interest is always zero"], answer: 0, cat: "Simple Interest" },
+            { id: 82, q: "Numerical: Principal = Rs. 25,000, simple interest earned = Rs. 3,000 over 2 years. What is the interest rate per year?", options: ["4%", "5%", "6%", "8%"], answer: 2, cat: "Simple Interest" },
+            { id: 83, q: "Which of the following best distinguishes simple interest from compound interest?", options: ["Simple interest does not add previously earned interest to the principal for future calculations", "Simple interest always results in a larger final amount", "Simple interest can only be used for loans, never investments", "Simple interest requires a computer to calculate"], answer: 0, cat: "Simple Interest" },
+            { id: 84, q: "Why might a business first study simple interest before studying compound interest?", options: ["It builds the foundational concept of interest before more complex compounding is introduced", "Simple interest is only used in advanced finance", "Compound interest does not use the concept of principal", "Simple interest cannot be calculated by hand"], answer: 0, cat: "Simple Interest" },
+
+            { id: 85, q: "The compound interest formula for the final amount is:", options: ["A = P(1 + r/n)^(nt)", "A = P × r × t", "A = P + r + t", "A = P / (1 + rt)"], answer: 0, cat: "Compound Interest" },
+            { id: 86, q: "In the compound interest formula, 'n' typically represents:", options: ["the number of years", "the number of times interest is compounded per year", "the principal amount", "the final amount"], answer: 1, cat: "Compound Interest" },
+            { id: 87, q: "Numerical: Principal = Rs. 10,000 at 10% compounded annually for 2 years. What is the final amount (nearest rupee)?", options: ["11,000", "11,500", "12,100", "13,310"], answer: 2, cat: "Compound Interest" },
+            { id: 88, q: "Numerical: Principal = Rs. 20,000 at 5% compounded annually for 2 years. What is the compound interest earned (nearest rupee)?", options: ["1,000", "2,000", "2,050", "2,500"], answer: 2, cat: "Compound Interest" },
+            { id: 89, q: "Numerical: Rs. 10,000 invested at 12% per year, compounded semi-annually, for 1 year. What is the final amount?", options: ["11,200", "11,236", "11,600", "12,000"], answer: 1, cat: "Compound Interest" },
+            { id: 90, q: "Compound interest differs from simple interest because compound interest:", options: ["is calculated only on the original principal", "is calculated on the principal plus previously accumulated interest", "is always a fixed rupee amount", "cannot be used for investments"], answer: 1, cat: "Compound Interest" },
+            { id: 91, q: "As the compounding frequency increases (e.g., from annually to monthly) for the same nominal rate, the final accumulated amount:", options: ["decreases", "stays exactly the same", "increases", "becomes negative"], answer: 2, cat: "Compound Interest" },
+            { id: 92, q: "Numerical: Principal = Rs. 5,000 at 8% compounded annually for 3 years. What is the final amount (nearest rupee)?", options: ["5,800", "6,000", "6,299", "6,500"], answer: 2, cat: "Compound Interest" },
+            { id: 93, q: "Which investment product most directly relies on the concept of compound interest for long-term growth?", options: ["A savings account or fixed deposit that reinvests earned interest", "A one-time cash gift", "A non-interest-bearing current account", "A discount coupon"], answer: 0, cat: "Compound Interest" },
+            { id: 94, q: "Numerical: If the effective annual rate is higher than the nominal annual rate, this indicates that interest is compounded:", options: ["once per year only", "more than once per year", "never", "only on the last day of the year"], answer: 1, cat: "Compound Interest" },
+            { id: 95, q: "Why is compound interest particularly important for long-term investment planning?", options: ["Interest earned itself begins to earn interest, accelerating growth over time", "It guarantees a fixed, unchanging return", "It only applies to short-term loans", "It eliminates all investment risk"], answer: 0, cat: "Compound Interest" },
+            { id: 96, q: "Numerical: An investment doubles in value using compound interest. Which of the following describes this outcome?", options: ["The final amount equals half the original principal", "The final amount equals twice the original principal", "The interest rate must be negative", "The principal has not changed"], answer: 1, cat: "Compound Interest" },
+
+            { id: 97, q: "A trade discount is best described as:", options: ["a reduction from the list price offered to a buyer, often based on volume or trade relationship", "an increase in price for early payment", "a government tax on goods", "a fixed rupee bonus for employees"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 98, q: "Numerical: Marked price = Rs. 5,000 with a discount of 20%. What is the discounted (net) price?", options: ["3,500", "4,000", "4,200", "4,500"], answer: 1, cat: "Discounts and Annuities" },
+            { id: 99, q: "Numerical: Marked price = Rs. 8,000 with successive discounts of 10% then 5%. What is the final price?", options: ["6,600", "6,840", "7,000", "7,200"], answer: 1, cat: "Discounts and Annuities" },
+            { id: 100, q: "An annuity is best defined as:", options: ["a single lump-sum payment", "a series of equal payments made at regular intervals", "a one-time discount on a purchase", "the interest rate on a loan"], answer: 1, cat: "Discounts and Annuities" },
+            { id: 101, q: "An 'ordinary annuity' makes payments:", options: ["at the beginning of each period", "at the end of each period", "only once, at the very end", "randomly throughout the period"], answer: 1, cat: "Discounts and Annuities" },
+            { id: 102, q: "An 'annuity due' makes payments:", options: ["at the end of each period", "at the beginning of each period", "only in the final year", "only when profits allow it"], answer: 1, cat: "Discounts and Annuities" },
+            { id: 103, q: "Numerical: An annuity pays Rs. 2,000 at the end of each month for 2 years. How many payment periods are there in total?", options: ["12", "18", "24", "36"], answer: 2, cat: "Discounts and Annuities" },
+            { id: 104, q: "Numerical: An annuity pays Rs. 5,000 quarterly for 3 years. How many total payments are made?", options: ["6", "9", "12", "15"], answer: 2, cat: "Discounts and Annuities" },
+            { id: 105, q: "Which of the following is a real-world example of an annuity?", options: ["A single lottery win", "Fixed monthly instalments on a car loan", "A one-time trade discount", "A company's total annual revenue"], answer: 1, cat: "Discounts and Annuities" },
+            { id: 106, q: "The future value of an annuity is used to determine:", options: ["the total accumulated value of a series of regular payments at a future date", "the marked price of a product", "the discount rate for a single transaction", "the derivative of a cost function"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 107, q: "Why do businesses use discounts as a pricing strategy?", options: ["To encourage larger purchases, faster payment, or stronger customer relationships", "To always reduce their own profit with no benefit", "Because government regulations require it", "To avoid calculating taxes"], answer: 0, cat: "Discounts and Annuities" },
+            { id: 108, q: "Numerical: Marked price = Rs. 12,000 with a single discount of 15%. What is the amount of the discount (in rupees)?", options: ["1,200", "1,500", "1,800", "2,000"], answer: 2, cat: "Discounts and Annuities" },
+
+            { id: 109, q: "The 'time value of money' concept states that:", options: ["money available today is worth more than the same amount in the future", "money always loses all value over time", "future money is always worth more than present money", "time has no effect on the value of money"], answer: 0, cat: "Present & Future Value" },
+            { id: 110, q: "The future value (FV) of a single sum is calculated using:", options: ["FV = PV(1 + r)^n", "FV = PV / (1 + r)^n", "FV = PV × r × n", "FV = PV − r"], answer: 0, cat: "Present & Future Value" },
+            { id: 111, q: "The present value (PV) of a single sum is calculated using:", options: ["PV = FV(1 + r)^n", "PV = FV / (1 + r)^n", "PV = FV × r", "PV = FV + n"], answer: 1, cat: "Present & Future Value" },
+            { id: 112, q: "Numerical: What is the future value of Rs. 10,000 invested for 2 years at 10% per year (compounded annually)?", options: ["11,000", "11,500", "12,100", "13,000"], answer: 2, cat: "Present & Future Value" },
+            { id: 113, q: "Numerical: What is the present value of Rs. 13,310 to be received in 3 years, discounted at 10% per year?", options: ["9,000", "9,500", "10,000", "10,500"], answer: 2, cat: "Present & Future Value" },
+            { id: 114, q: "Numerical: What is the present value of Rs. 5,000 to be received in 1 year, discounted at 8%?", options: ["4,400", "4,630", "4,800", "5,000"], answer: 1, cat: "Present & Future Value" },
+            { id: 115, q: "Which of the following best explains why future cash flows are 'discounted' when calculating present value?", options: ["To account for the time value of money and the opportunity cost of not having the funds now", "To make the cash flow appear larger", "Because future cash flows are always guaranteed", "To avoid using compound interest"], answer: 0, cat: "Present & Future Value" },
+            { id: 116, q: "In investment decisions, an asset is generally considered worthwhile if:", options: ["the present value of its future benefits exceeds its present cost", "its present cost exceeds the present value of its future benefits", "it has no future cash flows at all", "its future value is negative"], answer: 0, cat: "Present & Future Value" },
+            { id: 117, q: "Numerical: An investment of Rs. 20,000 is expected to grow to Rs. 24,200 in 2 years. What is the implied annual compound growth rate?", options: ["8%", "9%", "10%", "12%"], answer: 2, cat: "Present & Future Value" },
+            { id: 118, q: "Why is present value analysis particularly useful for comparing investment opportunities with cash flows at different times?", options: ["It converts all cash flows to a common point in time for a fair comparison", "It ignores the timing of cash flows entirely", "It only works for cash flows received today", "It eliminates the need for an interest rate"], answer: 0, cat: "Present & Future Value" },
+            { id: 119, q: "Numerical: A business expects to receive Rs. 6,050 in 2 years. If the discount rate is 10% per year, what is its present value?", options: ["4,800", "5,000", "5,200", "5,500"], answer: 1, cat: "Present & Future Value" },
+            { id: 120, q: "Which spreadsheet tool would a business analyst commonly use to model present and future value calculations?", options: ["A drawing application", "MS Excel financial functions", "A video editor", "A social media scheduler"], answer: 1, cat: "Present & Future Value" },
+
+            { id: 121, q: "Profit is generally defined as:", options: ["Total Revenue − Total Cost", "Total Revenue + Total Cost", "Total Cost − Fixed Cost", "Selling Price × Fixed Cost"], answer: 0, cat: "Profit Functions" },
+            { id: 122, q: "Numerical: Total revenue = Rs. 50,000, total cost = Rs. 35,000. What is the profit?", options: ["10,000", "12,000", "15,000", "20,000"], answer: 2, cat: "Profit Functions" },
+            { id: 123, q: "Total revenue is calculated as:", options: ["Selling price per unit × number of units sold", "Fixed cost + variable cost", "Variable cost × number of units sold", "Selling price − variable cost"], answer: 0, cat: "Profit Functions" },
+            { id: 124, q: "Numerical: A firm sells 200 units at Rs. 60 each with total costs of Rs. 9,000. What is the profit?", options: ["2,000", "2,500", "3,000", "3,500"], answer: 2, cat: "Profit Functions" },
+            { id: 125, q: "On a profit function's graph, the point where the profit line crosses the x-axis represents:", options: ["the maximum profit", "the break-even point (zero profit)", "the fixed cost", "the total revenue"], answer: 1, cat: "Profit Functions" },
+            { id: 126, q: "Numerical: A profit function is P(x) = 30x − 6,000. What is the profit when x = 300 units?", options: ["2,000", "2,500", "3,000", "3,500"], answer: 2, cat: "Profit Functions" },
+            { id: 127, q: "Numerical: Using the same profit function P(x) = 30x − 6,000, at what output level x does the firm break even (P = 0)?", options: ["150", "180", "200", "220"], answer: 2, cat: "Profit Functions" },
+            { id: 128, q: "A negative value of a profit function at a given output level indicates:", options: ["the business is operating at a loss at that output level", "the business has zero fixed costs", "the business has maximum profit", "the calculation must be incorrect"], answer: 0, cat: "Profit Functions" },
+            { id: 129, q: "Why is deriving a profit function useful for business planning?", options: ["It allows managers to predict profit or loss at different levels of output before committing resources", "It removes the need for any sales data", "It only applies after a business has already failed", "It eliminates the need for cost accounting"], answer: 0, cat: "Profit Functions" },
+            { id: 130, q: "Which two functions are typically combined (subtracted) to derive a profit function?", options: ["Total revenue function and total cost function", "Demand function and supply function", "Present value and future value functions", "Marginal cost and marginal revenue functions"], answer: 0, cat: "Profit Functions" },
+
+            { id: 131, q: "Market equilibrium occurs where:", options: ["the quantity demanded equals the quantity supplied", "the price is at its highest possible level", "quantity supplied is always zero", "quantity demanded is always zero"], answer: 0, cat: "Demand & Supply Equilibrium" },
+            { id: 132, q: "A typical demand function shows that as price increases, quantity demanded:", options: ["increases", "decreases", "stays exactly the same", "becomes negative"], answer: 1, cat: "Demand & Supply Equilibrium" },
+            { id: 133, q: "A typical supply function shows that as price increases, quantity supplied:", options: ["decreases", "increases", "stays exactly the same", "becomes zero"], answer: 1, cat: "Demand & Supply Equilibrium" },
+            { id: 134, q: "Numerical: Demand is Qd = 100 − 2P and supply is Qs = 20 + 3P. What is the equilibrium price?", options: ["12", "14", "16", "18"], answer: 2, cat: "Demand & Supply Equilibrium" },
+            { id: 135, q: "Numerical: Using the same functions (Qd = 100 − 2P, Qs = 20 + 3P), what is the equilibrium quantity?", options: ["60", "64", "68", "72"], answer: 2, cat: "Demand & Supply Equilibrium" },
+            { id: 136, q: "Numerical: Demand is Qd = 80 − P and supply is Qs = 20 + P. What is the equilibrium price?", options: ["25", "28", "30", "35"], answer: 2, cat: "Demand & Supply Equilibrium" },
+            { id: 137, q: "If the market price is set above the equilibrium price, the result is typically:", options: ["a shortage, as quantity demanded exceeds quantity supplied", "a surplus, as quantity supplied exceeds quantity demanded", "no change in the market", "an immediate price drop to zero"], answer: 1, cat: "Demand & Supply Equilibrium" },
+            { id: 138, q: "If the market price is set below the equilibrium price, the result is typically:", options: ["a surplus, as quantity supplied exceeds quantity demanded", "a shortage, as quantity demanded exceeds quantity supplied", "no change in the market", "an immediate price rise to infinity"], answer: 1, cat: "Demand & Supply Equilibrium" },
+            { id: 139, q: "On a graph of demand and supply, the equilibrium point is located:", options: ["where the demand curve crosses the price axis", "where the demand curve and supply curve intersect", "where the supply curve crosses the quantity axis", "at the origin of the graph"], answer: 1, cat: "Demand & Supply Equilibrium" },
+            { id: 140, q: "Why is finding the equilibrium point through simultaneous equations useful for businesses?", options: ["It identifies the price and quantity at which the market naturally balances, guiding pricing decisions", "It eliminates the need to consider price at all", "It only applies to government-controlled markets", "It replaces the need for demand data"], answer: 0, cat: "Demand & Supply Equilibrium" },
+
+            { id: 141, q: "The derivative of a function represents:", options: ["the total area under the curve", "the instantaneous rate of change of the function", "the average value of the function", "the y-intercept of the function"], answer: 1, cat: "Derivatives Basics" },
+            { id: 142, q: "Using the power rule, the derivative of f(x) = x^n is:", options: ["n·x^(n−1)", "x^(n+1)/(n+1)", "n·x^n", "x^n / n"], answer: 0, cat: "Derivatives Basics" },
+            { id: 143, q: "Numerical: Find the derivative of f(x) = x².", options: ["x", "2x", "x²", "2"], answer: 1, cat: "Derivatives Basics" },
+            { id: 144, q: "Numerical: Find the derivative of f(x) = 5x³.", options: ["5x²", "10x²", "15x²", "15x³"], answer: 2, cat: "Derivatives Basics" },
+            { id: 145, q: "Numerical: Find the derivative of f(x) = 4x + 7.", options: ["4", "7", "4x", "11"], answer: 0, cat: "Derivatives Basics" },
+            { id: 146, q: "The derivative of a constant term (with no variable) is always:", options: ["1", "the constant itself", "0", "undefined"], answer: 2, cat: "Derivatives Basics" },
+            { id: 147, q: "Numerical: Find the derivative of f(x) = 3x² − 5x + 2.", options: ["6x − 5", "6x + 2", "3x − 5", "6x − 2"], answer: 0, cat: "Derivatives Basics" },
+            { id: 148, q: "Geometrically, the derivative of a function at a specific point represents:", options: ["the slope of the tangent line to the curve at that point", "the total area under the curve up to that point", "the y-value of the function at that point", "the x-intercept nearest that point"], answer: 0, cat: "Derivatives Basics" },
+            { id: 149, q: "Numerical: If f(x) = x² and we evaluate the derivative at x = 3, what is the slope at that point?", options: ["3", "6", "9", "12"], answer: 1, cat: "Derivatives Basics" },
+            { id: 150, q: "A stationary point of a function occurs where the derivative equals:", options: ["1", "the value of the function itself", "0", "infinity"], answer: 2, cat: "Derivatives Basics" },
+            { id: 151, q: "Numerical: For f(x) = x² − 6x + 5, find the x-value of the stationary point.", options: ["2", "3", "4", "6"], answer: 1, cat: "Derivatives Basics" },
+            { id: 152, q: "Why are derivatives useful in business mathematics, such as for revenue or cost functions?", options: ["They show how quickly revenue, cost, or profit changes as output changes", "They calculate total revenue directly", "They replace the need for algebra entirely", "They only apply to quadratic equations"], answer: 0, cat: "Derivatives Basics" },
+
+            { id: 153, q: "In business mathematics, 'marginal' refers to:", options: ["the total value of all units combined", "the additional change resulting from one more unit of output", "the average value across all units", "the fixed cost of production"], answer: 1, cat: "Marginal Analysis in Business" },
+            { id: 154, q: "Marginal cost is best defined as:", options: ["the additional cost incurred from producing one more unit", "the total cost of all units produced", "the fixed cost divided by total units", "the selling price of one unit"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 155, q: "Marginal revenue is best defined as:", options: ["the total revenue from all units sold", "the additional revenue earned from selling one more unit", "the average revenue per unit", "the fixed cost of selling"], answer: 1, cat: "Marginal Analysis in Business" },
+            { id: 156, q: "Marginal cost and marginal revenue can both be found by:", options: ["taking the derivative of the total cost and total revenue functions", "adding fixed and variable costs together", "dividing total cost by total revenue", "integrating the profit function"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 157, q: "Numerical: If total cost is C(x) = 5x² + 20x + 100, what is the marginal cost function?", options: ["10x + 20", "5x + 20", "10x + 100", "5x² + 20"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 158, q: "Numerical: Using C(x) = 5x² + 20x + 100, what is the marginal cost at x = 10?", options: ["100", "110", "120", "130"], answer: 2, cat: "Marginal Analysis in Business" },
+            { id: 159, q: "Numerical: If total revenue is R(x) = 50x − x², what is the marginal revenue function?", options: ["50 − 2x", "50 − x", "-2x", "50x − 2"], answer: 0, cat: "Marginal Analysis in Business" },
+            { id: 160, q: "Profit is maximized at the output level where:", options: ["marginal cost equals zero", "marginal revenue equals marginal cost", "total cost equals zero", "fixed cost equals variable cost"], answer: 1, cat: "Marginal Analysis in Business" },
+            { id: 161, q: "Numerical: MR = 60 − 2x and MC = 20 + 2x. What output level maximizes profit (where MR = MC)?", options: ["5", "8", "10", "12"], answer: 2, cat: "Marginal Analysis in Business" },
+            { id: 162, q: "Why is marginal analysis valuable for production decisions?", options: ["It helps determine the optimal output level by comparing the extra cost and extra revenue of producing more", "It only measures total historical profit", "It eliminates the need for a cost function", "It applies only to fixed costs"], answer: 0, cat: "Marginal Analysis in Business" },
+
+            { id: 163, q: "Integration in calculus is best described as:", options: ["the reverse process of differentiation", "the same process as differentiation", "a method for solving quadratic equations", "a way to calculate simple interest"], answer: 0, cat: "Integration Basics" },
+            { id: 164, q: "Using the power rule for integration, the integral of x^n (n ≠ −1) is:", options: ["n·x^(n−1) + C", "x^(n+1)/(n+1) + C", "x^n / n + C", "n·x^n + C"], answer: 1, cat: "Integration Basics" },
+            { id: 165, q: "Numerical: Find the indefinite integral of f(x) = 2x.", options: ["x² + C", "2x² + C", "x + C", "x²/2 + C"], answer: 0, cat: "Integration Basics" },
+            { id: 166, q: "Numerical: Find the indefinite integral of f(x) = 3x².", options: ["x³ + C", "3x³ + C", "x³/3 + C", "6x + C"], answer: 0, cat: "Integration Basics" },
+            { id: 167, q: "In business mathematics, the 'C' in an indefinite integral represents:", options: ["the total cost function", "an arbitrary constant of integration", "the derivative of the function", "the coefficient of x"], answer: 1, cat: "Integration Basics" },
+            { id: 168, q: "Numerical: Evaluate the definite integral of f(x) = x from x = 0 to x = 4.", options: ["4", "6", "8", "16"], answer: 2, cat: "Integration Basics" },
+            { id: 169, q: "Numerical: Evaluate the definite integral of f(x) = 2 from x = 1 to x = 5.", options: ["4", "6", "8", "10"], answer: 2, cat: "Integration Basics" },
+            { id: 170, q: "A definite integral of a marginal cost function over a range of output gives:", options: ["the total additional cost of producing over that range of output", "the fixed cost only", "the marginal revenue at a single point", "the break-even quantity"], answer: 0, cat: "Integration Basics" },
+            { id: 171, q: "Geometrically, a definite integral represents:", options: ["the slope of the tangent line at a point", "the area under the curve between two points", "the y-intercept of the function", "the stationary point of the function"], answer: 1, cat: "Integration Basics" },
+            { id: 172, q: "Why is integration considered the reverse operation of differentiation in business applications, such as recovering a total cost function from marginal cost?", options: ["Integrating a marginal function 'undoes' the differentiation used to originally derive it", "Integration and differentiation always give the same numerical result", "Integration only works for linear functions", "Differentiation cannot be reversed"], answer: 0, cat: "Integration Basics" },
+
+            { id: 173, q: "Which digital tool listed in the GGC Business Mathematics course is designed for interactive graphing of functions?", options: ["Desmos", "Photoshop", "Slack", "PowerPoint"], answer: 0, cat: "Graphical Analysis & Business Predictions" },
+            { id: 174, q: "On a graph of a linear cost function, the y-intercept represents:", options: ["the variable cost per unit", "the fixed cost (cost when output is zero)", "the break-even quantity", "the marginal revenue"], answer: 1, cat: "Graphical Analysis & Business Predictions" },
+            { id: 175, q: "On a graph of a linear cost function, the slope represents:", options: ["the fixed cost", "the variable cost per additional unit", "the total revenue", "the profit at zero output"], answer: 1, cat: "Graphical Analysis & Business Predictions" },
+            { id: 176, q: "Numerical: A cost function is C(x) = 200 + 15x. What is the fixed cost?", options: ["15", "150", "200", "215"], answer: 2, cat: "Graphical Analysis & Business Predictions" },
+            { id: 177, q: "Why are graphs useful for making business predictions from mathematical models?", options: ["They allow trends and relationships to be visualized, making forecasts and comparisons easier to interpret", "They replace the need for any calculations", "They only work for financial data", "They cannot show non-linear relationships"], answer: 0, cat: "Graphical Analysis & Business Predictions" },
+            { id: 178, q: "If a graph of revenue against output shows an upward-sloping straight line, this suggests:", options: ["revenue decreases as output increases", "revenue increases at a constant rate as output increases", "revenue is unrelated to output", "revenue is always negative"], answer: 1, cat: "Graphical Analysis & Business Predictions" },
+            { id: 179, q: "A graph showing where a rising cost curve and a rising revenue curve are furthest apart (revenue above cost) indicates:", options: ["the break-even point", "the output level of maximum profit in that range", "the point of zero revenue", "the point of maximum cost"], answer: 1, cat: "Graphical Analysis & Business Predictions" },
+            { id: 180, q: "Which of the following best describes the purpose of graphical analysis in business mathematics, compared to purely algebraic methods?", options: ["It provides a visual way to interpret relationships that complements algebraic calculations", "It replaces algebra entirely and is always more accurate", "It cannot be used alongside algebraic methods", "It only applies to quadratic equations"], answer: 0, cat: "Graphical Analysis & Business Predictions" },
+
+            { id: 181, q: "The first step in modelling a real business problem mathematically is typically to:", options: ["clearly define the variables and relationships involved", "immediately calculate the final answer", "skip to graphing the solution", "assign the task to only one group member"], answer: 0, cat: "Business Problem Modelling & Collaboration" },
+            { id: 182, q: "Why is group collaboration valuable when modelling a complex business mathematics problem?", options: ["It combines different perspectives and skills to build and check the model more effectively", "It guarantees a perfect solution with no errors", "It removes the need to define variables", "It always takes less time than working alone"], answer: 0, cat: "Business Problem Modelling & Collaboration" },
+            { id: 183, q: "When translating a word problem into a mathematical model, what should be done first?", options: ["Identify what is known, what is unknown, and how they are related", "Immediately write the final equation", "Ignore the units given in the problem", "Skip directly to graphing"], answer: 0, cat: "Business Problem Modelling & Collaboration" },
+            { id: 184, q: "Which of the following is a key benefit of using a template when working on a group mathematical modelling task?", options: ["It ensures the group follows a consistent, organized approach", "It removes the need for any calculations", "It guarantees a higher grade automatically", "It eliminates the need for teamwork"], answer: 0, cat: "Business Problem Modelling & Collaboration" },
+            { id: 185, q: "Why should a business mathematics model be tested against real or realistic data before being relied upon?", options: ["To check that the model's assumptions and predictions are reasonable in practice", "Testing is not necessary once a formula is written", "To make the model appear more complex", "To avoid using any real numbers"], answer: 0, cat: "Business Problem Modelling & Collaboration" },
+            { id: 186, q: "What is a common risk when a group divides a modelling task without coordinating their work?", options: ["Inconsistent assumptions or errors between different parts of the model", "The task will always be completed faster with no downside", "There is no risk at all", "The model will automatically be more accurate"], answer: 0, cat: "Business Problem Modelling & Collaboration" },
+
+            { id: 187, q: "A field observation task related to marginal analysis might involve collecting real data on:", options: ["price, cost, and output at an actual business to analyse profit", "unrelated historical trivia", "random numbers with no business context", "only theoretical textbook examples"], answer: 0, cat: "Field Observation & Applied Marginal Analysis" },
+            { id: 188, q: "Why is relating marginal analysis concepts to a real business visit valuable for students?", options: ["It shows how theoretical cost and revenue concepts appear in real operational decisions", "It replaces the need to understand the underlying formulas", "It only benefits students studying unrelated subjects", "It has no connection to classroom learning"], answer: 0, cat: "Field Observation & Applied Marginal Analysis" },
+            { id: 189, q: "Before conducting a field visit to collect cost and revenue data, students should first:", options: ["plan what specific data needs to be collected and how it will be recorded", "collect data randomly with no plan", "skip planning to save time", "assume the data before visiting"], answer: 0, cat: "Field Observation & Applied Marginal Analysis" },
+            { id: 190, q: "A guest speaker demonstrating mathematical modelling in a finance or analytics role primarily helps students:", options: ["connect classroom mathematical concepts to real industry practice", "replace the need to learn formulas", "avoid doing their own calculations", "skip the term project"], answer: 0, cat: "Field Observation & Applied Marginal Analysis" },
+            { id: 191, q: "What should be done with data collected during a field observation before using it in calculations?", options: ["Check it for accuracy and completeness", "Use it immediately without review", "Discard it and estimate instead", "Share it publicly before analysis"], answer: 0, cat: "Field Observation & Applied Marginal Analysis" },
+            { id: 192, q: "Why is an applied task collecting real price, cost, and revenue data useful for understanding profit functions?", options: ["It grounds the abstract profit function in real, observable business numbers", "It removes the need to calculate profit at all", "It only applies to businesses with no costs", "It replaces the need for a profit function entirely"], answer: 0, cat: "Field Observation & Applied Marginal Analysis" },
+
+            { id: 193, q: "When presenting mathematical findings and calculations to an audience, it is most important to:", options: ["clearly explain the method and interpretation, not just the final numbers", "read every calculation step aloud in full", "avoid explaining any methodology", "only show the final answer with no context"], answer: 0, cat: "Presentations & Reporting Results" },
+            { id: 194, q: "Which of the following would most improve a presentation of financial calculations?", options: ["Using clear charts and simplified explanations of key numbers", "Including as many raw numbers as possible with no visuals", "Avoiding any visual aids entirely", "Reading directly from a spreadsheet"], answer: 0, cat: "Presentations & Reporting Results" },
+            { id: 195, q: "After presenting a mathematical analysis, a presenter should be prepared to:", options: ["justify the assumptions and methods used in the calculations", "refuse to answer any questions", "end the session immediately", "avoid discussing any limitations of the model"], answer: 0, cat: "Presentations & Reporting Results" },
+            { id: 196, q: "Why is it important to report quantitative results honestly, even when they do not support the desired conclusion?", options: ["Because misrepresenting results can lead to poor and potentially costly business decisions", "Because honesty is only required for exams", "Because inaccurate results always look better", "Because results never affect real decisions"], answer: 0, cat: "Presentations & Reporting Results" },
+
+            { id: 197, q: "What is the purpose of including a reflection in an end-of-term mathematics portfolio?", options: ["To help the student evaluate their learning progress and identify areas for improvement", "To increase the page count with no real value", "To replace the need for any calculations", "To record attendance only"], answer: 0, cat: "Portfolio, Reflection & Ethics" },
+            { id: 198, q: "Which of the following would be considered academic misconduct in a business mathematics assignment?", options: ["Correctly citing a formula from a textbook", "Submitting AI-generated calculations and analysis as one's own original work", "Asking a lecturer to clarify a question", "Double-checking a calculation with a classmate's permission"], answer: 1, cat: "Portfolio, Reflection & Ethics" },
+            { id: 199, q: "Why is accuracy considered an ethical responsibility in quantitative business work?", options: ["Inaccurate calculations can mislead decision-makers and cause real financial harm", "Accuracy only matters for exams, not real business", "Ethics has no connection to mathematical work", "Small errors never have any real consequences"], answer: 0, cat: "Portfolio, Reflection & Ethics" },
+            { id: 200, q: "A comprehensive review before a final mock exam is valuable because it:", options: ["consolidates understanding across all topics covered in the course before assessment", "replaces the need to attend any classes", "only covers the very first topic of the course", "guarantees a perfect exam score"], answer: 0, cat: "Portfolio, Reflection & Ethics" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
