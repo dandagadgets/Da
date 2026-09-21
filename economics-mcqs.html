@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economics Mastery - 218 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-coins text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">EconMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">218 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/218</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-scale-balanced text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Economics with 218 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    Comprehensive practice covering Basic Economic Concepts, Micro & Macroeconomics, Demand & Supply, Elasticity, Market Structures, Market Failure, National Income, Inflation & Unemployment, Fiscal & Monetary Policy, Balance of Payments, Exchange Rates, Economic Growth, Business Economics, Statistics, and Globalization & Ethics.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 218)</option>
+                            <option value="1-14">1. Introduction to Economics & Basic Concepts (1 - 14)</option>
+                            <option value="15-29">2. Microeconomics & Macroeconomics Basics (15 - 29)</option>
+                            <option value="30-58">3. Demand and Supply (30 - 58)</option>
+                            <option value="59-77">4. Elasticity (59 - 77)</option>
+                            <option value="78-93">5. Market Structures (78 - 93)</option>
+                            <option value="94-104">6. Market Failure & Public Goods (94 - 104)</option>
+                            <option value="105-117">7. National Income (105 - 117)</option>
+                            <option value="118-130">8. Inflation & Unemployment (118 - 130)</option>
+                            <option value="131-142">9. Fiscal Policy (131 - 142)</option>
+                            <option value="143-153">10. Monetary Policy (143 - 153)</option>
+                            <option value="154-165">11. Balance of Payments (154 - 165)</option>
+                            <option value="166-176">12. Exchange Rates (166 - 176)</option>
+                            <option value="177-185">13. Economic Growth & Development (177 - 185)</option>
+                            <option value="186-199">14. Business Economics & Costs (186 - 199)</option>
+                            <option value="200-210">15. Statistics for Economics (200 - 210)</option>
+                            <option value="211-218">16. Globalization & Ethics (211 - 218)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 218</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-218)" min="1" max="218" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Economics</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 218</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/218</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Economics Quiz • 218 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (218 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "What is an economy?", options: ["A system where people produce, buy, and sell things", "A government office that collects taxes", "A bank that prints money", "A shop that sells imported goods"], answer: 0, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 2, q: "Which of the following is a good?", options: ["Teaching", "A carpet", "Banking", "Cutting hair"], answer: 1, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 3, q: "Which of the following is a service?", options: ["Food", "Clothes", "Driving a bus", "A phone"], answer: 2, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 4, q: "Which three big questions must every economy answer?", options: ["When to produce, where to produce, why to produce", "What to produce, how to produce, for whom to produce", "Who works, who buys, who sells", "How much to tax, how much to spend, how much to save"], answer: 1, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 5, q: "Scarcity means:", options: ["Resources are limited but wants are unlimited", "Resources are unlimited but wants are limited", "There is no money in the country", "The government bans some goods"], answer: 0, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 6, q: "Which of the following is a need, not a want?", options: ["A video game", "A luxury car", "Food", "A new phone"], answer: 2, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 7, q: "Economics is the study of:", options: ["Only money and banks", "Resources, choices, and how we manage them", "Only the stock market", "Only international trade"], answer: 1, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 8, q: "A movie ticket costs 100 rupees. If you buy the ticket, you cannot buy a burger with the same 100 rupees. The burger is your:", options: ["Fixed cost", "Opportunity cost", "Total cost", "Implicit profit"], answer: 1, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 9, q: "Why do companies always try to create demand?", options: ["Because wants and needs keep the economy alive", "Because demand increases taxes", "Because demand reduces production", "Because companies must finish all wants"], answer: 0, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 10, q: "Why is money valuable?", options: ["Because of the paper it is printed on", "Because it can buy goods and services", "Because banks keep it safe", "Because it is beautiful"], answer: 1, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 11, q: "Which list shows the four factors of production?", options: ["Land, labour, capital, entrepreneurship", "Goods, services, money, banks", "Price, demand, supply, market", "Wages, rent, interest, profit"], answer: 0, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 12, q: "Your monthly budget is 30,000 rupees and a dress costs 50,000 rupees, so you cannot buy it. This is an example of:", options: ["Inflation", "Scarcity of money", "Unemployment", "Surplus"], answer: 1, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 13, q: "The gap between what we want and what we have:", options: ["Can shrink but can never fully finish", "Can be finished in one year", "Never exists in rich countries", "Always stays the same size"], answer: 0, cat: "Introduction to Economics & Basic Concepts" },
+            { id: 14, q: "What is the difference between the economy and economics?", options: ["They are exactly the same thing", "The economy is the machine; economics is the study of how the machine works", "Economics is the machine; the economy is its study", "The economy is small; economics is big"], answer: 1, cat: "Introduction to Economics & Basic Concepts" },
+
+            { id: 15, q: "Microeconomics studies:", options: ["The whole economy of a country", "Individual households, firms, and their decision making", "Only international trade", "Only government budgets"], answer: 1, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 16, q: "The heart of microeconomics is:", options: ["National income", "Fiscal policy", "Demand and supply", "The exchange rate"], answer: 2, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 17, q: "Which question belongs to microeconomics?", options: ["Why is inflation high in the country?", "Why is unemployment high in the country?", "Why did one shop raise its price?", "How fast is the whole economy growing?"], answer: 2, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 18, q: "In economics, demand and supply are both known by:", options: ["Willingness", "Luck", "Government orders", "Advertising only"], answer: 0, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 19, q: "'One person cannot capture the whole market' means:", options: ["One seller can set any price he likes", "Many sellers together serve the market, and competition keeps prices fair", "Markets belong to the government", "Buyers cannot choose sellers"], answer: 1, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 20, q: "A student choosing a course and a firm deciding how many shirts to make are both examples of:", options: ["Macroeconomic policy", "Decisions that bring a benefit and a cost", "Public goods", "Fiscal planning"], answer: 1, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 21, q: "Macroeconomics studies:", options: ["One buyer only", "One firm only", "The total economy: all buyers and all firms", "Only prices of vegetables"], answer: 2, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 22, q: "GDP is:", options: ["The total market value of all final goods and services produced inside a country in a specific period", "The total money printed by the central bank", "The profit of one big company", "The total taxes collected in one year"], answer: 0, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 23, q: "Which formula is correct for GDP?", options: ["C + I + G + (X - M)", "C - I + G + X", "C + I - G + (X + M)", "C x I x G x M"], answer: 0, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 24, q: "In the GDP formula, the letter C stands for:", options: ["Capital", "Consumption", "Credit", "Currency"], answer: 1, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 25, q: "Unemployment is:", options: ["People who do not want to work", "The percentage of the labour force that is jobless and actively looking for work", "People who work from home", "Retired people"], answer: 1, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 26, q: "Why does GDP count only final goods?", options: ["To make GDP look smaller", "To avoid counting the same good twice", "Because final goods are cheaper", "Because intermediate goods have no value"], answer: 1, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 27, q: "People spend 100, firms invest 40, the government spends 30, exports are 20, and imports are 15. What is GDP?", options: ["175", "190", "205", "165"], answer: 0, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 28, q: "Monetary policy manages:", options: ["Taxes and spending", "Money supply and interest rates", "Imports and exports", "Wages and salaries"], answer: 1, cat: "Microeconomics & Macroeconomics Basics" },
+            { id: 29, q: "In GDP = C + I + G + (X - M), the term (X - M) is called:", options: ["Net exports", "Gross exports", "Net imports", "Total trade"], answer: 0, cat: "Microeconomics & Macroeconomics Basics" },
+
+            { id: 30, q: "Demand is the quantity of a good that buyers:", options: ["Wish for without having money", "Are willing and able to buy at different prices", "Return to the shop after buying", "Only see in advertisements"], answer: 1, cat: "Demand and Supply" },
+            { id: 31, q: "According to the law of demand, when price goes up:", options: ["Demand goes up", "Demand goes down", "Demand stays the same", "Supply goes down"], answer: 1, cat: "Demand and Supply" },
+            { id: 32, q: "The demand curve on a graph slopes:", options: ["Upward", "Downward", "Perfectly horizontal", "In a circle"], answer: 1, cat: "Demand and Supply" },
+            { id: 33, q: "According to the law of supply, when price goes up:", options: ["Quantity supplied goes up", "Quantity supplied goes down", "Demand goes up", "Supply disappears"], answer: 0, cat: "Demand and Supply" },
+            { id: 34, q: "Supply is the quantity of a good that sellers:", options: ["Are willing and able to sell at different prices", "Keep locked in the store room", "Buy from other countries", "Lose every year"], answer: 0, cat: "Demand and Supply" },
+            { id: 35, q: "Which is the correct order of the chain that moves goods to customers?", options: ["Producer -> Distributor -> Retailer -> Customer", "Customer -> Retailer -> Producer -> Distributor", "Retailer -> Customer -> Distributor -> Producer", "Distributor -> Producer -> Customer -> Retailer"], answer: 0, cat: "Demand and Supply" },
+            { id: 36, q: "In the supply schedule in the notes, how many units are supplied at a price of 8 rupees?", options: ["1,500", "2,200", "3,000", "1,000"], answer: 1, cat: "Demand and Supply" },
+            { id: 37, q: "Production depends on:", options: ["Customer demand", "The weather only", "The number of shops", "Luck"], answer: 0, cat: "Demand and Supply" },
+            { id: 38, q: "Which of the following changes demand (shifts the demand curve)?", options: ["A rise in buyers' income", "A change in the good's own price only", "The colour of the demand curve", "The name of the seller"], answer: 0, cat: "Demand and Supply" },
+            { id: 39, q: "Tea and coffee are substitutes. If tea becomes expensive:", options: ["People buy more coffee", "People buy less coffee", "Coffee demand does not change", "People stop drinking both"], answer: 0, cat: "Demand and Supply" },
+            { id: 40, q: "A phone and a charger are complements. If phones become very expensive:", options: ["More chargers are sold", "Fewer chargers are sold", "Chargers become substitutes", "Charger demand doubles"], answer: 1, cat: "Demand and Supply" },
+            { id: 41, q: "A normal good is one where demand rises when:", options: ["Income rises", "Income falls", "Price rises", "Supply falls"], answer: 0, cat: "Demand and Supply" },
+            { id: 42, q: "People hear that prices will rise next month, so they buy goods now. This shows that demand is affected by:", options: ["Expectations", "Depreciation", "Break-even", "Population fall"], answer: 0, cat: "Demand and Supply" },
+            { id: 43, q: "Very cheap noodles are an inferior good because when people's income rises:", options: ["They buy more noodles", "They stop buying them", "Noodle prices always rise", "Noodles become a luxury"], answer: 1, cat: "Demand and Supply" },
+            { id: 44, q: "In the demand schedule in the notes, when price falls from 10 to 4 rupees, quantity demanded:", options: ["Rises from 1,000 to 3,000 units", "Falls from 3,000 to 1,000 units", "Stays at 2,200 units", "Rises from 2,200 to 3,000 units"], answer: 0, cat: "Demand and Supply" },
+            { id: 45, q: "In the demand schedule in the notes, at which price is quantity demanded 2,200 units?", options: ["6 rupees", "8 rupees", "4 rupees", "10 rupees"], answer: 0, cat: "Demand and Supply" },
+            { id: 46, q: "A franchise is a business that:", options: ["Buys the right to use a big company's name and products", "Sells only its own homemade products", "Is owned by the government", "Imports goods without paying taxes"], answer: 0, cat: "Demand and Supply" },
+            { id: 47, q: "Market equilibrium is the point where:", options: ["Quantity demanded equals quantity supplied", "Demand is more than supply", "Supply is more than demand", "The government fixes the price"], answer: 0, cat: "Demand and Supply" },
+            { id: 48, q: "A surplus happens when:", options: ["Supply is more than demand", "Demand is more than supply", "The price is too low", "The market is in equilibrium"], answer: 0, cat: "Demand and Supply" },
+            { id: 49, q: "A shortage happens when the price is:", options: ["Too high", "Too low", "Exactly at equilibrium", "Fixed by law"], answer: 1, cat: "Demand and Supply" },
+            { id: 50, q: "When there is a surplus, sellers:", options: ["Lower the price to sell more", "Raise the price", "Stop production forever", "Buy from other sellers"], answer: 0, cat: "Demand and Supply" },
+            { id: 51, q: "When there is a shortage, sellers:", options: ["Raise the price", "Lower the price", "Close the market", "Give free goods"], answer: 0, cat: "Demand and Supply" },
+            { id: 52, q: "Break-even is the point where:", options: ["Total revenue equals total cost", "Profit is at its maximum", "Total cost is zero", "Revenue is zero"], answer: 0, cat: "Demand and Supply" },
+            { id: 53, q: "In the equilibrium table in the notes (demand = supply = 3,500), the equilibrium price is:", options: ["30 rupees", "40 rupees", "20 rupees", "10 rupees"], answer: 0, cat: "Demand and Supply" },
+            { id: 54, q: "At a price of 40 rupees, quantity demanded is 2,000 and quantity supplied is 5,000. The result is:", options: ["A surplus, so the price falls", "A shortage, so the price rises", "Equilibrium", "A shift of the demand curve"], answer: 0, cat: "Demand and Supply" },
+            { id: 55, q: "If demand increases, the new equilibrium has:", options: ["A higher price and a higher quantity", "A lower price and a lower quantity", "A higher price and a lower quantity", "No change at all"], answer: 0, cat: "Demand and Supply" },
+            { id: 56, q: "If supply increases, the new equilibrium has:", options: ["A higher price and a higher quantity", "A lower price and a higher quantity", "A lower price and a lower quantity", "A higher price and a lower quantity"], answer: 1, cat: "Demand and Supply" },
+            { id: 57, q: "When demand rises, why is the price not stable at first?", options: ["It goes up until supply adjusts", "It falls until demand adjusts", "The government fixes it immediately", "Sellers refuse to sell"], answer: 0, cat: "Demand and Supply" },
+            { id: 58, q: "Why is there no final break-even in the whole economy?", options: ["Because the economy never stops and markets keep changing every day", "Because total revenue is always zero", "Because firms never pay their costs", "Because profit is not allowed"], answer: 0, cat: "Demand and Supply" },
+
+            { id: 59, q: "Elasticity measures:", options: ["How sensitive quantity is to a change in price, income, or other factors", "How much money a firm earns", "How fast prices always rise", "How many sellers are in a market"], answer: 0, cat: "Elasticity" },
+            { id: 60, q: "The formula for price elasticity of demand is:", options: ["Percentage change in quantity demanded / Percentage change in price", "Percentage change in price / Percentage change in quantity demanded", "Price x Quantity", "Change in price + Change in quantity"], answer: 0, cat: "Elasticity" },
+            { id: 61, q: "If E is greater than 1, demand is:", options: ["Elastic", "Inelastic", "Unit elastic", "Perfectly fixed"], answer: 0, cat: "Elasticity" },
+            { id: 62, q: "If E is less than 1, demand is:", options: ["Elastic", "Inelastic", "Unit elastic", "Zero"], answer: 1, cat: "Elasticity" },
+            { id: 63, q: "Which good has inelastic demand according to the notes?", options: ["One brand of chocolate", "Salt", "A luxury car", "Designer clothes"], answer: 1, cat: "Elasticity" },
+            { id: 64, q: "Which good has elastic demand according to the notes?", options: ["Salt", "Medicine", "One brand of chocolate", "Petrol"], answer: 2, cat: "Elasticity" },
+            { id: 65, q: "In the elasticity formula, the delta sign means:", options: ["Change", "Total", "Average", "Maximum"], answer: 0, cat: "Elasticity" },
+            { id: 66, q: "The price of a drink rises from 10 to 12 rupees and quantity demanded falls from 100 to 80 bottles. The price elasticity of demand is:", options: ["1 (unit elastic)", "2 (elastic)", "0.5 (inelastic)", "0.2 (inelastic)"], answer: 0, cat: "Elasticity" },
+            { id: 67, q: "The price of salt doubles (a 100% rise) and quantity demanded falls from 1,000 to 950 packets. The elasticity is:", options: ["0.05", "0.5", "2", "5"], answer: 0, cat: "Elasticity" },
+            { id: 68, q: "% change is calculated as:", options: ["(New value - Old value) / Old value x 100", "(Old value - New value) / New value x 100", "New value / Old value", "Old value x New value x 100"], answer: 0, cat: "Elasticity" },
+            { id: 69, q: "Availability of many substitutes makes demand:", options: ["Elastic", "Inelastic", "Unit elastic", "Impossible to measure"], answer: 0, cat: "Elasticity" },
+            { id: 70, q: "Basic goods are usually ______ while luxury goods are usually ______.", options: ["Inelastic, elastic", "Elastic, inelastic", "Unit elastic, unit elastic", "Fixed, free"], answer: 0, cat: "Elasticity" },
+            { id: 71, q: "With more time to find alternatives, demand becomes:", options: ["More elastic", "More inelastic", "Zero", "Fixed"], answer: 0, cat: "Elasticity" },
+            { id: 72, q: "Cross elasticity of demand for substitutes (like tea and coffee) is:", options: ["Positive", "Negative", "Zero", "Always equal to 1"], answer: 0, cat: "Elasticity" },
+            { id: 73, q: "Cross elasticity of demand for complements (like a phone and a charger) is:", options: ["Positive", "Negative", "Zero", "Always greater than 1"], answer: 1, cat: "Elasticity" },
+            { id: 74, q: "Intra-market elasticity looks at changes inside one market, while inter-market elasticity looks at changes:", options: ["Between two related markets", "Inside one firm only", "Only over ten years", "Between two governments"], answer: 0, cat: "Elasticity" },
+            { id: 75, q: "Income Elasticity of Demand (YED) measures how demand responds to a change in:", options: ["Income", "The good's own price", "Another good's price", "Supply"], answer: 0, cat: "Elasticity" },
+            { id: 76, q: "Price Elasticity of Supply is calculated as:", options: ["Percentage change in quantity supplied / Percentage change in price", "Percentage change in price / Percentage change in quantity supplied", "Quantity supplied / Price", "Price / Quantity supplied"], answer: 0, cat: "Elasticity" },
+            { id: 77, q: "Strong brand loyalty (taste and preference) makes demand:", options: ["Less elastic", "More elastic", "Unit elastic", "Perfectly elastic"], answer: 0, cat: "Elasticity" },
+
+            { id: 78, q: "A market is:", options: ["Any place, real or online, where buyers and sellers complete transactions", "Only a physical building with shops", "Only the stock exchange", "A government office"], answer: 0, cat: "Market Structures" },
+            { id: 79, q: "How many main market structures are described in the notes?", options: ["Four", "Two", "Six", "Three"], answer: 0, cat: "Market Structures" },
+            { id: 80, q: "In perfect competition, sellers have:", options: ["No control over price", "Full control over price", "Some control over price", "A legal right to fix prices"], answer: 0, cat: "Market Structures" },
+            { id: 81, q: "A monopoly has:", options: ["One seller with no close substitute", "Many sellers of the same product", "A few big sellers", "Free entry and exit"], answer: 0, cat: "Market Structures" },
+            { id: 82, q: "An oligopoly means:", options: ["A few big sellers control the market", "One seller controls the market", "Many small sellers sell identical goods", "Sellers must compete on quality only"], answer: 0, cat: "Market Structures" },
+            { id: 83, q: "Examples of oligopoly from the notes are:", options: ["Petrol companies, mobile networks, banks", "Wheat and vegetables", "A village tuck shop", "Only online shops"], answer: 0, cat: "Market Structures" },
+            { id: 84, q: "In monopolistic competition, sellers attract customers with:", options: ["Advertising and branding", "Government licences", "Free products", "Banning rivals"], answer: 0, cat: "Market Structures" },
+            { id: 85, q: "Perfect competition allows:", options: ["Free entry and exit", "Only licensed sellers", "No new sellers", "Fixed government quotas"], answer: 0, cat: "Market Structures" },
+            { id: 86, q: "Why do petrol companies often move their prices together?", options: ["Because each watches the others in an oligopoly", "Because the law fixes petrol prices", "Because petrol is a public good", "Because they are a monopoly"], answer: 0, cat: "Market Structures" },
+            { id: 87, q: "A hotel offering a different price and different facilities from other hotels is an example of:", options: ["Monopolistic competition", "Perfect competition", "Monopoly", "A public good"], answer: 0, cat: "Market Structures" },
+            { id: 88, q: "Which is an example of a legal barrier to entry?", options: ["The government gives one company the only licence", "A big firm produces at lower cost", "Huge advertising spending", "A firm buys machines in bulk"], answer: 0, cat: "Market Structures" },
+            { id: 89, q: "Water and electricity are examples of:", options: ["Natural monopoly", "Perfect competition", "Monopolistic competition", "Public goods by definition"], answer: 0, cat: "Market Structures" },
+            { id: 90, q: "Making 100 shirts may cost 100 rupees each, but making 10,000 shirts may cost only 60 rupees each. This fall in per-unit cost is called:", options: ["Economies of scale", "Break-even", "Depreciation", "Inflation"], answer: 0, cat: "Market Structures" },
+            { id: 91, q: "A marriage hall in a town with almost no competition is an example of:", options: ["An imperfect market (local monopoly)", "Perfect competition", "A public good", "Oligopoly"], answer: 0, cat: "Market Structures" },
+            { id: 92, q: "Why do big companies with economies of scale make it hard for new small firms to compete?", options: ["Because big firms produce at lower per-unit cost and can sell cheaply", "Because small firms cannot advertise at all", "Because the government bans small firms", "Because small firms pay more tax"], answer: 0, cat: "Market Structures" },
+            { id: 93, q: "Advertising does not end competition; instead it:", options: ["Changes how firms compete", "Removes all rivals from the market", "Fixes prices by law", "Ends the need for quality"], answer: 0, cat: "Market Structures" },
+
+            { id: 94, q: "Market failure happens when:", options: ["The free market gives a bad or wasteful result", "Prices rise slowly", "A firm earns a high profit", "The government collects taxes"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 95, q: "Which of the following is a cause of market failure?", options: ["Externalities", "Perfect information", "Many competitors", "Free entry and exit"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 96, q: "A factory pollutes a river and the people who drink the water suffer. This is a:", options: ["Negative externality", "Positive externality", "Public good", "Subsidy"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 97, q: "A teacher educates students and the whole society benefits. This is a:", options: ["Positive externality", "Negative externality", "Market control", "Imperfect information"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 98, q: "A public good is:", options: ["Available to everyone, including non-buyers", "Sold only to rich customers", "Made only by private firms", "Always very expensive"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 99, q: "Street lights and national defence are examples of goods that are:", options: ["Non-rivalrous and non-excludable", "Rival and excludable", "Rival and non-excludable", "Excludable and expensive"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 100, q: "Why do private firms not produce enough public goods?", options: ["Because people can use them without paying", "Because they are illegal", "Because they need no resources", "Because governments ban them"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 101, q: "According to the notes, efficiency is achieved when:", options: ["Demand equals supply", "Supply is greater than demand", "The government sets all prices", "Only one seller exists"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 102, q: "Imperfect information as a market failure means:", options: ["Buyers do not know the truth about products", "Sellers know too much", "Prices are printed wrongly", "The government hides data"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 103, q: "Society achieves efficiency when barriers are set aside. This requires:", options: ["Free entry and exit, open information, and fair competition", "More monopoly power", "Hidden information", "Higher barriers"], answer: 0, cat: "Market Failure & Public Goods" },
+            { id: 104, q: "When the market fails, who often steps in?", options: ["The government", "Only the buyers", "The sellers themselves", "Nobody"], answer: 0, cat: "Market Failure & Public Goods" },
+
+            { id: 105, q: "National income is:", options: ["The total value of all goods and services produced by a country in one year", "The profit of the biggest company", "The money printed by the central bank", "The total tax collected in one year"], answer: 0, cat: "National Income" },
+            { id: 106, q: "GDP is counted by place, while GNP is counted by:", options: ["Ownership", "Colour", "Weight", "Price"], answer: 0, cat: "National Income" },
+            { id: 107, q: "NNP =", options: ["GNP - Depreciation", "GNP + Depreciation", "GDP - GNP", "GNP + GDP"], answer: 0, cat: "National Income" },
+            { id: 108, q: "Depreciation is:", options: ["The loss of value of machines and buildings because of use and age", "A new tax on companies", "An increase in the value of money", "The profit after tax"], answer: 0, cat: "National Income" },
+            { id: 109, q: "Which is NOT one of the three ways to count national income?", options: ["The donation method", "The production method", "The income method", "The expenditure method"], answer: 0, cat: "National Income" },
+            { id: 110, q: "GDP = C + I + G + (X - M) with C = 200, I = 80, G = 60, X = 50, M = 40. GDP is:", options: ["350", "360", "430", "340"], answer: 0, cat: "National Income" },
+            { id: 111, q: "GDP is 350 and citizens earn 20 more abroad than foreigners earn inside. GNP is:", options: ["370", "330", "350", "390"], answer: 0, cat: "National Income" },
+            { id: 112, q: "GNP is 370 and depreciation is 10. NNP is:", options: ["360", "380", "370", "350"], answer: 0, cat: "National Income" },
+            { id: 113, q: "A Pakistani company works in the UAE. Its profit is part of:", options: ["Pakistan's GNP and the UAE's GDP", "Pakistan's GDP and the UAE's GNP", "Only Pakistan's GDP", "Only the UAE's GNP"], answer: 0, cat: "National Income" },
+            { id: 114, q: "Which is a factor that affects national income?", options: ["Natural resources, human capital, capital goods, technology, and political stability", "Only the number of shops", "Only the exchange rate", "Only the weather"], answer: 0, cat: "National Income" },
+            { id: 115, q: "The income method of counting national income adds:", options: ["All wages, rents, interest, and profits", "Only wages", "Only profits", "Only government spending"], answer: 0, cat: "National Income" },
+            { id: 116, q: "A business that starts on borrowed money must repay it:", options: ["With interest", "Without any extra payment", "Only after 50 years", "Never"], answer: 0, cat: "National Income" },
+            { id: 117, q: "Products and services that come from outside the country are called:", options: ["International, not national", "National products", "Public goods", "Government revenue"], answer: 0, cat: "National Income" },
+
+            { id: 118, q: "Inflation is:", options: ["The rate at which the general level of prices of goods and services rises", "The rate at which jobs are created", "The total money in the banks", "The value of exports minus imports"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 119, q: "Purchasing power means:", options: ["What your money can buy", "How much money the government prints", "The total money in the economy", "The money kept as reserves"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 120, q: "Demand-pull inflation happens when:", options: ["Demand is higher than supply, so prices are pulled up", "Costs of production fall", "The government cuts spending", "Exports fall"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 121, q: "Cost-push inflation happens when:", options: ["Rising costs like wages and oil push firms to raise prices", "Buyers refuse to buy goods", "The central bank lowers the money supply", "Imports become cheaper"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 122, q: "When too much currency flows in the economy:", options: ["Prices rise and money loses value", "Prices fall and money gains value", "Production always increases", "Unemployment disappears"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 123, q: "Jobs that change with the seasons, like farm work and tourism, are linked with:", options: ["Seasonal unemployment", "Frictional unemployment", "Cyclical unemployment", "Structural unemployment"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 124, q: "The unemployment rate formula is:", options: ["(Number of unemployed / Labour force) x 100", "(Labour force / Number of unemployed) x 100", "(Unemployed / Total population) x 100", "(Employed / Unemployed) x 100"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 125, q: "A country has a labour force of 1,000 people and 80 of them are unemployed. The unemployment rate is:", options: ["8%", "80%", "0.8%", "12%"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 126, q: "A person who is changing jobs and is jobless only for a short time faces:", options: ["Frictional unemployment", "Structural unemployment", "Cyclical unemployment", "Seasonal unemployment"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 127, q: "Workers replaced by machines because their skills no longer match the jobs face:", options: ["Structural unemployment", "Frictional unemployment", "Seasonal unemployment", "Cyclical unemployment"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 128, q: "There is a trade-off between inflation and unemployment because:", options: ["When employment is high, wages rise, and inflation rises", "Both always rise together in a boom", "Both are fixed by the exchange rate", "Unemployment causes imports to rise"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 129, q: "Changing the work process from the start is called:", options: ["Reengineering", "Restructuring", "Layoff", "Depreciation"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 130, q: "Galloping inflation is fast inflation of about:", options: ["20-50% per year", "2-3% per year", "0% per year", "100% every month"], answer: 0, cat: "Inflation & Unemployment" },
+
+            { id: 131, q: "Fiscal policy is how the government uses:", options: ["Spending and taxes to influence the economy", "Interest rates to influence the economy", "The exchange rate to influence exports", "Money printing to influence prices"], answer: 0, cat: "Fiscal Policy" },
+            { id: 132, q: "A government budget is:", options: ["The government's plan of revenue and expenditure for one year", "A list of all banks", "The central bank's report", "A plan for five years only"], answer: 0, cat: "Fiscal Policy" },
+            { id: 133, q: "Most government revenue comes from:", options: ["Taxes", "Foreign aid", "Printing money", "Selling government buildings"], answer: 0, cat: "Fiscal Policy" },
+            { id: 134, q: "When expenditure is more than revenue, the government has a:", options: ["Deficit and must borrow money", "Surplus and can save money", "Balanced budget", "Tax refund"], answer: 0, cat: "Fiscal Policy" },
+            { id: 135, q: "In Pakistan, the fiscal year runs from:", options: ["July to June", "January to December", "April to March", "October to September"], answer: 0, cat: "Fiscal Policy" },
+            { id: 136, q: "GST is an indirect tax because:", options: ["It is hidden inside the price of goods", "It is paid directly to the government office", "Only companies pay it", "It is collected by the central bank"], answer: 0, cat: "Fiscal Policy" },
+            { id: 137, q: "Which is a direct tax?", options: ["Income tax paid on your salary", "GST on goods", "Excise duty", "Sales tax at a shop"], answer: 0, cat: "Fiscal Policy" },
+            { id: 138, q: "The Laffer curve shows that:", options: ["Very low and very high tax rates give little revenue, and a middle rate gives the most", "Higher tax rates always give higher revenue", "Lower tax rates always give higher revenue", "Tax rates have no effect on revenue"], answer: 0, cat: "Fiscal Policy" },
+            { id: 139, q: "Expansionary fiscal policy means:", options: ["Cut taxes and increase spending when the economy is slow", "Raise taxes and cut spending when inflation is high", "Print more money", "Fix the exchange rate"], answer: 0, cat: "Fiscal Policy" },
+            { id: 140, q: "Which pair are examples of indirect taxes?", options: ["GST and excise duty", "Income tax and company profit tax", "Salary tax and property tax", "Wealth tax and income tax"], answer: 0, cat: "Fiscal Policy" },
+            { id: 141, q: "Why must the budget be passed before the fiscal year starts?", options: ["So it covers a whole year of income and spending", "So the government can print money early", "So taxes can be removed", "So the deficit disappears"], answer: 0, cat: "Fiscal Policy" },
+            { id: 142, q: "Contractionary fiscal policy (raise taxes, cut spending) is used when:", options: ["Inflation is too high", "Unemployment is too high", "The economy is too slow", "Exports are too high"], answer: 0, cat: "Fiscal Policy" },
+
+            { id: 143, q: "Monetary policy is how the central bank manages:", options: ["The money supply and interest rates", "Government spending and taxes", "Imports and exports", "Wages and salaries"], answer: 0, cat: "Monetary Policy" },
+            { id: 144, q: "The central bank of Pakistan is the:", options: ["State Bank of Pakistan", "National Bank", "Federal Reserve", "Bank of England"], answer: 0, cat: "Monetary Policy" },
+            { id: 145, q: "The interest rate is:", options: ["The price of borrowing money", "The price of foreign currency", "A tax on banks", "The profit of the government"], answer: 0, cat: "Monetary Policy" },
+            { id: 146, q: "When the central bank lowers the interest rate:", options: ["Loans become cheap, people borrow and spend more, and the economy grows", "Loans become expensive and spending falls", "People save more and spend less", "Inflation immediately rises"], answer: 0, cat: "Monetary Policy" },
+            { id: 147, q: "Money supply is:", options: ["The total money in the economy: cash and bank accounts", "Only the cash in banks", "Only government reserves", "The gold in the treasury"], answer: 0, cat: "Monetary Policy" },
+            { id: 148, q: "The reserve requirement is:", options: ["How much money banks must keep and cannot lend", "The interest banks charge customers", "The gold a country keeps", "The tax on bank profits"], answer: 0, cat: "Monetary Policy" },
+            { id: 149, q: "Open market operations mean the central bank:", options: ["Buys or sells government bonds", "Opens new bank branches", "Prints new notes directly for people", "Fixes the exchange rate"], answer: 0, cat: "Monetary Policy" },
+            { id: 150, q: "When the central bank raises the interest rate:", options: ["People borrow less, spend less, and inflation slows down", "People borrow more and spend more", "Unemployment falls immediately", "The money supply increases"], answer: 0, cat: "Monetary Policy" },
+            { id: 151, q: "Contractionary monetary policy means:", options: ["Raise interest rates and reduce the money supply", "Lower interest rates and increase the money supply", "Increase government spending", "Cut taxes"], answer: 0, cat: "Monetary Policy" },
+            { id: 152, q: "Fiscal policy is decided by the government, while monetary policy is decided by:", options: ["The central bank", "The parliament only", "Private banks", "The World Bank"], answer: 0, cat: "Monetary Policy" },
+            { id: 153, q: "Expansionary monetary policy (lower interest rates, increase money supply) is used when:", options: ["The economy is slow and unemployment is high", "Inflation is too high", "The budget has a surplus", "Exports are too high"], answer: 0, cat: "Monetary Policy" },
+
+            { id: 154, q: "The Balance of Payments is the record of:", options: ["All transactions between a country and the rest of the world in a specific period", "Only the exports of goods", "Only government borrowing", "Only the money in banks"], answer: 0, cat: "Balance of Payments" },
+            { id: 155, q: "In the BOP, an export is a credit and an import is a debit. This means:", options: ["Exports bring money in and imports send money out", "Exports send money out and imports bring money in", "Both bring money in", "Both send money out"], answer: 0, cat: "Balance of Payments" },
+            { id: 156, q: "Patents, licences, and software are examples of:", options: ["Intangible items", "Tangible goods", "Public goods", "Free goods"], answer: 0, cat: "Balance of Payments" },
+            { id: 157, q: "A transaction is:", options: ["Any deal in which money changes hands or a promise is made", "Only a cash payment", "Only a bank loan", "Only an export of goods"], answer: 0, cat: "Balance of Payments" },
+            { id: 158, q: "If credits are more than debits, the BOP has a:", options: ["Surplus", "Deficit", "Loan", "Shutdown"], answer: 0, cat: "Balance of Payments" },
+            { id: 159, q: "Foreign aid received from other countries is recorded as:", options: ["A credit in the current account", "A debit in the current account", "A credit in the capital account", "Not recorded at all"], answer: 0, cat: "Balance of Payments" },
+            { id: 160, q: "The current account records:", options: ["Trade in goods, trade in services, income, and current transfers", "Only investment and loans", "Only foreign reserves", "Only government taxes"], answer: 0, cat: "Balance of Payments" },
+            { id: 161, q: "The capital and financial account records:", options: ["Investment and loans: buying companies, bonds, and foreign reserves", "Only imports of goods", "Only workers' salaries", "Only tourism"], answer: 0, cat: "Balance of Payments" },
+            { id: 162, q: "The Balance of Trade (BOT) is:", options: ["A part of the BOP that covers only goods", "Bigger than the BOP", "The same as the BOP", "Only about services"], answer: 0, cat: "Balance of Payments" },
+            { id: 163, q: "Exports of goods are 500 and imports of goods are 300. The balance of trade is:", options: ["A surplus of 200", "A deficit of 200", "A surplus of 800", "A deficit of 100"], answer: 0, cat: "Balance of Payments" },
+            { id: 164, q: "Exports of goods 500, imports of goods 300, exports of services 100, imports of services 150, foreign aid received 50, profits sent abroad 80. The current account balance is:", options: ["A surplus of 120", "A deficit of 120", "A surplus of 200", "A deficit of 80"], answer: 0, cat: "Balance of Payments" },
+            { id: 165, q: "Countries keep foreign reserves (dollars, gold, other currencies) to:", options: ["Pay for imports and protect the currency", "Pay government salaries only", "Increase imports without limit", "Replace taxes"], answer: 0, cat: "Balance of Payments" },
+
+            { id: 166, q: "An exchange rate is:", options: ["The price of one country's currency in another country's currency", "The price of gold in the local market", "The cost of importing machines", "A tax on foreign goods"], answer: 0, cat: "Exchange Rates" },
+            { id: 167, q: "If 1 dollar rises from 280 to 300 rupees, the rupee has:", options: ["Depreciated", "Appreciated", "Been fixed", "Been converted"], answer: 0, cat: "Exchange Rates" },
+            { id: 168, q: "Money is valuable because:", options: ["People trust it and the country's economy stands behind it", "It is made of special paper", "Banks keep it in big buildings", "It is printed in many colours"], answer: 0, cat: "Exchange Rates" },
+            { id: 169, q: "If 1 dollar falls from 280 to 260 rupees, the rupee has:", options: ["Appreciated", "Depreciated", "Collapsed", "Been pegged"], answer: 0, cat: "Exchange Rates" },
+            { id: 170, q: "High inflation in a country makes its currency:", options: ["Weak", "Strong", "Fixed", "Hard"], answer: 0, cat: "Exchange Rates" },
+            { id: 171, q: "A hard currency is one that:", options: ["Everyone accepts, like the US dollar", "No one accepts outside the country", "Only gold can replace", "The government bans from export"], answer: 0, cat: "Exchange Rates" },
+            { id: 172, q: "In a fixed exchange rate system, the government must:", options: ["Hold reserves to defend the rate", "Let the market decide daily", "Print unlimited money", "Ban all imports"], answer: 0, cat: "Exchange Rates" },
+            { id: 173, q: "In a floating exchange rate system, the rate is decided by:", options: ["Demand and supply of currencies", "The central bank's order", "The World Bank", "The largest exporter"], answer: 0, cat: "Exchange Rates" },
+            { id: 174, q: "The formula for the real exchange rate is:", options: ["(Nominal Rate x Domestic Price) / Foreign Price", "(Nominal Rate / Domestic Price) x Foreign Price", "Nominal Rate + Foreign Price", "Domestic Price / Nominal Rate"], answer: 0, cat: "Exchange Rates" },
+            { id: 175, q: "Depreciation of the currency makes exports cheaper for foreigners. What can follow?", options: ["Exports rise, but imports become expensive and inflation can rise", "Exports and imports both rise", "Exports fall and inflation falls", "Imports become cheaper and inflation falls"], answer: 0, cat: "Exchange Rates" },
+            { id: 176, q: "High interest rates attract foreign money, so the currency:", options: ["Becomes strong", "Becomes weak", "Stays fixed", "Loses all value"], answer: 0, cat: "Exchange Rates" },
+
+            { id: 177, q: "Economic growth means:", options: ["The country produces more: more GDP, factories, and business", "The quality of life improves", "Poverty is finished", "Only that prices are stable"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 178, q: "Growth is measured by the change in:", options: ["Real GDP", "Total population", "The exchange rate", "Government jobs"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 179, q: "GDP was 1,000 last year and 1,080 this year. The growth rate is:", options: ["8%", "80%", "10.8%", "0.8%"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 180, q: "The Human Development Index (HDI) combines:", options: ["Income per person, education, and health", "Only income per person", "GDP and inflation", "Exports and imports"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 181, q: "Other measures of development include:", options: ["Literacy rate, life expectancy, clean water access, and child health", "Only the number of factories", "Only the exchange rate", "Only military power"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 182, q: "Real GDP means GDP:", options: ["After removing inflation, so we see the true growth of production", "Before removing taxes", "Counted only in dollars", "Counted only for one firm"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 183, q: "A country can grow very fast but still be underdeveloped. This means it can be:", options: ["Rich in factories, poor in hospitals and schools", "Rich in hospitals, poor in factories", "Rich in everything", "Poor in everything"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 184, q: "Economic growth is a change in quantity, while economic development is a change in:", options: ["Quality", "Quantity", "Prices", "Population"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 185, q: "Why do governments invest in schools, hospitals, and roads?", options: ["Because growth becomes development only when people's lives improve", "Because schools and hospitals raise exports directly", "Because roads reduce the deficit", "Because it replaces taxation"], answer: 0, cat: "Economic Growth & Development" },
+
+            { id: 186, q: "Business economics is also called:", options: ["Managerial economics", "National accounting", "Public finance", "Micro-finance"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 187, q: "The four main jobs of management are:", options: ["Planning, organizing, leading, and controlling", "Buying, selling, saving, and lending", "Hiring, firing, paying, and promoting", "Producing, pricing, packing, and posting"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 188, q: "An explicit cost is:", options: ["Money actually paid out, like wages, rent, and electricity", "The value of your own time", "The profit kept in the business", "The loss of machine value"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 189, q: "An implicit cost is:", options: ["The value of what you give up but do not pay for, like your own time", "The rent paid to the landlord", "The electricity bill", "The wages of workers"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 190, q: "Profit equals:", options: ["Total Revenue - Total Cost", "Total Revenue + Total Cost", "Total Cost - Total Revenue", "Total Revenue / Total Cost"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 191, q: "An entrepreneur is a person who:", options: ["Starts a business, combines land, labour, and capital, and takes the risk himself", "Only lends money to firms", "Works as a manager for a salary", "Collects taxes for the government"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 192, q: "In the input market, the firm:", options: ["Buys inputs like labour, capital, and raw material", "Sells its final goods", "Pays its taxes", "Borrows from customers"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 193, q: "Economic cost includes:", options: ["Explicit and implicit costs together", "Only explicit costs", "Only implicit costs", "Only taxes"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 194, q: "Marginal analysis says: do one more unit only when:", options: ["Marginal Benefit > Marginal Cost", "Marginal Benefit < Marginal Cost", "Marginal Cost is zero", "Total cost equals total revenue"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 195, q: "A firm keeps earning more from extra units until:", options: ["Marginal Benefit equals Marginal Cost", "Total revenue is zero", "Marginal cost doubles", "The market fails"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 196, q: "A shop earns revenue of 500,000 rupees and pays 300,000 rupees in rent, wages, and material. The accounting profit is:", options: ["200,000 rupees", "300,000 rupees", "800,000 rupees", "100,000 rupees"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 197, q: "The same shop earns 500,000 rupees, pays 300,000 rupees in explicit costs, and the owner gave up a 100,000 rupee job. The economic profit is:", options: ["100,000 rupees", "200,000 rupees", "400,000 rupees", "500,000 rupees"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 198, q: "A businessman has a shop worth 1,000,000, cash of 200,000, and a car worth 300,000. He has a loan of 500,000. His net worth is:", options: ["1,000,000 rupees", "1,500,000 rupees", "500,000 rupees", "2,000,000 rupees"], answer: 0, cat: "Business Economics & Costs" },
+            { id: 199, q: "An extra hour of work produces output that sells for 50 rupees, and the extra wage is 40 rupees. Should the firm add the extra hour?", options: ["Yes, because MB (50) > MC (40)", "No, because MC (40) > MB (50)", "Yes, because MB equals MC", "No, because the wage is too low"], answer: 0, cat: "Business Economics & Costs" },
+
+            { id: 200, q: "Why do economists need data?", options: ["Because they cannot guess; they must study markets, prices, GDP, and jobs with information", "Because data replaces all theory", "Because the government forces them", "Because data is always cheap"], answer: 0, cat: "Statistics for Economics" },
+            { id: 201, q: "The mean is:", options: ["The average: add all values and divide by the number of values", "The middle value after arranging in order", "The value that appears most often", "The largest value"], answer: 0, cat: "Statistics for Economics" },
+            { id: 202, q: "The prices of five goods are 4, 6, 8, 10, and 12 rupees. The mean price is:", options: ["8 rupees", "10 rupees", "6 rupees", "12 rupees"], answer: 0, cat: "Statistics for Economics" },
+            { id: 203, q: "The median is:", options: ["The middle value after arranging the data in order", "The most frequent value", "The average value", "The smallest value"], answer: 0, cat: "Statistics for Economics" },
+            { id: 204, q: "The mode is:", options: ["The value that appears most often", "The middle value", "The average value", "The difference between the largest and smallest values"], answer: 0, cat: "Statistics for Economics" },
+            { id: 205, q: "Daily sales are 200, 150, 200, 300, 250. After arranging in order (150, 200, 200, 250, 300), the median is:", options: ["200", "250", "150", "300"], answer: 0, cat: "Statistics for Economics" },
+            { id: 206, q: "Daily sales are 200, 150, 200, 300, 250. The mode is:", options: ["200 (it appears twice)", "150", "250", "300"], answer: 0, cat: "Statistics for Economics" },
+            { id: 207, q: "Primary data differs from secondary data because primary data is:", options: ["Collected by you for your own question, which is expensive and time-consuming", "Already published by others, which is cheap and quick", "Always more accurate than any other data", "Collected only by governments"], answer: 0, cat: "Statistics for Economics" },
+            { id: 208, q: "Qualitative data differs from quantitative data because qualitative data is:", options: ["Words and categories described and grouped in themes", "Numbers counted and measured with statistics", "Always collected from the internet", "Never used in economics"], answer: 0, cat: "Statistics for Economics" },
+            { id: 209, q: "Data preparation includes:", options: ["Filling or removing missing data, removing duplicates, and organizing data in tables", "Only drawing graphs", "Only collecting more data", "Only calculating the mean"], answer: 0, cat: "Statistics for Economics" },
+            { id: 210, q: "A government report used as a data source in your research is:", options: ["Secondary data", "Primary data", "Qualitative data only", "Dirty data"], answer: 0, cat: "Statistics for Economics" },
+
+            { id: 211, q: "Globalization means:", options: ["Countries are connected and interdependent in trade, money, and culture", "One country rules the world", "All countries use the same currency", "Borders are closed to trade"], answer: 0, cat: "Globalization & Ethics" },
+            { id: 212, q: "A positive impact of globalization is that:", options: ["Trade grows and customers get cheaper and better goods", "Local firms always win", "Culture never changes", "Countries stop trading"], answer: 0, cat: "Globalization & Ethics" },
+            { id: 213, q: "Ethics is the study of:", options: ["Right and wrong: moral principles that guide our actions", "Prices and markets", "Money and banking", "Taxes and spending"], answer: 0, cat: "Globalization & Ethics" },
+            { id: 214, q: "Which institution gives loans to countries with BOP problems?", options: ["The IMF", "The WTO", "The World Bank", "The Federal Reserve"], answer: 0, cat: "Globalization & Ethics" },
+            { id: 215, q: "Glocalization means:", options: ["A global product offered in local form, like a global restaurant serving local food", "Closing local markets to global firms", "Making all products identical worldwide", "Moving factories to other countries"], answer: 0, cat: "Globalization & Ethics" },
+            { id: 216, q: "The job of the World Trade Organization (WTO) is to:", options: ["Keep trade fair between countries", "Give loans to governments", "Print world currency", "Build dams and schools"], answer: 0, cat: "Globalization & Ethics" },
+            { id: 217, q: "'Not everything legal is ethical' means:", options: ["Something can be allowed by law but still be wrong, like dishonest advertising", "All legal actions are right", "Ethics replaces the law", "Illegal actions can be ethical always"], answer: 0, cat: "Globalization & Ethics" },
+            { id: 218, q: "A negative impact of globalization is culture loss, which means:", options: ["We adopt foreign rules and habits and forget our own culture and norms", "Local languages become richer", "Trade partners share technology", "Countries keep their traditions"], answer: 0, cat: "Globalization & Ethics" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
