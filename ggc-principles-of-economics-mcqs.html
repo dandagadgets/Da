@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principles of Economics Mastery - 200 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-landmark text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">EconPrinciplesMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">200 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/200</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-scale-balanced text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master GGC Principles of Economics (GGPE5202) with 200 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    An original question bank written from scratch, following the Greenwich Global College Principles of Economics (GGPE5202) course outline: Micro vs Macro, Demand & Supply, Market Equilibrium, Elasticity, Market Structures, Market Failures, National Income & GDP, Inflation & Unemployment, Fiscal & Monetary Policy, Balance of Payments, Exchange Rates, Economic Growth, Business Applications, Data Analysis, and Ethics & Globalization.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 200)</option>
+                            <option value="1-10">1. Orientation & Introduction to Economics (1 - 10)</option>
+                            <option value="11-20">2. Micro vs Macro (11 - 20)</option>
+                            <option value="21-36">3. Demand & Supply (21 - 36)</option>
+                            <option value="37-50">4. Market Equilibrium (37 - 50)</option>
+                            <option value="51-64">5. Elasticity (51 - 64)</option>
+                            <option value="65-78">6. Market Structures (65 - 78)</option>
+                            <option value="79-88">7. Market Failures (79 - 88)</option>
+                            <option value="89-102">8. National Income & GDP (89 - 102)</option>
+                            <option value="103-116">9. Inflation & Unemployment (103 - 116)</option>
+                            <option value="117-128">10. Fiscal Policy (117 - 128)</option>
+                            <option value="129-140">11. Monetary Policy (129 - 140)</option>
+                            <option value="141-150">12. Balance of Payments (141 - 150)</option>
+                            <option value="151-160">13. Exchange Rates (151 - 160)</option>
+                            <option value="161-168">14. Economic Growth & Development (161 - 168)</option>
+                            <option value="169-176">15. Business Applications of Economics (169 - 176)</option>
+                            <option value="177-182">16. Data Analysis Lab (177 - 182)</option>
+                            <option value="183-190">17. Ethics & Globalization (183 - 190)</option>
+                            <option value="191-194">18. Field / Market Observation (191 - 194)</option>
+                            <option value="195-198">19. Presentations on Economy (195 - 198)</option>
+                            <option value="199-200">20. Portfolio & Reflection (199 - 200)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 200</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-200)" min="1" max="200" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">Principles of Economics</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 200</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/200</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Principles of Economics Quiz • 200 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (200 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "Economics is best defined as the study of:", options: ["how banks approve loans", "how governments print money", "how individuals and societies choose to allocate scarce resources", "how companies advertise products"], answer: 2, cat: "Orientation & Introduction to Economics" },
+            { id: 2, q: "Scarcity in economics refers to:", options: ["a temporary shortage of a single product", "a situation where all wants are satisfied", "the total amount of money in an economy", "the condition of unlimited wants but limited resources"], answer: 3, cat: "Orientation & Introduction to Economics" },
+            { id: 3, q: "Which of the following best illustrates scarcity?", options: ["A shop has excess stock it cannot sell", "A family has Rs. 50,000 but wants to buy a Rs. 200,000 motorbike and pay school fees", "A government collects more tax than it needs", "A company has too many employees"], answer: 1, cat: "Orientation & Introduction to Economics" },
+            { id: 4, q: "Opportunity cost is best defined as:", options: ["the cost of producing one extra unit", "the price printed on a product's label", "the value of the next best alternative given up when a choice is made", "the total cost of all possible choices combined"], answer: 2, cat: "Orientation & Introduction to Economics" },
+            { id: 5, q: "Numerical: A student can either study for 3 hours or work a part-time job earning Rs. 900. If she chooses to study, her opportunity cost is:", options: ["Rs. 900", "Rs. 0", "Rs. 300", "Rs. 3,000"], answer: 0, cat: "Orientation & Introduction to Economics" },
+            { id: 6, q: "Why do all societies, rich or poor, face the problem of scarcity?", options: ["Because all countries have the same amount of resources", "Because scarcity only affects poor countries", "Because human wants are unlimited while resources to satisfy them are limited", "Because governments deliberately create shortages"], answer: 2, cat: "Orientation & Introduction to Economics" },
+            { id: 7, q: "Which of the following is an example of a 'want' rather than a basic 'need'?", options: ["A luxury smartwatch", "Essential medicine", "Basic shelter", "Clean drinking water"], answer: 0, cat: "Orientation & Introduction to Economics" },
+            { id: 8, q: "The three big economic questions every society must answer are:", options: ["How much to import, export, and store", "What to produce, how to produce, and for whom to produce", "Who taxes, who spends, and who saves", "When to produce, where to produce, and why to produce"], answer: 1, cat: "Orientation & Introduction to Economics" },
+            { id: 9, q: "Why is economic reasoning considered valuable for entrepreneurship?", options: ["It guarantees a business will be profitable", "It removes the need for market research", "It helps identify the most efficient use of limited resources to maximize value", "It eliminates all business risk"], answer: 2, cat: "Orientation & Introduction to Economics" },
+            { id: 10, q: "Which of the following best reflects a rational economic decision?", options: ["Choosing the most expensive option available", "Choosing based only on what competitors are doing", "Choosing randomly among the available options", "Choosing the option that provides the greatest benefit relative to its cost"], answer: 3, cat: "Orientation & Introduction to Economics" },
+
+            { id: 11, q: "Microeconomics primarily studies:", options: ["the history of economic thought", "the behaviour of individual consumers, firms, and markets", "the economy as a whole, including national income and inflation", "international relations between governments"], answer: 1, cat: "Micro vs Macro" },
+            { id: 12, q: "Macroeconomics primarily studies:", options: ["the internal management of a single firm", "the economy as a whole, including national income, inflation, and unemployment", "the behaviour of one individual consumer", "the pricing decisions of a single small business"], answer: 1, cat: "Micro vs Macro" },
+            { id: 13, q: "A firm deciding how many workers to hire is an example of a topic studied in:", options: ["Political science", "International relations", "Macroeconomics", "Microeconomics"], answer: 3, cat: "Micro vs Macro" },
+            { id: 14, q: "A government analysing the country's overall inflation rate is an example of a topic studied in:", options: ["Business ethics", "Corporate finance only", "Microeconomics", "Macroeconomics"], answer: 3, cat: "Micro vs Macro" },
+            { id: 15, q: "Which of the following is a microeconomic topic?", options: ["The national unemployment rate", "The central bank's interest rate policy", "The country's GDP growth rate", "The pricing decision of a single coffee shop"], answer: 3, cat: "Micro vs Macro" },
+            { id: 16, q: "Which of the following is a macroeconomic topic?", options: ["A single firm's advertising budget", "The overall inflation rate of a country", "One customer's purchase decision", "A shop's daily sales total"], answer: 1, cat: "Micro vs Macro" },
+            { id: 17, q: "The study of how a single household allocates its monthly budget belongs to:", options: ["Macroeconomics", "International trade theory", "Microeconomics", "Fiscal policy analysis"], answer: 2, cat: "Micro vs Macro" },
+            { id: 18, q: "The study of a nation's total exports and imports belongs to:", options: ["Firm-level analysis", "Microeconomics", "Consumer theory", "Macroeconomics"], answer: 3, cat: "Micro vs Macro" },
+            { id: 19, q: "Why is it useful for a business owner to understand both microeconomics and macroeconomics?", options: ["Both branches study the exact same issues", "Microeconomics helps with pricing and competition decisions, while macroeconomics helps anticipate broader economic trends", "Microeconomics only applies to government policy", "Macroeconomics is irrelevant to any business decision"], answer: 1, cat: "Micro vs Macro" },
+            { id: 20, q: "Which pair correctly matches the topic to its branch of economics?", options: ["Both topics belong only to microeconomics", "National inflation rate — Microeconomics; Consumer demand for a single product — Macroeconomics", "Both topics belong only to macroeconomics", "Consumer demand for a single product — Microeconomics; National inflation rate — Macroeconomics"], answer: 3, cat: "Micro vs Macro" },
+
+            { id: 21, q: "The law of demand states that, all else equal, as the price of a good rises:", options: ["the quantity demanded rises", "the quantity demanded stays the same", "the quantity demanded falls", "the quantity supplied falls"], answer: 2, cat: "Demand & Supply" },
+            { id: 22, q: "The law of supply states that, all else equal, as the price of a good rises:", options: ["the quantity supplied stays the same", "the quantity supplied falls", "the quantity demanded rises", "the quantity supplied rises"], answer: 3, cat: "Demand & Supply" },
+            { id: 23, q: "On a standard demand curve, price is plotted on which axis?", options: ["Both axes equally", "The vertical (y) axis", "Neither axis", "The horizontal (x) axis"], answer: 1, cat: "Demand & Supply" },
+            { id: 24, q: "A demand curve typically slopes:", options: ["horizontally", "upward from left to right", "vertically", "downward from left to right"], answer: 3, cat: "Demand & Supply" },
+            { id: 25, q: "A supply curve typically slopes:", options: ["upward from left to right", "downward from left to right", "horizontally", "vertically"], answer: 0, cat: "Demand & Supply" },
+            { id: 26, q: "Numerical: At a price of Rs. 20, a bakery is willing to supply 100 loaves. At Rs. 30, it is willing to supply 150 loaves. This relationship is consistent with:", options: ["market failure", "the law of supply", "a negative externality", "the law of demand"], answer: 1, cat: "Demand & Supply" },
+            { id: 27, q: "Which of the following would shift the demand curve for umbrellas to the right?", options: ["A sudden increase in rainy weather", "A decrease in the price of umbrellas", "A new umbrella factory opening", "An increase in the price of umbrellas"], answer: 0, cat: "Demand & Supply" },
+            { id: 28, q: "Which of the following would shift the supply curve for wheat to the left?", options: ["A bumper harvest", "A severe drought damaging crops", "A fall in the price of wheat", "An increase in consumer income"], answer: 1, cat: "Demand & Supply" },
+            { id: 29, q: "A movement along an existing demand curve (rather than a shift of the curve) is caused by:", options: ["a change in consumer tastes", "a change in the price of the good itself", "a change in the price of a related good", "a change in consumer income"], answer: 1, cat: "Demand & Supply" },
+            { id: 30, q: "A shift of the entire demand curve (rather than a movement along it) is caused by:", options: ["a change in a factor other than the good's own price, such as income or tastes", "a change in the good's own price", "moving along the same curve", "a change in the units used to measure quantity"], answer: 0, cat: "Demand & Supply" },
+            { id: 31, q: "If consumer income rises and a good is a normal good, demand for that good will:", options: ["become negative", "increase", "stay exactly the same", "decrease"], answer: 1, cat: "Demand & Supply" },
+            { id: 32, q: "If consumer income rises and a good is an inferior good, demand for that good will:", options: ["increase", "decrease", "stay exactly the same", "double"], answer: 1, cat: "Demand & Supply" },
+            { id: 33, q: "Two goods are substitutes if:", options: ["they have identical prices", "a rise in the price of one decreases demand for the other", "a rise in the price of one increases demand for the other", "they are always purchased together"], answer: 2, cat: "Demand & Supply" },
+            { id: 34, q: "Two goods are complements if:", options: ["a rise in the price of one decreases demand for the other", "they are produced by the same firm", "a rise in the price of one increases demand for the other", "they are unrelated in consumption"], answer: 0, cat: "Demand & Supply" },
+            { id: 35, q: "Numerical: A rise in the price of tea causes buyers to purchase more coffee. Tea and coffee are best described as:", options: ["substitutes", "inferior goods", "complements", "public goods"], answer: 0, cat: "Demand & Supply" },
+            { id: 36, q: "Why do economists use demand and supply curves as a foundational tool?", options: ["They eliminate the need for any further economic analysis", "They replace the need for real-world data", "They provide a simple visual model of how price and quantity are determined in a market", "They only apply to agricultural markets"], answer: 2, cat: "Demand & Supply" },
+
+            { id: 37, q: "Market equilibrium occurs at the point where:", options: ["quantity demanded equals quantity supplied", "quantity supplied is always zero", "price is at its highest possible level", "quantity demanded is always zero"], answer: 0, cat: "Market Equilibrium" },
+            { id: 38, q: "The price at which equilibrium occurs is called the:", options: ["floor price", "equilibrium price", "marginal price", "ceiling price"], answer: 1, cat: "Market Equilibrium" },
+            { id: 39, q: "Numerical: Demand is Qd = 60 − 2P and supply is Qs = 10 + 3P. What is the equilibrium price?", options: ["8", "9", "10", "12"], answer: 2, cat: "Market Equilibrium" },
+            { id: 40, q: "Numerical: Using the same functions (Qd = 60 − 2P, Qs = 10 + 3P), what is the equilibrium quantity?", options: ["35", "40", "42", "38"], answer: 1, cat: "Market Equilibrium" },
+            { id: 41, q: "Numerical: Demand is Qd = 100 − 4P and supply is Qs = 20 + 6P. What is the equilibrium price?", options: ["6", "8", "7", "9"], answer: 1, cat: "Market Equilibrium" },
+            { id: 42, q: "If the market price is above the equilibrium price, the result is typically a:", options: ["balanced market with no change", "sudden price drop to zero", "shortage", "surplus"], answer: 3, cat: "Market Equilibrium" },
+            { id: 43, q: "If the market price is below the equilibrium price, the result is typically a:", options: ["sudden price rise to infinity", "shortage", "surplus", "balanced market with no change"], answer: 1, cat: "Market Equilibrium" },
+            { id: 44, q: "When a surplus exists in a market, sellers typically respond by:", options: ["stopping production entirely", "ignoring the surplus", "raising the price further", "lowering the price to sell excess stock"], answer: 3, cat: "Market Equilibrium" },
+            { id: 45, q: "When a shortage exists in a market, buyers typically respond by:", options: ["refusing to buy the product at any price", "demanding a lower price only", "waiting indefinitely with no price change", "bidding the price up to secure limited stock"], answer: 3, cat: "Market Equilibrium" },
+            { id: 46, q: "On a demand-supply graph, the equilibrium point is located:", options: ["where the supply curve crosses the quantity axis", "where the demand and supply curves intersect", "at the origin of the graph", "where the demand curve crosses the price axis"], answer: 1, cat: "Market Equilibrium" },
+            { id: 47, q: "If demand increases while supply stays the same, the new equilibrium will generally have:", options: ["a lower price and a lower quantity", "a higher price and a higher quantity", "no change in price or quantity", "a higher price and a lower quantity"], answer: 1, cat: "Market Equilibrium" },
+            { id: 48, q: "If supply increases while demand stays the same, the new equilibrium will generally have:", options: ["no change in price or quantity", "a higher price and a lower quantity", "a higher price and a higher quantity", "a lower price and a higher quantity"], answer: 3, cat: "Market Equilibrium" },
+            { id: 49, q: "Why is calculating equilibrium price and quantity useful for a business?", options: ["It helps predict the price and sales volume the market will naturally settle at", "It guarantees the business will make a profit", "It eliminates the need for any pricing strategy", "It only applies to government-run markets"], answer: 0, cat: "Market Equilibrium" },
+            { id: 50, q: "A price ceiling set below the equilibrium price is most likely to cause:", options: ["a persistent surplus of the good", "no effect on the market at all", "a persistent shortage of the good", "the equilibrium price to rise further"], answer: 2, cat: "Market Equilibrium" },
+
+            { id: 51, q: "Price elasticity of demand measures:", options: ["the number of substitutes available for a good", "the absolute change in price only", "the total revenue earned by a firm", "how responsive quantity demanded is to a change in price"], answer: 3, cat: "Elasticity" },
+            { id: 52, q: "The formula for price elasticity of demand is:", options: ["% change in price ÷ % change in quantity demanded", "change in price × change in quantity", "total revenue ÷ price", "% change in quantity demanded ÷ % change in price"], answer: 3, cat: "Elasticity" },
+            { id: 53, q: "If the price elasticity of demand is greater than 1, demand is considered:", options: ["elastic", "inelastic", "perfectly inelastic", "unit elastic"], answer: 0, cat: "Elasticity" },
+            { id: 54, q: "If the price elasticity of demand is less than 1, demand is considered:", options: ["unit elastic", "perfectly elastic", "inelastic", "elastic"], answer: 2, cat: "Elasticity" },
+            { id: 55, q: "If the price elasticity of demand equals exactly 1, demand is considered:", options: ["inelastic", "unit elastic", "undefined", "elastic"], answer: 1, cat: "Elasticity" },
+            { id: 56, q: "Numerical: A 10% rise in price causes a 20% fall in quantity demanded. What is the price elasticity of demand (ignoring sign)?", options: ["1.5", "2", "1", "0.5"], answer: 1, cat: "Elasticity" },
+            { id: 57, q: "Numerical: A 20% rise in price causes only a 5% fall in quantity demanded. What is the price elasticity of demand?", options: ["1", "0.5", "4", "0.25"], answer: 3, cat: "Elasticity" },
+            { id: 58, q: "Goods with few or no close substitutes, such as essential medicine, tend to have demand that is:", options: ["elastic", "negative", "undefined", "inelastic"], answer: 3, cat: "Elasticity" },
+            { id: 59, q: "Goods with many close substitutes, such as a specific brand of soft drink, tend to have demand that is:", options: ["inelastic", "elastic", "undefined", "perfectly inelastic"], answer: 1, cat: "Elasticity" },
+            { id: 60, q: "Why is understanding elasticity important for a firm's pricing strategy?", options: ["It guarantees a firm will never lose customers", "It removes the need to consider competitors", "It helps predict how a price change will affect total revenue", "It only matters for government-owned firms"], answer: 2, cat: "Elasticity" },
+            { id: 61, q: "If demand is elastic, a decrease in price will typically cause total revenue to:", options: ["decrease", "stay exactly the same", "increase", "become negative"], answer: 2, cat: "Elasticity" },
+            { id: 62, q: "If demand is inelastic, an increase in price will typically cause total revenue to:", options: ["increase", "decrease", "stay exactly the same", "become undefined"], answer: 0, cat: "Elasticity" },
+            { id: 63, q: "Cross elasticity of demand measures:", options: ["how supply responds to a change in price", "how total cost responds to output changes", "how the quantity demanded of one good responds to a change in the price of another good", "how demand responds to a change in consumer income"], answer: 2, cat: "Elasticity" },
+            { id: 64, q: "Income elasticity of demand measures:", options: ["how two goods' prices are related", "how quantity demanded responds to a change in consumer income", "how quantity supplied responds to a change in price", "how price responds to a change in quantity"], answer: 1, cat: "Elasticity" },
+
+            { id: 65, q: "Perfect competition is characterized by:", options: ["a few large firms dominating the market", "a single firm controlling the entire market", "one firm with a government-granted patent", "many small firms selling identical products with no single firm able to influence price"], answer: 3, cat: "Market Structures" },
+            { id: 66, q: "A monopoly exists when:", options: ["firms differentiate their products through branding", "many firms compete by offering identical products", "a few firms dominate the market", "a single firm is the only seller of a product with no close substitutes"], answer: 3, cat: "Market Structures" },
+            { id: 67, q: "An oligopoly is a market structure with:", options: ["many small firms with identical products", "only one seller in the market", "no barriers to entry at all", "a small number of large firms dominating the market"], answer: 3, cat: "Market Structures" },
+            { id: 68, q: "Monopolistic competition is characterized by:", options: ["a single seller with no substitutes", "many firms selling similar but differentiated products", "government control of all prices", "only two firms in the entire market"], answer: 1, cat: "Market Structures" },
+            { id: 69, q: "Which market structure allows firms the most control over price?", options: ["Monopoly", "Perfect competition", "None of these", "Monopolistic competition"], answer: 0, cat: "Market Structures" },
+            { id: 70, q: "Which market structure gives individual firms the least control over price?", options: ["Oligopoly", "Monopoly", "Monopolistic competition", "Perfect competition"], answer: 3, cat: "Market Structures" },
+            { id: 71, q: "A key feature that distinguishes monopolistic competition from perfect competition is:", options: ["a single dominant seller", "government price controls", "product differentiation through branding or quality", "identical products with no branding"], answer: 2, cat: "Market Structures" },
+            { id: 72, q: "Why might firms in an oligopoly be tempted to coordinate their pricing?", options: ["Because there are too many competitors to track individually", "Because prices in oligopoly markets are fixed by law", "Because their pricing decisions strongly affect and are affected by their few rivals", "Because government regulation requires it"], answer: 2, cat: "Market Structures" },
+            { id: 73, q: "A legal barrier that can help create or protect a monopoly is:", options: ["a lack of consumer interest", "a government-granted patent", "low production costs", "high consumer demand"], answer: 1, cat: "Market Structures" },
+            { id: 74, q: "In perfect competition, firms are described as 'price takers' because they:", options: ["set prices only once a year", "negotiate prices individually with each customer", "must accept the market price and cannot influence it individually", "can set any price they choose"], answer: 2, cat: "Market Structures" },
+            { id: 75, q: "Which of the following industries most closely resembles an oligopoly?", options: ["A market with thousands of identical small farms", "A local vegetable market with hundreds of small sellers", "A national market dominated by a handful of major telecom companies", "A single state-owned utility with no competitors"], answer: 2, cat: "Market Structures" },
+            { id: 76, q: "Barriers to entry are most significant in which market structure?", options: ["Perfect competition", "Monopolistic competition", "Monopoly", "All are equally significant"], answer: 2, cat: "Market Structures" },
+            { id: 77, q: "Why do economists study different market structures?", options: ["Because all market structures behave identically", "Because market structure has no effect on consumers", "Because the level of competition affects pricing, output, and efficiency in an industry", "Because only monopolies matter for the economy"], answer: 2, cat: "Market Structures" },
+            { id: 78, q: "A firm that can restrict output and raise prices without losing all its customers likely operates in a market with:", options: ["no barriers to entry", "significant market power (such as a monopoly or oligopoly)", "zero demand", "perfect competition"], answer: 1, cat: "Market Structures" },
+
+            { id: 79, q: "Market failure occurs when:", options: ["a government sets all prices", "the free market allocates resources perfectly", "there is no market at all", "the free market fails to allocate resources efficiently"], answer: 3, cat: "Market Failures" },
+            { id: 80, q: "A negative externality occurs when:", options: ["a transaction only benefits the buyer and seller", "a transaction imposes costs on third parties not involved in it", "a government subsidizes a good", "a firm earns zero profit"], answer: 1, cat: "Market Failures" },
+            { id: 81, q: "Which of the following is an example of a negative externality?", options: ["A factory's pollution harming nearby residents", "A bakery selling bread to a satisfied customer", "A firm paying its taxes on time", "A consumer saving money in a bank"], answer: 0, cat: "Market Failures" },
+            { id: 82, q: "A positive externality occurs when:", options: ["a transaction only harms the buyer", "a firm goes bankrupt", "a good becomes more expensive over time", "a transaction creates benefits for third parties not involved in it"], answer: 3, cat: "Market Failures" },
+            { id: 83, q: "Which of the following is an example of a positive externality?", options: ["A vaccinated person reducing disease spread to others", "A factory dumping waste into a river", "A company evading taxes", "A firm underpaying its workers"], answer: 0, cat: "Market Failures" },
+            { id: 84, q: "A public good is characterized by being:", options: ["available only to those who pay directly", "non-excludable and non-rival in consumption", "excludable and rival in consumption", "produced only by private firms"], answer: 1, cat: "Market Failures" },
+            { id: 85, q: "Which of the following is a classic example of a public good?", options: ["A branded pair of shoes", "National defence", "A privately owned car", "A restaurant meal"], answer: 1, cat: "Market Failures" },
+            { id: 86, q: "Why do private firms tend to under-produce public goods?", options: ["Because governments ban private firms from producing them", "Because it is difficult to charge individuals directly for a good that cannot exclude non-payers", "Because public goods are always more expensive to produce", "Because public goods have no value to society"], answer: 1, cat: "Market Failures" },
+            { id: 87, q: "Imperfect information as a cause of market failure refers to:", options: ["a market with perfectly informed participants", "a market having no government regulation", "buyers or sellers not having complete knowledge needed to make optimal decisions", "a market having too many sellers"], answer: 2, cat: "Market Failures" },
+            { id: 88, q: "When markets fail to allocate resources efficiently, which entity commonly intervenes?", options: ["A random consumer", "The government, through regulation, taxation, or subsidies", "No intervention is ever needed", "A foreign company"], answer: 1, cat: "Market Failures" },
+
+            { id: 89, q: "Gross Domestic Product (GDP) is defined as:", options: ["the total market value of all final goods and services produced within a country in a given period", "the total exports of a country only", "the total population of a country", "the total money printed by a central bank"], answer: 0, cat: "National Income & GDP" },
+            { id: 90, q: "The expenditure approach to GDP is expressed as:", options: ["GDP = C − I − G", "GDP = Population × Income", "GDP = C + I + G + (X − M)", "GDP = P × Q only"], answer: 2, cat: "National Income & GDP" },
+            { id: 91, q: "In the GDP formula, 'C' represents:", options: ["consumption spending by households", "net exports", "investment spending by businesses", "government spending"], answer: 0, cat: "National Income & GDP" },
+            { id: 92, q: "In the GDP formula, 'I' represents:", options: ["investment spending by businesses", "consumption spending by households", "net exports", "government spending"], answer: 0, cat: "National Income & GDP" },
+            { id: 93, q: "In the GDP formula, 'G' represents:", options: ["government spending", "consumption spending by households", "investment spending by businesses", "net exports"], answer: 0, cat: "National Income & GDP" },
+            { id: 94, q: "In the GDP formula, '(X − M)' represents:", options: ["total government revenue", "gross investment", "household savings", "net exports (exports minus imports)"], answer: 3, cat: "National Income & GDP" },
+            { id: 95, q: "Numerical: C = 300, I = 100, G = 80, X = 60, M = 40. What is GDP?", options: ["460", "520", "480", "500"], answer: 3, cat: "National Income & GDP" },
+            { id: 96, q: "GDP counts only 'final' goods and services in order to:", options: ["exclude government spending", "exclude household consumption", "increase the reported total artificially", "avoid double-counting the value of intermediate goods used in production"], answer: 3, cat: "National Income & GDP" },
+            { id: 97, q: "GNP differs from GDP because GNP measures output based on:", options: ["geographic location only, regardless of ownership", "ownership by a country's citizens, regardless of where production occurs", "government spending only", "imports only"], answer: 1, cat: "National Income & GDP" },
+            { id: 98, q: "Which of the following would be counted directly in GDP?", options: ["Money received as a birthday gift", "A new car sold to a consumer", "A used car resold between two individuals", "Steel purchased by a car manufacturer to build the car"], answer: 1, cat: "National Income & GDP" },
+            { id: 99, q: "Real GDP differs from nominal GDP because real GDP is:", options: ["always higher than nominal GDP", "calculated without any price data", "adjusted for changes in the price level (inflation)", "measured in a foreign currency"], answer: 2, cat: "National Income & GDP" },
+            { id: 100, q: "Why do economists prefer real GDP over nominal GDP when comparing economic growth across years?", options: ["Real GDP is always easier to calculate", "Nominal GDP cannot be calculated for most countries", "Real GDP ignores production entirely", "Real GDP removes the effect of inflation, showing true changes in output"], answer: 3, cat: "National Income & GDP" },
+            { id: 101, q: "GDP per capita is calculated as:", options: ["GDP divided by total government spending", "GDP divided by the total population", "Population divided by GDP", "GDP multiplied by the total population"], answer: 1, cat: "National Income & GDP" },
+            { id: 102, q: "Which World Bank / IMF style indicator is commonly used to measure a country's overall economic output?", options: ["The literacy rate", "The exchange rate", "Gross Domestic Product (GDP)", "The unemployment rate"], answer: 2, cat: "National Income & GDP" },
+
+            { id: 103, q: "Inflation is best defined as:", options: ["a one-time increase in a single product's price", "an increase in GDP only", "a decrease in the unemployment rate", "a sustained increase in the general price level of goods and services over time"], answer: 3, cat: "Inflation & Unemployment" },
+            { id: 104, q: "The Consumer Price Index (CPI) is used to measure:", options: ["the exchange rate between two currencies", "total government spending", "changes in the average price level of a basket of consumer goods and services", "the total number of unemployed people"], answer: 2, cat: "Inflation & Unemployment" },
+            { id: 105, q: "Demand-pull inflation occurs when:", options: ["unemployment rises sharply", "production costs fall sharply", "the currency appreciates suddenly", "aggregate demand in the economy rises faster than aggregate supply"], answer: 3, cat: "Inflation & Unemployment" },
+            { id: 106, q: "Cost-push inflation occurs when:", options: ["the unemployment rate falls to zero", "rising production costs, such as wages or raw materials, push up prices", "the government reduces taxes", "aggregate demand falls sharply"], answer: 1, cat: "Inflation & Unemployment" },
+            { id: 107, q: "Numerical: The CPI was 120 last year and is 126 this year. What is the inflation rate?", options: ["5%", "3%", "8%", "6%"], answer: 0, cat: "Inflation & Unemployment" },
+            { id: 108, q: "Hyperinflation refers to:", options: ["a mild, steady rise in prices over decades", "a fixed exchange rate policy", "an extremely rapid and out-of-control rise in prices", "a fall in the general price level"], answer: 2, cat: "Inflation & Unemployment" },
+            { id: 109, q: "The unemployment rate is calculated as:", options: ["(number of unemployed ÷ total population) × 100", "(labour force ÷ number of unemployed) × 100", "(number employed ÷ labour force) × 100", "(number of unemployed ÷ labour force) × 100"], answer: 3, cat: "Inflation & Unemployment" },
+            { id: 110, q: "Numerical: A labour force of 2,000 people includes 100 unemployed workers. What is the unemployment rate?", options: ["6%", "4%", "8%", "5%"], answer: 3, cat: "Inflation & Unemployment" },
+            { id: 111, q: "Frictional unemployment refers to:", options: ["unemployment caused only by a recession", "short-term unemployment as people move between jobs", "long-term unemployment due to outdated skills", "unemployment that never ends"], answer: 1, cat: "Inflation & Unemployment" },
+            { id: 112, q: "Structural unemployment refers to:", options: ["unemployment that only affects government workers", "unemployment caused by a mismatch between workers' skills and available jobs", "unemployment caused by workers voluntarily switching jobs", "unemployment caused by seasonal weather changes"], answer: 1, cat: "Inflation & Unemployment" },
+            { id: 113, q: "Cyclical unemployment refers to:", options: ["unemployment caused by a skills mismatch", "unemployment caused by a downturn in the overall business cycle", "unemployment that occurs only in summer", "unemployment caused by workers changing careers"], answer: 1, cat: "Inflation & Unemployment" },
+            { id: 114, q: "Seasonal unemployment is most closely associated with jobs in which type of industry?", options: ["Banking and finance", "Government administration", "Software engineering", "Agriculture and tourism"], answer: 3, cat: "Inflation & Unemployment" },
+            { id: 115, q: "The Phillips Curve illustrates a trade-off between:", options: ["exports and imports", "GDP and population", "interest rates and exchange rates", "inflation and unemployment"], answer: 3, cat: "Inflation & Unemployment" },
+            { id: 116, q: "Why do governments closely monitor both inflation and unemployment data?", options: ["Because monitoring them eliminates all economic problems", "Because both indicators strongly affect living standards and guide economic policy decisions", "Because they have no connection to policy decisions", "Because these are the only two economic indicators that exist"], answer: 1, cat: "Inflation & Unemployment" },
+
+            { id: 117, q: "Fiscal policy refers to the use of:", options: ["government spending and taxation to influence the economy", "exchange rate controls only", "interest rates and money supply by the central bank", "private company budgets"], answer: 0, cat: "Fiscal Policy" },
+            { id: 118, q: "A government budget deficit occurs when:", options: ["government spending equals government revenue exactly", "government spending exceeds government revenue", "government revenue exceeds government spending", "a government collects no taxes at all"], answer: 1, cat: "Fiscal Policy" },
+            { id: 119, q: "A government budget surplus occurs when:", options: ["a government has no budget at all", "taxes are eliminated entirely", "government spending exceeds government revenue", "government revenue exceeds government spending"], answer: 3, cat: "Fiscal Policy" },
+            { id: 120, q: "Expansionary fiscal policy typically involves:", options: ["decreasing government spending and raising taxes", "eliminating all government spending", "increasing government spending and/or cutting taxes", "fixing the exchange rate"], answer: 2, cat: "Fiscal Policy" },
+            { id: 121, q: "Contractionary fiscal policy typically involves:", options: ["increasing government spending and cutting taxes", "printing more currency", "lowering interest rates", "decreasing government spending and/or raising taxes"], answer: 3, cat: "Fiscal Policy" },
+            { id: 122, q: "Expansionary fiscal policy is most likely to be used when the economy is:", options: ["experiencing a currency appreciation", "in a recession, to boost demand", "at perfect full employment with stable prices", "overheating with high inflation"], answer: 1, cat: "Fiscal Policy" },
+            { id: 123, q: "Contractionary fiscal policy is most likely to be used when the economy is:", options: ["experiencing falling prices only", "experiencing zero economic activity", "overheating with high inflation", "in a deep recession"], answer: 2, cat: "Fiscal Policy" },
+            { id: 124, q: "Which of the following is a direct tax?", options: ["Income tax", "Sales tax (such as GST)", "Customs duty", "Excise duty"], answer: 0, cat: "Fiscal Policy" },
+            { id: 125, q: "Which of the following is an indirect tax?", options: ["Income tax", "Sales tax (such as GST)", "Corporate profit tax", "Property tax on personal residences"], answer: 1, cat: "Fiscal Policy" },
+            { id: 126, q: "The Laffer Curve illustrates the relationship between:", options: ["interest rates and inflation", "exchange rates and exports", "GDP and unemployment", "tax rates and total tax revenue collected"], answer: 3, cat: "Fiscal Policy" },
+            { id: 127, q: "Why must a government budget typically be approved before the start of the fiscal year?", options: ["Because taxes cannot be collected otherwise", "Because it has no real effect on government operations", "Because it is only a ceremonial requirement", "So government spending and revenue plans are authorized and can be implemented on time"], answer: 3, cat: "Fiscal Policy" },
+            { id: 128, q: "Why is fiscal policy considered an important tool for economic stabilization?", options: ["It has no effect on the overall economy", "It replaces the need for monetary policy entirely", "It allows the government to directly influence aggregate demand through spending and taxes", "It only affects a single company at a time"], answer: 2, cat: "Fiscal Policy" },
+
+            { id: 129, q: "Monetary policy refers to actions taken by a country's:", options: ["stock exchange to regulate share prices", "government to manage taxation and spending", "central bank to manage the money supply and interest rates", "private banks to set their own lending rules"], answer: 2, cat: "Monetary Policy" },
+            { id: 130, q: "The central bank of Pakistan is the:", options: ["Pakistan Stock Exchange", "National Bank of Pakistan", "State Bank of Pakistan", "Bank of Punjab"], answer: 2, cat: "Monetary Policy" },
+            { id: 131, q: "When a central bank lowers interest rates, borrowing generally becomes:", options: ["more expensive, discouraging spending", "cheaper, encouraging spending and investment", "impossible for businesses", "unrelated to spending decisions"], answer: 1, cat: "Monetary Policy" },
+            { id: 132, q: "When a central bank raises interest rates, borrowing generally becomes:", options: ["free for all borrowers", "unrelated to investment decisions", "more expensive, discouraging spending and investment", "cheaper, encouraging spending"], answer: 2, cat: "Monetary Policy" },
+            { id: 133, q: "Expansionary monetary policy typically involves:", options: ["fixing the exchange rate permanently", "raising interest rates and reducing the money supply", "increasing government taxes", "lowering interest rates and/or increasing the money supply"], answer: 3, cat: "Monetary Policy" },
+            { id: 134, q: "Contractionary monetary policy typically involves:", options: ["raising interest rates and/or decreasing the money supply", "reducing government spending", "lowering interest rates and increasing the money supply", "eliminating all bank reserves"], answer: 0, cat: "Monetary Policy" },
+            { id: 135, q: "A central bank is most likely to use contractionary monetary policy when the economy faces:", options: ["high inflation", "a stable, low inflation rate with full employment", "a deep recession", "zero economic activity"], answer: 0, cat: "Monetary Policy" },
+            { id: 136, q: "A central bank is most likely to use expansionary monetary policy when the economy faces:", options: ["an overheating economy", "excessive economic growth", "a recession or high unemployment", "high inflation"], answer: 2, cat: "Monetary Policy" },
+            { id: 137, q: "Open market operations refer to a central bank:", options: ["collecting income tax directly", "setting minimum wages for workers", "buying or selling government securities to influence the money supply", "regulating stock market listings"], answer: 2, cat: "Monetary Policy" },
+            { id: 138, q: "The reserve requirement refers to:", options: ["the interest rate charged on government bonds", "the maximum amount a bank can lend to a single customer", "the minimum percentage of deposits banks must hold rather than lend out", "the total assets owned by a central bank"], answer: 2, cat: "Monetary Policy" },
+            { id: 139, q: "Why does fiscal policy differ from monetary policy in terms of who controls it?", options: ["Both are controlled by exactly the same institution", "Monetary policy is controlled by parliament directly", "Fiscal policy is controlled by private banks", "Fiscal policy is controlled by the government, while monetary policy is controlled by the central bank"], answer: 3, cat: "Monetary Policy" },
+            { id: 140, q: "Why is monetary policy considered a powerful tool for managing inflation?", options: ["It only affects the stock market", "It has no measurable effect on the economy", "It cannot be adjusted once set", "Interest rate changes directly affect borrowing, spending, and overall demand in the economy"], answer: 3, cat: "Monetary Policy" },
+
+            { id: 141, q: "The Balance of Payments (BOP) is a record of:", options: ["a single company's annual profit", "a government's domestic tax collection only", "a household's monthly budget", "all economic transactions between a country's residents and the rest of the world"], answer: 3, cat: "Balance of Payments" },
+            { id: 142, q: "In the Balance of Payments, exports are recorded as:", options: ["debits", "credits", "liabilities only", "neither credits nor debits"], answer: 1, cat: "Balance of Payments" },
+            { id: 143, q: "In the Balance of Payments, imports are recorded as:", options: ["credits", "debits", "reserves", "assets"], answer: 1, cat: "Balance of Payments" },
+            { id: 144, q: "The current account of the BOP mainly records:", options: ["trade in goods and services, along with income and transfers", "only government tax revenue", "only domestic consumer spending", "only foreign direct investment flows"], answer: 0, cat: "Balance of Payments" },
+            { id: 145, q: "The capital and financial account of the BOP mainly records:", options: ["government tax collections", "household savings only", "domestic retail sales", "flows of investment and capital between countries"], answer: 3, cat: "Balance of Payments" },
+            { id: 146, q: "The Balance of Trade (BOT) is defined as:", options: ["the value of a country's imports minus its exports", "total government spending minus total revenue", "total savings minus total investment", "the value of a country's exports minus the value of its imports"], answer: 3, cat: "Balance of Payments" },
+            { id: 147, q: "Numerical: A country's exports total Rs. 800 billion and imports total Rs. 650 billion. What is its balance of trade?", options: ["Rs. 200 billion", "Rs. 150 billion", "Rs. 100 billion", "Rs. 1,450 billion"], answer: 1, cat: "Balance of Payments" },
+            { id: 148, q: "If a country's total credits exceed its total debits, its Balance of Payments has a:", options: ["negative reserve", "surplus", "zero balance", "deficit"], answer: 1, cat: "Balance of Payments" },
+            { id: 149, q: "Countries hold foreign exchange reserves mainly to:", options: ["help stabilize their currency and meet international payment obligations", "increase domestic inflation deliberately", "eliminate the need for exports", "avoid ever trading internationally"], answer: 0, cat: "Balance of Payments" },
+            { id: 150, q: "Why is a country's Balance of Payments considered important for economic policymaking?", options: ["It has no relevance to government policy", "It shows whether a country is a net borrower or lender relative to the rest of the world", "It measures a country's population growth", "It only matters for very small countries"], answer: 1, cat: "Balance of Payments" },
+
+            { id: 151, q: "An exchange rate is defined as:", options: ["the interest rate set by a central bank", "the value of one currency expressed in terms of another currency", "the inflation rate of a country", "the total money supply of a country"], answer: 1, cat: "Exchange Rates" },
+            { id: 152, q: "Numerical: If 1 US dollar rises from Rs. 280 to Rs. 300, the Pakistani rupee has:", options: ["appreciated", "stayed exactly the same", "been fixed by law", "depreciated"], answer: 3, cat: "Exchange Rates" },
+            { id: 153, q: "Numerical: If 1 US dollar falls from Rs. 280 to Rs. 260, the Pakistani rupee has:", options: ["appreciated", "stayed exactly the same", "become a hard currency automatically", "depreciated"], answer: 0, cat: "Exchange Rates" },
+            { id: 154, q: "In a floating exchange rate system, the exchange rate is determined by:", options: ["a fixed peg to gold", "market forces of supply and demand for currencies", "the IMF directly", "the government setting a fixed value"], answer: 1, cat: "Exchange Rates" },
+            { id: 155, q: "In a fixed exchange rate system, the exchange rate is:", options: ["set and maintained by the government or central bank", "determined by private banks only", "left entirely to market forces", "irrelevant to trade"], answer: 0, cat: "Exchange Rates" },
+            { id: 156, q: "A depreciation of a country's currency tends to make its exports:", options: ["illegal to sell abroad", "cheaper for foreign buyers", "unaffected in foreign markets", "more expensive for foreign buyers"], answer: 1, cat: "Exchange Rates" },
+            { id: 157, q: "A depreciation of a country's currency tends to make imports:", options: ["more expensive for domestic buyers", "cheaper for domestic buyers", "free of charge", "unaffected in price"], answer: 0, cat: "Exchange Rates" },
+            { id: 158, q: "High inflation in a country, relative to its trading partners, tends to make its currency:", options: ["become a hard currency", "depreciate over time", "appreciate over time", "remain perfectly stable"], answer: 1, cat: "Exchange Rates" },
+            { id: 159, q: "A 'hard currency' is one that is:", options: ["always losing value rapidly", "used only for domestic transactions", "widely trusted and accepted internationally due to its stability", "rarely accepted outside its home country"], answer: 2, cat: "Exchange Rates" },
+            { id: 160, q: "Why do higher domestic interest rates tend to attract foreign investment and strengthen a currency?", options: ["Higher rates make the currency illegal to trade", "Higher rates always cause immediate inflation", "Higher rates offer better returns, increasing foreign demand for that currency", "Higher rates have no effect on foreign investors"], answer: 2, cat: "Exchange Rates" },
+
+            { id: 161, q: "Economic growth is best defined as:", options: ["an increase in a country's real output of goods and services over time", "a fall in the exchange rate", "a decrease in a country's population", "a rise in the unemployment rate"], answer: 0, cat: "Economic Growth & Development" },
+            { id: 162, q: "Economic growth is most commonly measured by the change in:", options: ["the exchange rate", "the interest rate", "the unemployment rate", "real GDP"], answer: 3, cat: "Economic Growth & Development" },
+            { id: 163, q: "Numerical: Real GDP was Rs. 2,000 billion last year and Rs. 2,100 billion this year. What is the economic growth rate?", options: ["6%", "4%", "10%", "5%"], answer: 3, cat: "Economic Growth & Development" },
+            { id: 164, q: "Economic development differs from economic growth because development also considers:", options: ["only the level of exports", "only the exchange rate", "improvements in living standards, health, education, and overall quality of life", "only the total size of the economy"], answer: 2, cat: "Economic Growth & Development" },
+            { id: 165, q: "The Human Development Index (HDI) combines indicators of:", options: ["government spending and taxation only", "interest rates, inflation, and unemployment", "exports, imports, and exchange rates", "income, education, and life expectancy"], answer: 3, cat: "Economic Growth & Development" },
+            { id: 166, q: "A country can experience rapid economic growth while remaining 'underdeveloped' if:", options: ["the country has no population", "development and growth always move identically", "the benefits of growth are not translated into improved living standards for most people", "GDP growth is always shared equally by definition"], answer: 2, cat: "Economic Growth & Development" },
+            { id: 167, q: "Which of the following is a common driver of long-term economic growth?", options: ["Eliminating public education entirely", "Avoiding all technological change", "Reducing all forms of investment", "Investment in education, infrastructure, and technology"], answer: 3, cat: "Economic Growth & Development" },
+            { id: 168, q: "Why do governments often invest in schools, hospitals, and roads?", options: ["To reduce the country's GDP intentionally", "To build the human and physical capital needed to support long-term economic development", "Because it is required only in wealthy countries", "Because these investments have no economic benefit"], answer: 1, cat: "Economic Growth & Development" },
+
+            { id: 169, q: "Understanding demand elasticity helps a business primarily by:", options: ["guaranteeing a fixed profit margin", "eliminating the need for any pricing strategy", "guiding pricing decisions to maximize revenue", "removing the need to understand customers"], answer: 2, cat: "Business Applications of Economics" },
+            { id: 170, q: "A firm entering a market with high barriers to entry can expect:", options: ["less competition from new firms", "intense competition from many new firms immediately", "an automatic monopoly with no effort", "zero demand for its product"], answer: 0, cat: "Business Applications of Economics" },
+            { id: 171, q: "Why would a business monitor inflation data closely?", options: ["Inflation has no effect on business costs", "Monitoring inflation is required only once a decade", "Inflation only affects government agencies", "Rising inflation can increase costs and affect pricing and wage decisions"], answer: 3, cat: "Business Applications of Economics" },
+            { id: 172, q: "Why would a business monitor interest rate changes set by the central bank?", options: ["Interest rates affect the cost of borrowing for expansion or investment", "Interest rates have no connection to business investment", "Interest rates only affect individual consumers, never businesses", "Interest rates are irrelevant to loans"], answer: 0, cat: "Business Applications of Economics" },
+            { id: 173, q: "A retailer studying local demand and supply conditions before setting prices is applying:", options: ["no economic analysis at all", "macroeconomic analysis only", "fiscal policy directly", "microeconomic analysis to a business decision"], answer: 3, cat: "Business Applications of Economics" },
+            { id: 174, q: "Why is understanding market structure useful before launching a new product?", options: ["It only matters for government-owned firms", "It guarantees the product will succeed", "It has no bearing on pricing decisions", "It helps a firm anticipate the level of competition and its ability to influence price"], answer: 3, cat: "Business Applications of Economics" },
+            { id: 175, q: "An entrepreneur analysing opportunity costs before starting a new venture is applying:", options: ["a marketing technique only", "a core principle of economic reasoning to a business decision", "a legal requirement for all new businesses", "an accounting rule with no economic basis"], answer: 1, cat: "Business Applications of Economics" },
+            { id: 176, q: "Why is economic literacy considered valuable for entrepreneurs?", options: ["It is only useful for economics teachers", "It removes the need for any financial planning", "It supports more informed, evidence-based decisions about pricing, costs, and market conditions", "It guarantees a business will never fail"], answer: 2, cat: "Business Applications of Economics" },
+
+            { id: 177, q: "Which digital tool is commonly used in this course to analyse and visualize simple economic datasets?", options: ["A drawing application", "A video editor", "A music production tool", "Microsoft Excel"], answer: 3, cat: "Data Analysis Lab" },
+            { id: 178, q: "Why is visualizing economic data (such as GDP trends) useful for analysis?", options: ["It has no analytical value", "It hides important trends from viewers", "It replaces the need for any numerical data", "It makes patterns and trends easier to identify and communicate"], answer: 3, cat: "Data Analysis Lab" },
+            { id: 179, q: "Which organization is a commonly cited source of global economic data mentioned in the course outline?", options: ["World Bank", "A random blog", "A private social media company", "A local grocery store"], answer: 0, cat: "Data Analysis Lab" },
+            { id: 180, q: "Before analysing an economic dataset, why is it important to check the data for accuracy and completeness?", options: ["Errors or missing data can lead to incorrect conclusions", "Data quality has no effect on analysis", "Only government data ever needs checking", "Checking data always wastes valuable time"], answer: 0, cat: "Data Analysis Lab" },
+            { id: 181, q: "A line chart would be most appropriate for visualizing which type of economic data?", options: ["A single company's logo", "An individual's name", "A single year's population count", "A country's GDP over multiple years"], answer: 3, cat: "Data Analysis Lab" },
+            { id: 182, q: "Why do economists rely on organizations like the IMF or World Bank for cross-country data?", options: ["They only provide data for one country at a time", "They do not collect any economic data", "Their data cannot be used for comparisons", "They provide standardized, comparable economic data across countries"], answer: 3, cat: "Data Analysis Lab" },
+
+            { id: 183, q: "Why is ethical reasoning considered important in economic decision-making?", options: ["Economic decisions never affect real people", "Economic decisions can have significant impacts on people's wellbeing and fairness", "Ethics has no connection to economic outcomes", "Ethical reasoning is only relevant to religious studies"], answer: 1, cat: "Ethics & Globalization" },
+            { id: 184, q: "Globalization refers to:", options: ["a country's complete isolation from world trade", "the process of reducing all international trade to zero", "the increasing economic, social, and technological interconnection between countries", "a single company's internal management style"], answer: 2, cat: "Ethics & Globalization" },
+            { id: 185, q: "A positive impact of globalization commonly cited is:", options: ["access to larger markets and increased trade opportunities", "the end of all international travel", "guaranteed equal income for every country", "the complete elimination of all competition"], answer: 0, cat: "Ethics & Globalization" },
+            { id: 186, q: "A negative impact of globalization commonly cited is:", options: ["the elimination of international trade entirely", "job losses in industries that cannot compete with cheaper foreign production", "guaranteed job security for every worker", "a permanent end to cultural exchange"], answer: 1, cat: "Ethics & Globalization" },
+            { id: 187, q: "Which international organization primarily works to regulate and facilitate international trade?", options: ["The World Trade Organization (WTO)", "A single country's central bank", "A private multinational corporation", "A local chamber of commerce"], answer: 0, cat: "Ethics & Globalization" },
+            { id: 188, q: "Which international organization primarily provides financial assistance to countries facing balance of payments problems?", options: ["The International Monetary Fund (IMF)", "A national stock exchange", "A private commercial bank", "The World Trade Organization (WTO)"], answer: 0, cat: "Ethics & Globalization" },
+            { id: 189, q: "'Not everything legal is ethical' suggests that:", options: ["all legal actions are automatically ethical", "ethics has no relevance once something is legal", "laws and ethics are always identical", "some actions may be permitted by law but still be considered morally questionable"], answer: 3, cat: "Ethics & Globalization" },
+            { id: 190, q: "Why should economic analysis include a global perspective in today's world?", options: ["Economies are increasingly interconnected, so events in one country can affect others", "A global perspective is unnecessary for small businesses", "Global events never affect domestic economies", "Only large countries are affected by global trends"], answer: 0, cat: "Ethics & Globalization" },
+
+            { id: 191, q: "A field task studying pricing, demand, and supply at a local retail market is designed to help students:", options: ["replace the need for classroom lectures entirely", "only memorize definitions without application", "connect classroom economic theory to real market behaviour", "avoid learning any economic theory"], answer: 2, cat: "Field / Market Observation" },
+            { id: 192, q: "Before conducting a market observation task, students should first:", options: ["assume the data before visiting the market", "skip planning to save time", "collect data randomly with no plan", "plan what specific pricing and demand/supply data they need to collect"], answer: 3, cat: "Field / Market Observation" },
+            { id: 193, q: "Why is observing real local pricing decisions valuable for understanding market structures?", options: ["It has no connection to classroom concepts", "It only applies to online markets", "It replaces the need to understand market structure theory", "It shows how theoretical concepts like competition and pricing power appear in practice"], answer: 3, cat: "Field / Market Observation" },
+            { id: 194, q: "A guest speaker discussing inflation and entrepreneurship primarily helps students:", options: ["connect classroom economic concepts to real industry experience", "avoid doing their own analysis", "replace the need to learn economic theory", "skip the term project entirely"], answer: 0, cat: "Field / Market Observation" },
+
+            { id: 195, q: "When presenting findings from an economic analysis, it is most important to:", options: ["clearly explain the data, method, and conclusions drawn", "avoid mentioning the data sources used", "read every number aloud with no explanation", "only show the final conclusion with no context"], answer: 0, cat: "Presentations on Economy" },
+            { id: 196, q: "Which of the following would most improve a presentation on an economic issue such as inflation?", options: ["Including as much raw data as possible with no visuals", "Reading directly from a dense spreadsheet", "Avoiding any visual aids entirely", "Using clear charts and simplified explanations of key trends"], answer: 3, cat: "Presentations on Economy" },
+            { id: 197, q: "After presenting an economic analysis, a presenter should be prepared to:", options: ["avoid discussing any limitations of the analysis", "refuse to answer any questions", "justify the assumptions, data sources, and conclusions used", "end the session immediately with no discussion"], answer: 2, cat: "Presentations on Economy" },
+            { id: 198, q: "Why is it important to present economic findings honestly, even when they are not favourable?", options: ["Inaccurate findings always look more impressive", "Unfavourable findings never affect real decisions", "Honesty is only required during exams", "Misrepresenting economic findings can lead to poor policy or business decisions"], answer: 3, cat: "Presentations on Economy" },
+
+            { id: 199, q: "What is the purpose of including a reflection in an end-of-term economics portfolio?", options: ["To record attendance only", "To increase the page count with no real value", "To replace the need for any economic analysis", "To help the student evaluate their learning progress and identify areas for improvement"], answer: 3, cat: "Portfolio & Reflection" },
+            { id: 200, q: "A comprehensive review before a final mock exam is valuable because it:", options: ["guarantees a perfect exam score", "consolidates understanding across all topics covered in the course before assessment", "replaces the need to attend any classes", "only covers the very first topic of the course"], answer: 1, cat: "Portfolio & Reflection" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
