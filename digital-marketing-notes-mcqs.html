@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Marketing Notes Mastery - 200 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-bullhorn text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">DMNotesMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">200 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/200</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-hashtag text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Digital Marketing (Course Notes) with 200 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    An original question bank written from scratch, based on a 14-chapter Digital Marketing notes document: Digital Marketing Foundations, Traditional vs Digital Channels, Websites, SEO, Keyword Research, Content Strategy & Creation, Scheduling, Social Media Marketing, Email Marketing, Paid Advertising, A/B Testing, Personal Branding, Digital Ethics & Security, and Collaborative Campaign Planning.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 200)</option>
+                            <option value="1-20">1. What is Digital Marketing? (1 - 20)</option>
+                            <option value="21-34">2. Traditional vs Digital Channels (21 - 34)</option>
+                            <option value="35-44">3. Websites – The Digital Hub (35 - 44)</option>
+                            <option value="45-62">4. SEO – Search Engine Optimization (45 - 62)</option>
+                            <option value="63-76">5. Keyword Research (63 - 76)</option>
+                            <option value="77-88">6. Content Strategy (77 - 88)</option>
+                            <option value="89-106">7. Social Media Marketing (89 - 106)</option>
+                            <option value="107-120">8. Content Creation (107 - 120)</option>
+                            <option value="121-128">9. Scheduling and the Content Calendar (121 - 128)</option>
+                            <option value="129-146">10. Email Marketing (129 - 146)</option>
+                            <option value="147-160">11. Paid Advertising (SEM and Display Advertising) (147 - 160)</option>
+                            <option value="161-170">12. A/B Testing (161 - 170)</option>
+                            <option value="171-182">13. Personal Branding Online (171 - 182)</option>
+                            <option value="183-192">14. Digital Ethics and Security (183 - 192)</option>
+                            <option value="193-200">15. Collaborative Campaign Planning (193 - 200)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 200</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-200)" min="1" max="200" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Marketing</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 200</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/200</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Digital Marketing Notes Quiz • 200 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (200 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "According to the notes, digital marketing is defined as:", options: ["a system that only tracks employee attendance", "using digital tools and media to reach marketing goals", "using only television and radio to reach customers", "a type of accounting software"], answer: 1, cat: "What is Digital Marketing?" },
+            { id: 2, q: "Which of these is one of the four ways digital marketing helps a company, according to the notes?", options: ["Measuring results in real time", "Guaranteeing instant profit", "Removing the need for a website", "Eliminating the need for a marketing budget"], answer: 0, cat: "What is Digital Marketing?" },
+            { id: 3, q: "In the notes, a 'channel' is defined as:", options: ["a type of customer complaint", "a way to reach customers, like Google, Facebook, or email", "a physical store location only", "a company's annual report"], answer: 1, cat: "What is Digital Marketing?" },
+            { id: 4, q: "'Multichannel Marketing' means:", options: ["using only one channel at a time", "avoiding all digital channels", "using many channels together so the customer has one smooth experience", "using channels that never interact"], answer: 2, cat: "What is Digital Marketing?" },
+            { id: 5, q: "Paid Media is defined in the notes as:", options: ["channels you control, such as your website", "free attention, like shares or mentions", "a customer feedback survey", "advertising you pay for, such as Google ads or sponsored posts"], answer: 3, cat: "What is Digital Marketing?" },
+            { id: 6, q: "Owned Media is defined in the notes as:", options: ["channels you control, such as your website or Facebook page", "a type of paid influencer post", "free press coverage only", "advertising you pay for"], answer: 0, cat: "What is Digital Marketing?" },
+            { id: 7, q: "Earned Media is defined in the notes as:", options: ["channels you fully control", "advertising you pay for", "free attention, like shares, mentions, or press coverage", "a scheduled email campaign"], answer: 2, cat: "What is Digital Marketing?" },
+            { id: 8, q: "The Online Value Proposition (OVP) is best described as:", options: ["a company's logo design", "the special benefit a brand gives online that other brands do not give", "the cost of running a website", "the total revenue earned online"], answer: 1, cat: "What is Digital Marketing?" },
+            { id: 9, q: "According to the notes, the customer journey moves from:", options: ["purchase, to awareness, to loyalty", "loyalty, to awareness, to purchase", "awareness directly to loyalty, skipping purchase", "awareness, to purchase, to loyalty"], answer: 3, cat: "What is Digital Marketing?" },
+            { id: 10, q: "The '5 S's' of digital marketing include Sell, Serve, Speak, Save, and:", options: ["Scale", "Share", "Sizzle", "Sync"], answer: 2, cat: "What is Digital Marketing?" },
+            { id: 11, q: "In the 5 S's, 'Serve' refers to:", options: ["growing sales through online channels", "making the brand feel exciting", "giving better customer service and experience", "saving money and time"], answer: 2, cat: "What is Digital Marketing?" },
+            { id: 12, q: "In the 5 S's, 'Speak' refers to:", options: ["growing online sales", "reducing marketing costs", "talking with customers through two-way communication", "creating exciting brand content only"], answer: 2, cat: "What is Digital Marketing?" },
+            { id: 13, q: "According to the notes, a 'platform' is defined as:", options: ["the place where marketing happens", "a customer's personal social media profile", "a type of paid advertisement", "a company's mission statement"], answer: 0, cat: "What is Digital Marketing?" },
+            { id: 14, q: "Which of the following is classified as 'hardware' in the notes' platform section?", options: ["Streaming platforms like Netflix", "Browsers like Chrome", "Mobile apps", "Wearables, such as smartwatches"], answer: 3, cat: "What is Digital Marketing?" },
+            { id: 15, q: "Which of the following is classified as 'software' in the notes' platform section?", options: ["Desktops", "Streaming platforms like YouTube or Netflix", "Mobile phones", "Tablets"], answer: 1, cat: "What is Digital Marketing?" },
+            { id: 16, q: "According to the notes, how many main digital channels are listed?", options: ["Eight", "Six", "Five", "Four"], answer: 1, cat: "What is Digital Marketing?" },
+            { id: 17, q: "In the RACE framework, 'Act' refers to:", options: ["making people interact, such as clicking, commenting, or watching", "making people see your brand", "turning interested people into buyers", "keeping customers loyal"], answer: 0, cat: "What is Digital Marketing?" },
+            { id: 18, q: "In the RACE framework, 'Engage' refers to:", options: ["converting leads into buyers", "building initial brand awareness", "measuring website traffic only", "keeping customers loyal so they come back and recommend the brand"], answer: 3, cat: "What is Digital Marketing?" },
+            { id: 19, q: "The three steps of the strategic process described in the notes are Define Opportunity, Select Approach, and:", options: ["Deliver and Optimize", "Launch and Forget", "Budget and Delay", "Report and Archive"], answer: 0, cat: "What is Digital Marketing?" },
+            { id: 20, q: "In the case examples given in the notes, which company is described as using virtual stores with QR codes on a billboard?", options: ["Tatu Couture", "eBay", "Domino's", "Tesco Homeplus"], answer: 3, cat: "What is Digital Marketing?" },
+
+            { id: 21, q: "According to the notes, traditional marketing focuses on mass reach and:", options: ["one-way communication", "two-way communication", "real-time feedback", "precise targeting"], answer: 0, cat: "Traditional vs Digital Channels" },
+            { id: 22, q: "According to the notes, digital marketing allows:", options: ["one-way communication only", "only postal communication", "two-way communication", "no communication with customers"], answer: 2, cat: "Traditional vs Digital Channels" },
+            { id: 23, q: "Which of the following is listed as an 'outdoor' traditional marketing channel?", options: ["Newspapers", "Billboards", "Podcasts", "Email"], answer: 1, cat: "Traditional vs Digital Channels" },
+            { id: 24, q: "Which of the following is listed as a 'direct mail' traditional channel?", options: ["Social media posts", "Letters and flyers sent by post", "Search engine ads", "Television commercials"], answer: 1, cat: "Traditional vs Digital Channels" },
+            { id: 25, q: "According to the notes, a strong point of traditional marketing is that it:", options: ["offers precise, individual targeting", "is very low cost to produce", "reaches large audiences and builds brand awareness", "provides instant, real-time feedback"], answer: 2, cat: "Traditional vs Digital Channels" },
+            { id: 26, q: "According to the notes, a weak point of traditional marketing is that its measurement is based on:", options: ["estimates, not real-time data", "instant click tracking", "AI-driven predictions", "real-time analytics dashboards"], answer: 0, cat: "Traditional vs Digital Channels" },
+            { id: 27, q: "According to the notes, which traditional channel is described as good for local targeting and frequency but has no visual impact?", options: ["Outdoor advertising", "Television advertising", "Print media", "Radio advertising"], answer: 3, cat: "Traditional vs Digital Channels" },
+            { id: 28, q: "According to the notes, which traditional channel is described as costly and declining in use today?", options: ["Television advertising", "Outdoor advertising", "Direct mail", "Radio advertising"], answer: 2, cat: "Traditional vs Digital Channels" },
+            { id: 29, q: "According to the notes, a strong point of digital channels is:", options: ["high production costs", "slow and indirect feedback", "one-way communication only", "real-time performance tracking"], answer: 3, cat: "Traditional vs Digital Channels" },
+            { id: 30, q: "According to the Paid, Owned, and Earned framework in the notes, which type of media 'adds credibility'?", options: ["Paid Media", "Owned Media", "Earned Media", "None of these"], answer: 2, cat: "Traditional vs Digital Channels" },
+            { id: 31, q: "According to the notes, in an integrated campaign, a television commercial might include a QR code that:", options: ["leads viewers to the online store", "cancels the advertisement", "removes the need for a website", "blocks online tracking"], answer: 0, cat: "Traditional vs Digital Channels" },
+            { id: 32, q: "According to the notes, one challenge of digital channels is:", options: ["privacy regulations, like GDPR, adding complexity", "an inability to target any audience", "a complete lack of any measurement tools", "extremely high production costs"], answer: 0, cat: "Traditional vs Digital Channels" },
+            { id: 33, q: "According to the case studies in the notes, Coca-Cola integrates offline sponsorships with:", options: ["digital hashtags and influencer campaigns", "door-to-door sales", "print newspaper ads only", "radio jingles only"], answer: 0, cat: "Traditional vs Digital Channels" },
+            { id: 34, q: "According to the notes' strategic recommendations, marketing teams should be trained in:", options: ["only traditional marketing skills", "neither traditional nor digital skills", "both traditional and digital skills", "only digital marketing skills"], answer: 2, cat: "Traditional vs Digital Channels" },
+
+            { id: 35, q: "According to the notes, the website is described as the:", options: ["only channel that matters", "replacement for social media", "digital hub of digital marketing", "least important marketing channel"], answer: 2, cat: "Websites – The Digital Hub" },
+            { id: 36, q: "According to the notes, SEO works on three things: relevance, authority, and:", options: ["email frequency", "user experience", "social media followers", "advertising budget"], answer: 1, cat: "Websites – The Digital Hub" },
+            { id: 37, q: "According to the notes, which tool 'shows how Google sees your site'?", options: ["Google Maps", "Meta Suite", "Hootsuite", "Google Search Console"], answer: 3, cat: "Websites – The Digital Hub" },
+            { id: 38, q: "According to the notes, 'usability' refers to:", options: ["how old a website is", "how much a website costs to build", "how many ads a website shows", "how easy a website is to use"], answer: 3, cat: "Websites – The Digital Hub" },
+            { id: 39, q: "According to the notes, 'accessibility' refers to:", options: ["everyone being able to use the website", "only mobile users being able to use the website", "restricting access to certain countries", "only paying customers being able to use the website"], answer: 0, cat: "Websites – The Digital Hub" },
+            { id: 40, q: "Which of the following is listed as a core website principle in the notes?", options: ["Avoiding mobile optimization", "Complex, confusing navigation", "Inconsistent branding", "Use of HTTPS (the lock icon in the browser)"], answer: 3, cat: "Websites – The Digital Hub" },
+            { id: 41, q: "According to the notes, website 'architecture' refers to:", options: ["the website's hosting provider", "the color scheme of a website", "the number of images on a page", "how your pages link together"], answer: 3, cat: "Websites – The Digital Hub" },
+            { id: 42, q: "According to the notes, search engine crawlers are described as:", options: ["customer service agents", "website hackers", "human website reviewers", "Google's robots that read pages"], answer: 3, cat: "Websites – The Digital Hub" },
+            { id: 43, q: "According to the notes, which of the following is a website structure rule?", options: ["Change metadata daily", "Avoid internal links entirely", "Use descriptive URLs", "Use random, meaningless URLs"], answer: 2, cat: "Websites – The Digital Hub" },
+            { id: 44, q: "According to the notes, effective website content should match the customer journey and support the:", options: ["company's tax filings", "business's value proposition", "website's server location", "competitor's pricing strategy"], answer: 1, cat: "Websites – The Digital Hub" },
+
+            { id: 45, q: "According to the notes, SEO is part of which type of media?", options: ["Owned Media", "Broadcast Media", "Earned Media", "Paid Media"], answer: 0, cat: "SEO – Search Engine Optimization" },
+            { id: 46, q: "According to the notes, SEO has three key pillars: on-page, technical, and:", options: ["off-page", "legal", "creative", "financial"], answer: 0, cat: "SEO – Search Engine Optimization" },
+            { id: 47, q: "According to the notes, on-page SEO includes optimizing:", options: ["employee salaries", "the company's tax records", "office furniture layout", "keywords in titles, headings, and meta tags"], answer: 3, cat: "SEO – Search Engine Optimization" },
+            { id: 48, q: "According to the notes, the important rule for on-page SEO is to focus on user intent and readability, not:", options: ["page loading speed", "mobile responsiveness", "HTTPS encryption", "keyword density"], answer: 3, cat: "SEO – Search Engine Optimization" },
+            { id: 49, q: "According to the notes, off-page SEO is mainly built through:", options: ["external factors such as backlinks", "video editing software", "email subject lines", "internal page design"], answer: 0, cat: "SEO – Search Engine Optimization" },
+            { id: 50, q: "According to the notes, search engines treat backlinks as:", options: ["a security risk", "spam to be removed", "irrelevant data", "endorsements, or trust votes"], answer: 3, cat: "SEO – Search Engine Optimization" },
+            { id: 51, q: "According to the notes, technical SEO ensures that search engines can:", options: ["design social media graphics", "send marketing emails automatically", "crawl and index your website easily", "manage customer complaints"], answer: 2, cat: "SEO – Search Engine Optimization" },
+            { id: 52, q: "According to the notes, which file gives Google a map of your site?", options: ["robots.txt", "cookies.json", "sitemap.xml", "index.html"], answer: 2, cat: "SEO – Search Engine Optimization" },
+            { id: 53, q: "According to the notes, which file gives Google instructions about your site?", options: ["robots.txt", "sitemap.xml", "analytics.js", "style.css"], answer: 0, cat: "SEO – Search Engine Optimization" },
+            { id: 54, q: "According to the notes, canonical tags are used to:", options: ["tell Google which page is the original when pages are similar", "hide a page from all search engines", "automatically translate a page", "delete duplicate images"], answer: 0, cat: "SEO – Search Engine Optimization" },
+            { id: 55, q: "According to the notes, Google Search Console shows 'impressions,' which measure:", options: ["how many times people clicked your site", "how many times people saw your site in results", "how much you paid for ads", "how many backlinks you have"], answer: 1, cat: "SEO – Search Engine Optimization" },
+            { id: 56, q: "According to the notes, CTR (Click-Through Rate) is calculated as:", options: ["clicks multiplied by impressions", "total visits minus bounce rate", "clicks divided by impressions", "impressions divided by clicks"], answer: 2, cat: "SEO – Search Engine Optimization" },
+            { id: 57, q: "According to the notes, 'Google My Business' is now known as:", options: ["Google Business Profile", "Google Search Console", "Google Ads Manager", "Google Analytics"], answer: 0, cat: "SEO – Search Engine Optimization" },
+            { id: 58, q: "According to the notes, keeping NAP consistent means keeping the same:", options: ["Niche, Audience, and Platform everywhere", "Name, Address, and Phone number everywhere", "News, Articles, and Posts everywhere", "Navigation, Appearance, and Pricing everywhere"], answer: 1, cat: "SEO – Search Engine Optimization" },
+            { id: 59, q: "According to the notes, local SEO helps a business appear in which type of search?", options: ["Image-only searches", "Video-only searches", "International-only searches", "'Near Me' searches"], answer: 3, cat: "SEO – Search Engine Optimization" },
+            { id: 60, q: "According to the notes, which of the following is listed as a common SEO mistake?", options: ["Keyword stuffing or duplicate content", "Building high-quality backlinks", "Optimizing for mobile devices", "Using descriptive URLs"], answer: 0, cat: "SEO – Search Engine Optimization" },
+            { id: 61, q: "According to the notes, in the RACE framework, SEO supports the 'Reach' stage by:", options: ["designing logos", "processing payments", "managing payroll", "increasing visibility"], answer: 3, cat: "SEO – Search Engine Optimization" },
+            { id: 62, q: "According to the notes, why must websites continuously adapt their SEO?", options: ["Because SEO is only needed once", "Because Google changes its algorithm all the time", "Because competitors never change", "Because search engines are being phased out"], answer: 1, cat: "SEO – Search Engine Optimization" },
+
+            { id: 63, q: "According to the notes, keywords are described as the bridge between customer intent and:", options: ["employee productivity", "digital visibility", "company revenue", "office location"], answer: 1, cat: "Keyword Research" },
+            { id: 64, q: "According to the notes, a search with 'transactional' intent is best illustrated by:", options: ["'what is SEO'", "'YouTube Ads login'", "'history of marketing'", "'buy running shoes online'"], answer: 3, cat: "Keyword Research" },
+            { id: 65, q: "According to the notes, a search with 'navigational' intent is best illustrated by:", options: ["'best running shoes for men'", "'what is SEO'", "'YouTube Ads login'", "'buy running shoes online'"], answer: 2, cat: "Keyword Research" },
+            { id: 66, q: "According to the notes, a short-tail keyword such as 'shoes' is described as:", options: ["highly specific and low competition", "only used in navigational searches", "broad but competitive", "irrelevant to SEO"], answer: 2, cat: "Keyword Research" },
+            { id: 67, q: "According to the notes, a long-tail keyword such as 'best running shoes for men' is described as:", options: ["always a brand name", "only used for display ads", "broad and highly competitive", "more specific and conversion-oriented"], answer: 3, cat: "Keyword Research" },
+            { id: 68, q: "According to the notes, a keyword like 'pizza near Lahore' is an example of a:", options: ["branded keyword", "generic keyword", "geo-targeted keyword", "navigational keyword"], answer: 2, cat: "Keyword Research" },
+            { id: 69, q: "According to the notes, which tool gives search volume, competition, and CPC data?", options: ["Ubersuggest", "Meta Suite", "Hootsuite", "Google Ads Keyword Planner"], answer: 3, cat: "Keyword Research" },
+            { id: 70, q: "According to the notes, which tool is specifically noted for generating long-tail keyword ideas?", options: ["Google Ads Keyword Planner", "Ubersuggest", "SEMrush", "Google Analytics"], answer: 1, cat: "Keyword Research" },
+            { id: 71, q: "According to the notes, SEMrush and Ahrefs are mainly used for:", options: ["customer service", "video editing", "competitor analysis and keyword gap discovery", "email automation"], answer: 2, cat: "Keyword Research" },
+            { id: 72, q: "According to the notes, the keyword research process begins with:", options: ["designing the website logo", "buying backlinks", "publishing content immediately", "defining campaign or business objectives"], answer: 3, cat: "Keyword Research" },
+            { id: 73, q: "According to the notes, choosing keywords should be based on relevance, search volume, competition, intent, and:", options: ["brand color scheme", "cost efficiency", "office size", "employee headcount"], answer: 1, cat: "Keyword Research" },
+            { id: 74, q: "According to the notes, which of the following is listed as a common keyword research mistake?", options: ["Matching user intent", "Using long-tail keywords", "Analyzing competition", "Skipping negative keywords"], answer: 3, cat: "Keyword Research" },
+            { id: 75, q: "According to the notes, negative keywords are words:", options: ["that guarantee the highest search volume", "that are always branded terms", "you do NOT want your ads to show for", "you specifically want your ads to show for"], answer: 2, cat: "Keyword Research" },
+            { id: 76, q: "According to the notes, in the RACE framework, keyword research mainly supports the Reach and:", options: ["Engage stage only", "None of the RACE stages", "Convert stage only", "Act stages"], answer: 3, cat: "Keyword Research" },
+
+            { id: 77, q: "According to the notes, content strategy decides HOW you create content, while keyword research tells you:", options: ["WHERE your office is located", "WHAT topics people want", "WHEN to launch a product", "WHO your competitors are"], answer: 1, cat: "Content Strategy" },
+            { id: 78, q: "According to the notes, 'pillar pages' are described as:", options: ["customer complaint forms", "small footnotes on a webpage", "broad, main topic pages", "email unsubscribe pages"], answer: 2, cat: "Content Strategy" },
+            { id: 79, q: "According to the notes, 'cluster pages' are described as:", options: ["related subtopic pages that link back to the pillar page", "standalone pages with no links", "pages only for paid ads", "pages that block search engines"], answer: 0, cat: "Content Strategy" },
+            { id: 80, q: "According to the notes, informational keywords are mapped to which stage of the buyer journey?", options: ["None of these stages", "Awareness", "Decision", "Retention"], answer: 1, cat: "Content Strategy" },
+            { id: 81, q: "According to the notes, transactional and branded terms are mapped to which stage of the buyer journey, using landing pages?", options: ["Awareness", "Decision", "Retention", "Consideration"], answer: 1, cat: "Content Strategy" },
+            { id: 82, q: "According to the notes, primary keywords should be placed in:", options: ["only the footer of a page", "titles, meta descriptions, and headings", "hidden code invisible to users", "the company's internal memos"], answer: 1, cat: "Content Strategy" },
+            { id: 83, q: "According to the notes, PowerPoint can be used in keyword planning mainly to:", options: ["visualize keyword clusters, mapping, and content hierarchies", "automatically generate backlinks", "replace Google Search Console", "directly publish website content"], answer: 0, cat: "Content Strategy" },
+            { id: 84, q: "According to the notes, in Google Ads, keywords work by:", options: ["triggering text ads based on search queries", "automatically writing blog posts", "scheduling employee shifts", "designing product packaging"], answer: 0, cat: "Content Strategy" },
+            { id: 85, q: "According to the notes, 'ad copy' refers to:", options: ["the budget spent on an ad", "the text of your ad", "the image used in an ad", "the audience targeted by an ad"], answer: 1, cat: "Content Strategy" },
+            { id: 86, q: "According to the notes, relevance between the ad copy, keyword, and landing page improves:", options: ["quality scores and ad rank", "employee morale", "server hosting speed only", "office rent costs"], answer: 0, cat: "Content Strategy" },
+            { id: 87, q: "According to the notes, Quality Score is described as:", options: ["the number of backlinks a site has", "Google's rating of your ad", "a website's loading time in seconds", "a customer satisfaction survey"], answer: 1, cat: "Content Strategy" },
+            { id: 88, q: "According to the notes, an integrated content strategy makes every keyword serve a:", options: ["purely decorative function", "defined business goal", "legal requirement only", "random purpose with no strategy"], answer: 1, cat: "Content Strategy" },
+
+            { id: 89, q: "According to the notes, Meta Suite manages which three platforms together?", options: ["Facebook, Instagram, and Messenger", "YouTube, Google, and Bing", "LinkedIn, TikTok, and Twitter", "Snapchat, Pinterest, and Reddit"], answer: 0, cat: "Social Media Marketing" },
+            { id: 90, q: "According to the notes, Meta Suite was formerly known as:", options: ["Facebook Business Suite", "Instagram Business Suite", "LinkedIn Business Suite", "Google Business Suite"], answer: 0, cat: "Social Media Marketing" },
+            { id: 91, q: "According to the notes, in the RACE framework, 'Engage' on social media is achieved through:", options: ["one-time advertising only", "community management", "ignoring customer comments", "deleting all negative feedback"], answer: 1, cat: "Social Media Marketing" },
+            { id: 92, q: "According to the notes, which of the following is listed as a function of Meta Suite?", options: ["Designing physical store layouts", "Scheduling posts for the best times", "Filing company tax returns", "Managing employee payroll"], answer: 1, cat: "Social Media Marketing" },
+            { id: 93, q: "According to the notes, which type of social media content is described as building trust through content from the community?", options: ["Educational content", "Promotional content", "User-generated content", "Emotional content"], answer: 2, cat: "Social Media Marketing" },
+            { id: 94, q: "According to the notes, 'lookalike audiences' are described as:", options: ["only website visitors", "people similar to your existing customers", "random users with no targeting", "only past customers"], answer: 1, cat: "Social Media Marketing" },
+            { id: 95, q: "According to the notes, in the fitness brand example, the target audience is aged 20 to 40, interested in health and wellness, within a radius of:", options: ["10 km", "50 km", "20 km", "5 km"], answer: 0, cat: "Social Media Marketing" },
+            { id: 96, q: "According to the notes, visual posts on Facebook and Instagram can get up to what percentage higher engagement than text-only posts?", options: ["30%", "50%", "80%", "100%"], answer: 2, cat: "Social Media Marketing" },
+            { id: 97, q: "According to the notes, which tool is Meta's built-in tool for designing and editing posts?", options: ["Ahrefs", "Google Analytics", "Creator Studio", "Hootsuite"], answer: 2, cat: "Social Media Marketing" },
+            { id: 98, q: "According to the notes, consistent posting builds:", options: ["slower website speed", "higher ad costs only", "algorithmic trust", "less audience engagement"], answer: 2, cat: "Social Media Marketing" },
+            { id: 99, q: "According to the notes, a hybrid approach to social media combines organic content with:", options: ["deleting underperforming content immediately", "avoiding all forms of advertising", "boosting your best posts with paid promotion", "posting only once a year"], answer: 2, cat: "Social Media Marketing" },
+            { id: 100, q: "According to the notes' Meta Ads example, a clothing brand's carousel ad campaign resulted in a CTR increase of:", options: ["25 percent", "50 percent", "35 percent", "15 percent"], answer: 2, cat: "Social Media Marketing" },
+            { id: 101, q: "According to the notes, Meta Insights tracks Reach, Engagement, CTR, and:", options: ["Tax deductions", "Office expenses", "Employee attendance", "Conversion rate"], answer: 3, cat: "Social Media Marketing" },
+            { id: 102, q: "According to the notes, 'micro-influencers' are described as having:", options: ["no real audience at all", "only celebrity-level followings", "massive, unfocused audiences", "smaller but more focused audiences that often deliver higher engagement"], answer: 3, cat: "Social Media Marketing" },
+            { id: 103, q: "According to the notes, during a social media crisis, criticism should be deleted only if it:", options: ["is posted after business hours", "breaks policy", "is longer than one sentence", "comes from a competitor"], answer: 1, cat: "Social Media Marketing" },
+            { id: 104, q: "According to the notes, Meta's branded content tools require:", options: ["removing all hashtags", "full disclosure that a post is sponsored", "avoiding influencer partnerships entirely", "hiding the fact that a post is sponsored"], answer: 1, cat: "Social Media Marketing" },
+            { id: 105, q: "According to the notes, which of the following is listed as a challenge in social media marketing?", options: ["Declining organic reach because algorithms change", "Unlimited organic reach", "Excessive audience trust", "Too much available ad budget"], answer: 0, cat: "Social Media Marketing" },
+            { id: 106, q: "According to the notes, which of the following is listed as a future trend in social media marketing?", options: ["Removal of AI from marketing tools", "A return to print-only advertising", "Growth of short-form videos, such as Reels and Shorts", "The end of all video content"], answer: 2, cat: "Social Media Marketing" },
+
+            { id: 107, q: "According to the notes, content creation is defined as planning, producing, and publishing digital material to:", options: ["avoid customer engagement", "replace all human employees", "reduce a company's website traffic", "communicate with an audience"], answer: 3, cat: "Content Creation" },
+            { id: 108, q: "According to the notes, which of the following is listed as a reason content matters?", options: ["It strengthens customer engagement", "It removes the need for analytics", "It guarantees zero competition", "It eliminates the need for a website"], answer: 0, cat: "Content Creation" },
+            { id: 109, q: "According to the notes, 'carousel posts' are described as:", options: ["multiple images or slides in one post, good for storytelling and tutorials", "a type of paid search ad", "a private messaging feature", "a single static image only"], answer: 0, cat: "Content Creation" },
+            { id: 110, q: "According to the notes, 'infographics' are described as:", options: ["audio-only podcasts", "complex information shown simply as visual graphics", "unedited raw data tables", "long text-only articles"], answer: 1, cat: "Content Creation" },
+            { id: 111, q: "According to the notes, 'personas' are described as:", options: ["a company's financial statements", "profiles of ideal customers", "a type of social media algorithm", "a legal contract template"], answer: 1, cat: "Content Creation" },
+            { id: 112, q: "According to the notes, which platform is described as focusing on visual engagement?", options: ["LinkedIn", "Email", "Google Search", "Instagram"], answer: 3, cat: "Content Creation" },
+            { id: 113, q: "According to the notes, which platform is described as focusing on professional content?", options: ["Instagram", "TikTok", "Snapchat", "LinkedIn"], answer: 3, cat: "Content Creation" },
+            { id: 114, q: "According to the notes, YouTube is best suited for:", options: ["printed brochures", "radio jingles", "long-form educational videos, tutorials, and reviews", "very short text-only updates"], answer: 2, cat: "Content Creation" },
+            { id: 115, q: "According to the notes, what is the first step in the content creation process?", options: ["Design visual content", "Brainstorm ideas based on audience interests and goals", "Publish on selected platforms", "Optimize keywords and hashtags"], answer: 1, cat: "Content Creation" },
+            { id: 116, q: "According to the notes, an engaging caption should start with:", options: ["a strong hook", "a blank line", "an unrelated fact", "a long legal disclaimer"], answer: 0, cat: "Content Creation" },
+            { id: 117, q: "According to the notes, video content should capture attention:", options: ["there is no specific timing", "in the first few seconds", "only at the very end", "only after the first minute"], answer: 1, cat: "Content Creation" },
+            { id: 118, q: "According to the notes, subtitles in videos mainly help viewers who:", options: ["speak only one language", "watch without sound", "have unlimited internet data", "prefer audio-only content"], answer: 1, cat: "Content Creation" },
+            { id: 119, q: "According to the notes, 'repurposing' content means:", options: ["hiding content from search engines", "buying content from competitors", "turning existing content into new formats", "deleting old content permanently"], answer: 2, cat: "Content Creation" },
+            { id: 120, q: "According to the notes, the 'Always-On' content strategy means:", options: ["posting only once per year", "publishing content with no plan at all", "maintaining a continuous online presence", "pausing all content during holidays"], answer: 2, cat: "Content Creation" },
+
+            { id: 121, q: "According to the notes, a content calendar is defined as:", options: ["a planned schedule of when content will be published", "a list of company holidays", "a customer complaint log", "an employee attendance sheet"], answer: 0, cat: "Scheduling and the Content Calendar" },
+            { id: 122, q: "According to the notes, which of the following is a benefit of a content calendar?", options: ["It removes the need for a strategy", "It guarantees viral content", "It increases advertising costs", "It prevents last-minute content creation"], answer: 3, cat: "Scheduling and the Content Calendar" },
+            { id: 123, q: "According to the notes, which tool is described as managing Facebook and Instagram posts and analytics?", options: ["Buffer", "Meta Business Suite", "SEMrush", "Ubersuggest"], answer: 1, cat: "Scheduling and the Content Calendar" },
+            { id: 124, q: "According to the notes, which tool combines design templates with direct posting to social platforms?", options: ["Canva", "Mailchimp", "Google Search Console", "Google Ads Keyword Planner"], answer: 0, cat: "Scheduling and the Content Calendar" },
+            { id: 125, q: "According to the notes, which tool is described for visual planning of social feeds?", options: ["Later.com", "Salesforce", "ActiveCampaign", "SendGrid"], answer: 0, cat: "Scheduling and the Content Calendar" },
+            { id: 126, q: "According to the notes, Hootsuite is used for scheduling, monitoring, and:", options: ["filing legal documents", "processing customer payments", "manufacturing products", "analytics for multiple platforms"], answer: 3, cat: "Scheduling and the Content Calendar" },
+            { id: 127, q: "According to the notes, when is the best time to post, according to the notes?", options: ["When your audience is most active, based on platform analytics", "Only on public holidays", "Whenever the marketing manager is free", "Exactly at midnight every day"], answer: 0, cat: "Scheduling and the Content Calendar" },
+            { id: 128, q: "According to the notes, consistent posting builds algorithmic trust and:", options: ["audience habit", "higher advertising taxes", "reduced brand recognition", "slower page load times"], answer: 0, cat: "Scheduling and the Content Calendar" },
+
+            { id: 129, q: "According to the notes, email is described as a 'push channel' because:", options: ["customers must search for it manually", "it requires a phone call first", "the message reaches the customer without them visiting your website", "it only works through social media"], answer: 2, cat: "Email Marketing" },
+            { id: 130, q: "According to the notes, outbound emails include promotional campaigns, onboarding sequences, and:", options: ["customer complaints", "refund requests", "newsletters", "support tickets"], answer: 2, cat: "Email Marketing" },
+            { id: 131, q: "According to the notes, inbound emails include queries, complaints, requests, and:", options: ["feedback", "onboarding sequences", "promotional campaigns", "loyalty messages"], answer: 0, cat: "Email Marketing" },
+            { id: 132, q: "According to the notes, 'opt-in' means customers:", options: ["are added automatically without consent", "are legally required to receive emails", "cannot unsubscribe under any circumstance", "willingly give permission to receive emails"], answer: 3, cat: "Email Marketing" },
+            { id: 133, q: "According to the notes, 'opt-out' means the business:", options: ["never sends any promotional emails", "adds customers automatically, and they must ask to be removed", "asks for permission before sending any email", "only emails paying customers"], answer: 1, cat: "Email Marketing" },
+            { id: 134, q: "According to the notes, a 'house list' is described as:", options: ["your own subscriber database", "a list of competitor customers", "a list of company office addresses", "a list rented from a third-party broker"], answer: 0, cat: "Email Marketing" },
+            { id: 135, q: "According to the notes, house lists give better open rates and engagement than:", options: ["display ads", "rented lists", "social media posts", "print advertisements"], answer: 1, cat: "Email Marketing" },
+            { id: 136, q: "According to the notes, which of the following is listed as an advantage of email marketing?", options: ["Very low cost", "No way to track results", "Slow deployment", "Extremely high production cost"], answer: 0, cat: "Email Marketing" },
+            { id: 137, q: "According to the notes, 'deliverability' as a challenge refers to:", options: ["spam filters blocking emails due to weak sender reputation", "emails being sent too infrequently", "emails being too colorful", "emails being too short"], answer: 0, cat: "Email Marketing" },
+            { id: 138, q: "According to the notes, which metric measures 'emails that reached inboxes'?", options: ["Delivery rate", "Conversion rate", "Bounce rate", "Open rate"], answer: 0, cat: "Email Marketing" },
+            { id: 139, q: "According to the notes, which metric measures 'recipients who viewed the email'?", options: ["Open rate", "Delivery rate", "Unsubscribe rate", "Spam complaint rate"], answer: 0, cat: "Email Marketing" },
+            { id: 140, q: "According to the notes, which automation workflow is described as often having the highest conversion rates?", options: ["Welcome series", "Abandoned cart", "Lead nurturing", "Re-engagement"], answer: 1, cat: "Email Marketing" },
+            { id: 141, q: "According to the notes, the 'welcome series' workflow is used to:", options: ["remove subscribers from the list", "introduce new subscribers to the brand", "punish inactive subscribers", "collect payment information only"], answer: 1, cat: "Email Marketing" },
+            { id: 142, q: "According to the notes, B2B lead nurturing sends educational content and webinars to:", options: ["build trust until the customer is ready to buy", "avoid contacting the customer again", "replace the sales team entirely", "immediately force a purchase"], answer: 0, cat: "Email Marketing" },
+            { id: 143, q: "According to the notes, an ESP (Email Service Provider) is software that designs, sends, automates, tracks, and:", options: ["processes tax filings", "analyzes email campaigns", "manufactures physical products", "manages office real estate"], answer: 1, cat: "Email Marketing" },
+            { id: 144, q: "According to the notes, which of the following is listed as an example of an ESP?", options: ["Hootsuite", "Google Maps", "Canva", "Mailchimp"], answer: 3, cat: "Email Marketing" },
+            { id: 145, q: "According to the notes, a 'co-branded email' is described as:", options: ["an email that contains no marketing content", "two trusted brands sharing a message to promote a product together", "an email sent without any branding", "an email sent only to employees"], answer: 1, cat: "Email Marketing" },
+            { id: 146, q: "According to the notes, an effective email's CTA button should be:", options: ["hidden at the very bottom of the email", "removed entirely", "written in a very small font", "prominent and placed early"], answer: 3, cat: "Email Marketing" },
+
+            { id: 147, q: "According to the notes, paid advertising is defined as:", options: ["only using free organic content", "a type of customer loyalty program", "a method of manual data entry", "paying money to show advertisements online"], answer: 3, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 148, q: "According to the notes, SEM stands for:", options: ["Search Engine Marketing", "Social Engagement Metrics", "Sales Enablement Model", "Site Efficiency Measurement"], answer: 0, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 149, q: "According to the notes, PPC stands for:", options: ["Post Per Campaign", "Price Per Customer", "Pay Per Click", "Paid Public Content"], answer: 2, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 150, q: "According to the notes, in SEM, the advertiser pays money when:", options: ["a keyword is searched for by the advertiser", "someone clicks the ad", "a website is created", "an ad is simply displayed, regardless of clicks"], answer: 1, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 151, q: "According to the notes, which of the following is listed as a part of a search ad?", options: ["An employee's job title", "A call-to-action, like 'Buy Now'", "A company's tax ID number", "A customer's home address"], answer: 1, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 152, q: "According to the notes, which of the following is an advantage of SEM?", options: ["Ads appear instantly", "Ads never require monitoring", "Ads are always completely free", "Ads guarantee a sale every time"], answer: 0, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 153, q: "According to the notes, which of the following is a disadvantage of SEM?", options: ["Ads cannot be measured", "Ads cannot target any audience", "Ads stop when the budget ends", "Ads take months to appear"], answer: 2, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 154, q: "According to the notes, display advertising uses pictures, banners, and:", options: ["phone calls", "videos", "handwritten letters", "printed newspapers only"], answer: 1, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 155, q: "According to the notes, display advertising is mostly used for:", options: ["promotion and brand awareness, not instant sales", "instant sales only, never awareness", "legal compliance filings", "internal employee communication"], answer: 0, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 156, q: "According to the notes, which of the following is a disadvantage of display advertising?", options: ["It is more expensive than SEM in all cases", "It is not visually attractive", "Click rates are usually low", "It cannot reach a large audience"], answer: 2, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 157, q: "According to the notes, SEM is described as best for:", options: ["sales, since people are already searching", "internal communication", "long-term brand awareness only", "printing physical materials"], answer: 0, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 158, q: "According to the notes, display advertising is described as best for:", options: ["legal documentation", "brand awareness", "instant, guaranteed sales", "payroll processing"], answer: 1, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 159, q: "According to the notes, paid advertising performance is measured using clicks, views, cost, and:", options: ["server temperature", "office square footage", "employee count", "sales"], answer: 3, cat: "Paid Advertising (SEM and Display Advertising)" },
+            { id: 160, q: "According to the notes, which of the following is listed as an importance of paid advertising?", options: ["It guarantees zero cost", "It replaces the need for a product", "It eliminates the need for any strategy", "It grows businesses fast"], answer: 3, cat: "Paid Advertising (SEM and Display Advertising)" },
+
+            { id: 161, q: "According to the notes, A/B testing compares two versions to see which performs better based on:", options: ["specific metrics", "random guessing", "company tradition", "employee opinions only"], answer: 0, cat: "A/B Testing" },
+            { id: 162, q: "According to the notes, Version A is described as:", options: ["a backup server", "an irrelevant test group", "the control, or the original version", "the variation, or the changed version"], answer: 2, cat: "A/B Testing" },
+            { id: 163, q: "According to the notes, Version B is described as:", options: ["the control, or the original version", "the variation, or the changed version", "a duplicate of Version A with no changes", "a discontinued version"], answer: 1, cat: "A/B Testing" },
+            { id: 164, q: "According to the notes, in A/B testing, users are split into two groups:", options: ["randomly", "based on their favorite color", "based on alphabetical order of their name", "based on their job title"], answer: 0, cat: "A/B Testing" },
+            { id: 165, q: "According to the notes, which of the following is listed as an element that can be A/B tested?", options: ["A company's tax records", "Office furniture", "Call-to-action buttons", "Employee salaries"], answer: 2, cat: "A/B Testing" },
+            { id: 166, q: "According to the notes, what is the first step in the A/B testing process?", options: ["Analyze results and implement the better version", "Design two versions", "Split the audience randomly", "Identify the objective of the test"], answer: 3, cat: "A/B Testing" },
+            { id: 167, q: "According to the notes, in the button example given, if Version B ('Shop Now') receives more clicks than Version A ('Buy Now'), this means:", options: ["The test must be discarded", "Both versions performed identically", "Version A is more effective", "Version B is more effective"], answer: 3, cat: "A/B Testing" },
+            { id: 168, q: "According to the notes, which of the following is listed as a benefit of A/B testing?", options: ["Removes the need for any data", "Increases guesswork", "Guarantees a 100% conversion rate", "Reduces guesswork"], answer: 3, cat: "A/B Testing" },
+            { id: 169, q: "According to the notes, which of the following is listed as a limitation of A/B testing?", options: ["It cannot be used on websites", "It works instantly with zero traffic", "It only works for email campaigns", "It needs enough traffic and time"], answer: 3, cat: "A/B Testing" },
+            { id: 170, q: "According to the notes, results of an A/B test can be affected by:", options: ["the size of the marketing team only", "the color of the testing software", "external factors outside the test", "nothing other than the test itself"], answer: 2, cat: "A/B Testing" },
+
+            { id: 171, q: "According to the notes, in digital marketing, people tend to trust:", options: ["individuals more than faceless brands", "only government institutions", "faceless brands more than individuals", "neither individuals nor brands"], answer: 0, cat: "Personal Branding Online" },
+            { id: 172, q: "According to the notes, personal branding is described as the strategic process of defining and promoting:", options: ["a competitor's weaknesses", "a product's manufacturing process", "a company's tax strategy", "what makes you unique"], answer: 3, cat: "Personal Branding Online" },
+            { id: 173, q: "According to the notes, personal branding highlights skills, values, expertise, and:", options: ["server uptime", "shareholder equity", "office location", "personality"], answer: 3, cat: "Personal Branding Online" },
+            { id: 174, q: "According to the notes, personal branding differs from corporate branding because personal branding focuses on individuals and:", options: ["product manufacturing", "shareholder reports", "emotional connections", "structured corporate messaging only"], answer: 2, cat: "Personal Branding Online" },
+            { id: 175, q: "According to the notes, which platform is described for professional branding?", options: ["Pinterest", "LinkedIn", "TikTok", "Snapchat"], answer: 1, cat: "Personal Branding Online" },
+            { id: 176, q: "According to the notes, which platform is described for thought leadership?", options: ["Email", "Twitter (X)", "Print media", "Radio"], answer: 1, cat: "Personal Branding Online" },
+            { id: 177, q: "According to the notes, social media acts as a professional's:", options: ["legal contract", "employment termination notice", "tax return", "digital resume (CV)"], answer: 3, cat: "Personal Branding Online" },
+            { id: 178, q: "According to the notes, which of the following is listed as a common personal branding mistake?", options: ["Audience engagement", "Overpromotion", "Consistency across platforms", "Authenticity"], answer: 1, cat: "Personal Branding Online" },
+            { id: 179, q: "According to the notes, personal brand success can be measured by engagement rates, profile views, network growth, and:", options: ["employee headcount", "office rent", "feedback", "tax deductions"], answer: 2, cat: "Personal Branding Online" },
+            { id: 180, q: "According to the notes, which of the following is listed as a career benefit of personal branding?", options: ["Guarantees a promotion", "Eliminates the need to work", "Improves employability", "Removes all competition"], answer: 2, cat: "Personal Branding Online" },
+            { id: 181, q: "According to the notes, which of the following is listed as an ethical consideration for personal branding?", options: ["Copy other people's content directly", "Respect privacy", "Avoid all audience interaction", "Post as often as possible with no filter"], answer: 1, cat: "Personal Branding Online" },
+            { id: 182, q: "According to the notes, personal branding is described as:", options: ["irrelevant to career growth", "only useful for celebrities", "a long-term digital investment", "a short-term marketing trick"], answer: 2, cat: "Personal Branding Online" },
+
+            { id: 183, q: "According to the notes, digital ethics is defined as the moral principles that guide:", options: ["employee dress codes", "office seating arrangements", "product pricing only", "behavior in the digital world"], answer: 3, cat: "Digital Ethics and Security" },
+            { id: 184, q: "According to the notes, which of the following is listed as a key principle of digital ethics?", options: ["Ignore intellectual property rights", "Maximize data collection with no limits", "Hide data usage from users", "Protect user privacy"], answer: 3, cat: "Digital Ethics and Security" },
+            { id: 185, q: "According to the notes, which of the following is listed as an ethical issue in the digital world?", options: ["Too much data encryption", "Misuse of personal data", "Overly strong passwords", "Excessive transparency"], answer: 1, cat: "Digital Ethics and Security" },
+            { id: 186, q: "According to the notes, digital security is defined as protecting systems, networks, and data from:", options: ["cyber threats", "positive reviews", "marketing budgets", "customer feedback"], answer: 0, cat: "Digital Ethics and Security" },
+            { id: 187, q: "According to the notes, 'integrity' in digital security means:", options: ["data is deleted automatically", "data is correct and unchanged", "data is available at all times", "only the right people see the data"], answer: 1, cat: "Digital Ethics and Security" },
+            { id: 188, q: "According to the notes, 'ransomware' is described as software that:", options: ["locks your data and demands money", "automatically backs up your files for free", "speeds up your computer", "blocks spam emails only"], answer: 0, cat: "Digital Ethics and Security" },
+            { id: 189, q: "According to the notes, 'phishing' is described as:", options: ["a legitimate customer survey", "a secure payment method", "fake messages that steal your information", "a type of antivirus software"], answer: 2, cat: "Digital Ethics and Security" },
+            { id: 190, q: "According to the notes, companies must follow data protection regulations such as:", options: ["PPC", "CTR", "GDPR", "SEO"], answer: 2, cat: "Digital Ethics and Security" },
+            { id: 191, q: "According to the notes, which of the following is listed as a security best practice?", options: ["Share passwords openly", "Ignore employee training", "Disable all software updates", "Use encryption"], answer: 3, cat: "Digital Ethics and Security" },
+            { id: 192, q: "According to the notes, digital security ensures confidentiality, availability, and:", options: ["creativity", "integrity", "profitability", "popularity"], answer: 1, cat: "Digital Ethics and Security" },
+
+            { id: 193, q: "According to the notes, a campaign is defined as a planned series of marketing activities aimed at:", options: ["closing down a business", "promoting a product, service, or idea", "reducing employee headcount", "avoiding all customer contact"], answer: 1, cat: "Collaborative Campaign Planning" },
+            { id: 194, q: "According to the notes, collaborative campaign planning is described as:", options: ["one person working entirely alone", "outsourcing all work to competitors", "teamwork where different departments work together", "avoiding any planning at all"], answer: 2, cat: "Collaborative Campaign Planning" },
+            { id: 195, q: "According to the notes, which of the following is listed as a benefit of collaboration?", options: ["Removes all accountability", "Increases miscommunication", "Guarantees project failure", "Brings diverse ideas"], answer: 3, cat: "Collaborative Campaign Planning" },
+            { id: 196, q: "According to the notes, which of the following is listed as a stakeholder in campaign planning?", options: ["Random members of the public", "Content creators", "Anonymous online users", "Unrelated third-party competitors"], answer: 1, cat: "Collaborative Campaign Planning" },
+            { id: 197, q: "According to the notes, what is the first step in the campaign planning process?", options: ["Assign roles", "Set goals", "Set timelines", "Create content"], answer: 1, cat: "Collaborative Campaign Planning" },
+            { id: 198, q: "According to the notes, which of the following is listed as a collaboration tool?", options: ["SEMrush", "Ubersuggest", "Canva", "Trello"], answer: 3, cat: "Collaborative Campaign Planning" },
+            { id: 199, q: "According to the notes, which of the following is listed as a challenge of collaboration?", options: ["Too much clarity", "Unlimited time availability", "Excessive coordination", "Communication gaps"], answer: 3, cat: "Collaborative Campaign Planning" },
+            { id: 200, q: "According to the notes, digital ethics, security, and collaborative campaign planning are both described as:", options: ["outdated concepts", "irrelevant to modern business", "optional add-ons with no real value", "essential in modern digital business"], answer: 3, cat: "Collaborative Campaign Planning" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
