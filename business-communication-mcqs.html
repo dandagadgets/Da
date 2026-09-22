@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Communication Mastery - 200 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-comments text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">BizCommBankMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">200 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/200</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-people-arrows text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Business Communication with 200 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    Comprehensive practice covering the Communication Process, Importance & Clarity, Verbal/Oral/Written/Email Modes, Barriers, Organizational Communication Flow, Non-Verbal & Visual Communication, Feedback & Listening, Written Documents, and Channel Selection & Formality.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 200)</option>
+                            <option value="1-25">1. Communication Process & Definitions (1 - 25)</option>
+                            <option value="26-41">2. Importance, Clarity & Effectiveness (26 - 41)</option>
+                            <option value="42-54">3. Modes: Verbal, Oral, Written & Email (42 - 54)</option>
+                            <option value="55-85">4. Barriers to Communication (55 - 85)</option>
+                            <option value="86-123">5. Organizational Communication Flow (86 - 123)</option>
+                            <option value="124-144">6. Non-Verbal & Visual Communication (124 - 144)</option>
+                            <option value="145-163">7. Feedback & Listening (145 - 163)</option>
+                            <option value="164-177">8. Written Communication & Documents (164 - 177)</option>
+                            <option value="178-200">9. Channels, Formality & Effectiveness (178 - 200)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 200</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-200)" min="1" max="200" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Communication</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 200</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/200</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Business Communication Quiz • 200 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (200 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "Communication means:", options: ["Writing reports only", "Sharing ideas and information", "Giving punishment", "Controlling employees"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 2, q: "Which of the following is a component of communication?", options: ["Production", "Feedback", "Profit", "Market share"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 3, q: "The person who receives and interprets the message is called:", options: ["Encoder", "Reporter", "Sender", "Receiver"], answer: 3, cat: "Communication Process & Definitions" },
+            { id: 4, q: "A poor internet connection during a Zoom meeting is an example of:", options: ["Barrier", "Feedback", "Decoding", "Message"], answer: 0, cat: "Communication Process & Definitions" },
+            { id: 5, q: "Business communication is mainly used to:", options: ["Delay decisions", "Achieve business goals", "Entertain staff", "Avoid reporting"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 6, q: "The process of converting ideas into words or symbols is called:", options: ["Encoding", "Decoding", "Reporting", "Feedback"], answer: 0, cat: "Communication Process & Definitions" },
+            { id: 7, q: "Which type of communication helps in record-keeping?", options: ["Formal", "Grapevine", "Informal", "Verbal"], answer: 0, cat: "Communication Process & Definitions" },
+            { id: 8, q: "The receiver’s response to a message is called:", options: ["Channel", "Noise", "Encoding", "Feedback"], answer: 3, cat: "Communication Process & Definitions" },
+            { id: 9, q: "When employees understand a message, this process is called:", options: ["Reporting", "Decoding", "Transmitting", "Encoding"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 10, q: "Which of the following is NOT part of the communication process?", options: ["Channel", "Competition", "Feedback", "Sender"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 11, q: "Interactive communication means:", options: ["Written communication only", "Communication without purpose", "Two-way process with feedback", "One-way process"], answer: 2, cat: "Communication Process & Definitions" },
+            { id: 12, q: "Clear communication helps to:", options: ["Delay projects", "Reduce efficiency", "Increase misunderstandings", "Improve coordination"], answer: 3, cat: "Communication Process & Definitions" },
+            { id: 13, q: "Communication connects people, ideas, and:", options: ["Profits", "Products", "Actions", "Machines"], answer: 2, cat: "Communication Process & Definitions" },
+            { id: 14, q: "Which of the following is NOT a type of communication based on mode?", options: ["Financial", "Non-verbal", "Verbal", "Visual"], answer: 0, cat: "Communication Process & Definitions" },
+            { id: 15, q: "Communication between employees at the same level is called:", options: ["External", "Horizontal", "Vertical", "Diagonal"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 16, q: "Which type of communication adds emotion and meaning to verbal messages?", options: ["Visual communication", "Non-verbal communication", "Listening communication", "Formal communication"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 17, q: "Which type of communication helps catch attention quickly?", options: ["Diagonal", "Informal", "Verbal", "Visual"], answer: 3, cat: "Communication Process & Definitions" },
+            { id: 18, q: "When a message changes meaning after passing through many people, it is a:", options: ["Perceptual barrier", "Physical barrier", "Language barrier", "Organizational barrier"], answer: 3, cat: "Communication Process & Definitions" },
+            { id: 19, q: "Which communication is used for emergency instructions?", options: ["Written", "Verbal", "Visual", "Informal"], answer: 1, cat: "Communication Process & Definitions" },
+            { id: 20, q: "Which is NOT part of effective business communication?", options: ["Distortion", "Feedback", "Purpose", "Clarity"], answer: 0, cat: "Communication Process & Definitions" },
+            { id: 21, q: "Face-to-face meetings are preferred for:", options: ["Written approvals", "Mass notifications", "Sensitive discussions", "Routine memos"], answer: 2, cat: "Communication Process & Definitions" },
+            { id: 22, q: "Which of the following improves understanding in communication?", options: ["Noise", "Delay", "Misinterpretation", "Feedback"], answer: 3, cat: "Communication Process & Definitions" },
+            { id: 23, q: "Face-to-face communication is effective for:", options: ["Casual talks", "Routine memos", "Sensitive issues", "Mass notifications"], answer: 2, cat: "Communication Process & Definitions" },
+            { id: 24, q: "Face-to-face communication allows:", options: ["Immediate feedback", "Noise elimination", "Documentation", "Written record"], answer: 0, cat: "Communication Process & Definitions" },
+            { id: 25, q: "Face-to-face communication allows:", options: ["Immediate feedback", "Permanent record", "Slow response", "Documentation only"], answer: 0, cat: "Communication Process & Definitions" },
+
+            { id: 26, q: "Which of the following best shows effective communication?", options: ["Ignoring deadlines", "Providing clear details and format", "Avoiding feedback", "Giving incomplete instructions"], answer: 1, cat: "Importance, Clarity & Effectiveness" },
+            { id: 27, q: "Business communication is described as purposeful because it:", options: ["Has a clear objective", "Is always informal", "Happens accidentally", "Avoids planning"], answer: 0, cat: "Importance, Clarity & Effectiveness" },
+            { id: 28, q: "Lack of coordination between departments usually results in:", options: ["Duplication of work", "Better teamwork", "Increased profits", "Higher productivity"], answer: 0, cat: "Importance, Clarity & Effectiveness" },
+            { id: 29, q: "Communication is called the lifeblood of business because it:", options: ["Reduces planning", "Keeps activities running smoothly", "Stops operations", "Creates conflict"], answer: 1, cat: "Importance, Clarity & Effectiveness" },
+            { id: 30, q: "Which of the following supports decision-making in business?", options: ["Emotions", "Gossip", "Rumors", "Accurate information"], answer: 3, cat: "Importance, Clarity & Effectiveness" },
+            { id: 31, q: "Effective communication improves:", options: ["Coordination", "Misunderstandings", "Conflicts", "Workload"], answer: 0, cat: "Importance, Clarity & Effectiveness" },
+            { id: 32, q: "Communication clarity is affected by:", options: ["Clear visuals", "Proper feedback", "Active listening", "Ambiguous language"], answer: 3, cat: "Importance, Clarity & Effectiveness" },
+            { id: 33, q: "Communication in organizations is important for:", options: ["Delays", "Coordination and efficiency", "Rumors", "Conflicts"], answer: 1, cat: "Importance, Clarity & Effectiveness" },
+            { id: 34, q: "Communication clarity depends on:", options: ["Clear language", "Misinterpretation", "Noise", "Ambiguous language"], answer: 0, cat: "Importance, Clarity & Effectiveness" },
+            { id: 35, q: "Proper communication leads to:", options: ["Rumors", "Improved coordination", "Conflicts", "Noise"], answer: 1, cat: "Importance, Clarity & Effectiveness" },
+            { id: 36, q: "Communication effectiveness depends on:", options: ["Clear purpose", "Misinterpretation", "Noise", "Barrier"], answer: 0, cat: "Importance, Clarity & Effectiveness" },
+            { id: 37, q: "Communication is called a two-way process because:", options: ["Only sender speaks", "Only receiver listens", "Feedback is involved", "Message is ignored"], answer: 2, cat: "Importance, Clarity & Effectiveness" },
+            { id: 38, q: "Effective communication reduces:", options: ["Coordination", "Feedback", "Noise", "Conflicts"], answer: 3, cat: "Importance, Clarity & Effectiveness" },
+            { id: 39, q: "Effective communication ensures:", options: ["Coordination and clarity", "Misunderstanding", "Noise", "Rumors"], answer: 0, cat: "Importance, Clarity & Effectiveness" },
+            { id: 40, q: "Communication clarity depends on:", options: ["Rumors", "Noise", "Clear language", "Barrier"], answer: 2, cat: "Importance, Clarity & Effectiveness" },
+            { id: 41, q: "Effective communication reduces:", options: ["Conflicts", "Documentation", "Feedback", "Coordination"], answer: 0, cat: "Importance, Clarity & Effectiveness" },
+
+            { id: 42, q: "Verbal communication includes:", options: ["Spoken and written words", "Facial expressions", "Charts and diagrams", "Gestures only"], answer: 0, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 43, q: "Sending emails to clients is an example of:", options: ["External channel", "Internal channel", "Horizontal channel", "Diagonal channel"], answer: 0, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 44, q: "Verbal communication can be:", options: ["Spoken only", "Spoken or written", "Written only", "Visual only"], answer: 1, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 45, q: "Written communication is preferred when:", options: ["Casual talks", "Face-to-face is possible", "Informal chatting", "Record is required"], answer: 3, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 46, q: "Emailing instructions to staff is:", options: ["Grapevine", "Downward communication", "Upward communication", "Horizontal communication"], answer: 1, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 47, q: "Written communication is preferred for:", options: ["Immediate instructions", "Sensitive discussions", "Record keeping", "Casual talks"], answer: 2, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 48, q: "Email communication is:", options: ["Slow", "Visual only", "Written and fast", "Oral only"], answer: 2, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 49, q: "Email is preferred for:", options: ["Quick written communication", "Oral discussions", "Face-to-face talks", "Body language"], answer: 0, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 50, q: "Oral communication is preferred for:", options: ["Immediate feedback", "Letters", "Documentation", "Permanent records"], answer: 0, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 51, q: "Written communication is preferred for:", options: ["Record keeping", "Gossip", "Face-to-face talks", "Urgent discussions"], answer: 0, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 52, q: "Email communication is:", options: ["Only visual", "Fast and written", "Slow", "Only oral"], answer: 1, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 53, q: "Written communication is:", options: ["Permanent and formal", "Casual only", "Visual only", "Oral"], answer: 0, cat: "Modes: Verbal, Oral, Written & Email" },
+            { id: 54, q: "Oral communication is:", options: ["Visual only", "Immediate and flexible", "Only written", "Permanent"], answer: 1, cat: "Modes: Verbal, Oral, Written & Email" },
+
+            { id: 55, q: "Which of the following is a barrier to communication?", options: ["Clear language", "Timely feedback", "Proper channel", "Difficult vocabulary"], answer: 3, cat: "Barriers to Communication" },
+            { id: 56, q: "A communication barrier is anything that:", options: ["Improves understanding", "Blocks or distorts a message", "Speeds up communication", "Encourages feedback"], answer: 1, cat: "Barriers to Communication" },
+            { id: 57, q: "Noise in a classroom that makes it hard to hear is a:", options: ["Physical barrier", "Cultural barrier", "Psychological barrier", "Perceptual barrier"], answer: 0, cat: "Barriers to Communication" },
+            { id: 58, q: "Feeling angry and misinterpreting a message is an example of:", options: ["Language barrier", "Physiological barrier", "Psychological barrier", "Organizational barrier"], answer: 2, cat: "Barriers to Communication" },
+            { id: 59, q: "Using difficult technical words that others cannot understand is a:", options: ["Cultural barrier", "Perceptual barrier", "Language barrier", "Physical barrier"], answer: 2, cat: "Barriers to Communication" },
+            { id: 60, q: "Which of the following is NOT a barrier to communication?", options: ["Noise", "Cultural differences", "Language problems", "Feedback"], answer: 3, cat: "Barriers to Communication" },
+            { id: 61, q: "Gossip among employees is an example of:", options: ["Informal communication", "Formal communication", "External communication", "Visual communication"], answer: 0, cat: "Barriers to Communication" },
+            { id: 62, q: "Messages in a meeting can be distorted due to:", options: ["Formal channels", "Noise", "Clear language", "Proper feedback"], answer: 1, cat: "Barriers to Communication" },
+            { id: 63, q: "A cultural barrier can occur when:", options: ["Feedback is given", "Communication is clear", "Different traditions affect understanding", "Same language is used"], answer: 2, cat: "Barriers to Communication" },
+            { id: 64, q: "When a manager misinterprets employee suggestions due to stress, it is:", options: ["Language barrier", "Psychological barrier", "Cultural barrier", "Physical barrier"], answer: 1, cat: "Barriers to Communication" },
+            { id: 65, q: "Misunderstanding a message due to slang is an example of:", options: ["Physical barrier", "Organizational barrier", "Language barrier", "Cultural barrier"], answer: 2, cat: "Barriers to Communication" },
+            { id: 66, q: "A noisy factory floor is an example of:", options: ["Language barrier", "Cultural barrier", "Psychological barrier", "Physical barrier"], answer: 3, cat: "Barriers to Communication" },
+            { id: 67, q: "Which barrier is caused by physical distance?", options: ["Cultural", "Physical", "Language", "Psychological"], answer: 1, cat: "Barriers to Communication" },
+            { id: 68, q: "A manager ignoring employee feedback is an example of:", options: ["Encoding", "Feedback", "Barrier", "Decoding"], answer: 2, cat: "Barriers to Communication" },
+            { id: 69, q: "Noise in communication refers to:", options: ["Sound only", "Feedback", "Body language", "Anything that distorts message"], answer: 3, cat: "Barriers to Communication" },
+            { id: 70, q: "Which is NOT a communication barrier?", options: ["Noise", "Language", "Feedback", "Cultural difference"], answer: 2, cat: "Barriers to Communication" },
+            { id: 71, q: "Which barrier is caused by different cultural practices?", options: ["Psychological", "Language", "Cultural", "Physical"], answer: 2, cat: "Barriers to Communication" },
+            { id: 72, q: "Misinterpretation due to stress is an example of:", options: ["Psychological barrier", "Cultural barrier", "Language barrier", "Physical barrier"], answer: 0, cat: "Barriers to Communication" },
+            { id: 73, q: "Physical barriers include:", options: ["Noise, distance, and environment", "Cultural practices", "Psychological issues", "Language differences"], answer: 0, cat: "Barriers to Communication" },
+            { id: 74, q: "Psychological barriers include:", options: ["Distance", "Cultural differences", "Noise", "Stress and emotions"], answer: 3, cat: "Barriers to Communication" },
+            { id: 75, q: "Language barriers occur due to:", options: ["Stress", "Accents, jargon, or slang", "Noise", "Distance"], answer: 1, cat: "Barriers to Communication" },
+            { id: 76, q: "Cultural barriers occur due to:", options: ["Stress", "Noise", "Traditions, beliefs, and values", "Language differences"], answer: 2, cat: "Barriers to Communication" },
+            { id: 77, q: "Noise can cause:", options: ["Proper feedback", "Coordination", "Misunderstanding", "Clear communication"], answer: 2, cat: "Barriers to Communication" },
+            { id: 78, q: "A manager ignoring suggestions is an example of:", options: ["Barrier", "Feedback", "Visual aid", "Effective communication"], answer: 0, cat: "Barriers to Communication" },
+            { id: 79, q: "Communication barriers can be:", options: ["Physical, psychological, language, cultural", "Only visual", "Only verbal", "Only written"], answer: 0, cat: "Barriers to Communication" },
+            { id: 80, q: "Physical barriers include:", options: ["Culture", "Stress", "Noise, distance, environment", "Language"], answer: 2, cat: "Barriers to Communication" },
+            { id: 81, q: "Psychological barriers include:", options: ["Noise", "Distance", "Stress and emotions", "Language"], answer: 2, cat: "Barriers to Communication" },
+            { id: 82, q: "Cultural barriers include:", options: ["Noise", "Traditions and beliefs", "Distance", "Stress"], answer: 1, cat: "Barriers to Communication" },
+            { id: 83, q: "Language barriers include:", options: ["Culture", "Stress", "Accents and jargon", "Distance"], answer: 2, cat: "Barriers to Communication" },
+            { id: 84, q: "Noise in communication includes:", options: ["Proper channel", "Feedback", "Clear language", "Anything that distorts message"], answer: 3, cat: "Barriers to Communication" },
+            { id: 85, q: "Communication barriers should be:", options: ["Used for gossip", "Encouraged", "Identified and overcome", "Ignored"], answer: 2, cat: "Barriers to Communication" },
+
+            { id: 86, q: "Communication within the organization is known as:", options: ["Public communication", "Internal communication", "External communication", "Mass communication"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 87, q: "Communication that takes place with customers and suppliers is called:", options: ["Internal communication", "Informal communication", "Vertical communication", "External communication"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 88, q: "Which is an example of internal communication?", options: ["Advertising to customers", "Public press conference", "Email between manager and employee", "Talking to government agency"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 89, q: "When a manager assigns tasks to workers, it is:", options: ["Upward communication", "External communication", "Downward communication", "Horizontal communication"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 90, q: "Diagonal communication connects:", options: ["Different departments and levels", "Media agencies", "Customers only", "Same department only"], answer: 0, cat: "Organizational Communication Flow" },
+            { id: 91, q: "Which channel does NOT follow hierarchy?", options: ["External channel", "Informal channel", "Formal channel", "Vertical channel"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 92, q: "The sales head discussing plans with the marketing head is an example of:", options: ["External channel", "Vertical channel", "Diagonal channel", "Horizontal channel"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 93, q: "An email from HR to all employees is an example of:", options: ["Upward", "Horizontal", "Diagonal", "Downward"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 94, q: "A suggestion box is used for:", options: ["Diagonal communication", "Upward communication", "External communication", "Horizontal communication"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 95, q: "A manager calling an employee to give instructions is:", options: ["Upward", "Downward", "External", "Horizontal"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 96, q: "The grapevine is a form of:", options: ["Visual communication", "Formal communication", "Written communication", "Informal communication"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 97, q: "Which is an example of downward communication?", options: ["Colleague talking to colleague", "CEO’s message to staff", "Client request", "Employee suggestion to manager"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 98, q: "Which is an example of upward communication?", options: ["HR sending instructions", "Employee submitting report", "Public announcement", "Manager assigning tasks"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 99, q: "External communication is mainly with:", options: ["Managers only", "Customers, suppliers, and stakeholders", "Internal teams", "Employees"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 100, q: "Downward communication flows from:", options: ["Employees to top management", "Same level employees", "Customers to company", "Top management to employees"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 101, q: "Horizontal communication flows:", options: ["Upward", "Downward", "Across same level", "To external parties"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 102, q: "Diagonal communication flows:", options: ["Only downward", "Across hierarchy and departments", "Only external", "Only upward"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 103, q: "Grapevine communication is:", options: ["External", "Informal", "Formal", "Visual"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 104, q: "Upward communication is sent by:", options: ["External parties", "CEO", "Manager", "Employees"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 105, q: "Downward communication is sent by:", options: ["Employees", "Managers", "Suppliers", "Clients"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 106, q: "Horizontal communication is used for:", options: ["External messages", "Managerial instructions", "Coordination among peers", "Feedback to CEO"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 107, q: "Diagonal communication connects:", options: ["Same level employees only", "External clients", "Different levels and departments", "Top management only"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 108, q: "An employee complaining about work to the manager is:", options: ["External", "Upward", "Downward", "Horizontal"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 109, q: "A suggestion box allows:", options: ["Upward communication", "Downward communication", "External communication", "Horizontal communication"], answer: 0, cat: "Organizational Communication Flow" },
+            { id: 110, q: "Horizontal communication is for:", options: ["Clients", "Top management", "Subordinates", "Peers"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 111, q: "Upward communication flows:", options: ["External to internal", "Top to bottom", "Peer to peer", "Bottom to top"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 112, q: "Downward communication flows:", options: ["External only", "Top to bottom", "Across peers", "Bottom to top"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 113, q: "Diagonal communication flows:", options: ["Only to peers", "Across levels and departments", "Only to top management", "Only external"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 114, q: "Grapevine communication is fast but:", options: ["Accurate", "Documented", "Formal", "Unreliable"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 115, q: "Upward communication helps:", options: ["Rumors", "Noise increase", "Conflict", "Employee suggestions reach management"], answer: 3, cat: "Organizational Communication Flow" },
+            { id: 116, q: "Downward communication helps:", options: ["Misunderstandings", "Grapevine", "Instructions and policies reach subordinates", "Rumors"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 117, q: "Horizontal communication helps:", options: ["Management only", "Noise generation", "Coordination among peers", "Rumors"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 118, q: "Diagonal communication connects:", options: ["External parties", "Top management only", "Different levels and departments", "Peers only"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 119, q: "Grapevine communication spreads:", options: ["Letters", "Official orders", "Rumors", "Memos"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 120, q: "Upward communication examples include:", options: ["Suggestions and complaints", "Notices", "Circulars", "Orders"], answer: 0, cat: "Organizational Communication Flow" },
+            { id: 121, q: "Downward communication examples include:", options: ["Rumors", "Feedback", "Instructions and policies", "Suggestions"], answer: 2, cat: "Organizational Communication Flow" },
+            { id: 122, q: "Horizontal communication examples include:", options: ["Upward feedback", "Peer coordination", "Managerial orders", "External communication"], answer: 1, cat: "Organizational Communication Flow" },
+            { id: 123, q: "Diagonal communication examples include:", options: ["Gossip", "Cross-departmental coordination", "Top management only", "Peer-only talk"], answer: 1, cat: "Organizational Communication Flow" },
+
+            { id: 124, q: "Smiling to show agreement is an example of:", options: ["Formal communication", "Verbal communication", "Listening communication", "Non-verbal communication"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 125, q: "Visual communication mainly uses:", options: ["Written letters only", "Body language", "Images and graphics", "Phone calls"], answer: 2, cat: "Non-Verbal & Visual Communication" },
+            { id: 126, q: "A graph showing company growth is an example of:", options: ["Visual communication", "Listening communication", "Upward communication", "Informal communication"], answer: 0, cat: "Non-Verbal & Visual Communication" },
+            { id: 127, q: "Eye contact being respectful in one country but rude in another shows:", options: ["Organizational barrier", "Physiological barrier", "Psychological barrier", "Cultural barrier"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 128, q: "Non-verbal communication includes:", options: ["Emails", "Reports", "Letters", "Gestures"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 129, q: "Body language is part of:", options: ["Non-verbal communication", "Verbal communication", "Visual communication", "Written communication"], answer: 0, cat: "Non-Verbal & Visual Communication" },
+            { id: 130, q: "An advertisement on TV is an example of:", options: ["Horizontal communication", "Downward communication", "Internal communication", "External communication"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 131, q: "Communication through charts and graphs is:", options: ["Informal", "Grapevine", "Verbal", "Visual"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 132, q: "Non-verbal cues include:", options: ["All of the above", "Tone of voice", "Facial expressions", "Body language"], answer: 0, cat: "Non-Verbal & Visual Communication" },
+            { id: 133, q: "Visual aids are effective because they:", options: ["Delay feedback", "Replace communication", "Distract audience", "Make ideas clearer"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 134, q: "Non-verbal communication cannot:", options: ["Reinforce verbal message", "Show emotions", "Replace written instructions completely", "Convey gestures"], answer: 2, cat: "Non-Verbal & Visual Communication" },
+            { id: 135, q: "Which of these is non-verbal?", options: ["Phone call", "Memo", "Email", "Hand gestures"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 136, q: "Visual aids help because they:", options: ["Reduce feedback", "Distract audience", "Clarify ideas", "Replace verbal communication entirely"], answer: 2, cat: "Non-Verbal & Visual Communication" },
+            { id: 137, q: "Body language is part of:", options: ["Non-verbal communication", "Email", "Written communication", "Verbal communication"], answer: 0, cat: "Non-Verbal & Visual Communication" },
+            { id: 138, q: "Visual communication includes:", options: ["Memos", "Letters", "Charts, graphs, signs", "Reports"], answer: 2, cat: "Non-Verbal & Visual Communication" },
+            { id: 139, q: "Non-verbal communication includes:", options: ["Gestures and expressions", "Memos", "Letters", "Emails"], answer: 0, cat: "Non-Verbal & Visual Communication" },
+            { id: 140, q: "Charts and graphs are:", options: ["Written", "Non-verbal", "Verbal", "Grapevine"], answer: 1, cat: "Non-Verbal & Visual Communication" },
+            { id: 141, q: "Visual communication is effective for:", options: ["Gossip", "Casual talks", "Explaining data clearly", "Rumors"], answer: 2, cat: "Non-Verbal & Visual Communication" },
+            { id: 142, q: "Body language conveys:", options: ["Feelings and attitude", "Letters", "Written message", "Only words"], answer: 0, cat: "Non-Verbal & Visual Communication" },
+            { id: 143, q: "Visual communication includes:", options: ["Emails only", "Letters only", "Oral talks", "Charts, graphs, and signs"], answer: 3, cat: "Non-Verbal & Visual Communication" },
+            { id: 144, q: "Non-verbal communication includes:", options: ["Emails only", "Letters only", "Gestures, expressions, posture", "Memos"], answer: 2, cat: "Non-Verbal & Visual Communication" },
+
+            { id: 145, q: "The main purpose of feedback is to:", options: ["Replace the message", "Confirm understanding", "Confuse the sender", "Stop communication"], answer: 1, cat: "Feedback & Listening" },
+            { id: 146, q: "Listening communication requires:", options: ["Speaking loudly", "Active attention", "Writing reports", "Interrupting others"], answer: 1, cat: "Feedback & Listening" },
+            { id: 147, q: "The main purpose of listening communication is to:", options: ["Reduce interaction", "Dominate discussion", "Avoid feedback", "Build understanding and connection"], answer: 3, cat: "Feedback & Listening" },
+            { id: 148, q: "Feedback ensures that:", options: ["Message is distorted", "Message is understood", "Message is ignored", "Sender is confused"], answer: 1, cat: "Feedback & Listening" },
+            { id: 149, q: "Effective listening requires:", options: ["Interrupting frequently", "Talking more", "Active attention and feedback", "Ignoring the speaker"], answer: 2, cat: "Feedback & Listening" },
+            { id: 150, q: "Listening carefully and asking questions improves:", options: ["Workload", "Confusion", "Miscommunication", "Feedback and understanding"], answer: 3, cat: "Feedback & Listening" },
+            { id: 151, q: "When a message is clear, feedback is:", options: ["Still important", "Useless", "Distorted", "Not required"], answer: 0, cat: "Feedback & Listening" },
+            { id: 152, q: "Feedback can be:", options: ["Verbal", "Non-verbal", "All of the above", "Written"], answer: 2, cat: "Feedback & Listening" },
+            { id: 153, q: "Feedback ensures that the:", options: ["Message is understood correctly", "Noise increases", "Sender avoids responsibilities", "Receiver is confused"], answer: 0, cat: "Feedback & Listening" },
+            { id: 154, q: "Listening carefully is part of:", options: ["Effective communication", "Reading", "Writing", "Reporting"], answer: 0, cat: "Feedback & Listening" },
+            { id: 155, q: "Feedback is important because it:", options: ["Creates noise", "Ensures message is understood", "Delays communication", "Confuses the sender"], answer: 1, cat: "Feedback & Listening" },
+            { id: 156, q: "Listening skills improve:", options: ["Message clarity", "Misunderstanding", "Message distortion", "Noise"], answer: 0, cat: "Feedback & Listening" },
+            { id: 157, q: "A good listener is:", options: ["Passive", "Silent only", "Active", "Distracted"], answer: 2, cat: "Feedback & Listening" },
+            { id: 158, q: "Listening carefully helps in:", options: ["Rumors", "Delays", "Understanding", "Misinterpretation"], answer: 2, cat: "Feedback & Listening" },
+            { id: 159, q: "Feedback confirms:", options: ["Noise created", "Rumor spread", "Communication stopped", "Message received"], answer: 3, cat: "Feedback & Listening" },
+            { id: 160, q: "Feedback helps in:", options: ["Rumors", "Clarifying doubts", "Increasing barriers", "Misinterpretation"], answer: 1, cat: "Feedback & Listening" },
+            { id: 161, q: "Listening carefully improves:", options: ["Misinterpretation", "Understanding", "Noise", "Rumors"], answer: 1, cat: "Feedback & Listening" },
+            { id: 162, q: "Feedback is:", options: ["Response from receiver", "Barrier", "Gossip", "Noise"], answer: 0, cat: "Feedback & Listening" },
+            { id: 163, q: "Feedback loop ensures:", options: ["Barrier created", "Noise only", "Rumor spread", "Message understood"], answer: 3, cat: "Feedback & Listening" },
+
+            { id: 164, q: "When employees report progress to their manager, it is:", options: ["Upward communication", "External communication", "Horizontal communication", "Downward communication"], answer: 0, cat: "Written Communication & Documents" },
+            { id: 165, q: "Business letters are an example of:", options: ["Diagonal communication", "External barrier", "Formal communication", "Informal communication"], answer: 2, cat: "Written Communication & Documents" },
+            { id: 166, q: "Minutes of meetings are used for:", options: ["Feedback only", "Casual talks", "Record keeping", "Delaying decisions"], answer: 2, cat: "Written Communication & Documents" },
+            { id: 167, q: "Emailing a report to a colleague at the same level is:", options: ["Diagonal", "Horizontal", "Downward", "Upward"], answer: 1, cat: "Written Communication & Documents" },
+            { id: 168, q: "A well-prepared report improves:", options: ["Miscommunication", "Rumors", "Confusion", "Decision-making"], answer: 3, cat: "Written Communication & Documents" },
+            { id: 169, q: "Emails, reports, and memos are part of:", options: ["Visual communication", "Written communication", "Non-verbal communication", "Verbal communication"], answer: 1, cat: "Written Communication & Documents" },
+            { id: 170, q: "Reports, letters, and proposals are:", options: ["Informal", "Formal communication", "Oral communication", "Casual talks"], answer: 1, cat: "Written Communication & Documents" },
+            { id: 171, q: "A memo is an example of:", options: ["Written internal communication", "Verbal communication", "Informal talk", "Visual aid"], answer: 0, cat: "Written Communication & Documents" },
+            { id: 172, q: "A report sent to management is:", options: ["Horizontal communication", "Downward communication", "Informal", "Upward communication"], answer: 3, cat: "Written Communication & Documents" },
+            { id: 173, q: "A training manual is an example of:", options: ["Informal communication", "Verbal communication", "Grapevine", "Written communication"], answer: 3, cat: "Written Communication & Documents" },
+            { id: 174, q: "A notice board is an example of:", options: ["Written communication", "Visual communication", "Oral communication", "Informal talk"], answer: 1, cat: "Written Communication & Documents" },
+            { id: 175, q: "Memos, emails, and notices are:", options: ["Informal communication", "Written communication", "Grapevine", "Oral communication"], answer: 1, cat: "Written Communication & Documents" },
+            { id: 176, q: "Memo is mostly used for:", options: ["Grapevine", "Casual talk", "External communication", "Internal communication"], answer: 3, cat: "Written Communication & Documents" },
+            { id: 177, q: "Circular letters are example of:", options: ["Oral communication", "Grapevine", "Informal communication", "Formal communication"], answer: 3, cat: "Written Communication & Documents" },
+
+            { id: 178, q: "Communication based on official rules is called:", options: ["Formal communication", "Diagonal communication", "Informal communication", "External communication"], answer: 0, cat: "Channels, Formality & Effectiveness" },
+            { id: 179, q: "Casual talks between colleagues during breaks is:", options: ["Informal communication", "External communication", "Vertical communication", "Formal communication"], answer: 0, cat: "Channels, Formality & Effectiveness" },
+            { id: 180, q: "Channels of communication refer to:", options: ["Business profits", "Management styles", "Paths through which messages travel", "Types of employees"], answer: 2, cat: "Channels, Formality & Effectiveness" },
+            { id: 181, q: "Formal communication ensures that information is:", options: ["Correct and reaches the right person", "Casual and unstructured", "Emotional", "Spread quickly without rules"], answer: 0, cat: "Channels, Formality & Effectiveness" },
+            { id: 182, q: "Using the right type and channel of communication helps to:", options: ["Reduce teamwork", "Delay information", "Avoid misunderstandings", "Increase confusion"], answer: 2, cat: "Channels, Formality & Effectiveness" },
+            { id: 183, q: "Which type of communication is more likely to be documented?", options: ["Formal", "Informal", "Grapevine", "Casual"], answer: 0, cat: "Channels, Formality & Effectiveness" },
+            { id: 184, q: "Which communication method is fast and interactive?", options: ["Meetings", "Letters", "Reports", "Face-to-face"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 185, q: "When employees discuss work casually, it is:", options: ["Informal", "Written", "External", "Formal"], answer: 0, cat: "Channels, Formality & Effectiveness" },
+            { id: 186, q: "Choosing the correct channel reduces:", options: ["Misunderstanding", "Purpose", "Feedback", "Records"], answer: 0, cat: "Channels, Formality & Effectiveness" },
+            { id: 187, q: "Which communication type is unplanned and casual?", options: ["Formal", "Written", "Visual", "Informal"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 188, q: "Which channel is best for urgent messages?", options: ["Letters", "Reports", "Face-to-face", "Email"], answer: 2, cat: "Channels, Formality & Effectiveness" },
+            { id: 189, q: "Which type of communication is fastest?", options: ["Letters", "Face-to-face", "Reports", "Memo"], answer: 1, cat: "Channels, Formality & Effectiveness" },
+            { id: 190, q: "Informal communication spreads:", options: ["Official news", "Instructions", "Reports", "Rumors"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 191, q: "Which communication is more likely documented?", options: ["Grapevine", "Verbal casual", "Formal", "Informal"], answer: 2, cat: "Channels, Formality & Effectiveness" },
+            { id: 192, q: "Which is a formal communication method?", options: ["Informal talk", "Grapevine", "Gossip", "Memo"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 193, q: "Which is informal communication?", options: ["Letter", "Memo", "Report", "Grapevine"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 194, q: "Choosing the right channel reduces:", options: ["Feedback", "Coordination", "Record keeping", "Misunderstanding"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 195, q: "Which communication is permanent?", options: ["Informal talk", "Oral", "Face-to-face", "Written"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 196, q: "Which type of communication is cost-effective?", options: ["Face-to-face", "Letters", "Meetings", "Email"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 197, q: "Choosing the right communication channel reduces:", options: ["Coordination", "Feedback", "Record keeping", "Misunderstanding"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 198, q: "Formal communication is:", options: ["Gossip", "Grapevine", "Rumors", "Official and documented"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 199, q: "Informal communication is:", options: ["Memo", "Report", "Circular letter", "Grapevine"], answer: 3, cat: "Channels, Formality & Effectiveness" },
+            { id: 200, q: "Choosing the right communication channel ensures:", options: ["Misinterpretation", "Rumors", "Proper understanding", "Noise"], answer: 2, cat: "Channels, Formality & Effectiveness" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
