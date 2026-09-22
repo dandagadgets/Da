@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGC Business Communication Mastery - 200 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-comments text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">BizCommMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">200 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/200</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-comments text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master GGC Business Communication (GGBC5103) with 200 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    An original question bank written from scratch, following the Greenwich Global College Business Communication (GGBC5103) course outline: Communication Fundamentals, Barriers, Business Writing, Letters & Emails, Reports & Memos, Notices/Circulars/Minutes, Non-Verbal & Intercultural Communication, Listening, Presentations, Visual Aids, Interviews, Group Discussions, Ethics, Digital Tools, and Public Speaking.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 200)</option>
+                            <option value="1-10">1. Orientation & Fundamentals of Communication (1 - 10)</option>
+                            <option value="11-22">2. Types & Channels of Communication (11 - 22)</option>
+                            <option value="23-34">3. Barriers to Communication & Feedback (23 - 34)</option>
+                            <option value="35-46">4. Business Writing Principles (35 - 46)</option>
+                            <option value="47-60">5. Business Letters & Emails (47 - 60)</option>
+                            <option value="61-76">6. Reports & Memos (61 - 76)</option>
+                            <option value="77-88">7. Notices, Circulars & Minutes (77 - 88)</option>
+                            <option value="89-98">8. Non-Verbal Communication (89 - 98)</option>
+                            <option value="99-106">9. Intercultural Communication (99 - 106)</option>
+                            <option value="107-116">10. Listening & Feedback Skills (107 - 116)</option>
+                            <option value="117-130">11. Oral Presentations (117 - 130)</option>
+                            <option value="131-138">12. Visual Aids in Communication (131 - 138)</option>
+                            <option value="139-150">13. Interview Skills (139 - 150)</option>
+                            <option value="151-160">14. Group Discussions (151 - 160)</option>
+                            <option value="161-172">15. Communication Ethics (161 - 172)</option>
+                            <option value="173-184">16. Digital Communication Tools (173 - 184)</option>
+                            <option value="185-194">17. Public Speaking (185 - 194)</option>
+                            <option value="195-200">18. Professionalism, Field Reflection & Portfolio (195 - 200)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 200</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-200)" min="1" max="200" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Communication</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 200</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/200</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive GGC Business Communication Quiz • 200 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (200 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "Communication is best defined as:", options: ["a one-time announcement with no response expected", "the process of exchanging information, ideas, or feelings between a sender and a receiver", "the storage of company records", "the act of writing a formal business document only"], answer: 1, cat: "Orientation & Fundamentals of Communication" },
+            { id: 2, q: "The basic communication process begins with:", options: ["noise interrupting the channel", "a receiver ignoring the message", "feedback being given before the message is sent", "a sender formulating a message"], answer: 3, cat: "Orientation & Fundamentals of Communication" },
+            { id: 3, q: "In the communication process, 'encoding' refers to:", options: ["converting a message into words, symbols, or gestures", "the receiver interpreting the message", "deleting an unwanted message", "storing a message for later use"], answer: 0, cat: "Orientation & Fundamentals of Communication" },
+            { id: 4, q: "In the communication process, 'decoding' refers to:", options: ["the sender creating the message", "ignoring the sender's message entirely", "choosing which channel to use", "the receiver interpreting the sender's message"], answer: 3, cat: "Orientation & Fundamentals of Communication" },
+            { id: 5, q: "The 'medium' or 'channel' in communication refers to:", options: ["the method used to transmit the message, such as email or a phone call", "the receiver's personal opinion", "the emotional tone of a message", "the grammar used in a message"], answer: 0, cat: "Orientation & Fundamentals of Communication" },
+            { id: 6, q: "'Feedback' in the communication process refers to:", options: ["the channel used to send a message", "background noise during communication", "the receiver's response that tells the sender the message was understood", "the original message sent by the sender"], answer: 2, cat: "Orientation & Fundamentals of Communication" },
+            { id: 7, q: "Which of the following best describes 'noise' in the communication process?", options: ["The receiver's positive feedback", "The sender's tone of voice only", "A formally written business report", "Anything that distorts or interferes with the message"], answer: 3, cat: "Orientation & Fundamentals of Communication" },
+            { id: 8, q: "Why is communication considered essential for business success?", options: ["It guarantees profit regardless of strategy", "It replaces the need for leadership", "It eliminates the need for planning", "It enables coordination, decision-making, and relationship-building across an organization"], answer: 3, cat: "Orientation & Fundamentals of Communication" },
+            { id: 9, q: "Communication that flows from managers to employees is called:", options: ["external communication", "upward communication", "downward communication", "horizontal communication"], answer: 2, cat: "Orientation & Fundamentals of Communication" },
+            { id: 10, q: "Communication that flows between employees at the same organizational level is called:", options: ["upward communication", "diagonal communication", "horizontal (lateral) communication", "downward communication"], answer: 2, cat: "Orientation & Fundamentals of Communication" },
+
+            { id: 11, q: "Verbal communication refers to communication that uses:", options: ["only facial expressions", "only physical gestures", "only silence", "spoken or written words"], answer: 3, cat: "Types & Channels of Communication" },
+            { id: 12, q: "Non-verbal communication refers to communication through:", options: ["body language, tone, and gestures, without words", "numerical data only", "written reports only", "formal business letters only"], answer: 0, cat: "Types & Channels of Communication" },
+            { id: 13, q: "Which of the following is an example of oral communication?", options: ["A printed memo", "A company brochure", "A face-to-face meeting", "An email attachment"], answer: 2, cat: "Types & Channels of Communication" },
+            { id: 14, q: "Which of the following is an example of written communication?", options: ["A business email", "A video call", "A face-to-face conversation", "A phone call"], answer: 0, cat: "Types & Channels of Communication" },
+            { id: 15, q: "Formal communication in an organization follows:", options: ["random, unofficial paths", "the official chain of command", "only verbal exchanges", "no defined structure"], answer: 1, cat: "Types & Channels of Communication" },
+            { id: 16, q: "Informal communication, often called the 'grapevine,' is best described as:", options: ["a scheduled formal meeting", "official communication approved by management", "unofficial communication that flows outside formal channels", "a type of written report"], answer: 2, cat: "Types & Channels of Communication" },
+            { id: 17, q: "Upward communication flows from:", options: ["the organization to external customers", "one department to another at the same level", "managers to employees", "employees to their managers or supervisors"], answer: 3, cat: "Types & Channels of Communication" },
+            { id: 18, q: "Which channel of communication is generally richest, allowing tone, body language, and instant feedback?", options: ["Face-to-face conversation", "A printed memo", "A text message", "A company newsletter"], answer: 0, cat: "Types & Channels of Communication" },
+            { id: 19, q: "Which channel of communication is generally considered 'leanest,' offering the least non-verbal cues?", options: ["Written text or email", "A phone call", "Face-to-face conversation", "A video call"], answer: 0, cat: "Types & Channels of Communication" },
+            { id: 20, q: "Internal communication refers to communication that occurs:", options: ["between an organization and outside parties", "only with the media", "within an organization, among its own members", "only with government agencies"], answer: 2, cat: "Types & Channels of Communication" },
+            { id: 21, q: "External communication refers to communication that occurs:", options: ["only during internal meetings", "between an organization and outside parties, such as customers or suppliers", "only between managers", "only within a single department"], answer: 1, cat: "Types & Channels of Communication" },
+            { id: 22, q: "Why is it important for a business communicator to choose the right channel for a message?", options: ["All channels work identically well for every message", "Channel choice has no effect on how a message is received", "Different channels suit different purposes, urgency levels, and audiences", "Only written channels are considered professional"], answer: 2, cat: "Types & Channels of Communication" },
+
+            { id: 23, q: "A communication barrier is best defined as:", options: ["anything that prevents a message from being understood as intended", "a scheduled business meeting", "a formal written report", "a type of positive feedback"], answer: 0, cat: "Barriers to Communication & Feedback" },
+            { id: 24, q: "Which of the following is an example of a physical barrier to communication?", options: ["Complex technical jargon", "A cultural misunderstanding", "A receiver's personal bias", "Loud background noise during a phone call"], answer: 3, cat: "Barriers to Communication & Feedback" },
+            { id: 25, q: "Which of the following is an example of a language barrier?", options: ["A receiver's strong emotions", "Using complex jargon the receiver does not understand", "A noisy office environment", "A weak Wi-Fi connection"], answer: 1, cat: "Barriers to Communication & Feedback" },
+            { id: 26, q: "Which of the following is an example of a psychological barrier?", options: ["A broken telephone line", "A scheduling conflict for a meeting", "A receiver's strong emotions distorting how they interpret a message", "A printer running out of ink"], answer: 2, cat: "Barriers to Communication & Feedback" },
+            { id: 27, q: "Perceptual barriers occur when:", options: ["a message is physically lost in transit", "the sender and receiver interpret the same message differently based on their own perspectives", "a meeting room is too small", "a document is printed in the wrong font"], answer: 1, cat: "Barriers to Communication & Feedback" },
+            { id: 28, q: "Cultural barriers to communication arise from:", options: ["incorrect email formatting", "a lack of office equipment", "differences in customs, values, and norms between communicators", "poor internet connectivity"], answer: 2, cat: "Barriers to Communication & Feedback" },
+            { id: 29, q: "Which of the following best describes 'information overload' as a barrier?", options: ["Receiving information too slowly", "Receiving too much information at once to process effectively", "Receiving information in the wrong language only", "Receiving no information at all"], answer: 1, cat: "Barriers to Communication & Feedback" },
+            { id: 30, q: "Why is feedback considered essential to effective communication?", options: ["It replaces the need for a clear message", "It confirms whether the message was received and understood as intended", "It is only useful in written communication", "It guarantees the receiver agrees with the sender"], answer: 1, cat: "Barriers to Communication & Feedback" },
+            { id: 31, q: "Which type of feedback directly addresses the content of a message and helps improve future communication?", options: ["Irrelevant feedback", "Delayed feedback with no explanation", "Silence", "Constructive feedback"], answer: 3, cat: "Barriers to Communication & Feedback" },
+            { id: 32, q: "Which of the following is a good strategy for overcoming communication barriers?", options: ["Using as much jargon as possible", "Ignoring the receiver's background", "Using clear, simple language suited to the audience", "Avoiding all feedback"], answer: 2, cat: "Barriers to Communication & Feedback" },
+            { id: 33, q: "Active feedback in a business meeting might include:", options: ["remaining completely silent throughout", "leaving the meeting early", "asking clarifying questions to confirm understanding", "responding only after several days"], answer: 2, cat: "Barriers to Communication & Feedback" },
+            { id: 34, q: "Why should a sender consider the receiver's background before communicating a message?", options: ["It guarantees the message will be misunderstood", "It has no impact on how the message is received", "It is only relevant for written communication", "It helps the sender choose language and examples the receiver will understand"], answer: 3, cat: "Barriers to Communication & Feedback" },
+
+            { id: 35, q: "The 'You-attitude' in business writing means:", options: ["avoiding the word 'you' entirely", "focusing on the reader's perspective and needs rather than the writer's", "using overly formal, distant language", "writing only about the sender's achievements"], answer: 1, cat: "Business Writing Principles" },
+            { id: 36, q: "Which of the following best reflects the principle of 'clarity' in business writing?", options: ["Writing extremely long sentences", "Using as many technical terms as possible", "Using precise, unambiguous language that is easy to understand", "Leaving out important details"], answer: 2, cat: "Business Writing Principles" },
+            { id: 37, q: "Which of the following best reflects the principle of 'conciseness' in business writing?", options: ["Repeating the same point multiple times", "Expressing ideas in the fewest words necessary without losing meaning", "Using unnecessary filler words", "Writing as much text as possible"], answer: 1, cat: "Business Writing Principles" },
+            { id: 38, q: "Which of the following best reflects the principle of 'courtesy' in business writing?", options: ["Ignoring the reader's feelings", "Using sarcasm freely", "Being blunt and dismissive", "Being polite and respectful toward the reader"], answer: 3, cat: "Business Writing Principles" },
+            { id: 39, q: "Which of the following best reflects the principle of 'correctness' in business writing?", options: ["Using outdated or incorrect data", "Ignoring grammar rules for creativity", "Avoiding proofreading entirely", "Using accurate grammar, facts, and figures"], answer: 3, cat: "Business Writing Principles" },
+            { id: 40, q: "Which of the following best reflects the principle of 'completeness' in business writing?", options: ["Leaving out key details to save time", "Including all necessary information the reader needs", "Assuming the reader already knows everything", "Writing as briefly as possible, even if unclear"], answer: 1, cat: "Business Writing Principles" },
+            { id: 41, q: "Which of the following best reflects the principle of 'concreteness' in business writing?", options: ["Avoiding numbers and data entirely", "Relying only on opinions", "Using vague, general statements", "Using specific, definite facts rather than vague statements"], answer: 3, cat: "Business Writing Principles" },
+            { id: 42, q: "Which of the following best reflects the principle of 'consideration' in business writing?", options: ["Writing with the reader's needs, interests, and emotions in mind", "Writing only from the sender's point of view", "Ignoring how the reader might feel", "Focusing only on the company's interests"], answer: 0, cat: "Business Writing Principles" },
+            { id: 43, q: "Why is proofreading an essential step in business writing?", options: ["It guarantees the message will be well received regardless of content", "It replaces the need for clear organization", "It is only necessary for very long documents", "It helps catch errors in grammar, spelling, and clarity before the message is sent"], answer: 3, cat: "Business Writing Principles" },
+            { id: 44, q: "In business writing, tone refers to:", options: ["the writer's attitude toward the reader and subject, conveyed through word choice", "the postage cost of mailing a letter", "the font size used in a document", "the physical paper a letter is printed on"], answer: 0, cat: "Business Writing Principles" },
+            { id: 45, q: "Which of the following is an example of passive voice?", options: ["'The team completed the report'", "'I am completing the report'", "'We will complete the report'", "'The report was completed by the team'"], answer: 3, cat: "Business Writing Principles" },
+            { id: 46, q: "Why is active voice generally preferred in business writing?", options: ["It always sounds more polite than passive voice", "It is usually clearer, more direct, and more concise than passive voice", "It removes the need for a subject in a sentence", "It is required in every sentence with no exceptions"], answer: 1, cat: "Business Writing Principles" },
+
+            { id: 47, q: "A business letter is best described as:", options: ["a verbal announcement made in a meeting", "an informal text message between friends", "a formal written document used for official communication with external parties", "a company's internal policy manual"], answer: 2, cat: "Business Letters & Emails" },
+            { id: 48, q: "Which of the following is typically included in the heading of a business letter?", options: ["The sender's address and date", "The company's annual revenue", "The receiver's personal opinions", "A list of unrelated topics"], answer: 0, cat: "Business Letters & Emails" },
+            { id: 49, q: "The 'salutation' in a business letter refers to:", options: ["the closing signature", "the greeting, such as 'Dear Mr. Khan'", "the main body paragraph", "the letterhead logo"], answer: 1, cat: "Business Letters & Emails" },
+            { id: 50, q: "The 'complimentary close' in a business letter refers to:", options: ["the subject line", "the opening greeting", "the enclosure list", "the polite closing phrase, such as 'Sincerely'"], answer: 3, cat: "Business Letters & Emails" },
+            { id: 51, q: "Which of the following is a common purpose of a business letter?", options: ["Writing a casual note to a friend", "Recording a private personal diary entry", "Placing an order, making an inquiry, or lodging a complaint", "Drafting a company's internal meeting minutes only"], answer: 2, cat: "Business Letters & Emails" },
+            { id: 52, q: "A 'full block' letter format is characterized by:", options: ["all lines starting flush against the left margin", "the signature appearing at the top of the letter", "no date being included", "every paragraph being indented significantly"], answer: 0, cat: "Business Letters & Emails" },
+            { id: 53, q: "Which of the following best describes the purpose of a cover letter accompanying a job application?", options: ["To replace the need for a resume entirely", "To list unrelated personal hobbies only", "To request a salary increase from a current employer", "To introduce the applicant and highlight relevant qualifications for the role"], answer: 3, cat: "Business Letters & Emails" },
+            { id: 54, q: "In a professional email, the subject line should:", options: ["always be left blank", "clearly and briefly summarize the purpose of the email", "be written in all capital letters for emphasis", "contain the entire message content"], answer: 1, cat: "Business Letters & Emails" },
+            { id: 55, q: "Which of the following is considered good email etiquette?", options: ["Writing in an overly casual tone regardless of the recipient", "Using a clear greeting, concise message, and professional closing", "Skipping greetings and closings entirely", "Sending the email without proofreading"], answer: 1, cat: "Business Letters & Emails" },
+            { id: 56, q: "Which of the following is a common mistake in professional email writing?", options: ["Using a professional closing", "Using all capital letters, which can appear like shouting", "Proofreading before sending", "Including a clear subject line"], answer: 1, cat: "Business Letters & Emails" },
+            { id: 57, q: "The 'CC' field in an email is used to:", options: ["send a visible copy of the email to additional recipients", "automatically forward all future emails", "attach a file to the email", "hide a recipient's email address"], answer: 0, cat: "Business Letters & Emails" },
+            { id: 58, q: "The 'BCC' field in an email is used to:", options: ["send a visible copy to all recipients", "send a hidden copy of the email without other recipients seeing that address", "delete an email permanently", "mark an email as urgent"], answer: 1, cat: "Business Letters & Emails" },
+            { id: 59, q: "Why should a business email avoid excessive informal language and emojis?", options: ["Informal language always improves clarity", "Formal emails must never include a greeting", "Emojis are always required in professional emails", "It could undermine the professionalism and credibility of the message"], answer: 3, cat: "Business Letters & Emails" },
+            { id: 60, q: "Before sending an important business email, it is best practice to:", options: ["copy the entire company on every email", "send it immediately without review", "avoid including a subject line", "review it carefully for tone, clarity, and errors"], answer: 3, cat: "Business Letters & Emails" },
+
+            { id: 61, q: "A business report is best defined as:", options: ["an informal chat between colleagues", "a structured document that presents information or findings for a specific business purpose", "a personal diary entry", "a company's advertising slogan"], answer: 1, cat: "Reports & Memos" },
+            { id: 62, q: "A memo (memorandum) is best described as:", options: ["a legal contract", "a formal letter sent to external clients only", "a brief written message used for internal communication within an organization", "a company's annual report"], answer: 2, cat: "Reports & Memos" },
+            { id: 63, q: "Which of the following is a key difference between a memo and a formal report?", options: ["Memos require a complimentary close like a letter", "A memo is typically shorter and less formal than a full report", "A memo is always longer than a report", "Reports are only used for external communication"], answer: 1, cat: "Reports & Memos" },
+            { id: 64, q: "A 'short report' typically covers:", options: ["unrelated topics combined into one document", "only historical company data", "a specific, limited topic in a concise format", "every topic in the organization at once"], answer: 2, cat: "Reports & Memos" },
+            { id: 65, q: "Which of the following is typically included in the heading of a memo?", options: ["A postage stamp", "A formal salutation like 'Dear Sir'", "A complimentary close like 'Sincerely'", "To, From, Date, and Subject lines"], answer: 3, cat: "Reports & Memos" },
+            { id: 66, q: "The 'executive summary' of a report is designed to:", options: ["briefly summarize the report's key findings and recommendations", "list every raw data point collected", "provide unrelated background history only", "replace the need for a conclusion"], answer: 0, cat: "Reports & Memos" },
+            { id: 67, q: "Which section of a formal report presents the writer's conclusions based on the findings?", options: ["The appendix", "The conclusions section", "The cover page", "The table of contents"], answer: 1, cat: "Reports & Memos" },
+            { id: 68, q: "Which section of a formal report suggests specific actions based on the findings?", options: ["The title page", "The recommendations section", "The table of contents", "The appendix"], answer: 1, cat: "Reports & Memos" },
+            { id: 69, q: "An 'informational report' is primarily designed to:", options: ["always include personal opinions", "present facts and data without offering recommendations", "replace the need for any data", "persuade the reader to take a specific action only"], answer: 1, cat: "Reports & Memos" },
+            { id: 70, q: "An 'analytical report' is primarily designed to:", options: ["analyze information and often provide recommendations or conclusions", "only list raw, unorganized data", "avoid any interpretation of the data", "focus solely on formatting, not content"], answer: 0, cat: "Reports & Memos" },
+            { id: 71, q: "Which of the following should come first in a well-organized report?", options: ["A clear statement of the report's purpose", "The appendix", "The conclusion", "The list of references"], answer: 0, cat: "Reports & Memos" },
+            { id: 72, q: "Why is it important to use headings and subheadings in a long report?", options: ["They replace the need for an introduction", "They help organize content and make it easier for readers to navigate", "They are only used in emails, never reports", "They are purely decorative and serve no function"], answer: 1, cat: "Reports & Memos" },
+            { id: 73, q: "When writing a report, using charts and tables is helpful because they:", options: ["present data visually, making it easier to understand", "make a report harder to read", "are never appropriate in professional reports", "replace the need for any written explanation"], answer: 0, cat: "Reports & Memos" },
+            { id: 74, q: "Which of the following is a key quality of an effective business report?", options: ["Heavy reliance on personal bias", "Objectivity, based on accurate facts rather than personal opinion", "Disorganized presentation of information", "Vague, unsupported claims"], answer: 1, cat: "Reports & Memos" },
+            { id: 75, q: "Why should a report writer clearly define its scope at the outset?", options: ["It sets clear boundaries for what the report will and will not cover", "It has no effect on how the report is read", "It is only necessary for very short reports", "It should always be left undefined for flexibility"], answer: 0, cat: "Reports & Memos" },
+            { id: 76, q: "Which of the following best describes the purpose of appendices in a report?", options: ["To include supporting material, such as raw data, without cluttering the main text", "To replace the executive summary", "To list the writer's personal opinions", "To serve as the report's main introduction"], answer: 0, cat: "Reports & Memos" },
+
+            { id: 77, q: "A 'notice' in business communication is best described as:", options: ["a company's marketing advertisement", "an informal verbal rumor", "a private personal letter", "a formal written announcement informing people of an event or requirement"], answer: 3, cat: "Notices, Circulars & Minutes" },
+            { id: 78, q: "Which of the following is typically included in a notice?", options: ["A detailed personal opinion of the writer", "A company's full financial statement", "The date, time, venue, and purpose of an event", "Unrelated historical background"], answer: 2, cat: "Notices, Circulars & Minutes" },
+            { id: 79, q: "A 'circular' is best described as:", options: ["a written communication sent simultaneously to many people within an organization", "a verbal-only announcement", "a single private message to one person", "a legal contract between two companies"], answer: 0, cat: "Notices, Circulars & Minutes" },
+            { id: 80, q: "Which of the following is a common purpose of a circular?", options: ["Serving as a formal job offer letter", "Recording a single employee's performance review", "Informing multiple employees of a policy change at the same time", "Replacing the need for any written communication"], answer: 2, cat: "Notices, Circulars & Minutes" },
+            { id: 81, q: "'Minutes of a meeting' are best defined as:", options: ["a verbal-only summary with no written record", "a written record of what was discussed and decided during a meeting", "a company's advertising material", "a formal invitation to a future meeting"], answer: 1, cat: "Notices, Circulars & Minutes" },
+            { id: 82, q: "Which of the following is typically included in the minutes of a meeting?", options: ["Unrelated personal opinions of the minute-taker", "The names of attendees, key discussion points, and decisions made", "A full transcript of every word spoken", "A detailed history of the company's founding"], answer: 1, cat: "Notices, Circulars & Minutes" },
+            { id: 83, q: "Who is typically responsible for preparing the minutes of a meeting?", options: ["An unrelated outside party", "No one; minutes are optional", "The designated secretary or minute-taker", "Every attendee individually"], answer: 2, cat: "Notices, Circulars & Minutes" },
+            { id: 84, q: "Why should minutes of a meeting be distributed soon after the meeting ends?", options: ["So attendees can confirm accuracy and remember the details clearly", "So attendees can avoid reading them", "Because minutes are legally required to be destroyed after a week", "Distribution timing has no effect on accuracy"], answer: 0, cat: "Notices, Circulars & Minutes" },
+            { id: 85, q: "An 'agenda' for a meeting is best described as:", options: ["an informal social invitation", "a written record of what was already discussed", "a list of topics to be discussed during the meeting", "a company's annual budget report"], answer: 2, cat: "Notices, Circulars & Minutes" },
+            { id: 86, q: "Why is it important for a notice to state its purpose clearly?", options: ["So recipients must guess the intended meaning", "So the notice can be as vague as possible", "Because clarity is not important in formal notices", "So recipients immediately understand why they are being informed"], answer: 3, cat: "Notices, Circulars & Minutes" },
+            { id: 87, q: "'Action items' in meeting minutes refer to:", options: ["the meeting's catering arrangements", "specific tasks assigned to individuals with expected deadlines", "a list of attendees who were absent", "unrelated topics not discussed in the meeting"], answer: 1, cat: "Notices, Circulars & Minutes" },
+            { id: 88, q: "Why might an organization prefer a circular over individual emails for a policy announcement?", options: ["It removes the need for the information to be accurate", "It ensures the same information reaches everyone consistently at once", "It is always more expensive than sending individual emails", "It ensures the message reaches only one person"], answer: 1, cat: "Notices, Circulars & Minutes" },
+
+            { id: 89, q: "Which of the following is an example of non-verbal communication?", options: ["A phone call script", "A firm handshake", "An email subject line", "A written business report"], answer: 1, cat: "Non-Verbal Communication" },
+            { id: 90, q: "'Kinesics' refers to the study of:", options: ["written grammar rules", "vocal tone and pitch", "body movements and gestures in communication", "the use of physical space"], answer: 2, cat: "Non-Verbal Communication" },
+            { id: 91, q: "'Proxemics' refers to the study of:", options: ["the use of physical space and distance in communication", "written punctuation", "vocal pitch", "body movements"], answer: 0, cat: "Non-Verbal Communication" },
+            { id: 92, q: "'Paralanguage' refers to:", options: ["written body text in a letter", "the literal words used in a sentence", "a company's formal dress code", "vocal elements such as tone, pitch, and speed, apart from the words themselves"], answer: 3, cat: "Non-Verbal Communication" },
+            { id: 93, q: "Eye contact during a business conversation generally signals:", options: ["disrespect in all cultures universally", "a formal written agreement", "disinterest and distraction", "attentiveness, confidence, and engagement"], answer: 3, cat: "Non-Verbal Communication" },
+            { id: 94, q: "Crossed arms during a conversation are often interpreted as a sign of:", options: ["openness and enthusiasm", "formal written consent", "defensiveness or discomfort", "complete agreement"], answer: 2, cat: "Non-Verbal Communication" },
+            { id: 95, q: "Facial expressions are an important form of non-verbal communication because they:", options: ["often reveal genuine emotions, sometimes more than words do", "never convey any useful information", "replace the need for spoken words entirely", "are only relevant in written communication"], answer: 0, cat: "Non-Verbal Communication" },
+            { id: 96, q: "Why must non-verbal cues be interpreted carefully in a professional setting?", options: ["Only written communication requires careful interpretation", "Non-verbal cues always mean exactly one thing everywhere", "Non-verbal communication has no impact on professional interactions", "The same gesture can have different meanings depending on the situation or culture"], answer: 3, cat: "Non-Verbal Communication" },
+            { id: 97, q: "Which of the following best describes 'chronemics' in communication?", options: ["The use of written punctuation", "The use of physical touch", "The use of time, such as punctuality, to convey meaning", "The use of color in design"], answer: 2, cat: "Non-Verbal Communication" },
+            { id: 98, q: "Why is non-verbal communication important alongside verbal communication in business?", options: ["It should always be ignored in favor of words alone", "It has no relationship to the spoken message", "It only matters in written reports", "It can reinforce, contradict, or add meaning to the spoken message"], answer: 3, cat: "Non-Verbal Communication" },
+
+            { id: 99, q: "Intercultural communication refers to communication between:", options: ["people from different cultural backgrounds", "people who share identical viewpoints", "machines and software systems only", "people who work in the exact same department"], answer: 0, cat: "Intercultural Communication" },
+            { id: 100, q: "Cross-cultural sensitivity in business communication means:", options: ["ignoring all cultural differences entirely", "avoiding communication with people from other cultures", "assuming everyone shares the same customs", "being aware of and respectful toward cultural differences"], answer: 3, cat: "Intercultural Communication" },
+            { id: 101, q: "In some cultures, direct eye contact may be seen as disrespectful, while in others it signals:", options: ["complete dishonesty everywhere", "a formal written agreement", "confidence and honesty", "a legal requirement in all contexts"], answer: 2, cat: "Intercultural Communication" },
+            { id: 102, q: "Which of the following is a risk of ignoring cultural differences in business communication?", options: ["No possible negative consequences", "Guaranteed communication success in every case", "Unintentionally causing offense or misunderstanding", "Improved clarity in all situations"], answer: 2, cat: "Intercultural Communication" },
+            { id: 103, q: "High-context cultures tend to rely more on:", options: ["strictly literal interpretation of every word", "implicit cues, context, and relationships rather than explicit words", "avoiding all non-verbal communication", "only explicit written contracts"], answer: 1, cat: "Intercultural Communication" },
+            { id: 104, q: "Low-context cultures tend to rely more on:", options: ["non-verbal cues exclusively", "implicit, unspoken cues only", "avoiding written communication entirely", "direct, explicit verbal communication"], answer: 3, cat: "Intercultural Communication" },
+            { id: 105, q: "Why is it valuable for business professionals to research cultural norms before international meetings?", options: ["Cultural norms are identical across all countries", "It helps avoid miscommunication and shows respect for the other party", "It guarantees a successful business deal regardless of other factors", "It has no effect on the outcome of the meeting"], answer: 1, cat: "Intercultural Communication" },
+            { id: 106, q: "Which of the following best supports effective intercultural communication?", options: ["Assuming your own cultural norms are universally correct", "Avoiding any interaction with people from other cultures", "Approaching differences with openness, patience, and a willingness to learn", "Refusing to adapt communication style for any audience"], answer: 2, cat: "Intercultural Communication" },
+
+            { id: 107, q: "Active listening is best defined as:", options: ["ignoring a speaker while planning your own response", "hearing sounds without any real attention", "fully concentrating on, understanding, and responding thoughtfully to a speaker", "reading a written document silently"], answer: 2, cat: "Listening & Feedback Skills" },
+            { id: 108, q: "Which of the following is a sign of active listening?", options: ["Checking a phone throughout the conversation", "Staring blankly with no engagement", "Interrupting frequently", "Maintaining eye contact and nodding to show understanding"], answer: 3, cat: "Listening & Feedback Skills" },
+            { id: 109, q: "'Selective listening' refers to:", options: ["fully understanding every part of a message", "writing down every word spoken", "ignoring a message entirely", "hearing only the parts of a message that interest the listener"], answer: 3, cat: "Listening & Feedback Skills" },
+            { id: 110, q: "Paraphrasing what a speaker has said is a technique used to:", options: ["change the topic of conversation", "confirm understanding of the message", "end a conversation abruptly", "avoid responding to the speaker"], answer: 1, cat: "Listening & Feedback Skills" },
+            { id: 111, q: "Which of the following is a common barrier to effective listening?", options: ["Asking clarifying questions", "Taking notes during a conversation", "Being distracted by one's own thoughts or devices", "Maintaining full eye contact"], answer: 2, cat: "Listening & Feedback Skills" },
+            { id: 112, q: "Why is asking clarifying questions an important listening skill?", options: ["It shows the listener was not paying attention", "It is considered rude in professional settings", "It replaces the need for any further listening", "It helps ensure the listener has correctly understood the speaker's message"], answer: 3, cat: "Listening & Feedback Skills" },
+            { id: 113, q: "'Empathetic listening' involves:", options: ["responding with unrelated advice immediately", "trying to understand a speaker's feelings and perspective, not just their words", "ignoring a speaker's emotions entirely", "focusing only on literal facts"], answer: 1, cat: "Listening & Feedback Skills" },
+            { id: 114, q: "Which of the following behaviors would most likely discourage open communication in a team?", options: ["Providing constructive feedback", "Asking thoughtful follow-up questions", "Interrupting a speaker frequently before they finish their point", "Maintaining respectful eye contact"], answer: 2, cat: "Listening & Feedback Skills" },
+            { id: 115, q: "Providing constructive feedback in a team setting should focus on:", options: ["specific behaviors and outcomes, delivered respectfully", "vague, general criticism", "public embarrassment of the individual", "personal attacks on character"], answer: 0, cat: "Listening & Feedback Skills" },
+            { id: 116, q: "Why is listening considered just as important as speaking in business communication?", options: ["Listening has no real impact on communication outcomes", "Listening is only relevant in personal, not business, settings", "Effective communication is a two-way process that depends on accurate understanding", "Only the speaker's skills matter in communication"], answer: 2, cat: "Listening & Feedback Skills" },
+
+            { id: 117, q: "The first step in preparing an effective business presentation is typically to:", options: ["design the slides before deciding on content", "define the presentation's objective and understand the audience", "memorize the entire speech word-for-word first", "book the presentation room"], answer: 1, cat: "Oral Presentations" },
+            { id: 118, q: "The introduction of a presentation should primarily aim to:", options: ["summarize the entire presentation's conclusion", "apologize for the speaker's lack of preparation", "capture the audience's attention and preview the main points", "list every detail that will be covered in the body"], answer: 2, cat: "Oral Presentations" },
+            { id: 119, q: "The body of a presentation should be organized to:", options: ["logically develop the main points in a clear sequence", "present random, unrelated ideas", "repeat the introduction word-for-word", "avoid any clear structure"], answer: 0, cat: "Oral Presentations" },
+            { id: 120, q: "The conclusion of a presentation should primarily aim to:", options: ["summarize key points and leave a strong final impression", "restate the presentation title only", "end abruptly with no summary", "introduce entirely new information not covered before"], answer: 0, cat: "Oral Presentations" },
+            { id: 121, q: "Which of the following best describes 'tone' in an oral presentation?", options: ["The speaker's attitude and manner of delivery, such as formal or conversational", "The color scheme of the slides", "The length of the presentation in minutes", "The number of slides used"], answer: 0, cat: "Oral Presentations" },
+            { id: 122, q: "Which of the following best describes 'tempo' or pacing in an oral presentation?", options: ["The location of the presentation", "The size of the audience", "The speed at which the speaker delivers the message", "The topic of the presentation"], answer: 2, cat: "Oral Presentations" },
+            { id: 123, q: "Why is it important to practice a presentation before delivering it?", options: ["It builds confidence and helps identify areas that need improvement", "It guarantees the audience will ask no questions", "It removes the need for a clear structure", "Practice has no effect on presentation quality"], answer: 0, cat: "Oral Presentations" },
+            { id: 124, q: "Which of the following is a common sign of presentation anxiety that speakers should manage?", options: ["A rapid heartbeat and shaky voice before speaking", "Complete calmness with zero nervousness ever", "An overly slow, monotone delivery only", "A refusal to make eye contact by design"], answer: 0, cat: "Oral Presentations" },
+            { id: 125, q: "Using pauses effectively during a presentation can help:", options: ["emphasize key points and give the audience time to absorb information", "eliminate the need for a clear structure", "make the presentation seem unprepared", "confuse the audience unnecessarily"], answer: 0, cat: "Oral Presentations" },
+            { id: 126, q: "Which of the following best supports audience engagement during a presentation?", options: ["Speaking in a flat, monotone voice throughout", "Asking questions or inviting audience interaction", "Avoiding all eye contact with the audience", "Reading directly from a script without looking up"], answer: 1, cat: "Oral Presentations" },
+            { id: 127, q: "Why should a presenter avoid reading directly from slides word-for-word?", options: ["It is the most effective way to engage an audience", "Reading from slides guarantees audience interest", "Slides should always contain the presenter's full script", "It reduces engagement and can make the delivery feel less natural"], answer: 3, cat: "Oral Presentations" },
+            { id: 128, q: "Structuring a presentation with a clear beginning, middle, and end helps the audience:", options: ["forget the main points more easily", "follow the logical flow of ideas", "become confused about the presentation's purpose", "lose interest more quickly"], answer: 1, cat: "Oral Presentations" },
+            { id: 129, q: "Which of the following is an effective way to handle a difficult question from the audience?", options: ["Ignore the question entirely", "Immediately end the presentation", "Respond with visible frustration", "Listen carefully, then respond calmly and directly"], answer: 3, cat: "Oral Presentations" },
+            { id: 130, q: "Why is knowing your audience important when preparing a business presentation?", options: ["Audience knowledge has no effect on presentation design", "All audiences require the exact same content and delivery", "It helps tailor the content, language, and examples to their needs and expectations", "It only matters for very large audiences"], answer: 2, cat: "Oral Presentations" },
+
+            { id: 131, q: "Visual aids in a presentation are primarily used to:", options: ["confuse the audience intentionally", "fill time with no real purpose", "support and clarify the spoken message", "replace the need for any spoken content"], answer: 2, cat: "Visual Aids in Communication" },
+            { id: 132, q: "Which of the following is an example of a visual aid?", options: ["A PowerPoint slide with a chart", "A private phone call", "A verbal-only explanation", "An unrelated hallway conversation"], answer: 0, cat: "Visual Aids in Communication" },
+            { id: 133, q: "According to good presentation practice, slides should generally:", options: ["contain the entire speech written out in full", "contain minimal text and clear visuals", "use as many fonts and colors as possible", "avoid any images or charts entirely"], answer: 1, cat: "Visual Aids in Communication" },
+            { id: 134, q: "Which tool mentioned in business communication resources is commonly used for creating visually appealing graphics?", options: ["A typewriter", "Canva", "A rotary phone", "A fax machine"], answer: 1, cat: "Visual Aids in Communication" },
+            { id: 135, q: "Why should a presenter avoid overcrowding a slide with too much text?", options: ["More text always improves audience understanding", "It can overwhelm the audience and distract from the spoken message", "Text density has no effect on audience engagement", "Crowded slides are considered a best practice"], answer: 1, cat: "Visual Aids in Communication" },
+            { id: 136, q: "Which of the following is a benefit of using charts or graphs in a presentation?", options: ["They make numerical data easier to understand at a glance", "They always confuse the audience", "They are never appropriate in a business presentation", "They replace the need for any spoken explanation"], answer: 0, cat: "Visual Aids in Communication" },
+            { id: 137, q: "Which of the following is a common mistake when using visual aids?", options: ["Keeping slides simple and uncluttered", "Reading every word on the slide aloud instead of elaborating on it", "Using visuals to clarify complex data", "Testing equipment before the presentation"], answer: 1, cat: "Visual Aids in Communication" },
+            { id: 138, q: "Why should visual aids be tested beforehand on the actual presentation equipment?", options: ["Testing equipment is never necessary", "To avoid technical issues, such as formatting problems, during the actual presentation", "It guarantees the audience will remember every detail", "It replaces the need for rehearsing the speech"], answer: 1, cat: "Visual Aids in Communication" },
+
+            { id: 139, q: "Which of the following is an important step to take before attending a job interview?", options: ["Arriving without knowing the job description", "Avoiding any preparation to seem naturally confident", "Ignoring the company's background entirely", "Researching the company and the role thoroughly"], answer: 3, cat: "Interview Skills" },
+            { id: 140, q: "During an interview, maintaining good posture and eye contact primarily helps convey:", options: ["a lack of preparation", "disrespect toward the interviewer", "nervousness and disinterest", "confidence and professionalism"], answer: 3, cat: "Interview Skills" },
+            { id: 141, q: "The 'STAR' method (Situation, Task, Action, Result) is commonly used to:", options: ["format a company's financial report", "structure clear answers to behavioral interview questions", "design a PowerPoint presentation", "write a formal business letter"], answer: 1, cat: "Interview Skills" },
+            { id: 142, q: "Which of the following is an example of a behavioral interview question?", options: ["'What is our office address?'", "'What is today's date?'", "'How many employees work here?'", "'Tell me about a time you resolved a conflict at work'"], answer: 3, cat: "Interview Skills" },
+            { id: 143, q: "Why is it important to prepare thoughtful questions to ask the interviewer?", options: ["Questions from candidates are never welcomed by interviewers", "It has no impact on the interviewer's impression", "It is considered rude to ask any questions", "It shows genuine interest in the role and helps evaluate if it's a good fit"], answer: 3, cat: "Interview Skills" },
+            { id: 144, q: "Which of the following is generally considered inappropriate interview behavior?", options: ["Answering questions clearly and honestly", "Interrupting the interviewer frequently", "Asking relevant follow-up questions", "Listening carefully to each question"], answer: 1, cat: "Interview Skills" },
+            { id: 145, q: "A mock interview is best described as:", options: ["a practice interview used to build confidence and improve performance", "the final, official job interview", "a legal contract between employer and candidate", "a written report about interview techniques"], answer: 0, cat: "Interview Skills" },
+            { id: 146, q: "Which of the following best demonstrates active listening during an interview?", options: ["Interrupting before the question is finished", "Responding directly and relevantly to the interviewer's questions", "Staring at a phone during the conversation", "Giving unrelated answers to every question"], answer: 1, cat: "Interview Skills" },
+            { id: 147, q: "Why should a candidate avoid speaking negatively about a previous employer during an interview?", options: ["It is always viewed positively by interviewers", "It has no effect on how the candidate is perceived", "It can create a negative impression of the candidate's professionalism", "It is a required part of every interview"], answer: 2, cat: "Interview Skills" },
+            { id: 148, q: "Sending a follow-up thank-you message after an interview is considered good practice because it:", options: ["is considered unprofessional and unnecessary", "shows appreciation and reinforces a positive, professional impression", "guarantees a job offer regardless of interview performance", "replaces the need to answer interview questions well"], answer: 1, cat: "Interview Skills" },
+            { id: 149, q: "Which of the following is an important consideration for professional attire in an interview?", options: ["Dressing appropriately for the company's culture and the role", "Avoiding any preparation regarding appearance", "Attire has no impact on an interviewer's impression", "Wearing whatever is most comfortable regardless of context"], answer: 0, cat: "Interview Skills" },
+            { id: 150, q: "Why is punctuality especially important when attending a job interview?", options: ["Interviewers expect candidates to arrive significantly late", "Punctuality has no bearing on an interview's outcome", "Arriving late is generally seen as a sign of confidence", "Arriving late can create a negative first impression of reliability"], answer: 3, cat: "Interview Skills" },
+
+            { id: 151, q: "A group discussion in a business or academic context is best described as:", options: ["a structured conversation where participants share and exchange views on a topic", "an unstructured, silent activity", "a one-person monologue with no interaction", "a private written exam"], answer: 0, cat: "Group Discussions" },
+            { id: 152, q: "Which of the following is a key skill for effective participation in a group discussion?", options: ["Listening actively to others before responding", "Speaking over other participants constantly", "Refusing to contribute any ideas", "Ignoring all other viewpoints"], answer: 0, cat: "Group Discussions" },
+            { id: 153, q: "Dominating a group discussion without letting others speak is generally considered:", options: ["the only way to succeed in a group discussion", "irrelevant to how participants are evaluated", "poor group communication etiquette", "excellent group communication etiquette"], answer: 2, cat: "Group Discussions" },
+            { id: 154, q: "Why is it important to stay on-topic during a group discussion?", options: ["It keeps the discussion focused and productive for all participants", "Topic relevance is never assessed in group discussions", "Staying on-topic has no value in group settings", "Discussions are more effective when they wander randomly"], answer: 0, cat: "Group Discussions" },
+            { id: 155, q: "Which of the following is an effective way to disagree with another participant in a group discussion?", options: ["Respectfully explaining a different viewpoint with supporting reasons", "Ignoring them completely", "Dismissing their point without explanation", "Interrupting them mid-sentence"], answer: 0, cat: "Group Discussions" },
+            { id: 156, q: "A group discussion evaluated using a rubric is typically assessed on:", options: ["random, undefined criteria", "the participant's clothing brand", "the participant's physical height", "criteria such as clarity, relevance, and communication skills"], answer: 3, cat: "Group Discussions" },
+            { id: 157, q: "Why might a facilitator be used in a group discussion?", options: ["Facilitators serve no real purpose in group discussions", "To guide the conversation and ensure all participants have a chance to contribute", "To dominate the discussion entirely", "To prevent anyone from speaking at all"], answer: 1, cat: "Group Discussions" },
+            { id: 158, q: "Which of the following behaviors would most likely hurt someone's evaluation in a group discussion?", options: ["Interrupting others and refusing to consider different viewpoints", "Building constructively on others' points", "Staying focused on the discussion topic", "Listening carefully to other participants"], answer: 0, cat: "Group Discussions" },
+            { id: 159, q: "Building on another participant's point during a group discussion demonstrates:", options: ["an inability to form independent ideas", "disrespect toward the group", "collaborative listening and constructive engagement", "a complete lack of preparation"], answer: 2, cat: "Group Discussions" },
+            { id: 160, q: "Why are group discussions often used in academic or hiring contexts?", options: ["They only test a participant's memorization skills", "They are used purely for entertainment purposes", "They have no diagnostic value for evaluators", "They reveal how individuals communicate, collaborate, and think under a group setting"], answer: 3, cat: "Group Discussions" },
+
+            { id: 161, q: "Ethical communication in business is best defined as:", options: ["manipulating information to benefit the sender", "communicating only when legally required", "avoiding all communication with stakeholders", "communicating honestly, respectfully, and responsibly"], answer: 3, cat: "Communication Ethics" },
+            { id: 162, q: "Which of the following is an example of unethical business communication?", options: ["Clearly stating accurate facts", "Deliberately providing misleading information to a client", "Giving honest, constructive feedback", "Respecting a colleague's privacy"], answer: 1, cat: "Communication Ethics" },
+            { id: 163, q: "Why is honesty considered a core principle of ethical communication?", options: ["It builds trust and credibility between communicators", "Honesty has no impact on professional relationships", "Dishonesty is generally more effective in business", "Honesty is only relevant in personal relationships"], answer: 0, cat: "Communication Ethics" },
+            { id: 164, q: "Plagiarism in written business communication refers to:", options: ["writing an entirely original report", "summarizing a source with clear attribution", "properly citing another person's research", "presenting someone else's work or ideas as your own without credit"], answer: 3, cat: "Communication Ethics" },
+            { id: 165, q: "Why must confidential workplace information be handled carefully in communication?", options: ["All workplace information should always be shared publicly", "Mishandling it can breach trust, privacy, or legal obligations", "Confidentiality has no real consequences if broken", "Confidential information is never sensitive"], answer: 1, cat: "Communication Ethics" },
+            { id: 166, q: "Courtesy in professional communication involves:", options: ["ignoring others' feelings entirely", "being rude whenever frustrated", "only being polite to senior management", "treating others with respect and politeness, even during disagreements"], answer: 3, cat: "Communication Ethics" },
+            { id: 167, q: "Which of the following best reflects ethical conduct when giving feedback to a colleague?", options: ["Publicly humiliating the colleague", "Avoiding all honesty to spare feelings", "Being harsh and personally insulting", "Being honest but respectful and constructive"], answer: 3, cat: "Communication Ethics" },
+            { id: 168, q: "Why is it unethical to exaggerate facts or data in a business report?", options: ["It can mislead decision-makers and damage trust in the organization", "Exaggerated data has no real business consequences", "Exaggeration always improves a report's quality", "Accuracy is not important in business reporting"], answer: 0, cat: "Communication Ethics" },
+            { id: 169, q: "Cultural sensitivity is considered part of ethical communication because it:", options: ["is only relevant in international business", "shows respect for others' backgrounds and avoids unintentional offense", "should be ignored to maintain consistency", "has no connection to ethical behavior"], answer: 1, cat: "Communication Ethics" },
+            { id: 170, q: "Which of the following best reflects professionalism in workplace communication?", options: ["Responding to criticism with hostility", "Losing composure during every disagreement", "Remaining calm, respectful, and constructive, even in difficult situations", "Ignoring workplace conflicts entirely"], answer: 2, cat: "Communication Ethics" },
+            { id: 171, q: "Why might submitting AI-generated work as one's own original writing be considered an ethical issue in an academic or professional context?", options: ["It is always fully transparent and honest", "It is considered standard, expected practice", "Authorship has no ethical relevance in academic work", "It misrepresents the true authorship and effort behind the work"], answer: 3, cat: "Communication Ethics" },
+            { id: 172, q: "Reflecting on one's own communication style and identifying areas for improvement supports:", options: ["avoiding any future change in behavior", "no real benefit to a communicator's development", "ongoing personal and professional growth", "blaming others for communication failures"], answer: 2, cat: "Communication Ethics" },
+
+            { id: 173, q: "Which of the following is commonly used for professional document creation in business communication?", options: ["A fax machine only", "A typewriter", "MS Word", "A handwritten notebook exclusively"], answer: 2, cat: "Digital Communication Tools" },
+            { id: 174, q: "Which of the following is commonly used for creating business presentations?", options: ["PowerPoint", "A fax cover sheet", "A paper ledger", "A telephone directory"], answer: 0, cat: "Digital Communication Tools" },
+            { id: 175, q: "Which of the following tools is commonly used to check grammar and writing clarity?", options: ["A physical dictionary only", "A whiteboard marker", "A stapler", "Grammarly"], answer: 3, cat: "Digital Communication Tools" },
+            { id: 176, q: "Google Workspace is commonly used in business communication for:", options: ["printing physical letters only", "replacing all forms of verbal communication", "manufacturing office furniture", "collaborative document creation and communication tools"], answer: 3, cat: "Digital Communication Tools" },
+            { id: 177, q: "Which of the following is an example of instant messaging commonly used in modern workplace communication?", options: ["A formal printed letter", "WhatsApp", "A telegram", "A fax machine"], answer: 1, cat: "Digital Communication Tools" },
+            { id: 178, q: "Why has digital communication become essential in modern business?", options: ["It has completely replaced the need for any communication skills", "It only works within a single office building", "It allows fast, convenient, and often real-time communication across distances", "It is slower and less convenient than traditional mail"], answer: 2, cat: "Digital Communication Tools" },
+            { id: 179, q: "Which of the following is good etiquette when using workplace messaging apps like WhatsApp for business?", options: ["Ignoring message tone entirely", "Using excessive slang regardless of the recipient", "Sending unrelated personal messages constantly", "Keeping messages professional, clear, and relevant"], answer: 3, cat: "Digital Communication Tools" },
+            { id: 180, q: "Video conferencing tools are primarily valuable in business communication because they:", options: ["replace the need for written documentation entirely", "allow face-to-face-style meetings between people in different locations", "eliminate the need for any visual communication", "are only useful for entertainment purposes"], answer: 1, cat: "Digital Communication Tools" },
+            { id: 181, q: "Which of the following is a risk associated with digital communication tools in the workplace?", options: ["Digital tools eliminate all forms of miscommunication", "Digital tools guarantee perfectly clear communication every time", "There is no risk associated with digital communication", "Messages can be misinterpreted without tone or body language"], answer: 3, cat: "Digital Communication Tools" },
+            { id: 182, q: "Why should professionals be cautious about the tone used in digital messages, such as emails or chats?", options: ["Tone has no relevance in digital communication", "Digital messages cannot be misinterpreted", "Text-based tone is always perfectly clear", "Text lacks vocal tone and body language, making messages easier to misread"], answer: 3, cat: "Digital Communication Tools" },
+            { id: 183, q: "Collaborative tools, such as shared documents, are valuable in business communication because they:", options: ["are only useful for personal, non-business tasks", "restrict access to only one user at a time", "eliminate the need for any teamwork", "allow multiple people to work on and edit the same document together"], answer: 3, cat: "Digital Communication Tools" },
+            { id: 184, q: "Why is digital literacy considered an important business communication skill today?", options: ["Digital tools are rarely used in modern workplaces", "Only IT professionals need digital communication skills", "Most modern workplace communication relies on digital tools and platforms", "Digital literacy has no impact on career success"], answer: 2, cat: "Digital Communication Tools" },
+
+            { id: 185, q: "Public speaking is best defined as:", options: ["writing a private letter to a friend", "sending a text message", "reading silently to oneself", "the act of delivering a speech or talk to a live audience"], answer: 3, cat: "Public Speaking" },
+            { id: 186, q: "Which of the following is a common technique to manage public speaking anxiety?", options: ["Practicing the speech multiple times beforehand", "Avoiding any preparation to stay spontaneous", "Memorizing nothing and improvising entirely", "Ignoring the audience completely"], answer: 0, cat: "Public Speaking" },
+            { id: 187, q: "Why is audience analysis important before public speaking?", options: ["It is only relevant for written communication", "All audiences require identical content regardless of context", "It helps the speaker tailor content and language to the audience's needs", "Audience analysis has no effect on a speech's success"], answer: 2, cat: "Public Speaking" },
+            { id: 188, q: "Which of the following best describes 'vocal variety' in public speaking?", options: ["Speaking as quietly as possible throughout", "Speaking in a completely flat, unchanging tone", "Changing pitch, pace, and volume to keep the audience engaged", "Avoiding any change in speaking style"], answer: 2, cat: "Public Speaking" },
+            { id: 189, q: "Why is maintaining eye contact with the audience important during public speaking?", options: ["It should be avoided entirely", "It has no impact on audience perception", "It helps build connection and shows confidence", "It is considered rude in public speaking"], answer: 2, cat: "Public Speaking" },
+            { id: 190, q: "Which of the following is an example of a filler word that should generally be minimized in public speaking?", options: ["'Um'", "'Conclusion'", "'Therefore'", "'However'"], answer: 0, cat: "Public Speaking" },
+            { id: 191, q: "Why is it helpful to rehearse a speech in front of others before delivering it?", options: ["It removes the need for any further preparation", "It guarantees the audience will ask no questions", "Rehearsing has no effect on speech quality", "It provides an opportunity to receive feedback and improve delivery"], answer: 3, cat: "Public Speaking" },
+            { id: 192, q: "Which of the following best supports a strong opening in a public speech?", options: ["A long list of unrelated facts", "A compelling story, question, or statistic that grabs attention", "Reading the entire outline aloud", "An immediate apology for being unprepared"], answer: 1, cat: "Public Speaking" },
+            { id: 193, q: "Why should a public speaker be mindful of their body language on stage?", options: ["Body language reinforces or contradicts the spoken message", "Only vocal tone matters in public speaking", "Body language has no connection to the spoken message", "Audiences never notice a speaker's body language"], answer: 0, cat: "Public Speaking" },
+            { id: 194, q: "Which of the following is an effective way to close a public speech?", options: ["Introducing entirely new, unrelated information", "Trailing off without any clear conclusion", "Ending abruptly with no summary", "A clear, memorable summary or call to action"], answer: 3, cat: "Public Speaking" },
+
+            { id: 195, q: "Why is a micro-field task, such as interviewing a professional about their communication practices, valuable for students?", options: ["It connects classroom communication theory to real workplace practice", "It is only useful for unrelated subjects", "It has no connection to classroom learning", "It replaces the need to understand communication theory"], answer: 0, cat: "Professionalism, Field Reflection & Portfolio" },
+            { id: 196, q: "A guest speaker session with an HR professional on workplace etiquette primarily helps students:", options: ["avoid learning any practical communication skills", "replace the need for classroom instruction entirely", "understand real-world expectations for professional communication", "focus only on unrelated technical skills"], answer: 2, cat: "Professionalism, Field Reflection & Portfolio" },
+            { id: 197, q: "What is the purpose of including a reflection in a communication portfolio?", options: ["To increase the page count with no real value", "To replace the need for any practical communication tasks", "To record attendance only", "To help the student evaluate their communication growth and identify areas for improvement"], answer: 3, cat: "Professionalism, Field Reflection & Portfolio" },
+            { id: 198, q: "Which of the following is a typical component of a communication portfolio described in the course?", options: ["A record of unrelated financial transactions", "A professional email, report, and presentation", "A list of unrelated hobbies", "A collection of unrelated personal photographs"], answer: 1, cat: "Professionalism, Field Reflection & Portfolio" },
+            { id: 199, q: "Why is reflecting on one's own communication strengths and weaknesses valuable for professional growth?", options: ["It is only useful for academic assessment, not real growth", "It helps identify specific areas to improve and build a personal development plan", "Self-reflection has no impact on professional growth", "It replaces the need to practice communication skills"], answer: 1, cat: "Professionalism, Field Reflection & Portfolio" },
+            { id: 200, q: "A comprehensive review before a final mock exam is valuable because it:", options: ["guarantees a perfect exam score", "replaces the need to attend any classes", "consolidates understanding across all communication topics before assessment", "only covers the very first topic of the course"], answer: 2, cat: "Professionalism, Field Reflection & Portfolio" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
