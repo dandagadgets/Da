@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Start-up & Entrepreneurship Mastery - 200 MCQ Interactive Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-lightbulb text-brand-500 text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-tight">BSPMaster <span class="text-xs bg-brand-600 text-white px-2 py-0.5 rounded-full font-normal">200 MCQs</span></h1>
+            </div>
+            
+            <div id="quiz-header-info" class="hidden flex items-center space-x-6 text-sm">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-regular fa-clock text-brand-500"></i>
+                    <span id="timer-display" class="font-mono text-base font-semibold">00:00</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-list-check text-brand-500"></i>
+                    <span>Progress: <strong id="progress-text">0/200</strong></span>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="btn-home" class="px-3 py-1.5 text-sm bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700">
+                    <i class="fa-solid fa-house mr-1"></i> Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 flex flex-col">
+
+        <!-- DASHBOARD / SETUP VIEW -->
+        <section id="dashboard-view" class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <div class="inline-flex p-3 rounded-full bg-brand-50 text-brand-600 mb-4">
+                    <i class="fa-solid fa-rocket text-3xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Master Business Start-up & Entrepreneurship with 200 Practice MCQs</h2>
+                <p class="text-slate-600 text-sm md:text-base max-w-xl mx-auto mb-6">
+                    Comprehensive practice covering Entrepreneurship Basics, Ideation Techniques (SCAMPER), PESTLE & SWOT Analysis, Marketing Mix, Operational Planning, Organizational Structure, Financial Planning, Digital Tools, Teamwork & Leadership, and Ethics & CSR.
+                </p>
+
+                <!-- Mode Selection -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                    <div id="mode-practice-card" class="p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-lightbulb text-amber-500 mr-2"></i>Practice Mode</span>
+                            <input type="radio" name="quiz-mode" value="practice" checked class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Immediate answer feedback, explanations, no pressure timer. Ideal for learning.</p>
+                    </div>
+
+                    <div id="mode-exam-card" class="p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative">
+                        <div class="flex items-start justify-between mb-2">
+                            <span class="font-semibold text-slate-900"><i class="fa-solid fa-stopwatch text-red-500 mr-2"></i>Exam Mode</span>
+                            <input type="radio" name="quiz-mode" value="exam" class="mt-1 text-brand-600 focus:ring-brand-500">
+                        </div>
+                        <p class="text-xs text-slate-600">Timed simulation, answer revealed at the end, full score report upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-left mb-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Select Chapter / Topic</label>
+                        <select id="category-select" class="w-full text-sm bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <option value="all">All Chapters (Questions 1 - 200)</option>
+                            <option value="1-20">1. Entrepreneurship Basics & Famous Entrepreneurs (1 - 20)</option>
+                            <option value="21-40">2. Ideation Techniques (21 - 40)</option>
+                            <option value="41-48">3. PESTLE Analysis (41 - 48)</option>
+                            <option value="49-60">4. SWOT Analysis & Business Environment (49 - 60)</option>
+                            <option value="61-80">5. Marketing Mix (4Ps) (61 - 80)</option>
+                            <option value="81-100">6. Operational Planning (81 - 100)</option>
+                            <option value="101-120">7. Organizational Structure (101 - 120)</option>
+                            <option value="121-140">8. Financial Planning (121 - 140)</option>
+                            <option value="141-160">9. Digital Tools in Business (141 - 160)</option>
+                            <option value="161-180">10. Teamwork & Leadership (161 - 180)</option>
+                            <option value="181-200">11. Ethics & CSR in Entrepreneurship (181 - 200)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="btn-start-quiz" class="w-full md:w-auto px-8 py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                    Start Quiz Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- QUIZ ACTIVE VIEW -->
+        <section id="quiz-view" class="hidden flex-grow flex flex-col md:flex-row gap-6">
+
+            <!-- Sidebar Navigation Palette -->
+            <aside class="w-full md:w-64 bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-auto md:h-[calc(100vh-120px)] sticky top-20">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-bold text-sm text-slate-700">Question Navigator</h3>
+                    <span id="nav-counter" class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium">1 / 200</span>
+                </div>
+
+                <!-- Search/Jump -->
+                <div class="mb-3">
+                    <input type="number" id="jump-input" placeholder="Jump to Q# (1-200)" min="1" max="200" class="w-full text-xs p-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+
+                <!-- Question Grid -->
+                <div id="question-grid" class="grid grid-cols-5 gap-1.5 overflow-y-auto custom-scrollbar flex-grow pr-1 max-h-48 md:max-h-none mb-4">
+                    <!-- Dynamic Question Buttons -->
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 text-xs space-y-2">
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-slate-200 rounded-sm inline-block"></span> <span>Unanswered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-brand-600 rounded-sm inline-block"></span> <span>Answered</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-emerald-500 rounded-sm inline-block"></span> <span>Correct (Practice)</span></div>
+                    <div class="flex items-center space-x-2"><span class="w-3 h-3 bg-rose-500 rounded-sm inline-block"></span> <span>Incorrect (Practice)</span></div>
+                </div>
+
+                <button id="btn-submit-exam" class="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition shadow-sm">
+                    Submit Quiz
+                </button>
+            </aside>
+
+            <!-- Question Card Area -->
+            <div class="flex-grow flex flex-col">
+                <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 shadow-sm flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Question Header Meta -->
+                        <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                            <span id="q-category-tag" class="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md uppercase tracking-wider">General Entrepreneurship</span>
+                            <span id="q-number-tag" class="text-brand-600 font-bold">Question 1 of 200</span>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-900 mb-6 leading-relaxed">
+                            Loading question...
+                        </h3>
+
+                        <!-- Options Container -->
+                        <div id="options-container" class="space-y-3 mb-6">
+                            <!-- Options injected dynamically -->
+                        </div>
+
+                        <!-- Instant Feedback Box (Practice Mode Only) -->
+                        <div id="feedback-box" class="hidden p-4 rounded-xl border mb-6 transition">
+                            <div class="flex items-start space-x-3">
+                                <i id="feedback-icon" class="text-xl mt-0.5"></i>
+                                <div>
+                                    <h4 id="feedback-title" class="font-bold text-sm"></h4>
+                                    <p id="feedback-text" class="text-xs mt-1 text-slate-600"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Controls -->
+                    <div class="flex items-center justify-between pt-6 border-t border-slate-100 mt-auto">
+                        <button id="btn-prev" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left mr-1"></i> Previous
+                        </button>
+
+                        <div class="flex space-x-2">
+                            <button id="btn-clear" class="px-3 py-2 text-slate-500 hover:text-slate-700 text-xs font-medium transition">
+                                Clear Choice
+                            </button>
+                            <button id="btn-next" class="px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-lg transition shadow-md">
+                                Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- RESULTS / REPORT VIEW -->
+        <section id="results-view" class="hidden max-w-4xl mx-auto w-full space-y-6">
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 text-center">
+                <div id="score-badge" class="inline-flex p-4 rounded-full bg-emerald-50 text-emerald-600 mb-3">
+                    <i class="fa-solid fa-trophy text-4xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-1">Quiz Completed!</h2>
+                <p id="results-subtitle" class="text-slate-500 text-sm mb-6">Here is your performance summary</p>
+
+                <!-- Score Summary Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-black text-brand-600 mt-1">0/200</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-black text-slate-800 mt-1">0%</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-black text-emerald-600 mt-1">0</span>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
+                        <span id="res-time" class="text-2xl font-black text-slate-800 mt-1">00:00</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button id="btn-restart" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition shadow-md">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Try Again
+                    </button>
+                    <button id="btn-review-answers" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-xl transition">
+                        <i class="fa-solid fa-magnifying-glass mr-1.5"></i> Review Answers
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Review List -->
+            <div id="review-container" class="hidden space-y-4">
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Detailed Answer Key</h3>
+                <div id="review-list" class="space-y-4">
+                    <!-- Dynamic Answer Key Items -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800">
+        <p>Interactive Business Start-up & Entrepreneurship Quiz • 200 Comprehensive Questions • Made by Danial</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA STRUCTURE (200 MCQs) ---
+        const rawQuestions = [
+            { id: 1, q: "Entrepreneurship means:", options: ["Avoiding risks in business", "Sharing ideas only", "Copying competitors", "Turning an idea into a business"], answer: 3, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 2, q: "Who is called an entrepreneur?", options: ["A person who only manages employees", "A person who works in government", "A person who invests in shares", "A person who turns ideas into business"], answer: 3, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 3, q: "Why is entrepreneurship important?", options: ["It avoids customer satisfaction", "It creates jobs and innovation", "It increases unemployment", "It reduces teamwork"], answer: 1, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 4, q: "What is the main reason people start a business?", options: ["To make a difference or earn income", "To avoid customers", "To reduce profits", "To stop innovation"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 5, q: "Which of the following is a characteristic of successful entrepreneurs?", options: ["Ignoring customers", "Disrespecting employees", "Avoiding risks", "Passion for business"], answer: 3, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 6, q: "What is the difference between inventor and entrepreneur?", options: ["Inventor only sells products", "Entrepreneur only manages employees", "Inventor creates product, entrepreneur builds business", "Both are same"], answer: 2, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 7, q: "Who transformed a search engine idea into Google?", options: ["Steve Jobs", "Larry Page", "Bill Gates", "Mark Zuckerberg"], answer: 1, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 8, q: "Why do entrepreneurs take risks?", options: ["To create value", "To reduce innovation", "To stop growth", "To avoid profit"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 9, q: "What is the ultimate goal of entrepreneurship?", options: ["Deliver value to customers and society", "Copy competitors", "Avoid teamwork", "Increase unemployment"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 10, q: "Who started Amazon?", options: ["Jeff Bezos", "Steve Jobs", "Elon Musk", "Larry Page"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 11, q: "Why do people become entrepreneurs?", options: ["To be their own boss", "To avoid customers", "To reduce profits", "To stop innovation"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 12, q: "What motivates entrepreneurs?", options: ["Ignoring customers", "Passion and ideas", "Copying competitors", "Avoiding risks"], answer: 1, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 13, q: "Who started Facebook?", options: ["Mark Zuckerberg", "Larry Page", "Elon Musk", "Bill Gates"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 14, q: "What is execution intelligence?", options: ["Copying competitors", "Ability to turn ideas into action", "Ignoring customers", "Avoiding teamwork"], answer: 1, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 15, q: "Why is customer focus important?", options: ["It increases unemployment", "It reduces profits", "It avoids teamwork", "No business can succeed without satisfied customers"], answer: 3, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 16, q: "Who left Microsoft to help children?", options: ["John Wood", "Jeff Bezos", "Larry Page", "Elon Musk"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 17, q: "What is tenacity despite failure?", options: ["Avoiding risks", "Copying competitors", "Ignoring customers", "Ability to continue after setbacks"], answer: 3, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 18, q: "Why is entrepreneurship vital for economy?", options: ["Creates jobs and supports growth", "Reduces profits", "Increases unemployment", "Avoids teamwork"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 19, q: "Who created Thumbtack?", options: ["Entrepreneurs solving customer problems", "Government officials", "Inventors only", "Teachers"], answer: 0, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+            { id: 20, q: "What is the key point of entrepreneurship?", options: ["Ignore customers, copy competitors", "Avoid teamwork, reduce profits", "Identify opportunity, take risk, create value", "Increase unemployment, reduce growth"], answer: 2, cat: "Entrepreneurship Basics & Famous Entrepreneurs" },
+
+            { id: 21, q: "What is ideation?", options: ["Process of generating business ideas", "Copying competitors", "Ignoring problems", "Guessing ideas randomly"], answer: 0, cat: "Ideation Techniques" },
+            { id: 22, q: "Who introduced SCAMPER technique?", options: ["Peter Drucker", "Steve Jobs", "Alex Osborn", "Bob Eberle"], answer: 3, cat: "Ideation Techniques" },
+            { id: 23, q: "Why is brainstorming useful?", options: ["Stops innovation", "Avoids teamwork", "Generates many ideas quickly", "Reduces creativity"], answer: 2, cat: "Ideation Techniques" },
+            { id: 24, q: "What is problem identification?", options: ["Avoiding customers", "Ignoring issues", "Copying competitors", "Observing daily life problems"], answer: 3, cat: "Ideation Techniques" },
+            { id: 25, q: "Which SCAMPER step means “Substitute”?", options: ["Replace something", "Eliminate parts", "Combine ideas", "Reverse order"], answer: 0, cat: "Ideation Techniques" },
+            { id: 26, q: "Which SCAMPER step means “Combine”?", options: ["Ignore problems", "Remove parts", "Merge ideas", "Adapt for new use"], answer: 2, cat: "Ideation Techniques" },
+            { id: 27, q: "Which SCAMPER step means “Adapt”?", options: ["Reverse order", "Eliminate parts", "Adjust for new use", "Copy competitors"], answer: 2, cat: "Ideation Techniques" },
+            { id: 28, q: "Which SCAMPER step means “Modify”?", options: ["Change size or design", "Ignore customers", "Copy competitors", "Avoid teamwork"], answer: 0, cat: "Ideation Techniques" },
+            { id: 29, q: "Which SCAMPER step means “Put to another use”?", options: ["Copy competitors", "Use differently", "Remove parts", "Reverse order"], answer: 1, cat: "Ideation Techniques" },
+            { id: 30, q: "Which SCAMPER step means “Eliminate”?", options: ["Reverse order", "Combine ideas", "Adapt for new use", "Remove unnecessary parts"], answer: 3, cat: "Ideation Techniques" },
+            { id: 31, q: "Which SCAMPER step means “Rearrange”?", options: ["Copy competitors", "Avoid teamwork", "Change order or do opposite", "Ignore customers"], answer: 2, cat: "Ideation Techniques" },
+            { id: 32, q: "What is mind mapping?", options: ["Visualizing connections between ideas", "Avoiding teamwork", "Copying competitors", "Ignoring problems"], answer: 0, cat: "Ideation Techniques" },
+            { id: 33, q: "Why is market research important?", options: ["Reduces profits", "Ensures ideas are customer-driven", "Stops innovation", "Avoids teamwork"], answer: 1, cat: "Ideation Techniques" },
+            { id: 34, q: "What is trend analysis?", options: ["Avoiding customers", "Copying competitors", "Ignoring problems", "Observing market popularity"], answer: 3, cat: "Ideation Techniques" },
+            { id: 35, q: "Which ideation technique uses group activity?", options: ["SCAMPER", "Trend analysis", "Brainstorming", "Problem identification"], answer: 2, cat: "Ideation Techniques" },
+            { id: 36, q: "Which ideation technique uses customer surveys?", options: ["Mind mapping", "Brainstorming", "SCAMPER", "Market research"], answer: 3, cat: "Ideation Techniques" },
+            { id: 37, q: "Which ideation technique uses visual diagrams?", options: ["Mind mapping", "Problem identification", "SCAMPER", "Trend analysis"], answer: 0, cat: "Ideation Techniques" },
+            { id: 38, q: "Which ideation technique focuses on problems?", options: ["Trend analysis", "Problem identification", "Brainstorming", "SCAMPER"], answer: 1, cat: "Ideation Techniques" },
+            { id: 39, q: "Which ideation technique modifies existing products?", options: ["Mind mapping", "SCAMPER", "Trend analysis", "Market research"], answer: 1, cat: "Ideation Techniques" },
+            { id: 40, q: "Which ideation technique follows current popularity?", options: ["SCAMPER", "Mind mapping", "Problem identification", "Trend analysis"], answer: 3, cat: "Ideation Techniques" },
+
+            { id: 41, q: "What does PESTLE stand for?", options: ["Political, Economic, Social, Technological, Legal, Environmental", "People, Energy, Skills, Time, Learning, Experience", "Planning, Execution, Strategy, Teamwork, Leadership, Evaluation", "Profit, Equity, Sales, Trade, Labour, Efficiency"], answer: 0, cat: "PESTLE Analysis" },
+            { id: 42, q: "Why do businesses use PESTLE analysis?", options: ["To reduce profits", "To avoid planning", "To analyze external environment", "To evaluate internal staff only"], answer: 2, cat: "PESTLE Analysis" },
+            { id: 43, q: "Which factor in PESTLE includes tax policies?", options: ["Technological", "Economic", "Social", "Political"], answer: 3, cat: "PESTLE Analysis" },
+            { id: 44, q: "Which factor in PESTLE includes inflation?", options: ["Political", "Economic", "Legal", "Environmental"], answer: 1, cat: "PESTLE Analysis" },
+            { id: 45, q: "Which factor in PESTLE includes cultural trends?", options: ["Social", "Technological", "Political", "Legal"], answer: 0, cat: "PESTLE Analysis" },
+            { id: 46, q: "Which factor in PESTLE includes automation?", options: ["Environmental", "Legal", "Economic", "Technological"], answer: 3, cat: "PESTLE Analysis" },
+            { id: 47, q: "Which factor in PESTLE includes labour laws?", options: ["Social", "Legal", "Economic", "Political"], answer: 1, cat: "PESTLE Analysis" },
+            { id: 48, q: "Which factor in PESTLE includes climate change?", options: ["Economic", "Social", "Environmental", "Political"], answer: 2, cat: "PESTLE Analysis" },
+
+            { id: 49, q: "What is the purpose of SWOT analysis?", options: ["To avoid teamwork", "To confuse competitors", "To evaluate strengths, weaknesses, opportunities, threats", "To reduce profits"], answer: 2, cat: "SWOT Analysis & Business Environment" },
+            { id: 50, q: "Which part of SWOT is internal and positive?", options: ["Strengths", "Weaknesses", "Threats", "Opportunities"], answer: 0, cat: "SWOT Analysis & Business Environment" },
+            { id: 51, q: "Which part of SWOT is internal and negative?", options: ["Threats", "Weaknesses", "Strengths", "Opportunities"], answer: 1, cat: "SWOT Analysis & Business Environment" },
+            { id: 52, q: "Which part of SWOT is external and positive?", options: ["Strengths", "Weaknesses", "Threats", "Opportunities"], answer: 3, cat: "SWOT Analysis & Business Environment" },
+            { id: 53, q: "Which part of SWOT is external and negative?", options: ["Weaknesses", "Threats", "Strengths", "Opportunities"], answer: 1, cat: "SWOT Analysis & Business Environment" },
+            { id: 54, q: "What is an example of strength in SWOT?", options: ["Price increase", "Low budget", "High quality product", "New competitors"], answer: 2, cat: "SWOT Analysis & Business Environment" },
+            { id: 55, q: "What is an example of weakness in SWOT?", options: ["Poor marketing", "High demand", "Skilled staff", "Strong brand"], answer: 0, cat: "SWOT Analysis & Business Environment" },
+            { id: 56, q: "What is an example of opportunity in SWOT?", options: ["New market", "Low budget", "Strong competition", "Poor management"], answer: 0, cat: "SWOT Analysis & Business Environment" },
+            { id: 57, q: "What is an example of threat in SWOT?", options: ["Strong brand", "Skilled staff", "High quality product", "New competitors"], answer: 3, cat: "SWOT Analysis & Business Environment" },
+            { id: 58, q: "Why is SWOT analysis important?", options: ["Stops innovation", "Reduces profits", "Helps business compete and grow", "Avoids teamwork"], answer: 2, cat: "SWOT Analysis & Business Environment" },
+            { id: 59, q: "Which environment is controllable by business?", options: ["Political", "External", "Macro", "Internal"], answer: 3, cat: "SWOT Analysis & Business Environment" },
+            { id: 60, q: "Which environment is uncontrollable by business?", options: ["Employees", "External", "Internal", "Finance"], answer: 1, cat: "SWOT Analysis & Business Environment" },
+
+            { id: 61, q: "What does the term “Marketing Mix” mean?", options: ["Only advertising", "Combination of 4Ps", "Only product design", "Only pricing strategy"], answer: 1, cat: "Marketing Mix (4Ps)" },
+            { id: 62, q: "Which of the following is NOT part of 4Ps?", options: ["Profit", "Price", "Place", "Product"], answer: 0, cat: "Marketing Mix (4Ps)" },
+            { id: 63, q: "What is the first “P” in marketing mix?", options: ["Place", "Product", "Promotion", "Price"], answer: 1, cat: "Marketing Mix (4Ps)" },
+            { id: 64, q: "Why is product important in marketing?", options: ["It avoids innovation", "It increases unemployment", "It reduces teamwork", "It satisfies customer needs"], answer: 3, cat: "Marketing Mix (4Ps)" },
+            { id: 65, q: "Which of the following is an example of a service?", options: ["Food delivery", "Juice bottle", "Shoes", "Mobile phone"], answer: 0, cat: "Marketing Mix (4Ps)" },
+            { id: 66, q: "What does “Price” in marketing mix mean?", options: ["Place of selling", "Design of product", "Amount customers pay", "Promotion strategy"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 67, q: "Which pricing strategy offers discounts?", options: ["Promotional pricing", "Low price strategy", "High price strategy", "Ignoring customers"], answer: 0, cat: "Marketing Mix (4Ps)" },
+            { id: 68, q: "What does “Place” in marketing mix mean?", options: ["How product is designed", "How product is priced", "Where product is available", "How product is promoted"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 69, q: "Which of the following is a distribution channel?", options: ["Markets", "Online stores", "All of the above", "Shops"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 70, q: "What does “Promotion” in marketing mix mean?", options: ["Reducing profits", "Ignoring customers", "Informing and persuading customers", "Avoiding teamwork"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 71, q: "Which of the following is a promotion method?", options: ["All of the above", "Social media marketing", "Advertising", "Posters"], answer: 0, cat: "Marketing Mix (4Ps)" },
+            { id: 72, q: "Why do businesses use marketing mix?", options: ["To reduce innovation", "To avoid teamwork", "To increase sales and profit", "To ignore customers"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 73, q: "Which of the following is an example of product decision?", options: ["Promotion strategy", "Place of selling", "Quality and design", "Pricing discounts"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 74, q: "Which of the following is an example of price decision?", options: ["Product packaging", "Promotion posters", "Discounts and offers", "Place of selling"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 75, q: "Which of the following is an example of place decision?", options: ["School canteen", "All of the above", "College area", "Online store"], answer: 1, cat: "Marketing Mix (4Ps)" },
+            { id: 76, q: "Which of the following is an example of promotion decision?", options: ["Free samples", "All of the above", "Posters", "Instagram ads"], answer: 1, cat: "Marketing Mix (4Ps)" },
+            { id: 77, q: "Why is marketing important?", options: ["Increases unemployment", "Attracts customers and satisfies needs", "Reduces profits", "Avoids teamwork"], answer: 1, cat: "Marketing Mix (4Ps)" },
+            { id: 78, q: "Which of the following is a benefit of using marketing mix?", options: ["Build brand image", "Increase sales", "Understand customer needs", "All of the above"], answer: 3, cat: "Marketing Mix (4Ps)" },
+            { id: 79, q: "Which of the following is an example of product variety?", options: ["Same design only", "Ignoring customers", "Different bottle sizes", "No packaging"], answer: 2, cat: "Marketing Mix (4Ps)" },
+            { id: 80, q: "Which of the following is an example of promotion campaign?", options: ["Posters near colleges", "Discount offers", "Free tasting", "All of the above"], answer: 3, cat: "Marketing Mix (4Ps)" },
+
+            { id: 81, q: "What is an operational plan?", options: ["Financial statement", "Long-term vision only", "Daily action plan for business", "Marketing campaign"], answer: 2, cat: "Operational Planning" },
+            { id: 82, q: "Why is operational planning important?", options: ["Reduces profits", "Stops innovation", "Avoids teamwork", "Ensures smooth daily activities"], answer: 3, cat: "Operational Planning" },
+            { id: 83, q: "Which of the following is part of operational plan?", options: ["Customer survey", "Tasks and responsibilities", "Company logo", "Vision statement only"], answer: 1, cat: "Operational Planning" },
+            { id: 84, q: "What is the time frame of operational plan?", options: ["Short-term (daily/weekly/monthly)", "No time frame", "Only vision statement", "Long-term (10 years)"], answer: 0, cat: "Operational Planning" },
+            { id: 85, q: "Which of the following is included in operational plan?", options: ["Copying competitors", "Ignoring customers", "Resources allocation", "Avoiding teamwork"], answer: 2, cat: "Operational Planning" },
+            { id: 86, q: "What is the difference between strategic and operational plan?", options: ["Operational = vision only", "Strategic = daily tasks", "Strategic = long-term, Operational = short-term", "Both are same"], answer: 2, cat: "Operational Planning" },
+            { id: 87, q: "Which of the following is an example of operational activity?", options: ["Daily production schedule", "Company mission statement", "Long-term vision", "Brand image"], answer: 0, cat: "Operational Planning" },
+            { id: 88, q: "Who prepares operational plan?", options: ["Managers and supervisors", "Competitors", "Customers only", "Government officials"], answer: 0, cat: "Operational Planning" },
+            { id: 89, q: "What is resource allocation?", options: ["Ignoring customers", "Avoiding teamwork", "Copying competitors", "Assigning resources to tasks"], answer: 3, cat: "Operational Planning" },
+            { id: 90, q: "Which of the following is a resource in operational plan?", options: ["Vision statement", "Company logo", "Customer survey", "Money, people, equipment"], answer: 3, cat: "Operational Planning" },
+            { id: 91, q: "What is performance monitoring?", options: ["Avoiding teamwork", "Copying competitors", "Checking progress of tasks", "Ignoring customers"], answer: 2, cat: "Operational Planning" },
+            { id: 92, q: "Why is scheduling important?", options: ["Reduces profits", "Avoids teamwork", "Stops innovation", "Ensures tasks are completed on time"], answer: 3, cat: "Operational Planning" },
+            { id: 93, q: "Which of the following is a tool for operational planning?", options: ["Customer survey", "Gantt chart", "Company logo", "Vision statement"], answer: 1, cat: "Operational Planning" },
+            { id: 94, q: "What is contingency planning?", options: ["Ignoring customers", "Copying competitors", "Avoiding teamwork", "Backup plan for emergencies"], answer: 3, cat: "Operational Planning" },
+            { id: 95, q: "Which of the following is an example of contingency plan?", options: ["Customer survey", "Vision statement", "Company logo", "Alternative supplier"], answer: 3, cat: "Operational Planning" },
+            { id: 96, q: "Why is communication important in operational plan?", options: ["Avoids teamwork", "Stops innovation", "Reduces profits", "Ensures everyone knows their role"], answer: 3, cat: "Operational Planning" },
+            { id: 97, q: "Which of the following is a KPI?", options: ["Company logo", "Customer survey", "Vision statement", "Sales target"], answer: 3, cat: "Operational Planning" },
+            { id: 98, q: "What is task delegation?", options: ["Ignoring customers", "Assigning tasks to employees", "Avoiding teamwork", "Copying competitors"], answer: 1, cat: "Operational Planning" },
+            { id: 99, q: "Why is operational plan reviewed regularly?", options: ["Reduce profits", "To check progress and make changes", "Stop innovation", "Avoid teamwork"], answer: 1, cat: "Operational Planning" },
+            { id: 100, q: "Which of the following is a benefit of operational planning?", options: ["Ignore customers", "Reduce profits", "Avoid teamwork", "Smooth workflow and efficiency"], answer: 3, cat: "Operational Planning" },
+
+            { id: 101, q: "What is organizational structure?", options: ["Company logo", "Customer survey", "System of roles and responsibilities", "Vision statement only"], answer: 2, cat: "Organizational Structure" },
+            { id: 102, q: "Why is organizational structure important?", options: ["Reduces profits", "Defines authority and communication flow", "Stops innovation", "Avoids teamwork"], answer: 1, cat: "Organizational Structure" },
+            { id: 103, q: "Which of the following is a type of organizational structure?", options: ["Divisional", "Functional", "All of the above", "Matrix"], answer: 2, cat: "Organizational Structure" },
+            { id: 104, q: "What is functional structure?", options: ["Grouping by job functions", "Grouping by products", "Grouping by geography", "Grouping by customers"], answer: 0, cat: "Organizational Structure" },
+            { id: 105, q: "What is divisional structure?", options: ["Grouping by geography", "Grouping by customers", "Grouping by job functions", "Grouping by products or services"], answer: 3, cat: "Organizational Structure" },
+            { id: 106, q: "What is matrix structure?", options: ["Only functional", "Combination of functional and divisional", "No structure", "Only divisional"], answer: 1, cat: "Organizational Structure" },
+            { id: 107, q: "Which structure is best for small businesses?", options: ["Divisional", "Geographical", "Matrix", "Functional"], answer: 3, cat: "Organizational Structure" },
+            { id: 108, q: "Which structure is best for multinational companies?", options: ["Functional", "Geographical", "Matrix", "Divisional"], answer: 1, cat: "Organizational Structure" },
+            { id: 109, q: "What is chain of command?", options: ["Customer survey", "Company logo", "Line of authority in organization", "Vision statement"], answer: 2, cat: "Organizational Structure" },
+            { id: 110, q: "What is span of control?", options: ["Customer survey", "Vision statement", "Company logo", "Number of employees under a manager"], answer: 3, cat: "Organizational Structure" },
+            { id: 111, q: "What is centralization?", options: ["Decision-making at lower level", "Avoiding teamwork", "No decision-making", "Decision-making at top level"], answer: 3, cat: "Organizational Structure" },
+            { id: 112, q: "What is decentralization?", options: ["Decision-making at top level", "Avoiding teamwork", "Decision-making at lower levels", "No decision-making"], answer: 2, cat: "Organizational Structure" },
+            { id: 113, q: "Which structure allows flexibility?", options: ["Geographical", "Divisional", "Functional", "Matrix"], answer: 3, cat: "Organizational Structure" },
+            { id: 114, q: "Which structure is simple and clear?", options: ["Functional", "Geographical", "Matrix", "Divisional"], answer: 0, cat: "Organizational Structure" },
+            { id: 115, q: "What is organizational chart?", options: ["Vision statement", "Diagram showing structure", "Customer survey", "Company logo"], answer: 1, cat: "Organizational Structure" },
+            { id: 116, q: "Why is communication important in structure?", options: ["Reduces profits", "Ensures smooth workflow", "Stops innovation", "Avoids teamwork"], answer: 1, cat: "Organizational Structure" },
+            { id: 117, q: "Which structure groups employees by location?", options: ["Matrix", "Divisional", "Geographical", "Functional"], answer: 2, cat: "Organizational Structure" },
+            { id: 118, q: "Which structure groups employees by product line?", options: ["Divisional", "Matrix", "Geographical", "Functional"], answer: 0, cat: "Organizational Structure" },
+            { id: 119, q: "Which structure combines authority from two managers?", options: ["Matrix", "Functional", "Geographical", "Divisional"], answer: 0, cat: "Organizational Structure" },
+            { id: 120, q: "What is the benefit of organizational structure?", options: ["Ignore customers", "Reduce profits", "Avoid teamwork", "Clear roles and efficiency"], answer: 3, cat: "Organizational Structure" },
+
+            { id: 121, q: "What is financial planning?", options: ["Managing money for future goals", "Copying competitors", "Ignoring customers", "Avoiding teamwork"], answer: 0, cat: "Financial Planning" },
+            { id: 122, q: "Why is financial planning important?", options: ["Reduces profits", "Ensures funds for business activities", "Stops innovation", "Avoids teamwork"], answer: 1, cat: "Financial Planning" },
+            { id: 123, q: "Which of the following is part of financial planning?", options: ["Investment decisions", "Forecasting", "Budgeting", "All of the above"], answer: 3, cat: "Financial Planning" },
+            { id: 124, q: "What is budgeting?", options: ["Planning income and expenses", "Copying competitors", "Avoiding teamwork", "Ignoring customers"], answer: 0, cat: "Financial Planning" },
+            { id: 125, q: "What is forecasting?", options: ["Predicting future financial outcomes", "Avoiding teamwork", "Ignoring customers", "Reducing profits"], answer: 0, cat: "Financial Planning" },
+            { id: 126, q: "Which of the following is a financial resource?", options: ["Equipment", "Company logo", "Employees", "Cash"], answer: 3, cat: "Financial Planning" },
+            { id: 127, q: "What is capital?", options: ["Vision statement", "Money invested in business", "Company logo", "Customer survey"], answer: 1, cat: "Financial Planning" },
+            { id: 128, q: "What is working capital?", options: ["Current assets minus current liabilities", "Company profit only", "Total liabilities only", "Total assets only"], answer: 0, cat: "Financial Planning" },
+            { id: 129, q: "Why is cash flow important?", options: ["Stops innovation", "Shows inflow and outflow of money", "Reduces profits", "Avoids teamwork"], answer: 1, cat: "Financial Planning" },
+            { id: 130, q: "What is break-even point?", options: ["Point where expenses ignored", "Point where loss is maximum", "Point where profit is maximum", "Point where revenue = cost"], answer: 3, cat: "Financial Planning" },
+            { id: 131, q: "What is ROI?", options: ["Return on Investment", "Rate of Inflation", "Return on Ideas", "Revenue on Income"], answer: 0, cat: "Financial Planning" },
+            { id: 132, q: "Why is ROI important?", options: ["Reduces profits", "Avoids teamwork", "Stops innovation", "Measures profitability of investment"], answer: 3, cat: "Financial Planning" },
+            { id: 133, q: "What is debt financing?", options: ["Borrowing money from banks", "Using personal savings", "Ignoring customers", "Selling shares"], answer: 0, cat: "Financial Planning" },
+            { id: 134, q: "What is equity financing?", options: ["Ignoring customers", "Using personal savings", "Borrowing from banks", "Selling shares to investors"], answer: 3, cat: "Financial Planning" },
+            { id: 135, q: "Which of the following is a short-term source of finance?", options: ["Bank overdraft", "Shares", "Debentures", "Long-term loan"], answer: 0, cat: "Financial Planning" },
+            { id: 136, q: "Which of the following is a long-term source of finance?", options: ["Bank loan", "Shares", "All of the above", "Debentures"], answer: 2, cat: "Financial Planning" },
+            { id: 137, q: "What is financial risk?", options: ["Ignoring customers", "Avoiding teamwork", "Chance of losing money", "Copying competitors"], answer: 2, cat: "Financial Planning" },
+            { id: 138, q: "Why is financial control important?", options: ["Reduces profits", "Avoids teamwork", "Stops innovation", "Ensures funds are used properly"], answer: 3, cat: "Financial Planning" },
+            { id: 139, q: "What is profit?", options: ["Revenue plus expenses", "Expenses only", "Revenue only", "Revenue minus expenses"], answer: 3, cat: "Financial Planning" },
+            { id: 140, q: "What is loss?", options: ["Ignoring customers", "Revenue equal to expenses", "Expenses greater than revenue", "Revenue greater than expenses"], answer: 2, cat: "Financial Planning" },
+
+            { id: 141, q: "What are digital tools in business?", options: ["Company logo", "Customer survey", "Software and apps used for tasks", "Vision statement"], answer: 2, cat: "Digital Tools in Business" },
+            { id: 142, q: "Why are digital tools important?", options: ["Reduce profits", "Stop innovation", "Avoid teamwork", "Increase efficiency and productivity"], answer: 3, cat: "Digital Tools in Business" },
+            { id: 143, q: "Which of the following is a communication tool?", options: ["WhatsApp", "All of the above", "Zoom", "Email"], answer: 1, cat: "Digital Tools in Business" },
+            { id: 144, q: "Which of the following is a project management tool?", options: ["All of the above", "Microsoft Project", "Trello", "Asana"], answer: 0, cat: "Digital Tools in Business" },
+            { id: 145, q: "Which of the following is a collaboration tool?", options: ["Slack", "All of the above", "Google Docs", "Microsoft Teams"], answer: 1, cat: "Digital Tools in Business" },
+            { id: 146, q: "What is cloud storage?", options: ["Online storage of files", "Company logo", "Vision statement", "Customer survey"], answer: 0, cat: "Digital Tools in Business" },
+            { id: 147, q: "Which of the following is a cloud storage service?", options: ["All of the above", "Google Drive", "OneDrive", "Dropbox"], answer: 0, cat: "Digital Tools in Business" },
+            { id: 148, q: "Why is cloud storage useful?", options: ["Stop innovation", "Access files anywhere", "Avoid teamwork", "Reduce profits"], answer: 1, cat: "Digital Tools in Business" },
+            { id: 149, q: "Which of the following is a financial tool?", options: ["Wave", "All of the above", "Xero", "QuickBooks"], answer: 1, cat: "Digital Tools in Business" },
+            { id: 150, q: "What is CRM software?", options: ["Cash Revenue Management", "Customer Relationship Management", "Company Resource Management", "Customer Report Method"], answer: 1, cat: "Digital Tools in Business" },
+            { id: 151, q: "Which of the following is a CRM tool?", options: ["Zoho CRM", "HubSpot", "All of the above", "Salesforce"], answer: 2, cat: "Digital Tools in Business" },
+            { id: 152, q: "Why is CRM important?", options: ["Avoid teamwork", "Reduce profits", "Ignore customers", "Manages customer relationships"], answer: 3, cat: "Digital Tools in Business" },
+            { id: 153, q: "Which of the following is a marketing tool?", options: ["Mailchimp", "Facebook Ads Manager", "Google Ads", "All of the above"], answer: 3, cat: "Digital Tools in Business" },
+            { id: 154, q: "What is SEO tool used for?", options: ["Improving website ranking", "Avoiding teamwork", "Reducing profits", "Ignoring customers"], answer: 0, cat: "Digital Tools in Business" },
+            { id: 155, q: "Which of the following is an SEO tool?", options: ["SEMRush", "Ahrefs", "All of the above", "Moz"], answer: 2, cat: "Digital Tools in Business" },
+            { id: 156, q: "What is social media management tool?", options: ["Ignore customers", "Helps manage posts and accounts", "Avoid teamwork", "Reduce profits"], answer: 1, cat: "Digital Tools in Business" },
+            { id: 157, q: "Which of the following is a social media tool?", options: ["All of the above", "Later", "Hootsuite", "Buffer"], answer: 0, cat: "Digital Tools in Business" },
+            { id: 158, q: "Why are digital tools cost-effective?", options: ["Avoid teamwork", "Reduce profits", "Reduce manual work and errors", "Stop innovation"], answer: 2, cat: "Digital Tools in Business" },
+            { id: 159, q: "Which of the following is a video conferencing tool?", options: ["Zoom", "All of the above", "Google Meet", "Microsoft Teams"], answer: 1, cat: "Digital Tools in Business" },
+            { id: 160, q: "What is the benefit of digital tools?", options: ["Reduce profits", "Ignore customers", "Efficiency, collaboration, and growth", "Avoid teamwork"], answer: 2, cat: "Digital Tools in Business" },
+
+            { id: 161, q: "What is teamwork?", options: ["Ignoring problems", "Copying competitors", "Avoiding customers", "Working together to achieve goals"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 162, q: "Why is teamwork important?", options: ["Avoids teamwork", "Stops innovation", "Improves efficiency and creativity", "Reduces profits"], answer: 2, cat: "Teamwork & Leadership" },
+            { id: 163, q: "Which of the following is a benefit of teamwork?", options: ["Better problem solving", "Motivation", "All of the above", "Sharing ideas"], answer: 2, cat: "Teamwork & Leadership" },
+            { id: 164, q: "What is leadership?", options: ["Copying competitors", "Avoiding teamwork", "Ignoring customers", "Guiding and motivating people"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 165, q: "Who is a leader?", options: ["Person who avoids teamwork", "Person who ignores customers", "Person who copies competitors", "Person who influences and guides others"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 166, q: "Which of the following is a leadership style?", options: ["All of the above", "Autocratic", "Laissez-faire", "Democratic"], answer: 0, cat: "Teamwork & Leadership" },
+            { id: 167, q: "What is autocratic leadership?", options: ["Leader copies competitors", "Leader makes decisions alone", "Leader avoids decisions", "Leader involves team"], answer: 1, cat: "Teamwork & Leadership" },
+            { id: 168, q: "What is democratic leadership?", options: ["Leader involves team in decisions", "Leader avoids teamwork", "Leader makes decisions alone", "Leader ignores customers"], answer: 0, cat: "Teamwork & Leadership" },
+            { id: 169, q: "What is laissez-faire leadership?", options: ["Leader makes decisions alone", "Leader ignores customers", "Leader avoids teamwork", "Leader gives freedom to team"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 170, q: "Why is communication important in teamwork?", options: ["Reduces profits", "Stops innovation", "Avoids teamwork", "Ensures clarity and coordination"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 171, q: "Which of the following is a team role?", options: ["Member", "Leader", "Coordinator", "All of the above"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 172, q: "What is conflict resolution?", options: ["Solving disagreements in team", "Avoiding teamwork", "Ignoring customers", "Copying competitors"], answer: 0, cat: "Teamwork & Leadership" },
+            { id: 173, q: "Why is trust important in teamwork?", options: ["Avoids teamwork", "Stops innovation", "Reduces profits", "Builds cooperation and success"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 174, q: "Which of the following motivates team members?", options: ["Recognition", "Encouragement", "Rewards", "All of the above"], answer: 3, cat: "Teamwork & Leadership" },
+            { id: 175, q: "What is delegation in leadership?", options: ["Avoiding teamwork", "Ignoring customers", "Assigning tasks to team members", "Copying competitors"], answer: 2, cat: "Teamwork & Leadership" },
+            { id: 176, q: "Why is feedback important in teamwork?", options: ["Stops innovation", "Improves performance", "Reduces profits", "Avoids teamwork"], answer: 1, cat: "Teamwork & Leadership" },
+            { id: 177, q: "Which of the following is a quality of a good leader?", options: ["Communication skills", "All of the above", "Vision", "Honesty"], answer: 1, cat: "Teamwork & Leadership" },
+            { id: 178, q: "What is team synergy?", options: ["Ignoring customers", "Copying competitors", "Combined effort greater than individual", "Avoiding teamwork"], answer: 2, cat: "Teamwork & Leadership" },
+            { id: 179, q: "Why is leadership important in business?", options: ["Reduces profits", "Stops innovation", "Provides direction and motivation", "Avoids teamwork"], answer: 2, cat: "Teamwork & Leadership" },
+            { id: 180, q: "Which of the following is a benefit of teamwork?", options: ["Efficiency", "Innovation", "Motivation", "All of the above"], answer: 3, cat: "Teamwork & Leadership" },
+
+            { id: 181, q: "What is ethical entrepreneurship?", options: ["Ignoring customers", "Running business with honesty and fairness", "Avoiding teamwork", "Copying competitors"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 182, q: "Why is ethics important in business?", options: ["Reduces profits", "Stops innovation", "Builds trust with customers", "Avoids teamwork"], answer: 2, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 183, q: "Which of the following is an ethical practice?", options: ["Ignoring customers", "Child labor", "False advertising", "Fair wages"], answer: 3, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 184, q: "What is corporate social responsibility (CSR)?", options: ["Copying competitors", "Ignoring customers", "Avoiding teamwork", "Business responsibility towards society"], answer: 3, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 185, q: "Which of the following is an example of CSR?", options: ["Avoiding customers", "Donating to charity", "False advertising", "Polluting environment"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 186, q: "Why is honesty important in entrepreneurship?", options: ["Builds customer loyalty", "Stops innovation", "Reduces profits", "Avoids teamwork"], answer: 0, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 187, q: "Which of the following is unethical?", options: ["Transparency", "Honesty", "Bribery", "Fair wages"], answer: 2, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 188, q: "What is transparency in business?", options: ["Open and clear communication", "Ignoring customers", "Copying competitors", "Avoiding teamwork"], answer: 0, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 189, q: "Which of the following is an ethical marketing practice?", options: ["Truthful advertising", "False claims", "Ignoring feedback", "Misleading customers"], answer: 0, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 190, q: "Why is environmental responsibility important?", options: ["Reduces profits", "Avoids teamwork", "Protects nature for future generations", "Stops innovation"], answer: 2, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 191, q: "Which of the following is unethical in finance?", options: ["Transparency", "Fraud", "Fair accounting", "Honesty"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 192, q: "What is fair trade?", options: ["Copying competitors", "Avoiding teamwork", "Ignoring customers", "Paying producers fairly"], answer: 3, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 193, q: "Which of the following is an ethical HR practice?", options: ["Equal opportunity employment", "Ignoring employees", "Child labor", "Discrimination"], answer: 0, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 194, q: "Why is respect important in entrepreneurship?", options: ["Reduces profits", "Avoids teamwork", "Creates positive workplace culture", "Stops innovation"], answer: 2, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 195, q: "Which of the following is unethical in product quality?", options: ["Ensuring safety standards", "Providing warranties", "Selling defective goods knowingly", "Customer satisfaction"], answer: 2, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 196, q: "What is whistleblowing?", options: ["Copying competitors", "Reporting unethical practices", "Avoiding teamwork", "Ignoring customers"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 197, q: "Which of the following is an ethical leadership quality?", options: ["Disrespect", "Integrity", "Dishonesty", "Fraud"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 198, q: "Why is customer privacy important?", options: ["Avoids teamwork", "Protects customer data and trust", "Reduces profits", "Stops innovation"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 199, q: "Which of the following is unethical in advertising?", options: ["Fair information", "False claims", "Honesty", "Transparency"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" },
+            { id: 200, q: "What is the benefit of ethical entrepreneurship?", options: ["Ignore customers", "Long-term success and trust", "Avoid teamwork", "Reduce profits"], answer: 1, cat: "Ethics & CSR in Entrepreneurship" }
+        ];
+
+        // --- APP STATE ---
+        const TOTAL_QUESTIONS = rawQuestions.length;
+        let currentQuestions = [...rawQuestions];
+        let currentIndex = 0;
+        let userAnswers = {}; // { questionId: selectedOptionIndex }
+        let isPracticeMode = true;
+        let timerInterval = null;
+        let secondsElapsed = 0;
+
+        // --- DOM ELEMENTS ---
+        const dashboardView = document.getElementById('dashboard-view');
+        const quizView = document.getElementById('quiz-view');
+        const resultsView = document.getElementById('results-view');
+        const quizHeaderInfo = document.getElementById('quiz-header-info');
+
+        const btnStartQuiz = document.getElementById('btn-start-quiz');
+        const btnHome = document.getElementById('btn-home');
+        const categorySelect = document.getElementById('category-select');
+
+        const timerDisplay = document.getElementById('timer-display');
+        const progressText = document.getElementById('progress-text');
+        const navCounter = document.getElementById('nav-counter');
+        const questionGrid = document.getElementById('question-grid');
+        const jumpInput = document.getElementById('jump-input');
+
+        const qCategoryTag = document.getElementById('q-category-tag');
+        const qNumberTag = document.getElementById('q-number-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnClear = document.getElementById('btn-clear');
+        const btnSubmitExam = document.getElementById('btn-submit-exam');
+
+        const btnRestart = document.getElementById('btn-restart');
+        const btnReviewAnswers = document.getElementById('btn-review-answers');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewList = document.getElementById('review-list');
+
+        // --- INIT & EVENT LISTENERS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            setupModeSelection();
+            btnStartQuiz.addEventListener('click', startQuiz);
+            btnHome.addEventListener('click', showDashboard);
+            btnPrev.addEventListener('click', () => navigateQuestion(-1));
+            btnNext.addEventListener('click', () => navigateQuestion(1));
+            btnClear.addEventListener('click', clearAnswer);
+            btnSubmitExam.addEventListener('click', finishQuiz);
+            jumpInput.addEventListener('change', handleJump);
+            btnRestart.addEventListener('click', showDashboard);
+            btnReviewAnswers.addEventListener('click', toggleAnswerReview);
+        });
+
+        function setupModeSelection() {
+            const practiceCard = document.getElementById('mode-practice-card');
+            const examCard = document.getElementById('mode-exam-card');
+            const practiceRadio = practiceCard.querySelector('input');
+            const examRadio = examCard.querySelector('input');
+
+            practiceCard.addEventListener('click', () => {
+                practiceRadio.checked = true;
+                isPracticeMode = true;
+                practiceCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                examCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+
+            examCard.addEventListener('click', () => {
+                examRadio.checked = true;
+                isPracticeMode = false;
+                examCard.className = "p-4 border-2 border-brand-500 bg-brand-50/50 rounded-xl cursor-pointer hover:shadow-md transition relative";
+                practiceCard.className = "p-4 border-2 border-slate-200 rounded-xl cursor-pointer hover:shadow-md transition relative";
+            });
+        }
+
+        function filterQuestions() {
+            const val = categorySelect.value;
+            if (val === 'all') {
+                currentQuestions = [...rawQuestions];
+            } else {
+                const [start, end] = val.split('-').map(Number);
+                currentQuestions = rawQuestions.filter(q => q.id >= start && q.id <= end);
+            }
+        }
+
+        function startQuiz() {
+            filterQuestions();
+            if (currentQuestions.length === 0) return;
+
+            currentIndex = 0;
+            userAnswers = {};
+            secondsElapsed = 0;
+
+            // UI Adjustments
+            dashboardView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            quizHeaderInfo.classList.remove('hidden');
+
+            startTimer();
+            renderQuestionGrid();
+            renderQuestion();
+        }
+
+        function showDashboard() {
+            clearInterval(timerInterval);
+            dashboardView.classList.remove('hidden');
+            quizView.classList.add('hidden');
+            resultsView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerDisplay.textContent = "00:00";
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                timerDisplay.textContent = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            questionGrid.innerHTML = '';
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.id;
+                btn.className = getGridButtonClass(q, idx);
+                btn.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderQuestion();
+                });
+                questionGrid.appendChild(btn);
+            });
+        }
+
+        function getGridButtonClass(q, idx) {
+            let base = "h-8 w-full rounded-md text-xs font-semibold transition flex items-center justify-center ";
+            const isSelected = idx === currentIndex;
+            const userAns = userAnswers[q.id];
+
+            if (isSelected) {
+                base += "ring-2 ring-brand-500 ring-offset-1 ";
+            }
+
+            if (userAns !== undefined) {
+                if (isPracticeMode) {
+                    if (userAns === q.answer) {
+                        return base + "bg-emerald-500 text-white";
+                    } else {
+                        return base + "bg-rose-500 text-white";
+                    }
+                } else {
+                    return base + "bg-brand-600 text-white";
+                }
+            }
+            return base + "bg-slate-100 hover:bg-slate-200 text-slate-700";
+        }
+
+        function updateGridButtons() {
+            currentQuestions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (btn) {
+                    btn.className = getGridButtonClass(q, idx);
+                }
+            });
+        }
+
+        function renderQuestion() {
+            const q = currentQuestions[currentIndex];
+            qCategoryTag.textContent = q.cat;
+            qNumberTag.textContent = `Question ${q.id} of ${TOTAL_QUESTIONS}`;
+            questionText.textContent = `${q.id}. ${q.q}`;
+
+            // Progress Header
+            const answeredCount = Object.keys(userAnswers).length;
+            progressText.textContent = `${answeredCount}/${currentQuestions.length}`;
+            navCounter.textContent = `${currentIndex + 1} / ${currentQuestions.length}`;
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, idx) => {
+                const optionBtn = document.createElement('div');
+                const isChecked = userAnswers[q.id] === idx;
+
+                let stateClasses = "border-slate-200 bg-white hover:border-brand-300 hover:bg-slate-50";
+                
+                if (isChecked) {
+                    if (isPracticeMode) {
+                        if (idx === q.answer) {
+                            stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                        } else {
+                            stateClasses = "border-rose-500 bg-rose-50/50 text-rose-900 font-semibold";
+                        }
+                    } else {
+                        stateClasses = "border-brand-500 bg-brand-50 text-brand-900 font-semibold";
+                    }
+                } else if (isPracticeMode && userAnswers[q.id] !== undefined && idx === q.answer) {
+                    stateClasses = "border-emerald-500 bg-emerald-50/50 text-emerald-900 font-semibold";
+                }
+
+                optionBtn.className = `p-3.5 border-2 rounded-xl cursor-pointer transition flex items-center justify-between ${stateClasses}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold flex items-center justify-center">${labels[idx]}</span>
+                        <span class="text-sm">${opt}</span>
+                    </div>
+                    ${isChecked ? '<i class="fa-solid fa-circle-check text-brand-600"></i>' : ''}
+                `;
+
+                optionBtn.addEventListener('click', () => selectOption(idx));
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // Feedback area for Practice Mode
+            if (isPracticeMode && userAnswers[q.id] !== undefined) {
+                feedbackBox.classList.remove('hidden');
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                if (isCorrect) {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-emerald-50 border-emerald-200 text-emerald-800";
+                    feedbackIcon.className = "fa-solid fa-circle-check text-emerald-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Correct!";
+                    feedbackText.textContent = `Great job! "${q.options[q.answer]}" is the correct answer.`;
+                } else {
+                    feedbackBox.className = "p-4 rounded-xl border mb-6 bg-rose-50 border-rose-200 text-rose-800";
+                    feedbackIcon.className = "fa-solid fa-circle-xmark text-rose-600 text-xl mt-0.5";
+                    feedbackTitle.textContent = "Incorrect";
+                    feedbackText.textContent = `The correct answer is: "${q.options[q.answer]}".`;
+                }
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Buttons
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === currentQuestions.length - 1) {
+                btnNext.innerHTML = `Finish <i class="fa-solid fa-check ml-1"></i>`;
+            } else {
+                btnNext.innerHTML = `Next <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+
+            updateGridButtons();
+        }
+
+        function selectOption(index) {
+            const q = currentQuestions[currentIndex];
+            userAnswers[q.id] = index;
+            renderQuestion();
+        }
+
+        function clearAnswer() {
+            const q = currentQuestions[currentIndex];
+            delete userAnswers[q.id];
+            renderQuestion();
+        }
+
+        function navigateQuestion(direction) {
+            if (direction === 1 && currentIndex === currentQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex += direction;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            renderQuestion();
+        }
+
+        function handleJump(e) {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= TOTAL_QUESTIONS) {
+                const targetIdx = currentQuestions.findIndex(q => q.id === val);
+                if (targetIdx !== -1) {
+                    currentIndex = targetIdx;
+                    renderQuestion();
+                } else {
+                    alert(`Question ${val} is not in the currently filtered chapter.`);
+                }
+            }
+            e.target.value = '';
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Calculate Score
+            let correctCount = 0;
+            currentQuestions.forEach(q => {
+                if (userAnswers[q.id] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((correctCount / total) * 100);
+
+            // Render Results
+            document.getElementById('res-score').textContent = `${correctCount}/${total}`;
+            document.getElementById('res-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('res-correct').textContent = correctCount;
+
+            const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('res-time').textContent = `${mins}:${secs}`;
+
+            quizView.classList.add('hidden');
+            quizHeaderInfo.classList.add('hidden');
+            resultsView.classList.remove('hidden');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            reviewList.innerHTML = '';
+            currentQuestions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.answer;
+
+                const item = document.createElement('div');
+                item.className = `p-4 border rounded-xl bg-white ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+                
+                item.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <span class="font-bold text-sm text-slate-800">Q${q.id}. ${q.q}</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-semibold ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isCorrect ? 'Correct' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <div class="mt-2 text-xs space-y-1">
+                        <p class="${userAns === q.answer ? 'text-emerald-700 font-semibold' : 'text-rose-600'}">
+                            Your answer: ${userAns !== undefined ? q.options[userAns] : '<i>Not answered</i>'}
+                        </p>
+                        ${!isCorrect ? `<p class="text-emerald-700 font-semibold">Correct answer: ${q.options[q.answer]}</p>` : ''}
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+
+        function toggleAnswerReview() {
+            reviewContainer.classList.toggle('hidden');
+            if (!reviewContainer.classList.contains('hidden')) {
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
