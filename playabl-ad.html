@@ -6,10 +6,9 @@
 <title>Playabl Ad</title>
 <meta name="description" content="A 17-second vertical ad for Playabl: describe a game, play it, post it.">
 <link rel="icon" href="data:,">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  @font-face{font-family:'Comfortaa';src:url(fonts/comfortaa-latin.woff2) format('woff2');font-weight:300 700;font-display:block;}
+  @font-face{font-family:'Inter';src:url(fonts/inter-latin.woff2) format('woff2');font-weight:100 900;font-display:block;}
   :root{
     --bg:#070908;
     --panel:#161616;
@@ -238,9 +237,9 @@
   <!-- 5. Proof -->
   <section class="scene" id="s5">
     <div class="stats">
-      <div class="stat"><span class="n" data-to="3" data-suf="M">0</span><span class="l">unique<br>plays</span></div>
-      <div class="stat"><span class="n" data-to="10" data-suf="K">0</span><span class="l">games<br>created</span></div>
-      <div class="stat"><span class="n" data-to="40" data-suf="K">0</span><span class="l">players<br>every day</span></div>
+      <div class="stat"><span class="n" data-to="7" data-suf="M+">0</span><span class="l">plays</span></div>
+      <div class="stat"><span class="n" data-to="15" data-suf="K+">0</span><span class="l">games<br>published</span></div>
+      <div class="stat"><span class="n" data-to="96" data-suf="%">0</span><span class="l">of visitors<br>hit play</span></div>
     </div>
   </section>
 
@@ -445,7 +444,7 @@
 
   $('stage').addEventListener('click', restart);
   if (reduced){ reset(); show(5); $('corner').style.opacity = 0; $('progress').style.width = '100%'; }
-  else if (document.fonts && document.fonts.ready) document.fonts.ready.then(restart);
+  else if (document.fonts) Promise.all([document.fonts.load('700 1em Comfortaa'), document.fonts.load('600 1em Inter')]).catch(() => {}).then(restart);
   else restart();
 })();
 </script>
