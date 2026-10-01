@@ -4,206 +4,235 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Playabl Ad</title>
-<meta name="description" content="A 16-second vertical ad for Playabl: describe a game, play it, share it.">
+<meta name="description" content="A 17-second vertical ad for Playabl: describe a game, play it, post it.">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0816;
-    --bg2:#1a1033;
-    --ink:#f6f3ff;
-    --muted:#a59cc7;
-    --lime:#c6ff3d;
-    --pink:#ff4fa3;
-    --violet:#7b5cff;
-    --card:#17112b;
-    --line:rgba(255,255,255,0.09);
+    --bg:#070908;
+    --panel:#161616;
+    --panel2:#1f1f1f;
+    --card:#262626;
+    --ink:#f1f1ef;
+    --muted:#9b9b98;
+    --dim:#6b6b68;
+    --lime:#d6f53b;
+    --line:rgba(255,255,255,0.08);
+    --brand:'Comfortaa',system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{height:100%;background:#000;color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
   body{display:flex;align-items:center;justify-content:center;}
 
-  /* 9:16 stage, scaled to fit the viewport */
+  /* 9:16 stage; 1em = 1/36 of stage width */
   .stage{
-    position:relative;width:min(100vw, 56.25vh);aspect-ratio:9/16;overflow:hidden;
-    background:radial-gradient(120% 70% at 50% 0%, var(--bg2) 0%, var(--bg) 60%);
-    font-size:calc(min(100vw, 56.25vh) / 36); /* 1em = 1/36 of stage width */
-    cursor:pointer;
+    position:relative;width:min(100vw, 56.25vh);aspect-ratio:9/16;overflow:hidden;background:var(--bg);
+    font-size:calc(min(100vw, 56.25vh) / 36);cursor:pointer;
   }
-  .grid{position:absolute;inset:-20%;background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size:3em 3em;transform:perspective(40em) rotateX(55deg) translateY(30%);
-    opacity:.5;animation:gridmove 6s linear infinite;}
-  @keyframes gridmove{to{background-position:0 3em,0 0;}}
+  /* brand glow: olive bloom + teal haze, drifting slowly */
+  .glow{position:absolute;inset:-10%;pointer-events:none;
+    background:
+      radial-gradient(38% 26% at 30% 42%, rgba(98,120,10,.55), transparent 70%),
+      radial-gradient(60% 40% at 72% 22%, rgba(30,62,60,.75), transparent 72%),
+      radial-gradient(70% 50% at 50% 100%, rgba(0,0,0,.9), transparent 70%);
+    filter:blur(1em);animation:drift 9s ease-in-out infinite alternate;}
+  @keyframes drift{to{transform:translate(4%, 3%) scale(1.06);}}
 
   .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:0 2.4em;opacity:0;pointer-events:none;transition:opacity .45s ease, transform .45s ease;transform:scale(1.04);}
+    padding:0 2.2em;opacity:0;pointer-events:none;transition:opacity .45s ease, transform .45s ease;transform:scale(1.03);}
   .scene.on{opacity:1;transform:none;}
 
-  .logo{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.03em;display:flex;align-items:center;gap:.3em;}
-  .logo .dot{width:.62em;height:.62em;border-radius:.18em;background:var(--lime);display:inline-block;transform:rotate(12deg);
-    box-shadow:.18em .18em 0 var(--pink);}
-  .corner-logo{position:absolute;top:2.2em;left:2.4em;font-size:1.5em;z-index:5;opacity:.9;transition:opacity .4s;}
+  /* wordmark */
+  .wordmark{font-family:var(--brand);font-weight:700;letter-spacing:-.04em;line-height:1;display:inline-flex;flex-direction:column;align-items:flex-end;}
+  .beta{font-family:'Inter',sans-serif;font-weight:800;font-size:.26em;letter-spacing:.02em;background:var(--lime);color:#111;
+    padding:.12em .35em;border-radius:.2em;margin-top:.12em;}
+  .corner{position:absolute;top:2.2em;left:2.2em;font-size:2.2em;z-index:5;transition:opacity .4s;}
 
-  /* Scene 1: hook */
-  .hook h1{font-family:'Space Grotesk',sans-serif;font-size:4.2em;line-height:1.02;letter-spacing:-.04em;font-weight:700;text-align:left;width:100%;}
-  .hook h1 span{display:block;opacity:0;transform:translateY(.4em);transition:all .5s cubic-bezier(.2,.8,.2,1);}
+  /* 1. hook */
+  .hook{align-items:flex-start;}
+  .hook h1{font-family:var(--brand);font-weight:700;font-size:4.4em;line-height:1.08;letter-spacing:-.05em;}
+  .hook h1 span{display:block;opacity:0;transform:translateY(.35em);transition:all .5s cubic-bezier(.2,.8,.2,1);}
   .hook h1 span.in{opacity:1;transform:none;}
-  .hook h1 .hl{color:var(--lime);}
-  .hook h1 .strike{color:var(--muted);position:relative;}
-  .hook h1 .strike::after{content:"";position:absolute;left:0;top:55%;height:.09em;background:var(--pink);width:0;transition:width .4s ease .2s;}
-  .hook h1 .strike.in::after{width:100%;}
+  .hook h1 .l{color:var(--lime);}
+  .hook p{margin-top:1.4em;font-size:1.6em;color:var(--muted);opacity:0;transition:opacity .5s;}
+  .hook p.in{opacity:1;}
 
-  /* Scene 2+3: the app */
-  .app{width:100%;background:var(--card);border:1px solid var(--line);border-radius:1.6em;overflow:hidden;
-    box-shadow:0 2em 5em rgba(0,0,0,.55), 0 0 0 .08em rgba(198,255,61,.08);}
-  .app-bar{display:flex;align-items:center;gap:.5em;padding:1em 1.2em;border-bottom:1px solid var(--line);font-size:1.05em;color:var(--muted);}
-  .app-bar .lights{display:flex;gap:.35em;margin-right:.4em;}
-  .app-bar .lights i{width:.6em;height:.6em;border-radius:50%;background:#3a3157;display:block;}
-  .app-bar .url{flex:1;background:#0f0b1f;border-radius:.6em;padding:.35em .8em;font-family:'Space Grotesk',sans-serif;}
-  .app-bar .url b{color:var(--ink);font-weight:600;}
-
-  .viewport{position:relative;aspect-ratio:6/5;background:#07051a;overflow:hidden;}
-  .viewport canvas{width:100%;height:100%;display:block;}
-  .building{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;
-    background:#0d0920;transition:opacity .4s ease;}
-  .building.hide{opacity:0;}
-  .building .lbl{font-family:'Space Grotesk',sans-serif;font-size:1.3em;color:var(--muted);}
-  .building .bar{width:60%;height:.55em;border-radius:1em;background:#231a40;overflow:hidden;}
-  .building .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--lime));border-radius:1em;}
-  .building .steps{font-size:1em;color:#6f6694;height:1.3em;}
-
-  .hud{position:absolute;top:.8em;left:.9em;right:.9em;display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;
-    font-weight:700;font-size:1.2em;color:#fff;text-shadow:0 .1em .3em #000;opacity:0;transition:opacity .3s;}
-  .hud.on{opacity:1;}
-  .hud .lvl{color:var(--pink);}
-
-  .chat{padding:1em 1.2em 1.1em;display:flex;flex-direction:column;gap:.6em;min-height:9.6em;justify-content:flex-end;}
-  .msg{align-self:flex-end;max-width:88%;background:var(--violet);color:#fff;padding:.7em 1em;border-radius:1.1em 1.1em .3em 1.1em;
-    font-size:1.2em;line-height:1.3;opacity:0;transform:translateY(.5em);transition:all .3s ease;}
-  .msg.bot{align-self:flex-start;background:#251c45;color:var(--ink);border-radius:1.1em 1.1em 1.1em .3em;}
-  .msg.in{opacity:1;transform:none;}
-  .input{display:flex;align-items:center;gap:.6em;background:#0f0b1f;border:1px solid var(--line);border-radius:1em;padding:.7em .8em .7em 1em;}
-  .input .txt{flex:1;font-size:1.2em;color:var(--ink);min-height:1.4em;white-space:nowrap;overflow:hidden;}
-  .input .txt.ph{color:#5d5582;}
-  .input .caret{display:inline-block;width:.08em;height:1.05em;background:var(--lime);vertical-align:-.15em;margin-left:.05em;animation:blink 1s steps(1) infinite;}
+  /* 2. home hero */
+  .hero{text-align:center;}
+  .hero h2{font-family:var(--brand);font-weight:600;font-size:3.5em;letter-spacing:-.05em;line-height:1.1;color:#ecebe8;}
+  .hero .sub{margin-top:.9em;font-size:1.35em;color:#b9b9b4;}
+  .prompt{margin-top:2.4em;width:100%;text-align:left;background:rgba(40,44,42,.55);border:1px solid rgba(255,255,255,.12);
+    border-radius:1.4em;padding:1.3em 1.3em 1em;backdrop-filter:blur(.6em);box-shadow:0 1.5em 4em rgba(0,0,0,.4);}
+  .prompt .txt{font-size:1.45em;line-height:1.35;min-height:4.1em;color:var(--ink);}
+  .prompt .txt.ph{color:#9a9c98;}
+  .prompt .row{display:flex;justify-content:space-between;align-items:center;margin-top:.6em;color:#9a9c98;font-size:1.5em;}
+  .round{width:2.1em;height:2.1em;border-radius:50%;background:#8d8f8c;color:#1a1a1a;display:flex;align-items:center;justify-content:center;
+    font-size:.9em;font-weight:700;transition:background .2s, transform .15s;}
+  .round.ready{background:#f1f1ef;}
+  .tap{transform:scale(.84)!important;}
+  .caret{display:inline-block;width:.07em;height:1.05em;background:var(--lime);vertical-align:-.15em;margin-left:.05em;animation:blink 1s steps(1) infinite;}
   @keyframes blink{50%{opacity:0;}}
-  .send{width:2.3em;height:2.3em;border-radius:.7em;background:var(--lime);color:#111;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1em;transition:transform .15s;}
-  .send.tap{transform:scale(.82);}
 
-  .caption{width:100%;min-height:2.3em;margin-top:.7em;font-family:'Space Grotesk',sans-serif;font-size:2.3em;font-weight:700;
-    letter-spacing:-.03em;line-height:1.08;opacity:0;transform:translateY(.4em);transition:all .4s ease;}
+  /* 3. editor */
+  .editor{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:1.4em;overflow:hidden;box-shadow:0 2em 5em rgba(0,0,0,.6);}
+  .topbar{display:flex;align-items:center;gap:.6em;padding:.9em 1em;font-size:1.1em;}
+  .pmark{width:1.8em;height:1.8em;border-radius:50%;background:#000;border:1px solid #333;display:flex;align-items:center;justify-content:center;
+    font-family:var(--brand);font-weight:700;color:#fff;font-size:.95em;flex:none;}
+  .proj{font-weight:600;flex:1;}
+  .proj i{font-style:normal;color:var(--muted);font-size:.8em;margin-left:.2em;}
+  .pill{border-radius:2em;padding:.45em .9em;font-weight:600;font-size:.95em;display:inline-flex;align-items:center;gap:.35em;transition:transform .15s;}
+  .pill.post{background:#fff;color:#111;}
+  .pill.up{background:var(--lime);color:#111;}
+  .tabs{display:flex;gap:.5em;padding:0 1em .8em;font-size:1em;}
+  .tab{padding:.4em .9em;border-radius:2em;border:1px solid var(--line);color:#cfcfcc;background:#1c1c1c;}
+  .tab.on{background:#3a3a3a;color:#fff;}
+  .preview{position:relative;margin:0 .8em;border-radius:1em;overflow:hidden;aspect-ratio:10/7;background:#1d1d1d;}
+  .preview canvas{display:block;width:100%;height:100%;}
+  .boot{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;background:#1d1d1d;
+    color:var(--muted);font-size:1.15em;transition:opacity .35s;}
+  .boot.hide{opacity:0;}
+  .spin{width:1.8em;height:1.8em;border-radius:50%;border:.18em solid #555;border-top-color:#ddd;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .hud{position:absolute;top:.7em;left:.8em;right:.8em;display:flex;justify-content:space-between;align-items:flex-start;
+    font-weight:700;font-size:1em;color:#fff;text-shadow:0 .1em .3em rgba(0,0,0,.6);opacity:0;transition:opacity .3s;pointer-events:none;}
+  .hud.on{opacity:1;}
+  .hud .len{background:rgba(0,0,0,.35);padding:.3em .7em;border-radius:1em;}
+  .board{background:rgba(0,0,0,.4);border-radius:.7em;padding:.45em .7em;font-size:.85em;line-height:1.45;opacity:0;transition:opacity .4s;}
+  .board.on{opacity:1;}
+  .board b{color:var(--lime);}
+
+  .thread{height:13.4em;padding:1em 1.2em 0;display:flex;flex-direction:column;justify-content:flex-end;gap:.7em;overflow:hidden;font-size:1.05em;line-height:1.45;}
+  .ai{opacity:0;transition:opacity .35s;}
+  .ai.in{opacity:1;}
+  .ai ul{margin:.35em 0 0 1.2em;color:#dcdcd9;}
+  .ai li{opacity:0;transform:translateX(-.4em);transition:all .3s;}
+  .ai li.in{opacity:1;transform:none;}
+  .user{align-self:flex-end;max-width:85%;background:var(--card);border:1px solid var(--line);border-radius:1em;padding:.6em .9em;
+    opacity:0;transform:translateY(.4em);transition:all .3s;}
+  .user.in{opacity:1;transform:none;}
+  .ask{margin:.8em;background:var(--panel2);border:1px solid var(--line);border-radius:1.1em;padding:.8em .9em .7em;}
+  .ask .txt{font-size:1.15em;min-height:1.5em;color:var(--ink);white-space:nowrap;overflow:hidden;}
+  .ask .txt.ph{color:var(--dim);}
+  .ask .row{display:flex;align-items:center;gap:.5em;margin-top:.6em;}
+  .ico{width:1.9em;height:1.9em;border-radius:50%;border:1px solid #3a3a3a;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:.95em;}
+  .ico.bolt{color:#5ee08a;}
+  .grow{flex:1;}
+  .build{border:1px solid #3a3a3a;border-radius:2em;padding:.3em .8em;font-weight:600;font-size:.95em;}
+  .ask .round{width:1.9em;height:1.9em;background:#2e2e2e;color:#888;}
+  .ask .round.ready{background:#f1f1ef;color:#111;}
+
+  .caption{width:100%;margin-top:1.1em;min-height:2.4em;font-family:var(--brand);font-weight:700;font-size:2.2em;letter-spacing:-.04em;line-height:1.1;
+    opacity:0;transform:translateY(.3em);transition:all .4s ease;}
   .caption.in{opacity:1;transform:none;}
   .caption em{font-style:normal;color:var(--lime);}
-  .app-wrap{width:100%;}
 
-  /* Scene 4: publish */
-  .share{width:100%;display:flex;flex-direction:column;align-items:center;gap:1.6em;}
-  .pub-btn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2em;background:var(--lime);color:#111;
-    padding:.6em 1.6em;border-radius:.6em;box-shadow:.15em .15em 0 var(--pink);transition:transform .15s, box-shadow .15s;}
-  .pub-btn.tap{transform:translate(.12em,.12em) scale(.96);box-shadow:.03em .03em 0 var(--pink);}
-  .link-card{width:100%;background:var(--card);border:1px solid var(--line);border-radius:1.2em;padding:1.2em 1.4em;
-    opacity:0;transform:translateY(.8em);transition:all .4s ease;}
-  .link-card.in{opacity:1;transform:none;}
-  .link-card .u{font-family:'Space Grotesk',sans-serif;font-size:1.55em;font-weight:600;}
-  .link-card .u b{color:var(--lime);}
-  .link-card .row{display:flex;justify-content:space-between;align-items:baseline;margin-top:.9em;color:var(--muted);font-size:1.15em;}
-  .link-card .plays{font-family:'Space Grotesk',sans-serif;font-size:2.6em;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;}
-  .pills{display:flex;flex-wrap:wrap;gap:.6em;justify-content:center;}
-  .pill{font-size:1.15em;padding:.45em .9em;border-radius:2em;background:#221a3f;border:1px solid var(--line);opacity:0;transform:scale(.6);
-    transition:all .35s cubic-bezier(.3,1.6,.5,1);}
-  .pill.in{opacity:1;transform:none;}
-  .share h2{font-family:'Space Grotesk',sans-serif;font-size:3.1em;letter-spacing:-.04em;line-height:1.02;text-align:center;}
-  .share h2 em{font-style:normal;color:var(--lime);}
+  /* 4. post -> feed */
+  .post-scene{gap:1.6em;}
+  .post-scene h3{font-family:var(--brand);font-weight:700;font-size:3.2em;letter-spacing:-.05em;line-height:1.08;text-align:center;}
+  .post-scene h3 em{font-style:normal;color:var(--lime);}
+  .bigpost{font-size:2em;}
+  .bigpost .pill{font-size:1em;padding:.55em 1.3em;box-shadow:0 .6em 2em rgba(255,255,255,.12);}
+  .feedcard{width:78%;border-radius:1.4em;overflow:hidden;background:var(--panel);border:1px solid var(--line);
+    opacity:0;transform:translateY(1em) scale(.96);transition:all .45s cubic-bezier(.2,.8,.2,1);}
+  .feedcard.in{opacity:1;transform:none;}
+  .feedcard canvas{display:block;width:100%;aspect-ratio:10/7;}
+  .feedcard .meta{display:flex;align-items:center;gap:.7em;padding:.9em 1em;}
+  .feedcard .t{font-weight:700;font-size:1.3em;}
+  .feedcard .by{color:var(--muted);font-size:1em;}
+  .feedcard .plays{margin-left:auto;text-align:right;}
+  .feedcard .plays b{display:block;font-size:1.6em;font-variant-numeric:tabular-nums;}
+  .feedcard .plays span{color:var(--muted);font-size:.9em;}
+  .play-badge{display:inline-flex;align-items:center;gap:.4em;color:var(--muted);font-size:1.2em;opacity:0;transition:opacity .4s;}
+  .play-badge.in{opacity:1;}
 
-  /* Scene 5: proof */
-  .stats{width:100%;display:flex;flex-direction:column;gap:1.4em;}
+  /* 5. proof */
+  .stats{width:100%;display:flex;flex-direction:column;gap:1.5em;}
   .stat{display:flex;align-items:baseline;gap:.5em;opacity:0;transform:translateX(-1em);transition:all .45s ease;}
   .stat.in{opacity:1;transform:none;}
-  .stat .n{font-family:'Space Grotesk',sans-serif;font-size:5.4em;font-weight:700;letter-spacing:-.05em;line-height:1;color:var(--lime);font-variant-numeric:tabular-nums;}
-  .stat:nth-child(2) .n{color:var(--pink);}
-  .stat:nth-child(3) .n{color:#9d86ff;}
+  .stat .n{font-family:var(--brand);font-size:5.6em;font-weight:700;letter-spacing:-.06em;line-height:1;font-variant-numeric:tabular-nums;}
+  .stat:first-child .n{color:var(--lime);}
   .stat .l{font-size:1.5em;color:var(--muted);line-height:1.15;}
 
-  /* Scene 6: end card */
-  .end{text-align:center;gap:2em;}
-  .end .logo{font-size:5em;}
-  .end .tag{font-family:'Space Grotesk',sans-serif;font-size:2.4em;font-weight:600;letter-spacing:-.03em;line-height:1.15;}
-  .end .tag span{display:inline-block;}
-  .end .tag .a{color:var(--lime);} .end .tag .b{color:var(--pink);} .end .tag .c{color:#9d86ff;}
-  .end .cta{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.9em;background:var(--ink);color:var(--bg);
-    padding:.65em 1.4em;border-radius:3em;animation:pulse 1.4s ease-in-out infinite;}
-  @keyframes pulse{50%{transform:scale(1.05);box-shadow:0 0 0 .5em rgba(198,255,61,.15);}}
-  .end .sub{color:var(--muted);font-size:1.25em;}
-  .end .yc{display:inline-flex;align-items:center;gap:.5em;color:var(--muted);font-size:1.15em;}
-  .end .yc b{background:#f26522;color:#fff;width:1.5em;height:1.5em;display:inline-flex;align-items:center;justify-content:center;border-radius:.2em;font-family:'Space Grotesk',sans-serif;}
+  /* 6. end card */
+  .end{text-align:center;gap:2.2em;}
+  .end .wordmark{font-size:6.4em;}
+  .end .tag{font-family:var(--brand);font-weight:600;font-size:2.3em;letter-spacing:-.04em;color:#e3e3df;}
+  .create{display:inline-flex;align-items:center;gap:.5em;background:#fff;color:#111;font-weight:700;font-size:1.9em;padding:.65em 1.8em;border-radius:3em;
+    animation:pulse 1.5s ease-in-out infinite;}
+  @keyframes pulse{50%{transform:scale(1.05);box-shadow:0 0 0 .45em rgba(214,245,59,.18);}}
+  .end .url{color:var(--muted);font-size:1.3em;}
+  .end .yc{display:inline-flex;align-items:center;gap:.5em;color:var(--dim);font-size:1.1em;}
+  .end .yc b{background:#f26522;color:#fff;width:1.5em;height:1.5em;display:inline-flex;align-items:center;justify-content:center;border-radius:.2em;}
 
-  .progress{position:absolute;left:0;bottom:0;height:.25em;background:var(--lime);width:0;z-index:10;opacity:.8;}
-  .hint{position:absolute;bottom:1em;right:1.4em;font-size:.95em;color:#5d5582;z-index:10;}
+  .progress{position:absolute;left:0;bottom:0;height:.22em;background:var(--lime);width:0;z-index:10;opacity:.85;}
+  .hint{position:absolute;bottom:1em;right:1.4em;font-size:.95em;color:#4a4a48;z-index:10;}
 
-  @media (prefers-reduced-motion: reduce){
-    .grid{animation:none;}
-    .end .cta{animation:none;}
-  }
+  @media (prefers-reduced-motion: reduce){ .glow,.create{animation:none;} }
 </style>
 </head>
 <body>
-<div class="stage" id="stage" role="img" aria-label="Animated ad for Playabl: type a game idea, play it instantly, publish a link, and share it.">
-  <div class="grid"></div>
-  <div class="logo corner-logo" id="cornerLogo"><i class="dot"></i>playabl</div>
+<div class="stage" id="stage" role="img" aria-label="Animated ad for Playabl: describe a game, watch it get built, change it by chatting, and post it.">
+  <div class="glow"></div>
+  <div class="wordmark corner" id="corner">playabl<span class="beta">BETA</span></div>
 
   <!-- 1. Hook -->
   <section class="scene hook" id="s1">
-    <h1>
-      <span>Got a</span>
-      <span class="hl">game idea?</span>
-      <span class="strike">No code.</span>
-      <span class="strike">No engine.</span>
-      <span class="strike">No team.</span>
-    </h1>
+    <h1><span>Got a</span><span>game idea</span><span class="l">in your head?</span></h1>
+    <p id="hookSub">Say it. Play it. Tonight.</p>
   </section>
 
-  <!-- 2+3. Prompt -> build -> play -> iterate -->
-  <section class="scene" id="s2">
-    <div class="app-wrap">
-      <div class="app">
-        <div class="app-bar"><span class="lights"><i></i><i></i><i></i></span><span class="url">playabl.ai/<b>create</b></span></div>
-        <div class="viewport">
-          <canvas id="game" width="600" height="500"></canvas>
-          <div class="hud" id="hud"><span>★ <span id="score">0</span></span><span class="lvl" id="lvl">LVL 1</span></div>
-          <div class="building" id="building">
-            <div class="lbl">Building your game…</div>
-            <div class="bar"><i id="barFill"></i></div>
-            <div class="steps" id="steps">Reading your idea</div>
-          </div>
+  <!-- 2. Home -->
+  <section class="scene hero" id="s2">
+    <h2>Make everything<br>playabl</h2>
+    <p class="sub">Create games and experiences by chatting with AI</p>
+    <div class="prompt">
+      <div class="txt ph" id="p1">Ask Playabl to build a falling blocks game with escalating speed…</div>
+      <div class="row"><span>⌀</span><span class="round" id="send1">↑</span></div>
+    </div>
+  </section>
+
+  <!-- 3. Editor -->
+  <section class="scene" id="s3">
+    <div class="editor">
+      <div class="topbar">
+        <span class="pmark">p</span><span class="proj">Wriggle Rush<i>⌄</i></span>
+        <span class="pill post" id="postBtn">↑ Post</span><span class="pill up">🚀 Upgrade</span>
+      </div>
+      <div class="tabs"><span class="tab on">◍ Preview</span><span class="tab">Library</span><span class="tab">&lt;/&gt; Code</span></div>
+      <div class="preview">
+        <canvas id="game" width="800" height="560"></canvas>
+        <div class="hud" id="hud">
+          <span class="len">🐍 <span id="len">8</span></span>
+          <div class="board" id="board"><b>1. You</b><br>2. Noodle<br>3. Sir Hiss</div>
         </div>
-        <div class="chat">
-          <div class="msg" id="m1">A frog dodging meteors in space</div>
-          <div class="msg bot" id="m2">Done! It's playable. Want changes?</div>
-          <div class="msg" id="m3">Make it way harder</div>
-          <div class="input"><span class="txt ph" id="txt">Describe your game…</span><span class="send" id="send">↑</span></div>
+        <div class="boot" id="boot"><span class="spin"></span><span>Starting workspace…</span></div>
+      </div>
+      <div class="thread">
+        <div class="ai" id="ai">Built <b>Wriggle Rush</b>—a polished Snake.io-style arcade game featuring:
+          <ul><li>Pointer, touch &amp; keyboard steering</li><li>Boosting, growth &amp; food trails</li><li>Leaderboard, coins &amp; unlockable skins</li></ul>
         </div>
+        <div class="user" id="u2">Add rival AI snakes with big personalities</div>
+      </div>
+      <div class="ask">
+        <div class="txt ph" id="p2">Ask Playabl…</div>
+        <div class="row"><span class="ico">+</span><span class="ico bolt">⚡</span><span class="grow"></span><span class="build">Build ⌄</span><span class="round" id="send2">↑</span></div>
       </div>
     </div>
     <div class="caption" id="cap"></div>
   </section>
 
-  <!-- 4. Publish -->
-  <section class="scene" id="s4">
-    <div class="share">
-      <h2>One tap.<br><em>It's live.</em></h2>
-      <div class="pub-btn" id="pub">Publish ↗</div>
-      <div class="link-card" id="link">
-        <div class="u">playabl.ai/p/<b>space-frog</b></div>
-        <div class="row"><span>plays</span><span class="plays" id="plays">0</span></div>
-      </div>
-      <div class="pills">
-        <span class="pill">🔗 Share a link</span><span class="pill">📱 Plays anywhere</span><span class="pill">📦 No exports</span>
-      </div>
+  <!-- 4. Post -->
+  <section class="scene post-scene" id="s4">
+    <h3>Hit post.<br><em>Everyone can play.</em></h3>
+    <div class="bigpost"><span class="pill post" id="bigPost">↑ Post</span></div>
+    <div class="feedcard" id="feed">
+      <canvas id="thumb" width="800" height="560"></canvas>
+      <div class="meta"><span class="pmark">p</span><div><div class="t">Wriggle Rush</div><div class="by">by you · just now</div></div>
+        <div class="plays"><b id="plays">0</b><span>plays</span></div></div>
     </div>
+    <div class="play-badge" id="badge">▶ Live in the Play feed</div>
   </section>
 
   <!-- 5. Proof -->
@@ -217,10 +246,10 @@
 
   <!-- 6. End card -->
   <section class="scene end" id="s6">
-    <div class="logo"><i class="dot"></i>playabl</div>
-    <div class="tag"><span class="a">Prompt it.</span> <span class="b">Play it.</span><br><span class="c">Share it.</span></div>
-    <div class="cta">Make your game →</div>
-    <div class="sub">playabl.ai</div>
+    <div class="wordmark">playabl<span class="beta">BETA</span></div>
+    <div class="tag">Make everything playabl</div>
+    <div class="create">✦ Create</div>
+    <div class="url">playabl.ai</div>
     <div class="yc"><b>Y</b> Backed by Y Combinator</div>
   </section>
 
@@ -230,193 +259,192 @@
 
 <script>
 (() => {
-  const DURATION = 16000;
+  const DURATION = 17000;
   const $ = id => document.getElementById(id);
-  const scenes = ['s1','s2','s4','s5','s6'].map($);
+  const scenes = ['s1','s2','s3','s4','s5','s6'].map($);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ---------- mini game (canvas) ----------
+  // ---------- Wriggle Rush mini game ----------
   const cv = $('game'), ctx = cv.getContext('2d');
   const W = cv.width, H = cv.height;
-  const stars = Array.from({length:70}, () => ({x:Math.random()*W, y:Math.random()*H, s:Math.random()*2+.5}));
-  let game = null;
+  const tufts = Array.from({length:120}, () => ({x:Math.random()*W, y:Math.random()*H, r:Math.random()*3+1.5}));
+  const patches = Array.from({length:7}, () => ({x:Math.random()*W, y:Math.random()*H, r:80+Math.random()*90}));
+  let game;
 
+  function snake(x, y, a, color, len, name){
+    const trail = []; for (let i = 0; i < 400; i++) trail.push({x: x - Math.cos(a)*i*2, y: y - Math.sin(a)*i*2});
+    return {x, y, a, color, len, name, trail, wob: Math.random()*6};
+  }
+  function food(){ const hues = ['#ffe45c','#ff7ab6','#7ae8ff','#d6f53b']; return {x:30+Math.random()*(W-60), y:30+Math.random()*(H-60), c:hues[Math.random()*4|0], p:Math.random()*6}; }
   function newGame(){
-    game = {fx:W/2, tx:W/2, meteors:[], t:0, spawn:0, hard:false, score:0, flash:0};
+    game = {t:0, snakes:[snake(W*.35, H*.55, 0, '#d6f53b', 8, 'You')], food:Array.from({length:26}, food), rivals:false, parts:[]};
   }
-  function drawFrog(x, y, t){
-    const hop = Math.abs(Math.sin(t*8))*8;
-    y -= hop;
-    ctx.fillStyle = '#c6ff3d';
-    ctx.beginPath(); ctx.ellipse(x, y, 34, 26, 0, 0, Math.PI*2); ctx.fill();
-    // eyes
-    for (const dx of [-16, 16]){
-      ctx.fillStyle = '#c6ff3d'; ctx.beginPath(); ctx.arc(x+dx, y-22, 12, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x+dx, y-23, 8, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(x+dx, y-24, 4, 0, Math.PI*2); ctx.fill();
-    }
-    // smile + cheeks
-    ctx.strokeStyle = '#2a4a00'; ctx.lineWidth = 3;
-    ctx.beginPath(); ctx.arc(x, y-2, 14, .15*Math.PI, .85*Math.PI); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,79,163,.6)';
-    ctx.beginPath(); ctx.arc(x-22, y+2, 5, 0, Math.PI*2); ctx.arc(x+22, y+2, 5, 0, Math.PI*2); ctx.fill();
+  function addRivals(){
+    game.rivals = true;
+    game.snakes.push(snake(W+40, H*.25, Math.PI, '#ff7ab6', 10, 'Noodle'));
+    game.snakes.push(snake(-40, H*.8, 0, '#7ae8ff', 9, 'Sir Hiss'));
   }
-  function stepGame(dt){
+  function step(dt){
     const g = game; g.t += dt;
-    const rate = g.hard ? 0.13 : 0.42, speed = g.hard ? 620 : 300;
-    g.spawn -= dt;
-    if (g.spawn <= 0){
-      g.spawn = rate;
-      const r = g.hard ? 14 + Math.random()*20 : 18 + Math.random()*18;
-      g.meteors.push({x: 40 + Math.random()*(W-80), y:-40, r, v: speed*(.8+Math.random()*.5), rot:Math.random()*6});
-    }
-    // simple autopilot: steer to the safest lane
-    const fy = H - 70;
-    let best = g.tx, bestScore = -1e9;
-    for (let lx = 50; lx <= W-50; lx += 25){
-      let s = -Math.abs(lx - g.fx)*0.15;
-      for (const m of g.meteors){
-        const tti = (fy - m.y) / m.v;
-        if (tti > 0 && tti < 1.2){ const d = Math.abs(m.x - lx); if (d < m.r + 60) s -= (m.r + 60 - d) * (1.4 - tti) * 3; }
+    for (const s of g.snakes){
+      // steer toward nearest food, away from walls
+      let best = null, bd = 1e9;
+      for (const f of g.food){ const d = (f.x-s.x)**2 + (f.y-s.y)**2; if (d < bd){ bd = d; best = f; } }
+      let ta = best ? Math.atan2(best.y - s.y, best.x - s.x) : s.a;
+      const m = 60; if (s.x < m || s.x > W-m || s.y < m || s.y > H-m) ta = Math.atan2(H/2 - s.y, W/2 - s.x);
+      let da = ((ta - s.a + Math.PI*3) % (Math.PI*2)) - Math.PI;
+      da += Math.sin(g.t*3 + s.wob) * .35;
+      s.a += Math.max(-1, Math.min(1, da)) * dt * 4.2;
+      const sp = 170;
+      s.x += Math.cos(s.a)*sp*dt; s.y += Math.sin(s.a)*sp*dt;
+      s.trail.unshift({x:s.x, y:s.y}); if (s.trail.length > 900) s.trail.pop();
+      for (let i = g.food.length-1; i >= 0; i--){
+        const f = g.food[i];
+        if ((f.x-s.x)**2 + (f.y-s.y)**2 < 22*22){
+          for (let k = 0; k < 6; k++) g.parts.push({x:f.x, y:f.y, vx:(Math.random()-.5)*160, vy:(Math.random()-.5)*160, life:.5, c:f.c});
+          g.food.splice(i, 1); g.food.push(food()); s.len += 1;
+        }
       }
-      if (s > bestScore){ bestScore = s; best = lx; }
     }
-    g.tx = best;
-    g.fx += (g.tx - g.fx) * Math.min(1, dt * (g.hard ? 11 : 7));
-    for (const m of g.meteors){ m.y += m.v*dt; m.rot += dt*3; }
-    const before = g.meteors.length;
-    g.meteors = g.meteors.filter(m => m.y < H + 60);
-    g.score += (before - g.meteors.length) * (g.hard ? 25 : 10);
-    if (g.flash > 0) g.flash -= dt;
+    for (const p of g.parts){ p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt; }
+    g.parts = g.parts.filter(p => p.life > 0);
   }
-  function drawGame(){
+  function drawSnake(c, s){
+    const R = 13, gap = 5, n = Math.min(s.trail.length, Math.floor(s.len * 3.2) * gap);
+    for (let i = n - 1; i >= 0; i -= gap){
+      const p = s.trail[i];
+      c.fillStyle = '#0d1a0d'; c.beginPath(); c.arc(p.x, p.y + 3, R, 0, Math.PI*2); c.fill();
+      c.fillStyle = (i / gap) % 2 < 1 ? s.color : shade(s.color);
+      c.beginPath(); c.arc(p.x, p.y, R, 0, Math.PI*2); c.fill();
+    }
+    // head + eyes
+    c.fillStyle = s.color; c.beginPath(); c.arc(s.x, s.y, R+2, 0, Math.PI*2); c.fill();
+    for (const side of [-1, 1]){
+      const ex = s.x + Math.cos(s.a)*6 + Math.cos(s.a + Math.PI/2)*side*7, ey = s.y + Math.sin(s.a)*6 + Math.sin(s.a + Math.PI/2)*side*7;
+      c.fillStyle = '#fff'; c.beginPath(); c.arc(ex, ey, 5.5, 0, Math.PI*2); c.fill();
+      c.fillStyle = '#111'; c.beginPath(); c.arc(ex + Math.cos(s.a)*2, ey + Math.sin(s.a)*2, 2.8, 0, Math.PI*2); c.fill();
+    }
+    if (game.rivals){
+      c.font = '600 15px Inter, sans-serif'; c.textAlign = 'center'; c.fillStyle = 'rgba(255,255,255,.85)';
+      c.fillText(s.name, s.x, s.y - 26);
+    }
+  }
+  const shadeCache = {};
+  function shade(hex){
+    if (shadeCache[hex]) return shadeCache[hex];
+    const n = parseInt(hex.slice(1), 16), f = .78;
+    return shadeCache[hex] = `rgb(${(n>>16&255)*f|0},${(n>>8&255)*f|0},${(n&255)*f|0})`;
+  }
+  function draw(c){
     const g = game;
-    ctx.fillStyle = g.hard ? '#140619' : '#07051a';
-    ctx.fillRect(0,0,W,H);
-    for (const s of stars){
-      s.y += s.s * (g.hard ? 3 : 1.2); if (s.y > H) s.y = 0;
-      ctx.fillStyle = `rgba(255,255,255,${.25 + s.s/4})`; ctx.fillRect(s.x, s.y, s.s, s.s*(g.hard?4:1.5));
+    c.fillStyle = '#2f5a2a'; c.fillRect(0, 0, W, H);
+    for (const p of patches){ c.fillStyle = 'rgba(70,120,50,.35)'; c.beginPath(); c.arc(p.x, p.y, p.r, 0, Math.PI*2); c.fill(); }
+    c.fillStyle = 'rgba(150,200,90,.25)';
+    for (const t of tufts){ c.beginPath(); c.arc(t.x, t.y, t.r, 0, Math.PI*2); c.fill(); }
+    for (const f of g.food){
+      const pulse = 6 + Math.sin(g.t*5 + f.p)*1.5;
+      c.fillStyle = f.c; c.globalAlpha = .25; c.beginPath(); c.arc(f.x, f.y, pulse*2, 0, Math.PI*2); c.fill();
+      c.globalAlpha = 1; c.beginPath(); c.arc(f.x, f.y, pulse, 0, Math.PI*2); c.fill();
     }
-    for (const m of g.meteors){
-      const grad = ctx.createLinearGradient(m.x, m.y - m.r*5, m.x, m.y);
-      grad.addColorStop(0, 'rgba(255,79,163,0)'); grad.addColorStop(1, g.hard ? 'rgba(255,79,163,.7)' : 'rgba(255,160,60,.6)');
-      ctx.fillStyle = grad;
-      ctx.beginPath(); ctx.moveTo(m.x - m.r*.8, m.y); ctx.lineTo(m.x, m.y - m.r*5); ctx.lineTo(m.x + m.r*.8, m.y); ctx.fill();
-      ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(m.rot);
-      ctx.fillStyle = g.hard ? '#ff4fa3' : '#ff9b3d';
-      ctx.beginPath();
-      for (let i = 0; i < 7; i++){ const a = i/7*Math.PI*2, rr = m.r*(i%2 ? .82 : 1); ctx.lineTo(Math.cos(a)*rr, Math.sin(a)*rr); }
-      ctx.closePath(); ctx.fill();
-      ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.arc(m.r*.25, -m.r*.2, m.r*.25, 0, Math.PI*2); ctx.fill();
-      ctx.restore();
+    for (const p of g.parts){ c.globalAlpha = p.life*2; c.fillStyle = p.c; c.fillRect(p.x-3, p.y-3, 6, 6); }
+    c.globalAlpha = 1;
+    for (let i = g.snakes.length - 1; i >= 0; i--) drawSnake(c, g.snakes[i]);
+  }
+  function syncHud(){
+    const g = game; $('len').textContent = g.snakes[0].len;
+    if (g.rivals){
+      const ranked = [...g.snakes].sort((a, b) => b.len - a.len);
+      $('board').innerHTML = ranked.map((s, i) => s.name === 'You' ? `<b>${i+1}. You · ${s.len}</b>` : `${i+1}. ${s.name} · ${s.len}`).join('<br>');
     }
-    drawFrog(g.fx, H - 70, g.t);
-    if (g.flash > 0){ ctx.fillStyle = `rgba(198,255,61,${g.flash*1.2})`; ctx.fillRect(0,0,W,H); }
-    $('score').textContent = g.score;
   }
 
   // ---------- timeline ----------
-  const PROMPT1 = 'A frog dodging meteors in space';
-  const PROMPT2 = 'Make it way harder';
-  const BUILD_STEPS = ['Reading your idea', 'Drawing sprites', 'Writing game rules', 'Tuning difficulty'];
+  const PROMPT1 = 'Build a Snake.io-style game where you grow by eating glowing food';
+  const PROMPT2 = 'Add rival AI snakes with big personalities';
   let start = 0, last = 0, fired = new Set(), raf = 0;
 
-  function once(key, fn){ if (!fired.has(key)){ fired.add(key); fn(); } }
-  function show(idx){ scenes.forEach((s,i) => s.classList.toggle('on', i === idx)); }
-  function typeInto(text, p){
-    const t = $('txt'); const n = Math.floor([...text].length * p);
-    t.classList.remove('ph');
-    t.innerHTML = [...text].slice(0, n).join('') + '<span class="caret"></span>';
+  const once = (k, fn) => { if (!fired.has(k)){ fired.add(k); fn(); } };
+  const show = idx => scenes.forEach((s, i) => s.classList.toggle('on', i === idx));
+  const ease = p => 1 - Math.pow(1 - Math.min(1, Math.max(0, p)), 3);
+  function typeInto(el, text, p){
+    const ch = [...text], n = Math.floor(ch.length * Math.min(1, p));
+    el.classList.remove('ph'); el.innerHTML = ch.slice(0, n).join('') + '<span class="caret"></span>';
   }
-  function resetInput(){ const t = $('txt'); t.classList.add('ph'); t.textContent = 'Describe your game…'; }
-  function tap(el){ el.classList.add('tap'); setTimeout(() => el.classList.remove('tap'), 160); }
-  function caption(html){ const c = $('cap'); c.classList.remove('in'); setTimeout(() => { c.innerHTML = html; c.classList.add('in'); }, html ? 120 : 0); }
-  const fmt = n => n.toLocaleString('en-US');
+  function tap(el){ el.classList.add('tap'); setTimeout(() => el.classList.remove('tap'), 170); }
+  function caption(html){ const c = $('cap'); c.classList.remove('in'); setTimeout(() => { c.innerHTML = html; c.classList.add('in'); }, 120); }
 
   function reset(){
     fired.clear();
     document.querySelectorAll('.in').forEach(e => e.classList.remove('in'));
-    $('building').classList.remove('hide'); $('barFill').style.width = '0';
-    $('hud').classList.remove('on'); $('lvl').textContent = 'LVL 1';
-    $('plays').textContent = '0'; resetInput(); $('cap').innerHTML = '';
+    document.querySelectorAll('.ready').forEach(e => e.classList.remove('ready'));
+    $('p1').className = 'txt ph'; $('p1').textContent = 'Ask Playabl to build a falling blocks game with escalating speed…';
+    $('p2').className = 'txt ph'; $('p2').textContent = 'Ask Playabl…';
+    $('boot').classList.remove('hide'); $('hud').classList.remove('on'); $('board').classList.remove('on');
+    $('plays').textContent = '0'; $('cap').innerHTML = '';
     document.querySelectorAll('.stat .n').forEach(n => n.textContent = '0');
-    newGame(); drawGame();
+    newGame(); draw(ctx);
   }
 
   function frame(now){
-    const t = now - start;
-    const dt = Math.min(.05, (now - last) / 1000); last = now;
-    $('progress').style.width = (Math.min(1, t / DURATION) * 100) + '%';
+    const t = now - start, dt = Math.min(.05, (now - last) / 1000); last = now;
+    $('progress').style.width = Math.min(100, t / DURATION * 100) + '%';
+    let corner = .95;
 
-    // 0 – 2.6s: hook
-    if (t < 2600){
+    if (t < 2400){                         // 1. hook
       show(0);
-      document.querySelectorAll('#s1 h1 span').forEach((s, i) => { if (t > 150 + i*380) s.classList.add('in'); });
-    }
-    // 2.6 – 10.4s: create + play + iterate
-    else if (t < 10400){
-      show(1);
-      const lt = t - 2600;
-      if (lt < 1500){ typeInto(PROMPT1, Math.min(1, lt / 1300)); once('cap1', () => caption('Just <em>describe it.</em>')); }
-      else once('send1', () => { tap($('send')); $('m1').classList.add('in'); resetInput(); });
-      if (lt >= 1500 && lt < 3400){
-        const p = (lt - 1500) / 1900;
-        $('barFill').style.width = (p*100) + '%';
-        $('steps').textContent = BUILD_STEPS[Math.min(BUILD_STEPS.length - 1, Math.floor(p * BUILD_STEPS.length))];
-      }
-      if (lt >= 3400){
-        once('built', () => { $('building').classList.add('hide'); $('hud').classList.add('on'); $('m2').classList.add('in'); caption('Play it <em>instantly.</em>'); });
-        stepGame(dt); drawGame();
-      }
-      if (lt >= 4600 && lt < 5600) typeInto(PROMPT2, (lt - 4600) / 800);
-      if (lt >= 5600) once('send2', () => {
-        tap($('send')); $('m3').classList.add('in'); resetInput();
-        game.hard = true; game.flash = .5; $('lvl').textContent = 'LVL 99'; caption('Change <em>anything</em> by chatting.');
+      document.querySelectorAll('#s1 h1 span').forEach((s, i) => { if (t > 150 + i*330) s.classList.add('in'); });
+      if (t > 1300) $('hookSub').classList.add('in');
+    } else if (t < 5200){                  // 2. home + prompt
+      show(1); corner = 0;
+      const lt = t - 2400;
+      if (lt > 300 && lt < 2200){ typeInto($('p1'), PROMPT1, (lt - 300) / 1700); $('send1').classList.add('ready'); }
+      if (lt > 2400) once('send1', () => tap($('send1')));
+    } else if (t < 11800){                 // 3. editor
+      show(2); corner = 0;
+      const lt = t - 5200;
+      if (lt < 900) once('cap1', () => caption('Watch it <em>build.</em>'));
+      if (lt > 900) once('boot', () => { $('boot').classList.add('hide'); $('hud').classList.add('on'); $('ai').classList.add('in'); caption('Play it <em>instantly.</em>'); });
+      document.querySelectorAll('#ai li').forEach((li, i) => { if (lt > 1100 + i*250) li.classList.add('in'); });
+      if (lt > 900){ step(dt); draw(ctx); syncHud(); }
+      if (lt > 2800 && lt < 4100){ typeInto($('p2'), PROMPT2, (lt - 2800) / 1100); $('send2').classList.add('ready'); }
+      if (lt > 4250) once('send2', () => {
+        tap($('send2')); $('u2').classList.add('in');
+        $('p2').className = 'txt ph'; $('p2').textContent = 'Ask Playabl…'; $('send2').classList.remove('ready');
+        caption('Change <em>anything</em> by chatting.');
       });
-    }
-    // 10.4 – 12.8s: publish
-    else if (t < 12800){
-      show(2);
-      const lt = t - 10400;
-      if (lt > 500) once('pub', () => tap($('pub')));
-      if (lt > 700) $('link').classList.add('in');
-      if (lt > 800){
-        const p = Math.min(1, (lt - 800) / 1400), e = 1 - Math.pow(1 - p, 3);
-        $('plays').textContent = fmt(Math.floor(e * 12847));
-      }
-      document.querySelectorAll('#s4 .pill').forEach((el, i) => { if (lt > 1000 + i*220) el.classList.add('in'); });
-    }
-    // 12.8 – 14.4s: proof
-    else if (t < 14400){
+      if (lt > 4800) once('rivals', () => { addRivals(); $('board').classList.add('on'); });
+      if (lt > 6000) once('post', () => tap($('postBtn')));
+    } else if (t < 14000){                 // 4. post
       show(3);
-      const lt = t - 12800;
-      document.querySelectorAll('.stat').forEach((el, i) => {
-        if (lt > i*250){
-          el.classList.add('in');
-          const n = el.querySelector('.n'), p = Math.min(1, (lt - i*250) / 700), e = 1 - Math.pow(1 - p, 3);
-          n.textContent = Math.round(e * +n.dataset.to) + n.dataset.suf;
-        }
-      });
-    }
-    // 14.4 – 16s: end card
-    else {
+      const lt = t - 11800;
+      once('thumb', () => draw($('thumb').getContext('2d')));
+      if (lt > 350) once('bigpost', () => tap($('bigPost')));
+      if (lt > 550) $('feed').classList.add('in');
+      if (lt > 700) $('plays').textContent = Math.floor(ease((lt - 700) / 1300) * 12847).toLocaleString('en-US');
+      if (lt > 1100) $('badge').classList.add('in');
+    } else if (t < 15400){                 // 5. proof
       show(4);
+      const lt = t - 14000;
+      document.querySelectorAll('.stat').forEach((el, i) => {
+        if (lt > i*220){ el.classList.add('in'); const n = el.querySelector('.n'); n.textContent = Math.round(ease((lt - i*220) / 650) * +n.dataset.to) + n.dataset.suf; }
+      });
+    } else {                               // 6. end card
+      show(5); corner = 0;
     }
-    $('cornerLogo').style.opacity = (t >= 2600 && t < 10400) || t >= 14400 ? 0 : .9;
+    $('corner').style.opacity = corner;
 
     if (t >= DURATION){ restart(); return; }
     raf = requestAnimationFrame(frame);
   }
 
   function restart(){
-    cancelAnimationFrame(raf);
-    reset();
+    cancelAnimationFrame(raf); reset();
     start = last = performance.now();
     raf = requestAnimationFrame(frame);
   }
 
   $('stage').addEventListener('click', restart);
-  if (reduced){ reset(); show(4); $('progress').style.width = '100%'; }
+  if (reduced){ reset(); show(5); $('corner').style.opacity = 0; $('progress').style.width = '100%'; }
   else if (document.fonts && document.fonts.ready) document.fonts.ready.then(restart);
   else restart();
 })();
