@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Playabl Ad</title>
+<meta name="description" content="A 16-second vertical ad for Playabl: describe a game, play it, share it.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0816;
+    --bg2:#1a1033;
+    --ink:#f6f3ff;
+    --muted:#a59cc7;
+    --lime:#c6ff3d;
+    --pink:#ff4fa3;
+    --violet:#7b5cff;
+    --card:#17112b;
+    --line:rgba(255,255,255,0.09);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:#000;color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+  body{display:flex;align-items:center;justify-content:center;}
+
+  /* 9:16 stage, scaled to fit the viewport */
+  .stage{
+    position:relative;width:min(100vw, 56.25vh);aspect-ratio:9/16;overflow:hidden;
+    background:radial-gradient(120% 70% at 50% 0%, var(--bg2) 0%, var(--bg) 60%);
+    font-size:calc(min(100vw, 56.25vh) / 36); /* 1em = 1/36 of stage width */
+    cursor:pointer;
+  }
+  .grid{position:absolute;inset:-20%;background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:3em 3em;transform:perspective(40em) rotateX(55deg) translateY(30%);
+    opacity:.5;animation:gridmove 6s linear infinite;}
+  @keyframes gridmove{to{background-position:0 3em,0 0;}}
+
+  .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:0 2.4em;opacity:0;pointer-events:none;transition:opacity .45s ease, transform .45s ease;transform:scale(1.04);}
+  .scene.on{opacity:1;transform:none;}
+
+  .logo{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.03em;display:flex;align-items:center;gap:.3em;}
+  .logo .dot{width:.62em;height:.62em;border-radius:.18em;background:var(--lime);display:inline-block;transform:rotate(12deg);
+    box-shadow:.18em .18em 0 var(--pink);}
+  .corner-logo{position:absolute;top:2.2em;left:2.4em;font-size:1.5em;z-index:5;opacity:.9;transition:opacity .4s;}
+
+  /* Scene 1: hook */
+  .hook h1{font-family:'Space Grotesk',sans-serif;font-size:4.2em;line-height:1.02;letter-spacing:-.04em;font-weight:700;text-align:left;width:100%;}
+  .hook h1 span{display:block;opacity:0;transform:translateY(.4em);transition:all .5s cubic-bezier(.2,.8,.2,1);}
+  .hook h1 span.in{opacity:1;transform:none;}
+  .hook h1 .hl{color:var(--lime);}
+  .hook h1 .strike{color:var(--muted);position:relative;}
+  .hook h1 .strike::after{content:"";position:absolute;left:0;top:55%;height:.09em;background:var(--pink);width:0;transition:width .4s ease .2s;}
+  .hook h1 .strike.in::after{width:100%;}
+
+  /* Scene 2+3: the app */
+  .app{width:100%;background:var(--card);border:1px solid var(--line);border-radius:1.6em;overflow:hidden;
+    box-shadow:0 2em 5em rgba(0,0,0,.55), 0 0 0 .08em rgba(198,255,61,.08);}
+  .app-bar{display:flex;align-items:center;gap:.5em;padding:1em 1.2em;border-bottom:1px solid var(--line);font-size:1.05em;color:var(--muted);}
+  .app-bar .lights{display:flex;gap:.35em;margin-right:.4em;}
+  .app-bar .lights i{width:.6em;height:.6em;border-radius:50%;background:#3a3157;display:block;}
+  .app-bar .url{flex:1;background:#0f0b1f;border-radius:.6em;padding:.35em .8em;font-family:'Space Grotesk',sans-serif;}
+  .app-bar .url b{color:var(--ink);font-weight:600;}
+
+  .viewport{position:relative;aspect-ratio:6/5;background:#07051a;overflow:hidden;}
+  .viewport canvas{width:100%;height:100%;display:block;}
+  .building{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;
+    background:#0d0920;transition:opacity .4s ease;}
+  .building.hide{opacity:0;}
+  .building .lbl{font-family:'Space Grotesk',sans-serif;font-size:1.3em;color:var(--muted);}
+  .building .bar{width:60%;height:.55em;border-radius:1em;background:#231a40;overflow:hidden;}
+  .building .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--lime));border-radius:1em;}
+  .building .steps{font-size:1em;color:#6f6694;height:1.3em;}
+
+  .hud{position:absolute;top:.8em;left:.9em;right:.9em;display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;
+    font-weight:700;font-size:1.2em;color:#fff;text-shadow:0 .1em .3em #000;opacity:0;transition:opacity .3s;}
+  .hud.on{opacity:1;}
+  .hud .lvl{color:var(--pink);}
+
+  .chat{padding:1em 1.2em 1.1em;display:flex;flex-direction:column;gap:.6em;min-height:9.6em;justify-content:flex-end;}
+  .msg{align-self:flex-end;max-width:88%;background:var(--violet);color:#fff;padding:.7em 1em;border-radius:1.1em 1.1em .3em 1.1em;
+    font-size:1.2em;line-height:1.3;opacity:0;transform:translateY(.5em);transition:all .3s ease;}
+  .msg.bot{align-self:flex-start;background:#251c45;color:var(--ink);border-radius:1.1em 1.1em 1.1em .3em;}
+  .msg.in{opacity:1;transform:none;}
+  .input{display:flex;align-items:center;gap:.6em;background:#0f0b1f;border:1px solid var(--line);border-radius:1em;padding:.7em .8em .7em 1em;}
+  .input .txt{flex:1;font-size:1.2em;color:var(--ink);min-height:1.4em;white-space:nowrap;overflow:hidden;}
+  .input .txt.ph{color:#5d5582;}
+  .input .caret{display:inline-block;width:.08em;height:1.05em;background:var(--lime);vertical-align:-.15em;margin-left:.05em;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .send{width:2.3em;height:2.3em;border-radius:.7em;background:var(--lime);color:#111;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1em;transition:transform .15s;}
+  .send.tap{transform:scale(.82);}
+
+  .caption{width:100%;min-height:2.3em;margin-top:.7em;font-family:'Space Grotesk',sans-serif;font-size:2.3em;font-weight:700;
+    letter-spacing:-.03em;line-height:1.08;opacity:0;transform:translateY(.4em);transition:all .4s ease;}
+  .caption.in{opacity:1;transform:none;}
+  .caption em{font-style:normal;color:var(--lime);}
+  .app-wrap{width:100%;}
+
+  /* Scene 4: publish */
+  .share{width:100%;display:flex;flex-direction:column;align-items:center;gap:1.6em;}
+  .pub-btn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2em;background:var(--lime);color:#111;
+    padding:.6em 1.6em;border-radius:.6em;box-shadow:.15em .15em 0 var(--pink);transition:transform .15s, box-shadow .15s;}
+  .pub-btn.tap{transform:translate(.12em,.12em) scale(.96);box-shadow:.03em .03em 0 var(--pink);}
+  .link-card{width:100%;background:var(--card);border:1px solid var(--line);border-radius:1.2em;padding:1.2em 1.4em;
+    opacity:0;transform:translateY(.8em);transition:all .4s ease;}
+  .link-card.in{opacity:1;transform:none;}
+  .link-card .u{font-family:'Space Grotesk',sans-serif;font-size:1.55em;font-weight:600;}
+  .link-card .u b{color:var(--lime);}
+  .link-card .row{display:flex;justify-content:space-between;align-items:baseline;margin-top:.9em;color:var(--muted);font-size:1.15em;}
+  .link-card .plays{font-family:'Space Grotesk',sans-serif;font-size:2.6em;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;}
+  .pills{display:flex;flex-wrap:wrap;gap:.6em;justify-content:center;}
+  .pill{font-size:1.15em;padding:.45em .9em;border-radius:2em;background:#221a3f;border:1px solid var(--line);opacity:0;transform:scale(.6);
+    transition:all .35s cubic-bezier(.3,1.6,.5,1);}
+  .pill.in{opacity:1;transform:none;}
+  .share h2{font-family:'Space Grotesk',sans-serif;font-size:3.1em;letter-spacing:-.04em;line-height:1.02;text-align:center;}
+  .share h2 em{font-style:normal;color:var(--lime);}
+
+  /* Scene 5: proof */
+  .stats{width:100%;display:flex;flex-direction:column;gap:1.4em;}
+  .stat{display:flex;align-items:baseline;gap:.5em;opacity:0;transform:translateX(-1em);transition:all .45s ease;}
+  .stat.in{opacity:1;transform:none;}
+  .stat .n{font-family:'Space Grotesk',sans-serif;font-size:5.4em;font-weight:700;letter-spacing:-.05em;line-height:1;color:var(--lime);font-variant-numeric:tabular-nums;}
+  .stat:nth-child(2) .n{color:var(--pink);}
+  .stat:nth-child(3) .n{color:#9d86ff;}
+  .stat .l{font-size:1.5em;color:var(--muted);line-height:1.15;}
+
+  /* Scene 6: end card */
+  .end{text-align:center;gap:2em;}
+  .end .logo{font-size:5em;}
+  .end .tag{font-family:'Space Grotesk',sans-serif;font-size:2.4em;font-weight:600;letter-spacing:-.03em;line-height:1.15;}
+  .end .tag span{display:inline-block;}
+  .end .tag .a{color:var(--lime);} .end .tag .b{color:var(--pink);} .end .tag .c{color:#9d86ff;}
+  .end .cta{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.9em;background:var(--ink);color:var(--bg);
+    padding:.65em 1.4em;border-radius:3em;animation:pulse 1.4s ease-in-out infinite;}
+  @keyframes pulse{50%{transform:scale(1.05);box-shadow:0 0 0 .5em rgba(198,255,61,.15);}}
+  .end .sub{color:var(--muted);font-size:1.25em;}
+  .end .yc{display:inline-flex;align-items:center;gap:.5em;color:var(--muted);font-size:1.15em;}
+  .end .yc b{background:#f26522;color:#fff;width:1.5em;height:1.5em;display:inline-flex;align-items:center;justify-content:center;border-radius:.2em;font-family:'Space Grotesk',sans-serif;}
+
+  .progress{position:absolute;left:0;bottom:0;height:.25em;background:var(--lime);width:0;z-index:10;opacity:.8;}
+  .hint{position:absolute;bottom:1em;right:1.4em;font-size:.95em;color:#5d5582;z-index:10;}
+
+  @media (prefers-reduced-motion: reduce){
+    .grid{animation:none;}
+    .end .cta{animation:none;}
+  }
+</style>
+</head>
+<body>
+<div class="stage" id="stage" role="img" aria-label="Animated ad for Playabl: type a game idea, play it instantly, publish a link, and share it.">
+  <div class="grid"></div>
+  <div class="logo corner-logo" id="cornerLogo"><i class="dot"></i>playabl</div>
+
+  <!-- 1. Hook -->
+  <section class="scene hook" id="s1">
+    <h1>
+      <span>Got a</span>
+      <span class="hl">game idea?</span>
+      <span class="strike">No code.</span>
+      <span class="strike">No engine.</span>
+      <span class="strike">No team.</span>
+    </h1>
+  </section>
+
+  <!-- 2+3. Prompt -> build -> play -> iterate -->
+  <section class="scene" id="s2">
+    <div class="app-wrap">
+      <div class="app">
+        <div class="app-bar"><span class="lights"><i></i><i></i><i></i></span><span class="url">playabl.ai/<b>create</b></span></div>
+        <div class="viewport">
+          <canvas id="game" width="600" height="500"></canvas>
+          <div class="hud" id="hud"><span>★ <span id="score">0</span></span><span class="lvl" id="lvl">LVL 1</span></div>
+          <div class="building" id="building">
+            <div class="lbl">Building your game…</div>
+            <div class="bar"><i id="barFill"></i></div>
+            <div class="steps" id="steps">Reading your idea</div>
+          </div>
+        </div>
+        <div class="chat">
+          <div class="msg" id="m1">A frog dodging meteors in space</div>
+          <div class="msg bot" id="m2">Done! It's playable. Want changes?</div>
+          <div class="msg" id="m3">Make it way harder</div>
+          <div class="input"><span class="txt ph" id="txt">Describe your game…</span><span class="send" id="send">↑</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="caption" id="cap"></div>
+  </section>
+
+  <!-- 4. Publish -->
+  <section class="scene" id="s4">
+    <div class="share">
+      <h2>One tap.<br><em>It's live.</em></h2>
+      <div class="pub-btn" id="pub">Publish ↗</div>
+      <div class="link-card" id="link">
+        <div class="u">playabl.ai/p/<b>space-frog</b></div>
+        <div class="row"><span>plays</span><span class="plays" id="plays">0</span></div>
+      </div>
+      <div class="pills">
+        <span class="pill">🔗 Share a link</span><span class="pill">📱 Plays anywhere</span><span class="pill">📦 No exports</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Proof -->
+  <section class="scene" id="s5">
+    <div class="stats">
+      <div class="stat"><span class="n" data-to="3" data-suf="M">0</span><span class="l">unique<br>plays</span></div>
+      <div class="stat"><span class="n" data-to="10" data-suf="K">0</span><span class="l">games<br>created</span></div>
+      <div class="stat"><span class="n" data-to="40" data-suf="K">0</span><span class="l">players<br>every day</span></div>
+    </div>
+  </section>
+
+  <!-- 6. End card -->
+  <section class="scene end" id="s6">
+    <div class="logo"><i class="dot"></i>playabl</div>
+    <div class="tag"><span class="a">Prompt it.</span> <span class="b">Play it.</span><br><span class="c">Share it.</span></div>
+    <div class="cta">Make your game →</div>
+    <div class="sub">playabl.ai</div>
+    <div class="yc"><b>Y</b> Backed by Y Combinator</div>
+  </section>
+
+  <div class="progress" id="progress"></div>
+  <div class="hint">tap to replay</div>
+</div>
+
+<script>
+(() => {
+  const DURATION = 16000;
+  const $ = id => document.getElementById(id);
+  const scenes = ['s1','s2','s4','s5','s6'].map($);
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- mini game (canvas) ----------
+  const cv = $('game'), ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const stars = Array.from({length:70}, () => ({x:Math.random()*W, y:Math.random()*H, s:Math.random()*2+.5}));
+  let game = null;
+
+  function newGame(){
+    game = {fx:W/2, tx:W/2, meteors:[], t:0, spawn:0, hard:false, score:0, flash:0};
+  }
+  function drawFrog(x, y, t){
+    const hop = Math.abs(Math.sin(t*8))*8;
+    y -= hop;
+    ctx.fillStyle = '#c6ff3d';
+    ctx.beginPath(); ctx.ellipse(x, y, 34, 26, 0, 0, Math.PI*2); ctx.fill();
+    // eyes
+    for (const dx of [-16, 16]){
+      ctx.fillStyle = '#c6ff3d'; ctx.beginPath(); ctx.arc(x+dx, y-22, 12, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x+dx, y-23, 8, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(x+dx, y-24, 4, 0, Math.PI*2); ctx.fill();
+    }
+    // smile + cheeks
+    ctx.strokeStyle = '#2a4a00'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(x, y-2, 14, .15*Math.PI, .85*Math.PI); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,79,163,.6)';
+    ctx.beginPath(); ctx.arc(x-22, y+2, 5, 0, Math.PI*2); ctx.arc(x+22, y+2, 5, 0, Math.PI*2); ctx.fill();
+  }
+  function stepGame(dt){
+    const g = game; g.t += dt;
+    const rate = g.hard ? 0.13 : 0.42, speed = g.hard ? 620 : 300;
+    g.spawn -= dt;
+    if (g.spawn <= 0){
+      g.spawn = rate;
+      const r = g.hard ? 14 + Math.random()*20 : 18 + Math.random()*18;
+      g.meteors.push({x: 40 + Math.random()*(W-80), y:-40, r, v: speed*(.8+Math.random()*.5), rot:Math.random()*6});
+    }
+    // simple autopilot: steer to the safest lane
+    const fy = H - 70;
+    let best = g.tx, bestScore = -1e9;
+    for (let lx = 50; lx <= W-50; lx += 25){
+      let s = -Math.abs(lx - g.fx)*0.15;
+      for (const m of g.meteors){
+        const tti = (fy - m.y) / m.v;
+        if (tti > 0 && tti < 1.2){ const d = Math.abs(m.x - lx); if (d < m.r + 60) s -= (m.r + 60 - d) * (1.4 - tti) * 3; }
+      }
+      if (s > bestScore){ bestScore = s; best = lx; }
+    }
+    g.tx = best;
+    g.fx += (g.tx - g.fx) * Math.min(1, dt * (g.hard ? 11 : 7));
+    for (const m of g.meteors){ m.y += m.v*dt; m.rot += dt*3; }
+    const before = g.meteors.length;
+    g.meteors = g.meteors.filter(m => m.y < H + 60);
+    g.score += (before - g.meteors.length) * (g.hard ? 25 : 10);
+    if (g.flash > 0) g.flash -= dt;
+  }
+  function drawGame(){
+    const g = game;
+    ctx.fillStyle = g.hard ? '#140619' : '#07051a';
+    ctx.fillRect(0,0,W,H);
+    for (const s of stars){
+      s.y += s.s * (g.hard ? 3 : 1.2); if (s.y > H) s.y = 0;
+      ctx.fillStyle = `rgba(255,255,255,${.25 + s.s/4})`; ctx.fillRect(s.x, s.y, s.s, s.s*(g.hard?4:1.5));
+    }
+    for (const m of g.meteors){
+      const grad = ctx.createLinearGradient(m.x, m.y - m.r*5, m.x, m.y);
+      grad.addColorStop(0, 'rgba(255,79,163,0)'); grad.addColorStop(1, g.hard ? 'rgba(255,79,163,.7)' : 'rgba(255,160,60,.6)');
+      ctx.fillStyle = grad;
+      ctx.beginPath(); ctx.moveTo(m.x - m.r*.8, m.y); ctx.lineTo(m.x, m.y - m.r*5); ctx.lineTo(m.x + m.r*.8, m.y); ctx.fill();
+      ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(m.rot);
+      ctx.fillStyle = g.hard ? '#ff4fa3' : '#ff9b3d';
+      ctx.beginPath();
+      for (let i = 0; i < 7; i++){ const a = i/7*Math.PI*2, rr = m.r*(i%2 ? .82 : 1); ctx.lineTo(Math.cos(a)*rr, Math.sin(a)*rr); }
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.arc(m.r*.25, -m.r*.2, m.r*.25, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+    drawFrog(g.fx, H - 70, g.t);
+    if (g.flash > 0){ ctx.fillStyle = `rgba(198,255,61,${g.flash*1.2})`; ctx.fillRect(0,0,W,H); }
+    $('score').textContent = g.score;
+  }
+
+  // ---------- timeline ----------
+  const PROMPT1 = 'A frog dodging meteors in space';
+  const PROMPT2 = 'Make it way harder';
+  const BUILD_STEPS = ['Reading your idea', 'Drawing sprites', 'Writing game rules', 'Tuning difficulty'];
+  let start = 0, last = 0, fired = new Set(), raf = 0;
+
+  function once(key, fn){ if (!fired.has(key)){ fired.add(key); fn(); } }
+  function show(idx){ scenes.forEach((s,i) => s.classList.toggle('on', i === idx)); }
+  function typeInto(text, p){
+    const t = $('txt'); const n = Math.floor([...text].length * p);
+    t.classList.remove('ph');
+    t.innerHTML = [...text].slice(0, n).join('') + '<span class="caret"></span>';
+  }
+  function resetInput(){ const t = $('txt'); t.classList.add('ph'); t.textContent = 'Describe your game…'; }
+  function tap(el){ el.classList.add('tap'); setTimeout(() => el.classList.remove('tap'), 160); }
+  function caption(html){ const c = $('cap'); c.classList.remove('in'); setTimeout(() => { c.innerHTML = html; c.classList.add('in'); }, html ? 120 : 0); }
+  const fmt = n => n.toLocaleString('en-US');
+
+  function reset(){
+    fired.clear();
+    document.querySelectorAll('.in').forEach(e => e.classList.remove('in'));
+    $('building').classList.remove('hide'); $('barFill').style.width = '0';
+    $('hud').classList.remove('on'); $('lvl').textContent = 'LVL 1';
+    $('plays').textContent = '0'; resetInput(); $('cap').innerHTML = '';
+    document.querySelectorAll('.stat .n').forEach(n => n.textContent = '0');
+    newGame(); drawGame();
+  }
+
+  function frame(now){
+    const t = now - start;
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    $('progress').style.width = (Math.min(1, t / DURATION) * 100) + '%';
+
+    // 0 – 2.6s: hook
+    if (t < 2600){
+      show(0);
+      document.querySelectorAll('#s1 h1 span').forEach((s, i) => { if (t > 150 + i*380) s.classList.add('in'); });
+    }
+    // 2.6 – 10.4s: create + play + iterate
+    else if (t < 10400){
+      show(1);
+      const lt = t - 2600;
+      if (lt < 1500){ typeInto(PROMPT1, Math.min(1, lt / 1300)); once('cap1', () => caption('Just <em>describe it.</em>')); }
+      else once('send1', () => { tap($('send')); $('m1').classList.add('in'); resetInput(); });
+      if (lt >= 1500 && lt < 3400){
+        const p = (lt - 1500) / 1900;
+        $('barFill').style.width = (p*100) + '%';
+        $('steps').textContent = BUILD_STEPS[Math.min(BUILD_STEPS.length - 1, Math.floor(p * BUILD_STEPS.length))];
+      }
+      if (lt >= 3400){
+        once('built', () => { $('building').classList.add('hide'); $('hud').classList.add('on'); $('m2').classList.add('in'); caption('Play it <em>instantly.</em>'); });
+        stepGame(dt); drawGame();
+      }
+      if (lt >= 4600 && lt < 5600) typeInto(PROMPT2, (lt - 4600) / 800);
+      if (lt >= 5600) once('send2', () => {
+        tap($('send')); $('m3').classList.add('in'); resetInput();
+        game.hard = true; game.flash = .5; $('lvl').textContent = 'LVL 99'; caption('Change <em>anything</em> by chatting.');
+      });
+    }
+    // 10.4 – 12.8s: publish
+    else if (t < 12800){
+      show(2);
+      const lt = t - 10400;
+      if (lt > 500) once('pub', () => tap($('pub')));
+      if (lt > 700) $('link').classList.add('in');
+      if (lt > 800){
+        const p = Math.min(1, (lt - 800) / 1400), e = 1 - Math.pow(1 - p, 3);
+        $('plays').textContent = fmt(Math.floor(e * 12847));
+      }
+      document.querySelectorAll('#s4 .pill').forEach((el, i) => { if (lt > 1000 + i*220) el.classList.add('in'); });
+    }
+    // 12.8 – 14.4s: proof
+    else if (t < 14400){
+      show(3);
+      const lt = t - 12800;
+      document.querySelectorAll('.stat').forEach((el, i) => {
+        if (lt > i*250){
+          el.classList.add('in');
+          const n = el.querySelector('.n'), p = Math.min(1, (lt - i*250) / 700), e = 1 - Math.pow(1 - p, 3);
+          n.textContent = Math.round(e * +n.dataset.to) + n.dataset.suf;
+        }
+      });
+    }
+    // 14.4 – 16s: end card
+    else {
+      show(4);
+    }
+    $('cornerLogo').style.opacity = (t >= 2600 && t < 10400) || t >= 14400 ? 0 : .9;
+
+    if (t >= DURATION){ restart(); return; }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function restart(){
+    cancelAnimationFrame(raf);
+    reset();
+    start = last = performance.now();
+    raf = requestAnimationFrame(frame);
+  }
+
+  $('stage').addEventListener('click', restart);
+  if (reduced){ reset(); show(4); $('progress').style.width = '100%'; }
+  else if (document.fonts && document.fonts.ready) document.fonts.ready.then(restart);
+  else restart();
+})();
+</script>
+</body>
+</html>
