@@ -1,10 +1,12 @@
-// Synthesizes the soundtrack for playabl-ad.html: an original 125 BPM track plus
+// Synthesizes the soundtrack for playabl-ad.html: an original track (tempo set by the ad's cuts) plus
 // sound effects timed to the ad's timeline. Writes a 44.1kHz stereo WAV.
-//   node tools/playabl-ad-audio.js out.wav
-// Times below (seconds) mirror the timeline constants in playabl-ad.html.
+//   node tools/playabl-ad-audio.js playabl-ad-events.json out.wav
+// The cue file comes from `node tools/render-playabl-ad.js events …`, so every effect
+// lands on the exact frame it belongs to and the beat grid follows the ad's cuts.
 const fs = require('fs');
 
-const SR = 44100, DUR = 22, N = SR * DUR;
+const CUES = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const SR = 44100, DUR = CUES.duration / 1000, N = Math.round(SR * DUR);
 const L = new Float32Array(N), R = new Float32Array(N);       // dry mix
 const RL = new Float32Array(N), RR = new Float32Array(N);     // reverb send
 const DL = new Float32Array(N), DR = new Float32Array(N);     // echo send
@@ -36,8 +38,9 @@ function svf(){
 }
 
 // ---------------- musical grid ----------------
-const BAR = 13.4 / 7;                 // 7 bars between groove start (5.7s) and end-card drop (19.1s)
-const BEAT = BAR / 4, T0 = 5.7 - 3 * BAR;
+const GROOVE = CUES.groove / 1000, DROP = CUES.drop / 1000;
+const BAR = (DROP - GROOVE) / 7;      // 7 bars between the groove start and the end-card drop
+const BEAT = BAR / 4, T0 = GROOVE - 3 * BAR;
 const barT = k => T0 + k * BAR;
 const CH = {Am:[57,60,64], F:[57,60,65], C:[55,60,64], G:[55,59,62]};
 const ROOT = {Am:45, F:41, C:36, G:43};
@@ -188,7 +191,7 @@ function impact(t, vol = .8){
 }
 
 // ---------------- arrangement ----------------
-const DROP = 19.1, BUILD = barT(9);
+const BUILD = barT(9);
 for (let k = 0; k < PROG.length; k++){
   const t = barT(k); if (t >= DUR) break;
   const ch = PROG[k], notes = CH[ch];
@@ -234,33 +237,29 @@ for (let k = 0; k < PROG.length; k++){
 }
 // final chord swell + sparkle on the end card
 [72, 76, 79, 84].forEach((m, i) => bell(DROP + .1 + i * .09, m, .09, (i - 1.5) * .3, 1.6));
-
-// ---------------- SFX timeline ----------------
-// hook line reveals
-[.15, .31, .47].forEach((t, i) => pop(t, .07, 700 + i * 120, 400 + i * 80, -.2 + i * .2));
-// scene transitions
-[2.5, 5.7, 12.5, 14.9, 17.3].forEach((t, i) => whoosh(t, .7, .2, i % 2 ? -1 : 1));
-// typing on the home prompt (36 chars/s) and editor chat
-const typeRun = (t0, text) => [...text].forEach((ch, i) => { if (ch !== ' ') click(t0 + (i + 1) / 36 + (rnd() - .5) * .006); });
-typeRun(3.5, 'Build a Snake.io-style game where you grow by eating glowing food');
-typeRun(8.7, 'Add rival AI snakes with big personalities');
-// taps: send, send, post, post
-pop(5.5, .32); pop(10.0, .3); pop(12.2, .3, 800, 260); pop(13.25, .38, 760, 240);
-// game boots + AI reply bullets
-[[6.8, 79], [6.88, 84], [6.96, 88]].forEach(([t, m]) => bell(t, m, .08, .2, 3));
-[7.15, 7.32, 7.49].forEach((t, i) => pop(t, .06, 1300 + i * 150, 900, .3));
-// rival snakes slither in
-boing(10.6); boing(10.75, .14);
-// play counter ticking up
-for (let t = 13.6, dt = .045; t < 15.0; t += dt, dt *= 1.06) pop(t, .045, 2400 + (t - 13.6) * 900, 1800, (rnd() - .5) * .6);
-// earnings
-coin(15.6, .15); coin(16.0, .11); coin(16.15, .11);
-// stats pops
-[17.45, 17.65, 17.85].forEach((t, i) => { pop(t, .22, 600 + i * 150, 300 + i * 80); bell(t, 76 + i * 3, .05, 0, 4); });
-// build + drop
 riser(BUILD, DROP - .03, .26);
-impact(DROP, .75);
-pop(19.7, .2, 900, 400, -.15); pop(19.86, .2, 1000, 450, .15); bell(20.1, 88, .05, 0, 3);
+
+// ---------------- SFX: one sound per cue exported by the ad (AD.events) ----------------
+for (const e of CUES.events){
+  const t = e.t / 1000;
+  switch (e.type){
+    case 'key':    click(t, .055); break;
+    case 'back':   click(t, .045); break;
+    case 'tap':    pop(t, .14, 520, 260); break;
+    case 'send':   pop(t, .3, 950, 320); break;
+    case 'cut':    whoosh(t + .05, .55, .2, 1); break;
+    case 'swipe':  whoosh(t + .2, .5, .2, -1); break;
+    case 'boot':   [79, 84, 88].forEach((m, i) => bell(t + i * .08, m, .08, .2, 3)); break;
+    case 'reply':  pop(t, .07, 1500, 1000, .3); break;
+    case 'rivals': boing(t + .1); boing(t + .25, .13); break;
+    case 'eat':    pop(t, .05, 1700, 1100, (rnd() - .5) * .5); break;
+    case 'like':   pop(t, .22, 700, 1100, .2); bell(t + .02, 84, .05, .2, 4); break;
+    case 'tick':   pop(t, .04, 2600, 1900, (rnd() - .5) * .6); break;
+    case 'coin':   coin(t, e.i === 0 ? .15 : .08); break;
+    case 'stat':   kick(t, .55); pop(t, .2, 600 + e.i * 150, 300 + e.i * 80); bell(t, 76 + e.i * 3, .06, 0, 4); break;
+    case 'drop':   impact(t, .75); break;
+  }
+}
 
 // ---------------- effects buses ----------------
 // ping-pong dotted-8th echo
@@ -308,5 +307,5 @@ for (let i = 0; i < N; i++){
   out.writeInt16LE(Math.round(L[i] * g * 32767), 44 + i * 4);
   out.writeInt16LE(Math.round(R[i] * g * 32767), 46 + i * 4);
 }
-fs.writeFileSync(process.argv[2] || 'playabl-ad.wav', out);
-console.log('wrote', process.argv[2], 'peak', peak.toFixed(3));
+fs.writeFileSync(process.argv[3], out);
+console.log('wrote', process.argv[3], 'peak', peak.toFixed(3));
