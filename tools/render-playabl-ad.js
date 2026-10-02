@@ -1,4 +1,4 @@
-// Renders playabl-ad.html frame-by-frame. Run from the repo root:
+// Renders an ad page (default playabl-ad.html; set AD_PAGE for another) frame-by-frame. Run from the repo root:
 //   node tools/render-playabl-ad.js video playabl-ad-silent.mp4 [fps]
 //   node tools/render-playabl-ad.js events playabl-ad-events.json   (sound cues for playabl-ad-audio.js)
 //   node tools/render-playabl-ad.js stills <outdir> 1000,5000,...   (PNG keyframes at those ms)
@@ -11,7 +11,7 @@ const fs = require('fs');
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.goto('file://' + process.cwd() + '/playabl-ad.html?capture');
+  await p.goto('file://' + process.cwd() + '/' + (process.env.AD_PAGE || 'playabl-ad.html') + '?capture');
   await p.evaluate(() => window.AD.ready);
 
   if (mode === 'events') {

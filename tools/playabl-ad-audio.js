@@ -39,12 +39,15 @@ function svf(){
 
 // ---------------- musical grid ----------------
 const GROOVE = CUES.groove / 1000, DROP = CUES.drop / 1000;
-const BAR = (DROP - GROOVE) / 7;      // 7 bars between the groove start and the end-card drop
+const BAR = (DROP - GROOVE) / (CUES.bars || 7);   // whole bars between the groove start and the end-card drop
 const BEAT = BAR / 4, T0 = GROOVE - 3 * BAR;
 const barT = k => T0 + k * BAR;
-const CH = {Am:[57,60,64], F:[57,60,65], C:[55,60,64], G:[55,59,62]};
-const ROOT = {Am:45, F:41, C:36, G:43};
-const PROG = ['Am','F','C','G','Am','F','C','G','F','G','C','C'];
+const TR = CUES.transpose || 0;        // per-ad key change, in semitones
+const CH = Object.fromEntries(Object.entries({Am:[57,60,64], F:[57,60,65], C:[55,60,64], G:[55,59,62]}).map(([k, v]) => [k, v.map(m => m + TR)]));
+const ROOT = Object.fromEntries(Object.entries({Am:45, F:41, C:36, G:43}).map(([k, v]) => [k, v + TR]));
+// 3 intro bars, NB groove bars (the last one is the build), then the drop and a tail bar
+const NB = CUES.bars || 7, KB = 3 + NB - 1, KD = KB + 1, KT = KD + 1;
+const PROG = Array.from({length: KT + 1}, (_, k) => k < KB - 1 ? ['Am','F','C','G'][k % 4] : k === KB - 1 ? 'F' : k === KB ? 'G' : 'C');
 
 // ---------------- instruments ----------------
 function kick(t, vol = .9){
@@ -191,42 +194,42 @@ function impact(t, vol = .8){
 }
 
 // ---------------- arrangement ----------------
-const BUILD = barT(9);
+const BUILD = barT(KB);
 for (let k = 0; k < PROG.length; k++){
   const t = barT(k); if (t >= DUR) break;
   const ch = PROG[k], notes = CH[ch];
   const beats = [0, 1, 2, 3].map(b => t + b * BEAT);
-  const full = k >= 3 && k <= 8, drop = k >= 10;
+  const full = k >= 3 && k < KB, drop = k >= KD;
 
   // drums
   if (full || drop){ beats.forEach(b => kick(b, drop ? .85 : .75)); }
   else if (k === 2){ kick(beats[0], .7); kick(beats[2], .7); }
-  if (k === 9){ kick(beats[0], .8); kick(beats[1], .8); }
+  if (k === KB){ kick(beats[0], .8); kick(beats[1], .8); }
   if (full || drop){ clap(beats[1]); clap(beats[3]); }
-  if (k >= 1 && k !== 9) for (let e = 0; e < 8; e++){
+  if (k >= 1 && k !== KB) for (let e = 0; e < 8; e++){
     const tt = t + e * BEAT / 2;
     hat(tt, (e % 2 ? .13 : .07) * (k === 1 ? .6 : 1), (full || drop) && e % 4 === 2, e % 2 ? .3 : -.2);
   }
-  if (k === 9){ // snare roll building into the drop
+  if (k === KB){ // snare roll building into the drop
     let tt = t + BEAT * 2, step = BEAT / 2, n = 0;
     while (tt < DROP - .02){ snare(tt, .12 + .3 * ((tt - t) / BAR)); tt += step; if (++n % 2 === 0 && step > BEAT / 8) step /= 2; }
   }
 
   // bass: pumping 8ths
-  if (k >= 2 && k !== 9 && k < 11){
+  if (k >= 2 && k !== KB && k < KT){
     for (let e = 0; e < 8; e++){
       const oct = (e === 3 || e === 7) ? 12 : 0;
       bass(t + e * BEAT / 2, BEAT / 2 * .9, ROOT[ch] + oct, k === 2 ? .22 : .3);
     }
   }
-  if (k === 9) bass(t, BAR * .5, ROOT[ch], .28);
+  if (k === KB) bass(t, BAR * .5, ROOT[ch], .28);
 
   // pads: filter opens through the intro, wide open on the drop
-  const cut = tt => tt < 5.7 ? 500 + 1800 * Math.min(1, tt / 5.7) : tt < BUILD ? 2300 : tt < DROP ? 2300 + 3500 * ((tt - BUILD) / (DROP - BUILD)) : 4200;
-  pad(t, k >= 11 ? DUR - t : BAR + .05, notes.map(m => m - 12).concat(notes), k >= 10 ? .16 : k < 2 ? .2 : .12, cut);
+  const cut = tt => tt < GROOVE ? 500 + 1800 * Math.min(1, tt / GROOVE) : tt < BUILD ? 2300 : tt < DROP ? 2300 + 3500 * ((tt - BUILD) / (DROP - BUILD)) : 4200;
+  pad(t, k >= KT ? DUR - t : BAR + .05, notes.map(m => m - 12).concat(notes), k >= KD ? .16 : k < 2 ? .2 : .12, cut);
 
   // arp: 16ths over chord tones
-  if (k !== 9 && k < 11){
+  if (k !== KB && k < KT){
     const pat = [0, 1, 2, 3, 2, 1, 4, 2, 0, 1, 2, 3, 2, 4, 3, 1];
     const tones = notes.concat(notes.map(m => m + 12));
     for (let e = 0; e < 16; e++){
@@ -258,6 +261,9 @@ for (const e of CUES.events){
     case 'coin':   coin(t, e.i === 0 ? .15 : .08); break;
     case 'stat':   kick(t, .55); pop(t, .2, 600 + e.i * 150, 300 + e.i * 80); bell(t, 76 + e.i * 3, .06, 0, 4); break;
     case 'drop':   impact(t, .75); break;
+    case 'hop':    pop(t, .045, 420, 760, (rnd() - .5) * .6); break;
+    case 'flip':   pop(t, .06, 500, 1200, (rnd() - .5) * .6); whoosh(t + .2, .25, .06, 1); break;
+    case 'upgrade': whoosh(t + .1, .45, .14, 1); [76, 79, 83, 88].forEach((m, i) => bell(t + i * .06, m, .07, (i - 1.5) * .3, 3)); break;
   }
 }
 
