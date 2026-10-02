@@ -11,7 +11,8 @@ const fs = require('fs');
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
   const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.goto('file://' + process.cwd() + '/' + (process.env.AD_PAGE || 'playabl-ad.html') + '?capture');
+  const page = process.env.AD_PAGE || 'playabl-ad.html';   // may carry its own query, e.g. playabl-clean.html?edit=2
+  await p.goto('file://' + process.cwd() + '/' + page + (page.includes('?') ? '&' : '?') + 'capture');
   await p.evaluate(() => window.AD.ready);
 
   if (mode === 'events') {

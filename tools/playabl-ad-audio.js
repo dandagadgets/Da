@@ -18,8 +18,10 @@ const noise = () => rnd() * 2 - 1;
 const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
 const TAU = Math.PI * 2;
 
+let GAIN = 1;   // scales whatever is being written (used to sit the SFX lower in the clean mix)
 function put(i, v, pan = 0, rev = 0, echo = 0){
   if (i < 0 || i >= N) return;
+  v *= GAIN;
   const gl = Math.cos((pan + 1) * Math.PI / 4), gr = Math.sin((pan + 1) * Math.PI / 4);
   L[i] += v * gl; R[i] += v * gr;
   if (rev){ RL[i] += v * gl * rev; RR[i] += v * gr * rev; }
@@ -29,7 +31,7 @@ function put(i, v, pan = 0, rev = 0, echo = 0){
 function svf(){
   let ic1 = 0, ic2 = 0;
   return (x, fc, q = .707) => {
-    const g = Math.tan(Math.PI * Math.min(fc, SR * .45) / SR), k = 1 / q;
+    const g = Math.tan(Math.PI * Math.max(20, Math.min(fc, SR * .45)) / SR), k = 1 / q;
     const a1 = 1 / (1 + g * (g + k)), a2 = g * a1, a3 = g * a2;
     const v3 = x - ic2, v1 = a1 * ic1 + a2 * v3, v2 = ic2 + a2 * ic1 + a3 * v3;
     ic1 = 2 * v1 - ic1; ic2 = 2 * v2 - ic2;
@@ -194,12 +196,26 @@ function impact(t, vol = .8){
 }
 
 // ---------------- arrangement ----------------
-const BUILD = barT(KB);
+const BUILD = barT(KB), CLEAN = CUES.mood === 'clean';
+const cut = tt => tt < GROOVE ? 500 + 1800 * Math.min(1, tt / GROOVE) : tt < BUILD ? 2300 : tt < DROP ? 2300 + 3500 * ((tt - BUILD) / (DROP - BUILD)) : 4200;
+// 'clean' mood: half-time feel, soft backbeat, held bass, gentle 8th-note arp, bigger pads
+function cleanBar(k, t, ch, notes, beats, full, drop){
+  if (full || drop){ kick(beats[0], drop ? .6 : .5); kick(beats[2], drop ? .5 : .42); clap(beats[1], .1); clap(beats[3], .12); }
+  if (k === KB) kick(beats[0], .5);
+  if ((full || drop) || k === 2) for (let e = 1; e < 8; e += 2) hat(t + e * BEAT / 2, .05, false, e % 4 === 1 ? .3 : -.25);
+  if (k >= 2 && k < KT) for (let h = 0; h < 2; h++) bass(t + h * BAR / 2, BAR / 2 * .95, ROOT[ch], k === KB ? .16 : .22);
+  pad(t, k >= KT ? DUR - t : BAR + .05, notes.map(m => m - 12).concat(notes), k >= KD ? .18 : .16, cut);
+  if (k >= 1 && k !== KB && k < KT){
+    const pat = [0, 2, 1, 3, 2, 4, 3, 1], tones = notes.concat(notes.map(m => m + 12));
+    for (let e = 0; e < 8; e++) pluck(t + e * BEAT / 2, tones[pat[e]] + 12, .065 * (e % 4 === 0 ? 1.2 : 1), e % 2 ? .4 : -.4, .55);
+  }
+}
 for (let k = 0; k < PROG.length; k++){
   const t = barT(k); if (t >= DUR) break;
   const ch = PROG[k], notes = CH[ch];
   const beats = [0, 1, 2, 3].map(b => t + b * BEAT);
   const full = k >= 3 && k < KB, drop = k >= KD;
+  if (CLEAN){ cleanBar(k, t, ch, notes, beats, full, drop); continue; }
 
   // drums
   if (full || drop){ beats.forEach(b => kick(b, drop ? .85 : .75)); }
@@ -225,7 +241,6 @@ for (let k = 0; k < PROG.length; k++){
   if (k === KB) bass(t, BAR * .5, ROOT[ch], .28);
 
   // pads: filter opens through the intro, wide open on the drop
-  const cut = tt => tt < GROOVE ? 500 + 1800 * Math.min(1, tt / GROOVE) : tt < BUILD ? 2300 : tt < DROP ? 2300 + 3500 * ((tt - BUILD) / (DROP - BUILD)) : 4200;
   pad(t, k >= KT ? DUR - t : BAR + .05, notes.map(m => m - 12).concat(notes), k >= KD ? .16 : k < 2 ? .2 : .12, cut);
 
   // arp: 16ths over chord tones
@@ -240,9 +255,10 @@ for (let k = 0; k < PROG.length; k++){
 }
 // final chord swell + sparkle on the end card
 [72, 76, 79, 84].forEach((m, i) => bell(DROP + .1 + i * .09, m, .09, (i - 1.5) * .3, 1.6));
-riser(BUILD, DROP - .03, .26);
+riser(BUILD, DROP - .03, CLEAN ? .12 : .26);
 
 // ---------------- SFX: one sound per cue exported by the ad (AD.events) ----------------
+GAIN = CLEAN ? .7 : 1;
 for (const e of CUES.events){
   const t = e.t / 1000;
   switch (e.type){
@@ -260,13 +276,16 @@ for (const e of CUES.events){
     case 'tick':   pop(t, .04, 2600, 1900, (rnd() - .5) * .6); break;
     case 'coin':   coin(t, e.i === 0 ? .15 : .08); break;
     case 'stat':   kick(t, .55); pop(t, .2, 600 + e.i * 150, 300 + e.i * 80); bell(t, 76 + e.i * 3, .06, 0, 4); break;
-    case 'drop':   impact(t, .75); break;
+    case 'drop':   impact(t, CLEAN ? .5 : .75); break;
+    case 'chime':  bell(t, e.m || 79, .07, e.pan || 0, 3); break;
+    case 'rise':   whoosh(t, .5, .1, 1); break;
     case 'hop':    pop(t, .045, 420, 760, (rnd() - .5) * .6); break;
     case 'flip':   pop(t, .06, 500, 1200, (rnd() - .5) * .6); whoosh(t + .2, .25, .06, 1); break;
     case 'upgrade': whoosh(t + .1, .45, .14, 1); [76, 79, 83, 88].forEach((m, i) => bell(t + i * .06, m, .07, (i - 1.5) * .3, 3)); break;
   }
 }
 
+GAIN = 1;
 // ---------------- effects buses ----------------
 // ping-pong dotted-8th echo
 {
