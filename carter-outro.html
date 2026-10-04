@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Carter PCs Outro</title>
+<meta name="description" content="7-second vertical outro for carterherepcs: an RGB gaming PC powers on, the name lands, and a subscribe tap closes it out.">
+<link rel="icon" href="data:,">
+<style>
+  @font-face{font-family:'Inter';src:url(fonts/inter-latin.woff2) format('woff2');font-weight:100 900;font-display:block;}
+  :root{--ink:#f4f5f7;--muted:#8b8f98;--red:#ff0033;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:#000;color:var(--ink);font-family:'Inter',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;}
+  body{display:flex;align-items:center;justify-content:center;}
+  .stage{position:relative;width:min(100vw, 56.25vh);aspect-ratio:9/16;overflow:hidden;background:#050608;font-size:calc(min(100vw, 56.25vh) / 36);cursor:pointer;}
+  .abs{position:absolute;}
+  .grid{inset:0;opacity:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size:3em 3em;-webkit-mask-image:radial-gradient(70% 55% at 50% 42%, #000 30%, transparent 80%);mask-image:radial-gradient(70% 55% at 50% 42%, #000 30%, transparent 80%);}
+  .glow{inset:-20%;pointer-events:none;filter:blur(3em);opacity:0;}
+  .strip{left:0;top:50%;height:.35em;width:100%;transform-origin:left center;filter:blur(.08em);box-shadow:0 0 2em currentColor;}
+  .pc{left:50%;top:7.5em;width:22em;height:27em;margin-left:-11em;will-change:transform,opacity;}
+  .pc svg{width:100%;height:100%;overflow:visible;}
+  .name{left:0;right:0;top:36.6em;text-align:center;}
+  .mask{overflow:hidden;display:block;padding:0 .2em;}
+  .mask > span{display:block;will-change:transform;}
+  .carter{font-weight:900;font-size:7.4em;letter-spacing:-.055em;line-height:.95;}
+  .pcs{font-weight:900;font-size:4.4em;letter-spacing:.18em;line-height:1.1;margin-top:.05em;padding-left:.18em;
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  /* tops are divided by each element's own font-size so they line up on the stage's 36-em grid */
+  .sub{left:50%;top:calc(50.2em / 1.9);transform-origin:center;display:flex;align-items:center;justify-content:center;gap:.5em;
+    width:13em;margin-left:-6.5em;height:2.3em;border-radius:3em;font-weight:800;font-size:1.9em;letter-spacing:.06em;
+    background:var(--red);color:#fff;box-shadow:0 1em 3em rgba(255,0,51,.35);opacity:0;}
+  .sub.done{background:#272a30;color:#d7d9de;box-shadow:0 1em 3em rgba(0,0,0,.4);}
+  .sub svg{width:1.05em;height:1.05em;fill:currentColor;}
+  .cursor{left:0;top:0;width:3.4em;height:3.4em;opacity:0;filter:drop-shadow(0 .3em .6em rgba(0,0,0,.6));}
+  .ripple{left:0;top:0;width:6em;height:6em;margin:-3em 0 0 -3em;border-radius:50%;border:.25em solid #fff;opacity:0;}
+  .handle{left:0;right:0;top:calc(57.4em / 2.3);text-align:center;font-weight:700;font-size:2.3em;letter-spacing:.01em;opacity:0;}
+  .tag{left:0;right:0;top:calc(60.6em / 1.55);text-align:center;font-weight:600;font-size:1.55em;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;opacity:0;}
+  .flash{inset:0;background:#fff;opacity:0;pointer-events:none;mix-blend-mode:screen;}
+  .progress{position:absolute;left:0;bottom:0;height:.2em;width:0;z-index:50;opacity:.8;}
+  .capture .progress{display:none;}
+</style>
+</head>
+<body>
+<div class="stage" id="stage" role="img" aria-label="Carter PCs outro: an RGB gaming PC powers on, the Carter PCs name lands and a subscribe button gets tapped">
+  <div class="abs glow" id="glow"></div>
+  <div class="abs grid" id="grid"></div>
+  <div class="abs strip" id="strip"></div>
+
+  <div class="abs pc" id="pc">
+    <svg viewBox="0 0 220 270" aria-hidden="true">
+      <defs>
+        <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity=".10"/><stop offset=".35" stop-color="#fff" stop-opacity=".02"/>
+          <stop offset=".36" stop-color="#fff" stop-opacity=".07"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <g id="blades"><path d="M0-3 C6-14 15-16 19-10 C14-7 7-4 0 0Z"/><path d="M0-3 C6-14 15-16 19-10 C14-7 7-4 0 0Z" transform="rotate(72)"/>
+          <path d="M0-3 C6-14 15-16 19-10 C14-7 7-4 0 0Z" transform="rotate(144)"/><path d="M0-3 C6-14 15-16 19-10 C14-7 7-4 0 0Z" transform="rotate(216)"/>
+          <path d="M0-3 C6-14 15-16 19-10 C14-7 7-4 0 0Z" transform="rotate(288)"/></g>
+      </defs>
+      <!-- case shell -->
+      <rect x="2" y="2" width="216" height="266" rx="14" fill="#0e1014" stroke="#2a2e36" stroke-width="2"/>
+      <rect x="10" y="10" width="200" height="250" rx="8" fill="#07080b" stroke="#1b1e24"/>
+      <!-- motherboard -->
+      <rect x="22" y="22" width="122" height="150" rx="4" fill="#111419" stroke="#20242c"/>
+      <rect x="28" y="30" width="10" height="56" rx="2" fill="#191d24"/>
+      <!-- RAM sticks with RGB tops -->
+      <g id="ram"></g>
+      <!-- CPU cooler -->
+      <circle cx="68" cy="70" r="26" fill="#0a0b0e" stroke="#262a32" stroke-width="2"/>
+      <circle id="cpuRing" cx="68" cy="70" r="23" fill="none" stroke-width="3"/>
+      <g id="cpuFan" fill="#1d2129" transform="translate(68 70)"><use href="#blades"/></g>
+      <circle cx="68" cy="70" r="5" fill="#16191f" stroke="#2c313b"/>
+      <!-- GPU -->
+      <rect x="22" y="120" width="130" height="30" rx="4" fill="#15181e" stroke="#2a2f38"/>
+      <rect id="gpuStrip" x="26" y="146" width="122" height="3" rx="1.5"/>
+      <text x="30" y="139" font-family="Inter" font-weight="900" font-size="10" letter-spacing="2" fill="#3a3f49">CARTER</text>
+      <!-- PSU shroud -->
+      <rect x="10" y="200" width="200" height="60" rx="6" fill="#0c0d11" stroke="#1d2027"/>
+      <rect id="shroudStrip" x="20" y="206" width="180" height="2" rx="1"/>
+      <!-- front fans -->
+      <g id="fronts"></g>
+      <!-- glass reflection -->
+      <rect x="10" y="10" width="200" height="250" rx="8" fill="url(#glass)"/>
+      <!-- power button -->
+      <circle id="pwr" cx="200" cy="-6" r="0" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="abs name">
+    <span class="mask"><span class="carter" id="carter">CARTER</span></span>
+    <span class="mask"><span class="pcs" id="pcs">PCs</span></span>
+  </div>
+
+  <div class="abs sub" id="sub"><svg viewBox="0 0 24 24" id="subIcon"></svg><span id="subText">SUBSCRIBE</span></div>
+  <div class="abs ripple" id="ripple"></div>
+  <svg class="abs cursor" id="cursor" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2.5l15 8.2-6.5 1.6 3.9 7.3-2.8 1.5-3.9-7.3L4.6 18.6z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>
+
+  <div class="abs handle" id="handle">@carterherepcs</div>
+  <div class="abs tag" id="tag">See you in the next build</div>
+
+  <div class="abs flash" id="flash"></div>
+  <div class="progress" id="progress"></div>
+</div>
+
+<script>
+(() => {
+  // The whole outro is a pure function of time t (ms), so it plays live or renders
+  // frame-by-frame (?capture) through tools/render-playabl-ad.js, with sound cues in AD.events.
+  const Q = new URLSearchParams(location.search);
+  const $ = id => document.getElementById(id);
+  const capture = Q.has('capture');
+  if (capture) document.body.classList.add('capture');
+  const NS = 'http://www.w3.org/2000/svg';
+
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const E = {
+    out: p => 1 - Math.pow(1 - p, 3), expo: p => p >= 1 ? 1 : 1 - Math.pow(2, -10 * p),
+    inout: p => p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2,
+    back: p => { const c = 1.6; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); },
+  };
+  const prog = (t, t0, d, e = E.expo) => e(clamp((t - t0) / d));
+  const lerp = (a, b, p) => a + (b - a) * p;
+
+  // ---------- timeline (ms) ----------
+  const T = {SWEEP: 0, PC: 250, PWR: 1150, BOOT: 1250, NAME: 1650, PCS: 1950, SUB: 2350, TAP: 3050, DROP: 3800, HANDLE: 4050, TAG: 4350};
+  const DURATION = 7000;
+
+  // ---------- RGB ----------
+  // hue drifts with time and position so the lighting "flows" through the build like a real ARGB chain
+  const hue = (t, off = 0) => (t * .09 + off) % 360;
+  const rgb = (t, off, l = 58, s = 100) => `hsl(${hue(t, off)},${s}%,${l}%)`;
+  const lightsOn = t => prog(t, T.BOOT, 450, E.out);
+  const offCol = '#1c1f26';
+  const lit = (t, off, l) => { const p = lightsOn(t); return p <= 0 ? offCol : p >= 1 ? rgb(t, off, l) : `color-mix(in srgb, ${rgb(t, off, l)} ${p * 100}%, ${offCol})`; };
+
+  // fan angle: integral of a spin-up curve (w = W * (1 - e^(-dt/tau))) so blades accelerate smoothly after power-on
+  const fanAngle = (t, W = 1.15, tau = 420) => { const dt = t - T.BOOT; return dt <= 0 ? 0 : W * (dt - tau * (1 - Math.exp(-dt / tau))); };
+
+  // ---------- build the dynamic SVG parts ----------
+  const svgEl = (tag, attrs, parent) => { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); parent && parent.appendChild(el); return el; };
+  const ram = $('ram'), rams = [];
+  for (let i = 0; i < 4; i++){
+    svgEl('rect', {x: 104 + i * 8, y: 30, width: 5, height: 60, rx: 1, fill: '#1a1e25'}, ram);
+    rams.push(svgEl('rect', {x: 104 + i * 8, y: 30, width: 5, height: 7, rx: 1}, ram));
+  }
+  const fronts = $('fronts'), frontFans = [];
+  for (let i = 0; i < 3; i++){
+    const cy = 50 + i * 60, g = svgEl('g', {}, fronts);
+    svgEl('rect', {x: 157, y: cy - 27, width: 48, height: 54, rx: 5, fill: '#0b0c10', stroke: '#22262e'}, g);
+    const ring = svgEl('circle', {cx: 181, cy, r: 21, fill: 'none', 'stroke-width': 3.5}, g);
+    const halo = svgEl('circle', {cx: 181, cy, r: 21, fill: 'none', 'stroke-width': 9, opacity: 0}, g);
+    const blades = svgEl('g', {fill: '#1d2129'}, g); svgEl('use', {href: '#blades'}, blades);
+    svgEl('circle', {cx: 181, cy, r: 5, fill: '#16191f', stroke: '#2c313b'}, g);
+    frontFans.push({ring, halo, blades, cy});
+  }
+  const ICON_BELL = '<path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-2 2v1h18v-1z"/>';
+  const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+
+  // ---------- render ----------
+  const stage = $('stage');
+  let lastSub = null;
+  function render(t){
+    t = clamp(t, 0, DURATION);
+    const on = lightsOn(t), drop = t >= T.DROP ? Math.exp(-(t - T.DROP) / 260) : 0;
+    $('progress').style.width = (t / DURATION * 100) + '%';
+    $('progress').style.background = rgb(t, 0);
+
+    // opening RGB light strip sweeps across, then folds away into the case glow
+    const sw = prog(t, T.SWEEP, 650, E.inout), swOut = prog(t, 650, 350, E.out);
+    const strip = $('strip');
+    strip.style.background = `linear-gradient(90deg, ${rgb(t, 0)}, ${rgb(t, 120)}, ${rgb(t, 240)})`;
+    strip.style.color = rgb(t, 60);
+    strip.style.transform = `translateY(${lerp(0, -12, swOut)}em) scaleX(${sw}) scaleY(${1 - swOut})`;
+    strip.style.opacity = 1 - swOut;
+
+    // background: grid + RGB glow follow the lights
+    $('grid').style.opacity = .35 + on * .65;
+    const glow = $('glow');
+    glow.style.opacity = on * .5 + drop * .4;
+    glow.style.background = `radial-gradient(30% 20% at 35% 28%, ${rgb(t, 0, 45)}, transparent 70%),radial-gradient(30% 20% at 68% 34%, ${rgb(t, 140, 45)}, transparent 70%),radial-gradient(40% 18% at 50% 62%, ${rgb(t, 260, 30)}, transparent 75%)`;
+
+    // PC slides up and settles, gets a little kick on power-on and on the drop
+    const pin = prog(t, T.PC, 900, E.back), kick = t > T.PWR ? Math.exp(-(t - T.PWR) / 120) * Math.sin((t - T.PWR) / 22) : 0;
+    const float = Math.sin(Math.max(0, t - T.PC - 900) / 900) * .25;
+    $('pc').style.opacity = clamp(pin * 1.4);
+    $('pc').style.transform = `translateY(${(1 - pin) * 30 + float + kick * .25}em) scale(${lerp(.85, 1, pin) * (1 + drop * .035)})`;
+    $('pc').style.filter = `drop-shadow(0 0 ${1 + on * 2.5 + drop * 3}em ${on > 0 ? rgb(t, 30, 50) : 'transparent'})`;
+
+    // lighting + fans
+    $('cpuRing').setAttribute('stroke', lit(t, 0));
+    $('cpuFan').setAttribute('transform', `translate(68 70) rotate(${fanAngle(t)})`);
+    $('gpuStrip').setAttribute('fill', lit(t, 90));
+    $('shroudStrip').setAttribute('fill', lit(t, 200));
+    rams.forEach((r, i) => r.setAttribute('fill', lit(t, i * 30 + 40, 62)));
+    frontFans.forEach((f, i) => {
+      const c = lit(t, 160 + i * 45);
+      f.ring.setAttribute('stroke', c);
+      f.halo.setAttribute('stroke', c);
+      f.halo.setAttribute('opacity', on * .28 + drop * .35);
+      f.blades.setAttribute('transform', `translate(181 ${f.cy}) rotate(${fanAngle(t, 1.25 + i * .04) + i * 23})`);
+    });
+
+    // name: CARTER rises out of its mask, PCs follows in flowing RGB
+    const cIn = prog(t, T.NAME, 750);
+    $('carter').style.transform = `translate3d(0,${(1 - cIn) * 110}%,0)`;
+    const pIn = prog(t, T.PCS, 700);
+    const pcs = $('pcs');
+    pcs.style.transform = `translate3d(0,${(1 - pIn) * 110}%,0)`;
+    pcs.style.backgroundImage = `linear-gradient(90deg, ${rgb(t, 0, 62)}, ${rgb(t, 70, 62)}, ${rgb(t, 140, 62)}, ${rgb(t, 210, 62)})`;
+    pcs.style.letterSpacing = `${lerp(.5, .18, pIn)}em`;
+
+    // subscribe: pops in, cursor glides over, taps, flips to SUBSCRIBED with a bell
+    const sub = $('sub'), sIn = prog(t, T.SUB, 600, E.back), tapped = t >= T.TAP;
+    const press = t >= T.TAP - 90 && t < T.TAP + 160 ? 1 - .08 * Math.sin(Math.PI * (t - T.TAP + 90) / 250) : 1;
+    const settle = tapped ? 1 + .06 * Math.exp(-(t - T.TAP) / 140) * Math.cos((t - T.TAP) / 40) : 1;
+    sub.style.opacity = clamp(sIn * 2);
+    sub.style.transform = `scale(${sIn * press * settle})`;
+    if (lastSub !== tapped){
+      lastSub = tapped;
+      sub.classList.toggle('done', tapped);
+      $('subIcon').innerHTML = tapped ? ICON_BELL : ICON_PLAY;
+      $('subText').textContent = tapped ? 'SUBSCRIBED' : 'SUBSCRIBE';
+    }
+    // cursor path, in stage ems: enters bottom-right, lands on the button, leaves after the tap
+    const cur = $('cursor'), cIn2 = prog(t, T.SUB + 250, 600, E.inout), cOut = prog(t, T.TAP + 350, 500, E.inout);
+    const cx = lerp(lerp(31, 19.5, cIn2), 34, cOut), cy = lerp(lerp(64, 52, cIn2), 66, cOut);
+    const cPress = t >= T.TAP - 90 && t < T.TAP + 160 ? .85 : 1;
+    cur.style.opacity = t < T.SUB + 250 ? 0 : clamp(cIn2 * 3) * (1 - cOut);
+    cur.style.transform = `translate(${cx}em,${cy}em) scale(${cPress})`;
+    const rp = clamp((t - T.TAP) / 500), rip = $('ripple');
+    rip.style.opacity = t >= T.TAP && rp < 1 ? (1 - rp) * .7 : 0;
+    rip.style.transform = `translate(20em,52.3em) scale(${.3 + rp * 1.3})`;
+
+    // handle + tagline land on the drop
+    const hIn = prog(t, T.HANDLE, 700, E.out), gIn = prog(t, T.TAG, 700, E.out);
+    $('handle').style.opacity = hIn; $('handle').style.transform = `translateY(${(1 - hIn) * .8}em)`;
+    $('handle').style.filter = hIn < .999 ? `blur(${(1 - hIn) * .3}em)` : 'none';
+    $('tag').style.opacity = gIn; $('tag').style.transform = `translateY(${(1 - gIn) * .8}em)`;
+
+    // flashes: power-on blink and the drop
+    const pf = t >= T.BOOT ? Math.exp(-(t - T.BOOT) / 90) * .18 : 0;
+    $('flash').style.opacity = pf + drop * .22;
+    $('flash').style.background = drop > pf ? rgb(t, 0, 70) : '#fff';
+  }
+
+  const events = () => [
+    {t: T.SWEEP, type: 'cut'},
+    {t: T.PC, type: 'rise'},
+    {t: T.PWR, type: 'tap'},
+    {t: T.BOOT, type: 'boot'},
+    {t: T.NAME, type: 'cut'},
+    {t: T.PCS, type: 'chime', m: 84},
+    {t: T.SUB, type: 'reply'},
+    {t: T.TAP, type: 'send'},
+    {t: T.TAP + 60, type: 'like'},
+    {t: T.DROP, type: 'drop'},
+    {t: T.HANDLE, type: 'chime', m: 79, pan: -.3},
+    {t: T.TAG, type: 'chime', m: 83, pan: .3},
+  ];
+
+  const ready = document.fonts ? Promise.all([document.fonts.load('900 1em Inter'), document.fonts.load('700 1em Inter')]).catch(() => {}) : Promise.resolve();
+  // music grid: groove right away, a two-bar build, and the drop lands on the handle
+  window.AD = {DURATION, render, ready,
+    events: () => ({duration: DURATION, groove: 200, drop: T.DROP, bars: 2, transpose: 2, events: events().sort((a, b) => a.t - b.t)})};
+  if (capture){ ready.then(() => render(0)); return; }
+  let start = 0;
+  function loop(now){ render((now - start) % DURATION); requestAnimationFrame(loop); }
+  stage.addEventListener('click', () => { start = performance.now(); });
+  ready.then(() => { start = performance.now(); requestAnimationFrame(loop); });
+})();
+</script>
+</body>
+</html>
