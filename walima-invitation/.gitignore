@@ -1,0 +1,6 @@
+# personal details (names, phone numbers, venue): keep out of the public repo
+card.jpg
+*.mp4
+*.wav
+still_*.png
+__pycache__/
