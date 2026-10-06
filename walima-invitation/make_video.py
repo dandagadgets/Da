@@ -19,6 +19,7 @@ Usage:
     python3 make_video.py                         # full video (2:3, 1080x1620)
     python3 make_video.py --format story          # 9:16 (1080x1920) for Status/Reels
     python3 make_video.py --hq                    # high-quality master (1440x2160)
+    python3 make_video.py --short --hq            # 6-second cut that loops
     python3 make_video.py --stills 4,12,30        # preview PNG frames only
 
 Requires numpy, scipy, Pillow, opencv-python-headless and ffmpeg on PATH.
@@ -51,6 +52,7 @@ FORMATS = {'card': (1080, 1620), 'story': (1080, 1920)}
 # ---------------------------------------------------------------------------
 BOOK_OPEN = (1.8, 2.8)       # cover opening: start (s), duration (s)
 BOOK_CLOSE = (34.6, 2.8)     # cover closing
+SHORT = False                # set by use_short_timeline() for the 6-second cut
 
 # Card layout, in pixel coordinates of card.jpg (843 x 1264).
 # name, bbox (x0, y0, x1, y1), kind, reveal style, start (s), duration (s)
@@ -90,6 +92,9 @@ FLAMES = [(822, 186, 1.0), (36, 728, 0.85)]
 def camera_keys(zb):
     """Camera path: t, zoom (1 = the card fills the frame, zb = the whole
     closed book in view), vertical position (0 = top of the card, 1 = bottom)."""
+    if SHORT:
+        return [(0.0, zb, 0.5), (BOOK_OPEN[0], zb * 1.01, 0.5), (2.1, 1.0, 0.5),
+                (4.4, 1.02, 0.5), (5.6, zb, 0.5), (DURATION, zb, 0.5)]
     return [
         (0.0, zb * 0.97, 0.5),
         (1.8, zb, 0.5),
@@ -125,6 +130,21 @@ PETAL_LAYERS = [
 # a final glint of light across the gilded lettering while the card is held
 FINAL_GLINTS = {'bismillah': 32.5, 'name1': 32.75, 'name2': 32.95, 'walima': 33.2}
 GLINT_SPEED = 520.0   # card pixels per second
+
+
+def use_short_timeline():
+    """The 6-second cut: the cover opens straight onto the finished card, a
+    glint of light runs over the names, and the book closes again. It starts
+    and ends on the closed book, so it loops cleanly."""
+    global SHORT, DURATION, BOOK_OPEN, BOOK_CLOSE, ELEMENTS, SWEEPS, COVER_SWEEPS, FINAL_GLINTS
+    SHORT = True
+    DURATION = 6.0
+    BOOK_OPEN = (0.55, 1.35)
+    BOOK_CLOSE = (4.75, 1.0)
+    ELEMENTS = [e[:4] + (-10.0, e[5]) for e in ELEMENTS]      # already printed
+    SWEEPS = [(2.0, 1.3, True)]
+    COVER_SWEEPS = [(0.02, 0.6)]
+    FINAL_GLINTS = {'bismillah': 2.45, 'name1': 2.65, 'name2': 2.8, 'walima': 3.0}
 
 GILD_COLOR = np.array([215, 160, 70], np.float32)
 SHINE_COLOR = np.array([255, 248, 226], np.float32)
@@ -358,6 +378,8 @@ def el_coord(el):
 
 
 def shower_amount(t):
+    if SHORT:
+        return 0.5
     return float(smoothstep((t - 26.0) / 1.5) * (1.0 - smoothstep((t - 30.0) / 2.5)))
 
 
@@ -551,7 +573,7 @@ def draw_sparkles(out, t, M, s, theta):
 
 def draw_particles(out, t):
     OW, OH = SCENE['out']
-    intro = float(smoothstep((t - 0.3) / 2.0))
+    intro = 1.0 if SHORT else float(smoothstep((t - 0.3) / 2.0))
     # soft bokeh orbs
     for b in SCENE['bokeh']:
         y = (b['y0'] + b['vy'] * t) % (OH + 2 * b['r']) - b['r']
@@ -841,9 +863,10 @@ def render_frame(fi):
     draw_sparkles(out, t, M, s, theta)
     draw_particles(out, t)
     out *= SCENE['vignette']
-    fade = 0.75 + 0.25 * float(ease_out_cubic(t / 1.0))
-    fade *= 1.0 - float(smoothstep((t - (DURATION - 1.0)) / 1.0))
-    out *= fade
+    if not SHORT:                          # the short cut loops, so no fades
+        fade = 0.75 + 0.25 * float(ease_out_cubic(t / 1.0))
+        fade *= 1.0 - float(smoothstep((t - (DURATION - 1.0)) / 1.0))
+        out *= fade
     return np.clip(out + 0.5, 0, 255).astype(np.uint8)
 
 
@@ -1198,7 +1221,7 @@ def make_scene(fmt, hq=False):
     pts = ASSETS['glint_pts']
     t = BOOK_OPEN[0] + BOOK_OPEN[1] + 0.1
     while t < BOOK_CLOSE[0] - 1.0:
-        rate = 3.0 if t < 27.5 else 6.0
+        rate = 6.0 if SHORT or t >= 27.5 else 3.0
         t += rng.exponential(1.0 / rate)
         M, s, _ = _camera_with(sc, t)
         x = M[0, 0] * pts[:, 0] + M[0, 2]
@@ -1241,7 +1264,10 @@ def make_scene(fmt, hq=False):
     # glints on the cover's gold foil while the book is shut
     cover = []
     pts = ASSETS['book']['glint_pts']
-    for a, b in ((0.2, BOOK_OPEN[0] - 0.3), (BOOK_CLOSE[0] + BOOK_CLOSE[1] + 0.1, DURATION - 1.0)):
+    end = BOOK_CLOSE[0] + BOOK_CLOSE[1]
+    windows = (((0.0, BOOK_OPEN[0] - 0.1), (end, DURATION - 0.2)) if SHORT
+               else ((0.2, BOOK_OPEN[0] - 0.3), (end + 0.1, DURATION - 1.0)))
+    for a, b in windows:
         t = a
         while True:
             t += rng.exponential(1.0 / 4.0)
@@ -1293,7 +1319,7 @@ def make_scene(fmt, hq=False):
             if t > DURATION:
                 break
             sz = rng.uniform(*size) * unit
-            if t > 26.0 and rng.random() < 0.75:
+            if (SHORT or t > 26.0) and rng.random() < 0.75:
                 x0 = rng.uniform(0, OW * 0.22) if rng.random() < 0.5 else rng.uniform(OW * 0.78, OW)
             else:
                 x0 = rng.uniform(0, OW)
@@ -1414,7 +1440,8 @@ def reverb_ir(seconds=2.8, seed=3):
     return ir / np.sqrt((ir ** 2).sum(0))
 
 
-def make_audio(path, duration=DURATION):
+def make_audio(path, duration=None):
+    duration = duration or DURATION
     n = int((duration + 0.5) * SR)
     dry = np.zeros((n, 2))
     rng = np.random.default_rng(5)
@@ -1423,44 +1450,67 @@ def make_audio(path, duration=DURATION):
         i = int(t * SR)
         if i >= n:
             return
+        if i < 0:
+            sig, i = sig[-i:], 0
         sig = sig[: n - i]
         lg, rg = math.cos((pan + 1) * math.pi / 4), math.sin((pan + 1) * math.pi / 4)
         dry[i:i + len(sig), 0] += sig * gain * lg
         dry[i:i + len(sig), 1] += sig * gain * rg
 
-    # D major, one bar (8 harp notes) every 4 s: a G/A lead-in while the book
-    # opens, D - Bm - G - A - D - Bm - G/A - D, and D again as it closes
     D_, Bm, G_, A_ = ([50, 57, 62, 66, 69, 74], [47, 54, 59, 62, 66, 71],
                       [43, 50, 55, 59, 62, 67], [45, 52, 57, 61, 64, 69])
-    bars = [[G_] * 4 + [A_] * 4, [D_] * 8, [Bm] * 8, [G_] * 8, [A_] * 8, [D_] * 8, [Bm] * 8,
-            [G_] * 4 + [A_] * 4, [D_] * 8, [D_] * 8]
-    pattern = [0, 2, 3, 4, 5, 4, 3, 2]
-    beat = 0.5
-    for b, bar in enumerate(bars):
-        t0 = 0.6 + b * 4.0
-        last = b == len(bars) - 1
-        for k in range(8):
-            if last and k > 4:
-                break
-            note = bar[k][pattern[k]]
-            put(pluck(midi_hz(note), 2.8, seed=b * 8 + k), t0 + k * beat + rng.normal(0, 0.008),
-                0.16 * (1.25 if k in (0, 4) else 1.0), pan=-0.35 + 0.1 * k)
-        for half in (0, 1):
-            ch = bar[half * 4]
-            if half and ch is bar[0]:
-                continue
-            length = 4.6 if ch is bar[-1] and ch is bar[0] else 2.6
+    if SHORT:
+        # a 6 s phrase: A while the cover opens, D on the open card, G -> D as it shuts
+        segments = [(0.05, A_, [0, 2, 3, 4, 5, 4], 0.22),
+                    (1.55, D_, [0, 2, 3, 4, 5, 4, 3, 2, 3, 4], 0.25),
+                    (4.05, G_, [0, 2, 3, 4], 0.22),
+                    (4.95, D_, [0, 2, 3, 5], 0.24)]
+        for i, (t0, ch, pat, beat) in enumerate(segments):
+            for k, idx in enumerate(pat):
+                put(pluck(midi_hz(ch[idx]), 2.4, seed=100 + 16 * i + k), t0 + k * beat,
+                    0.16 * (1.25 if k == 0 else 1.0), pan=-0.35 + 0.08 * k)
+            nxt = segments[i + 1][0] if i + 1 < len(segments) else duration + 1.0
             for note in (ch[0] - 12, ch[1], ch[3]):
-                put(pad_voice(midi_hz(note), length + (2.0 if last else 0.0)), t0 + half * 2.0 - 0.3,
-                    0.05, pan=rng.uniform(-0.3, 0.3))
-    # a gentle music-box melody on top
-    melody = [(8.6, 78), (9.6, 74), (10.1, 76), (10.6, 78), (11.6, 71),
-              (12.6, 74), (13.6, 71), (14.1, 74), (14.6, 79), (15.6, 78),
-              (16.6, 76), (17.6, 73), (18.1, 76), (18.6, 81), (19.6, 79),
-              (20.6, 78), (21.6, 81), (22.1, 78), (22.6, 76), (23.6, 74),
-              (24.6, 78), (25.6, 74), (26.1, 76), (26.6, 78), (27.6, 83),
-              (28.6, 79), (29.1, 78), (29.6, 76), (30.6, 76), (31.1, 73), (31.6, 76),
-              (32.6, 74), (34.6, 81), (35.1, 78), (35.6, 76), (36.6, 74)]
+                put(pad_voice(midi_hz(note), nxt - t0 + 0.8), max(0.0, t0 - 0.15), 0.05,
+                    pan=rng.uniform(-0.3, 0.3))
+        melody = [(1.9, 78), (2.4, 81), (2.9, 86), (3.5, 85), (4.05, 83), (4.95, 81),
+                  (5.4, 78), (5.75, 74)]
+        chimes = [0.05, 1.85, 2.6]
+        fade_in, fade_out = 0.05, 0.45
+    else:
+        # D major, one bar (8 harp notes) every 4 s: a G/A lead-in while the book
+        # opens, D - Bm - G - A - D - Bm - G/A - D, and D again as it closes
+        bars = [[G_] * 4 + [A_] * 4, [D_] * 8, [Bm] * 8, [G_] * 8, [A_] * 8, [D_] * 8, [Bm] * 8,
+                [G_] * 4 + [A_] * 4, [D_] * 8, [D_] * 8]
+        pattern = [0, 2, 3, 4, 5, 4, 3, 2]
+        beat = 0.5
+        for b, bar in enumerate(bars):
+            t0 = 0.6 + b * 4.0
+            last = b == len(bars) - 1
+            for k in range(8):
+                if last and k > 4:
+                    break
+                note = bar[k][pattern[k]]
+                put(pluck(midi_hz(note), 2.8, seed=b * 8 + k), t0 + k * beat + rng.normal(0, 0.008),
+                    0.16 * (1.25 if k in (0, 4) else 1.0), pan=-0.35 + 0.1 * k)
+            for half in (0, 1):
+                ch = bar[half * 4]
+                if half and ch is bar[0]:
+                    continue
+                length = 4.6 if ch is bar[-1] and ch is bar[0] else 2.6
+                for note in (ch[0] - 12, ch[1], ch[3]):
+                    put(pad_voice(midi_hz(note), length + (2.0 if last else 0.0)), t0 + half * 2.0 - 0.3,
+                        0.05, pan=rng.uniform(-0.3, 0.3))
+        # a gentle music-box melody on top
+        melody = [(8.6, 78), (9.6, 74), (10.1, 76), (10.6, 78), (11.6, 71),
+                  (12.6, 74), (13.6, 71), (14.1, 74), (14.6, 79), (15.6, 78),
+                  (16.6, 76), (17.6, 73), (18.1, 76), (18.6, 81), (19.6, 79),
+                  (20.6, 78), (21.6, 81), (22.1, 78), (22.6, 76), (23.6, 74),
+                  (24.6, 78), (25.6, 74), (26.1, 76), (26.6, 78), (27.6, 83),
+                  (28.6, 79), (29.1, 78), (29.6, 76), (30.6, 76), (31.1, 73), (31.6, 76),
+                  (32.6, 74), (34.6, 81), (35.1, 78), (35.6, 76), (36.6, 74)]
+        chimes = [2.7, 5.4, 10.2, 12.45, 13.1, 15.5, 24.5, 25.5, 30.8, 37.8]
+        fade_in, fade_out = 0.6, 2.2
     for tm, note in melody:
         put(bell(midi_hz(note), 3.0 if tm >= 32 else 2.4), tm, 0.10, pan=0.25)
     # the cover swishing open and shut
@@ -1468,7 +1518,7 @@ def make_audio(path, duration=DURATION):
     put(whoosh(BOOK_CLOSE[1] - 0.2, seed=2), BOOK_CLOSE[0] + 0.1, 0.07, pan=-0.2)
     put(thump(), BOOK_CLOSE[0] + BOOK_CLOSE[1] - 0.03, 0.16)
     # shimmering chime runs on the key moments
-    for tm in [2.7, 5.4, 10.2, 12.45, 13.1, 15.5, 24.5, 25.5, 30.8, 37.8]:
+    for tm in chimes:
         for k, note in enumerate([86, 90, 93, 98, 102]):
             put(bell(midi_hz(note), 1.6), tm + k * 0.055, 0.035 * (1 - k * 0.12), pan=-0.6 + 0.3 * k)
 
@@ -1477,8 +1527,8 @@ def make_audio(path, duration=DURATION):
     b, a = butter(2, 45 / (SR / 2), 'highpass')
     mix = lfilter(b, a, mix, axis=0)
     t = np.arange(n) / SR
-    mix *= smoothstep(t / 0.6)[:, None]
-    mix *= (1 - smoothstep((t - (duration - 2.2)) / 2.2))[:, None]
+    mix *= smoothstep(t / fade_in)[:, None]
+    mix *= (1 - smoothstep((t - (duration - fade_out)) / fade_out))[:, None]
     mix = np.tanh(mix / (np.abs(mix).max() + 1e-9) * 1.1) * 0.95
     pcm = (mix * 32767).astype(np.int16)
     with wave.open(path, 'wb') as wf:
@@ -1489,11 +1539,13 @@ def make_audio(path, duration=DURATION):
 
 
 # ---------------------------------------------------------------------------
-def _init_worker(card, fmt, hq):
+def _init_worker(card, fmt, hq, short):
     # Workers are spawned (not forked: OpenCV/BLAS thread pools do not survive
     # a fork), so each one rebuilds the deterministic assets itself.
     global ASSETS, SCENE
     cv2.setNumThreads(1)
+    if short:
+        use_short_timeline()
     ASSETS = build_assets(card)
     SCENE = make_scene(fmt, hq)
 
@@ -1507,9 +1559,12 @@ def main():
     ap.add_argument('--stills', default=None, help='comma separated times (s): write PNGs only')
     ap.add_argument('--no-audio', action='store_true')
     ap.add_argument('--hq', action='store_true', help='1440 px wide sharpened master, higher bitrate')
+    ap.add_argument('--short', action='store_true', help='6-second cut: open, show the card, close')
     ap.add_argument('--jobs', type=int, default=os.cpu_count() or 2)
     args = ap.parse_args()
 
+    if args.short:
+        use_short_timeline()
     t_start = time.time()
     ASSETS = build_assets(args.card)
     SCENE = make_scene(args.format, args.hq)
@@ -1519,13 +1574,13 @@ def main():
         for ts in args.stills.split(','):
             fi = int(round(float(ts) * FPS))
             fr = render_frame(fi)
-            tag = args.format + ('_hq' if args.hq else '')
+            tag = args.format + ('_6s' if args.short else '') + ('_hq' if args.hq else '')
             p = os.path.join(os.getcwd(), f'still_{tag}_{float(ts):05.2f}.png')
             Image.fromarray(fr).save(p)
             print('wrote', p)
         return
 
-    name = 'walima_invitation' + ('_story' if args.format == 'story' else '')
+    name = 'walima_invitation' + ('_6s' if args.short else '') + ('_story' if args.format == 'story' else '')
     name += ('_no_music' if args.no_audio else '') + ('_hq' if args.hq else '')
     out = args.out or os.path.join(HERE, name + '.mp4')
     OW, OH = SCENE['out']
@@ -1543,7 +1598,7 @@ def main():
             '-profile:v', 'high', '-movflags', '+faststart', out]
     enc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     ctx = mp.get_context('spawn')
-    with ctx.Pool(args.jobs, initializer=_init_worker, initargs=(args.card, args.format, args.hq)) as pool:
+    with ctx.Pool(args.jobs, initializer=_init_worker, initargs=(args.card, args.format, args.hq, args.short)) as pool:
         for k, fr in enumerate(pool.imap(render_frame, range(nframes), chunksize=4)):
             enc.stdin.write(fr.tobytes())
             if k % 60 == 0:

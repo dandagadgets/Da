@@ -28,6 +28,7 @@ pip install numpy scipy pillow opencv-python-headless   # plus ffmpeg on PATH
 python3 make_video.py                      # walima_invitation.mp4        1080x1620 (card shape)
 python3 make_video.py --format story       # walima_invitation_story.mp4  1080x1920 (9:16, Status/Reels)
 python3 make_video.py --hq                 # walima_invitation_hq.mp4     1440x2160 sharpened master, higher bitrate
+python3 make_video.py --short --hq         # walima_invitation_6s_hq.mp4  6-second cut: book opens on the card, closes, loops
 python3 make_video.py --no-audio           # same video, no music
 python3 make_video.py --stills 5,12,28     # quick PNG previews of single moments
 ```
