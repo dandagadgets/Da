@@ -16,6 +16,7 @@ Turns the static invitation card (card.jpg) into a short animated video:
 Usage:
     python3 make_video.py                         # full video (2:3, 1080x1620)
     python3 make_video.py --format story          # 9:16 (1080x1920) for Status/Reels
+    python3 make_video.py --hq                    # high-quality master (1440x2160)
     python3 make_video.py --stills 4,12,30        # preview PNG frames only
 
 Requires numpy, scipy, Pillow, opencv-python-headless and ffmpeg on PATH.
@@ -568,6 +569,18 @@ def blit_sprite(out, spr, x, y, size, angle, squash, alpha, shade, blur):
     reg += pt[..., :3] * (alpha * shade)
 
 
+def sharpen(img, s):
+    """Halo-free unsharp mask for the upscaled card: crisps the edges of the
+    lettering and gold work without boosting the paper grain. `s` is the
+    current upscale factor (output pixels per card pixel)."""
+    blur = cv2.GaussianBlur(img, (0, 0), 0.6 * s)
+    detail = img - blur
+    mag = np.abs(detail @ LUMA)[..., None]
+    out = img + 1.3 * detail * smoothstep((mag - 1.5) / 4.0)
+    k = disk(2)
+    return np.clip(out, cv2.erode(img, k), cv2.dilate(img, k))
+
+
 def render_frame(fi):
     t = fi / FPS
     src = ASSETS['clean'].copy()
@@ -579,6 +592,8 @@ def render_frame(fi):
     OW, OH = SCENE['out']
     out = cv2.warpAffine(src, M, (OW, OH), flags=cv2.INTER_LANCZOS4,
                          borderMode=cv2.BORDER_REFLECT)
+    if SCENE['sharpen']:
+        out = sharpen(out, s)
     draw_sparkles(out, t, M, s)
     draw_particles(out, t)
     out *= SCENE['vignette']
@@ -662,11 +677,13 @@ def make_rose_petal(h=180, seed=0, palette=0):
     return np.dstack([col * a[..., None], a]).astype(np.float32)
 
 
-def make_scene(fmt):
+def make_scene(fmt, hq=False):
     OW, OH = FORMATS[fmt]
+    if hq:                                   # 1440 wide master, sharpened
+        OW, OH = OW * 4 // 3, OH * 4 // 3
     W, H = ASSETS['W'], ASSETS['H']
     rng = np.random.default_rng(2026)
-    sc = dict(out=(OW, OH), s0=max(OW / W, OH / H))
+    sc = dict(out=(OW, OH), s0=max(OW / W, OH / H), sharpen=hq)
 
     ts = np.array([k[0] for k in CAM_KEYS])
     sc['cam_z'] = PchipInterpolator(ts, np.log([k[1] for k in CAM_KEYS]), extrapolate=True)
@@ -938,13 +955,13 @@ def make_audio(path, duration=DURATION):
 
 
 # ---------------------------------------------------------------------------
-def _init_worker(card, fmt):
+def _init_worker(card, fmt, hq):
     # Workers are spawned (not forked: OpenCV/BLAS thread pools do not survive
     # a fork), so each one rebuilds the deterministic assets itself.
     global ASSETS, SCENE
     cv2.setNumThreads(1)
     ASSETS = build_assets(card)
-    SCENE = make_scene(fmt)
+    SCENE = make_scene(fmt, hq)
 
 
 def main():
@@ -955,25 +972,28 @@ def main():
     ap.add_argument('--out', default=None)
     ap.add_argument('--stills', default=None, help='comma separated times (s): write PNGs only')
     ap.add_argument('--no-audio', action='store_true')
+    ap.add_argument('--hq', action='store_true', help='1440 px wide sharpened master, higher bitrate')
     ap.add_argument('--jobs', type=int, default=os.cpu_count() or 2)
     args = ap.parse_args()
 
     t_start = time.time()
     ASSETS = build_assets(args.card)
-    SCENE = make_scene(args.format)
+    SCENE = make_scene(args.format, args.hq)
     print(f'assets ready in {time.time() - t_start:.1f}s', flush=True)
 
     if args.stills:
         for ts in args.stills.split(','):
             fi = int(round(float(ts) * FPS))
             fr = render_frame(fi)
-            p = os.path.join(os.getcwd(), f'still_{args.format}_{float(ts):05.2f}.png')
+            tag = args.format + ('_hq' if args.hq else '')
+            p = os.path.join(os.getcwd(), f'still_{tag}_{float(ts):05.2f}.png')
             Image.fromarray(fr).save(p)
             print('wrote', p)
         return
 
     name = 'walima_invitation' + ('_story' if args.format == 'story' else '')
-    out = args.out or os.path.join(HERE, name + ('_no_music' if args.no_audio else '') + '.mp4')
+    name += ('_no_music' if args.no_audio else '') + ('_hq' if args.hq else '')
+    out = args.out or os.path.join(HERE, name + '.mp4')
     OW, OH = SCENE['out']
     nframes = int(round(DURATION * FPS))
     audio = None
@@ -983,12 +1003,13 @@ def main():
     cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24',
            '-s', f'{OW}x{OH}', '-r', str(FPS), '-i', '-']
     if audio:
-        cmd += ['-i', audio, '-c:a', 'aac', '-b:a', '160k', '-shortest']
-    cmd += ['-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p',
+        cmd += ['-i', audio, '-c:a', 'aac', '-b:a', '256k' if args.hq else '160k', '-shortest']
+    cmd += ['-c:v', 'libx264', '-preset', 'slow', '-crf', '15' if args.hq else '20',
+            '-x264-params', 'aq-mode=3', '-pix_fmt', 'yuv420p',
             '-profile:v', 'high', '-movflags', '+faststart', out]
     enc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     ctx = mp.get_context('spawn')
-    with ctx.Pool(args.jobs, initializer=_init_worker, initargs=(args.card, args.format)) as pool:
+    with ctx.Pool(args.jobs, initializer=_init_worker, initargs=(args.card, args.format, args.hq)) as pool:
         for k, fr in enumerate(pool.imap(render_frame, range(nframes), chunksize=4)):
             enc.stdin.write(fr.tobytes())
             if k % 60 == 0:
