@@ -4,11 +4,13 @@ Animated Walima invitation.
 
 Turns the static invitation card (card.jpg) into a short animated video:
 
-  * the card starts blank and every line of text / gold ornament is revealed
-    in reading order using the card's own pixels, so the lettering stays
-    exactly as designed;
-  * a slow cinematic camera pushes in on the text and pulls back to the full
-    card at the end;
+  * a closed leather-bound book sits in candle light (its gold-foil cover is
+    stamped with the card's own lettering), then the cover swings open in 3D;
+  * inside, the card starts blank and every line of text / gold ornament is
+    revealed in reading order using the card's own pixels, so the lettering
+    stays exactly as designed;
+  * a slow cinematic camera pushes in on the text, pulls back to the full card,
+    and the book closes again;
   * flickering candle light, gold shimmer sweeps and star glints on the gilding;
   * falling rose petals and drifting gold dust;
   * a soft synthesized harp/pad soundtrack with chimes on the key reveals.
@@ -39,37 +41,43 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 LUMA = np.array([0.299, 0.587, 0.114], np.float32)
 
 FPS = 30
-DURATION = 32.0
+DURATION = 40.0
 FORMATS = {'card': (1080, 1620), 'story': (1080, 1920)}
 
 # ---------------------------------------------------------------------------
+# Timeline: the closed book sits in candle light, the cover swings open, the
+# card's lines are revealed one by one, then the camera pulls back and the
+# book closes again.
+# ---------------------------------------------------------------------------
+BOOK_OPEN = (1.8, 2.8)       # cover opening: start (s), duration (s)
+BOOK_CLOSE = (34.6, 2.8)     # cover closing
+
 # Card layout, in pixel coordinates of card.jpg (843 x 1264).
 # name, bbox (x0, y0, x1, y1), kind, reveal style, start (s), duration (s)
-# ---------------------------------------------------------------------------
 ELEMENTS = [
-    ('bismillah', (345,  92, 492, 166), 'gold', 'wipe_rtl',    0.9, 1.8),
-    ('divider',   (338, 170, 508, 206), 'gold', 'center_out',  2.5, 0.9),
-    ('line1',     (222, 207, 632, 244), 'text', 'fade_up',     3.2, 1.1),
-    ('line2',     (210, 244, 642, 280), 'text', 'fade_up',     3.8, 1.1),
-    ('line3',     (210, 280, 642, 316), 'text', 'fade_up',     4.4, 1.1),
-    ('name1',     (265, 326, 592, 376), 'text', 'wipe',        5.7, 1.5),
-    ('son_of',    (258, 376, 596, 403), 'text', 'fade_up',     7.0, 1.0),
-    ('amp',       (398, 403, 458, 446), 'text', 'pop',         7.9, 0.8),
-    ('name2',     (228, 446, 624, 498), 'text', 'wipe',        8.6, 1.6),
-    ('dau_of',    (318, 498, 536, 526), 'text', 'fade_up',     10.0, 1.0),
-    ('walima',    (305, 526, 540, 602), 'text', 'write',       11.0, 2.0),
-    ('celebr',    (326, 601, 528, 630), 'text', 'center_fade', 12.7, 1.0),
-    ('date',      (222, 630, 638, 672), 'text', 'fade_up',     13.6, 1.1),
-    ('time',      (234, 702, 622, 741), 'text', 'fade_up',     15.0, 1.1),
-    ('venue1',    (328, 742, 530, 783), 'text', 'fade_up',     15.6, 1.1),
-    ('venue2',    (274, 783, 582, 823), 'text', 'fade_up',     16.2, 1.1),
-    ('love1',     (354, 858, 496, 896), 'text', 'fade_up',     17.6, 1.1),
-    ('love2',     (328, 896, 524, 927), 'text', 'fade_up',     18.2, 1.1),
-    ('love3',     (242, 927, 610, 967), 'text', 'fade_up',     18.8, 1.2),
-    ('flourish',  (306, 970, 542, 1029), 'gold', 'center_out', 20.0, 1.2),
-    ('rsvp',      (366, 1029, 482, 1069), 'text', 'pop_soft',  21.0, 0.9),
-    ('phone1',    (248, 1069, 600, 1099), 'text', 'wipe',      21.6, 1.0),
-    ('phone2',    (276, 1099, 572, 1125), 'text', 'wipe',      22.1, 1.0),
+    ('bismillah', (345,  92, 492, 166), 'gold', 'wipe_rtl',    5.4, 1.8),
+    ('divider',   (338, 170, 508, 206), 'gold', 'center_out',  7.0, 0.9),
+    ('line1',     (222, 207, 632, 244), 'text', 'fade_up',     7.7, 1.1),
+    ('line2',     (210, 244, 642, 280), 'text', 'fade_up',     8.3, 1.1),
+    ('line3',     (210, 280, 642, 316), 'text', 'fade_up',     8.9, 1.1),
+    ('name1',     (265, 326, 592, 376), 'text', 'wipe',        10.2, 1.5),
+    ('son_of',    (258, 376, 596, 403), 'text', 'fade_up',     11.5, 1.0),
+    ('amp',       (398, 403, 458, 446), 'text', 'pop',         12.4, 0.8),
+    ('name2',     (228, 446, 624, 498), 'text', 'wipe',        13.1, 1.6),
+    ('dau_of',    (318, 498, 536, 526), 'text', 'fade_up',     14.5, 1.0),
+    ('walima',    (305, 526, 540, 602), 'text', 'write',       15.5, 2.0),
+    ('celebr',    (326, 601, 528, 630), 'text', 'center_fade', 17.2, 1.0),
+    ('date',      (222, 630, 638, 672), 'text', 'fade_up',     18.1, 1.1),
+    ('time',      (234, 702, 622, 741), 'text', 'fade_up',     19.5, 1.1),
+    ('venue1',    (328, 742, 530, 783), 'text', 'fade_up',     20.1, 1.1),
+    ('venue2',    (274, 783, 582, 823), 'text', 'fade_up',     20.7, 1.1),
+    ('love1',     (354, 858, 496, 896), 'text', 'fade_up',     22.1, 1.1),
+    ('love2',     (328, 896, 524, 927), 'text', 'fade_up',     22.7, 1.1),
+    ('love3',     (242, 927, 610, 967), 'text', 'fade_up',     23.3, 1.2),
+    ('flourish',  (306, 970, 542, 1029), 'gold', 'center_out', 24.5, 1.2),
+    ('rsvp',      (366, 1029, 482, 1069), 'text', 'pop_soft',  25.5, 0.9),
+    ('phone1',    (248, 1069, 600, 1099), 'text', 'wipe',      26.1, 1.0),
+    ('phone2',    (276, 1099, 572, 1125), 'text', 'wipe',      26.6, 1.0),
 ]
 # elements whose letters flash gold as they are revealed, led by a moving light
 GILDED = {'bismillah', 'divider', 'name1', 'name2', 'walima', 'flourish'}
@@ -77,23 +85,34 @@ GILDED = {'bismillah', 'divider', 'name1', 'name2', 'walima', 'flourish'}
 # candle flames in the two lanterns: x, y, strength
 FLAMES = [(822, 186, 1.0), (36, 728, 0.85)]
 
-# camera: t, zoom (1 = whole card), vertical position (0 = top, 1 = bottom)
-CAM_KEYS = [
-    (0.0, 1.00, 0.30),
-    (1.2, 1.05, 0.08),
-    (3.6, 1.25, 0.03),
-    (5.5, 1.30, 0.08),
-    (9.0, 1.30, 0.26),
-    (13.0, 1.30, 0.52),
-    (17.5, 1.30, 0.84),
-    (21.0, 1.30, 0.99),
-    (23.0, 1.30, 1.00),
-    (26.2, 1.00, 1.00),
-    (32.0, 1.035, 0.50),
-]
 
-# gold light sweeps: start, duration, use the fully revealed gold mask?
-SWEEPS = [(0.15, 1.7, False), (26.3, 1.9, True), (29.6, 1.9, True)]
+
+def camera_keys(zb):
+    """Camera path: t, zoom (1 = the card fills the frame, zb = the whole
+    closed book in view), vertical position (0 = top of the card, 1 = bottom)."""
+    return [
+        (0.0, zb * 0.97, 0.5),
+        (1.8, zb, 0.5),
+        (4.5, 1.00, 0.30),
+        (5.7, 1.05, 0.08),
+        (8.1, 1.25, 0.03),
+        (10.0, 1.30, 0.08),
+        (13.5, 1.30, 0.26),
+        (17.5, 1.30, 0.52),
+        (22.0, 1.30, 0.84),
+        (25.5, 1.30, 0.99),
+        (27.5, 1.30, 1.00),
+        (30.7, 1.00, 1.00),
+        (33.8, 1.02, 0.50),
+        (36.8, zb, 0.50),
+        (DURATION, zb * 0.97, 0.50),
+    ]
+
+
+# gold light sweeps over the card: start, duration, use the fully revealed gold mask?
+SWEEPS = [(4.5, 1.7, False), (30.8, 1.9, True)]
+# ... and over the gold foil of the closed cover: start, duration
+COVER_SWEEPS = [(0.3, 1.4), (37.75, 1.4)]
 
 # rose petal layers: size px, fall speed px/s (at 1080 px wide), blur, opacity,
 # spawn rate per second while the text is revealed, and during the finale shower
@@ -104,11 +123,20 @@ PETAL_LAYERS = [
 ]
 
 # a final glint of light across the gilded lettering while the card is held
-FINAL_GLINTS = {'bismillah': 28.0, 'name1': 28.25, 'name2': 28.45, 'walima': 28.7}
+FINAL_GLINTS = {'bismillah': 32.5, 'name1': 32.75, 'name2': 32.95, 'walima': 33.2}
 GLINT_SPEED = 520.0   # card pixels per second
 
 GILD_COLOR = np.array([215, 160, 70], np.float32)
 SHINE_COLOR = np.array([255, 248, 226], np.float32)
+
+# the book (sizes in card pixels)
+COVER_OVERHANG = 8          # how far the boards stick out past the pages
+BOOK_DEPTH = (16, 20)       # oblique offset of the back board: shows the page edges
+BOARD = 6                   # board thickness
+TEX = 2                     # cover texture pixels per card pixel
+CAM_DIST = 3.2              # perspective camera distance, in cover widths
+LEATHER = np.array([92, 15, 28], np.float32)
+LIGHT = np.array([0.45, -0.35, 0.82], np.float32) / np.float32(np.linalg.norm([0.45, -0.35, 0.82]))
 
 
 # ---------------------------------------------------------------------------
@@ -131,6 +159,11 @@ def ease_out_cubic(x):
 def ease_in_out_sine(x):
     x = clamp01(x)
     return 0.5 - 0.5 * np.cos(np.pi * x)
+
+
+def ease_in_out_cubic(x):
+    x = clamp01(x)
+    return np.where(x < 0.5, 4 * x ** 3, 1 - (-2 * x + 2) ** 3 / 2)
 
 
 def ease_out_back(x, s=1.9):
@@ -290,9 +323,11 @@ def build_assets(card_path):
                            inner=np.exp(-r2 / (2 * 16.0 ** 2)).astype(np.float32),
                            outer=np.exp(-r2 / (2 * 55.0 ** 2)).astype(np.float32)))
 
-    return dict(W=W, H=H, clean=clean, elements=elements, gold=gold,
-                gold_clean=gold_clean, glint_pts=glint_pts, proj=proj,
-                proj_range=(float(proj.min()), float(proj.max())), flames=flames)
+    assets = dict(W=W, H=H, img=im8, clean=clean, elements=elements, gold=gold,
+                  gold_clean=gold_clean, glint_pts=glint_pts, proj=proj,
+                  proj_range=(float(proj.min()), float(proj.max())), flames=flames)
+    assets['book'] = build_book(assets)
+    return assets
 
 
 def front_pos(el, t):
@@ -323,7 +358,7 @@ def el_coord(el):
 
 
 def shower_amount(t):
-    return float(smoothstep((t - 21.5) / 1.5) * (1.0 - smoothstep((t - 25.5) / 2.5)))
+    return float(smoothstep((t - 26.0) / 1.5) * (1.0 - smoothstep((t - 30.0) / 2.5)))
 
 
 def gild_curve(tau):
@@ -434,16 +469,19 @@ def add_shimmer(src, t):
 
 
 def camera(t):
+    """Card -> screen transform (scale + offset), the scale, and the card point
+    at the centre of the frame (the eye point for the cover's perspective)."""
     W, H = ASSETS['W'], ASSETS['H']
     OW, OH = SCENE['out']
     z = math.exp(float(SCENE['cam_z'](t)))
     py = float(np.clip(SCENE['cam_y'](t), 0, 1))
     s = SCENE['s0'] * z
-    hw, hh = OW / (2 * s), OH / (2 * s)
-    cx = min(max(W / 2, hw), W - hw)
-    cy = hh + py * max(0.0, H - 2 * hh)
+    hh = OH / (2 * s)
+    book = float(smoothstep((1.0 - z) / 0.1))       # zoomed out: centre the whole book
+    cx = W / 2 + book * BOOK_DEPTH[0] / 2
+    cy = (H / 2 if 2 * hh >= H else hh + py * (H - 2 * hh)) + book * BOOK_DEPTH[1] / 2
     M = np.float32([[s, 0, OW / 2 - s * cx], [0, s, OH / 2 - s * cy]])
-    return M, s
+    return M, s, (cx, cy)
 
 
 def screen_add(out, x, y, sprite, color, gain):
@@ -476,16 +514,20 @@ def draw_star(out, x, y, size, gain, angle):
     screen_add(out, x, y, patch, np.array([255, 244, 214], np.float32), gain)
 
 
-def draw_sparkles(out, t, M, s):
+def draw_sparkles(out, t, M, s, theta):
     def to_screen(x, y):
         return M[0, 0] * x + M[0, 2], M[1, 1] * y + M[1, 2]
 
-    for ev in SCENE['glints']:
+    if 0 < theta < math.pi:              # the cover is moving
+        return
+    for ev in SCENE['glints' if theta > 0 else 'cover_glints']:
         u = (t - ev[0]) / ev[1]
         if 0 < u < 1:
             x, y = to_screen(ev[2], ev[3])
             env = math.sin(math.pi * u) ** 1.5
             draw_star(out, x, y, ev[4] * s * (0.45 + 0.55 * env), ev[5] * env, ev[6] + 50 * u)
+    if theta == 0:
+        return
     # the moving "pen" light on reveals
     for el in ASSETS['elements']:
         if el['name'] not in GILDED:
@@ -581,23 +623,225 @@ def sharpen(img, s):
     return np.clip(out, cv2.erode(img, k), cv2.dilate(img, k))
 
 
-def render_frame(fi):
-    t = fi / FPS
+def cover_angle(t):
+    """0 = closed, pi = lying open to the left of the spine."""
+    for (t0, dur), opening in ((BOOK_OPEN, True), (BOOK_CLOSE, False)):
+        if t0 <= t < t0 + dur:
+            e = float(ease_in_out_cubic((t - t0) / dur))
+            return math.pi * (e if opening else 1.0 - e)
+    return math.pi if BOOK_OPEN[0] + BOOK_OPEN[1] <= t < BOOK_CLOSE[0] else 0.0
+
+
+def page_source(t):
+    """The card itself at time t, in card pixels."""
     src = ASSETS['clean'].copy()
     for el in ASSETS['elements']:
         add_element(src, el, t)
     add_candles(src, t)
     add_shimmer(src, t)
-    M, s = camera(t)
+    return src
+
+
+def page_rect(M):
+    W, H = ASSETS['W'], ASSETS['H']
+    return (M[0, 2] - 0.5 * M[0, 0], M[1, 2] - 0.5 * M[1, 1],
+            M[0, 2] + (W - 0.5) * M[0, 0], M[1, 2] + (H - 0.5) * M[1, 1])
+
+
+def page_fills_frame(M):
     OW, OH = SCENE['out']
-    out = cv2.warpAffine(src, M, (OW, OH), flags=cv2.INTER_LANCZOS4,
-                         borderMode=cv2.BORDER_REFLECT)
-    if SCENE['sharpen']:
-        out = sharpen(out, s)
-    draw_sparkles(out, t, M, s)
+    X0, Y0, X1, Y1 = page_rect(M)
+    return X0 <= -0.5 and Y0 <= -0.5 and X1 >= OW - 0.5 and Y1 >= OH - 0.5
+
+
+def page_alpha(M):
+    """Antialiased coverage of the card's rectangle on screen."""
+    OW, OH = SCENE['out']
+    X0, Y0, X1, Y1 = page_rect(M)
+    xs, ys = np.arange(OW, dtype=np.float32), np.arange(OH, dtype=np.float32)
+    ax = clamp01(np.minimum(xs + 0.5, X1) - np.maximum(xs - 0.5, X0))
+    ay = clamp01(np.minimum(ys + 0.5, Y1) - np.maximum(ys - 0.5, Y0))
+    return (ay[:, None] * ax[None, :])[..., None]
+
+
+def blit_affine(out, rgba, origin, M, gain=1.0):
+    """Composite a premultiplied RGBA canvas laid out in card pixels."""
+    ch, cw = rgba.shape[:2]
+    ox, oy = origin
+    sx, sy = M[0, 0], M[1, 1]
+    tx, ty = sx * ox + M[0, 2], sy * oy + M[1, 2]
+    OH, OW = out.shape[:2]
+    bx0, by0 = max(0, int(math.floor(tx))), max(0, int(math.floor(ty)))
+    bx1, by1 = min(OW, int(math.ceil(tx + sx * cw))), min(OH, int(math.ceil(ty + sy * ch)))
+    if bx1 <= bx0 or by1 <= by0:
+        return
+    A = np.float32([[sx, 0, tx - bx0], [0, sy, ty - by0]])
+    patch = cv2.warpAffine(rgba, A, (bx1 - bx0, by1 - by0), flags=cv2.INTER_LINEAR,
+                           borderMode=cv2.BORDER_CONSTANT)
+    reg = out[by0:by1, bx0:bx1]
+    reg *= 1 - patch[..., 3:4] * gain
+    reg += patch[..., :3] * gain
+
+
+def cover_geometry(theta, M, eye):
+    """Screen quads of the cover face and of its free edge (board thickness).
+    The cover turns about the spine; a perspective eye above the frame centre
+    makes the lifted edge swell towards the viewer."""
+    x0, y0, x1, y1 = ASSETS['book']['rect']
+    wc = x1 - x0
+    c, sn = math.cos(theta), math.sin(theta)
+    D = CAM_DIST * wc
+    ex, ey = eye
+
+    def proj(x, y, z):
+        f = D / (D - z)
+        return (M[0, 0] * (ex + (x - ex) * f) + M[0, 2], M[1, 1] * (ey + (y - ey) * f) + M[1, 2])
+
+    xf, zf = x0 + wc * c, wc * sn
+    face = np.float32([proj(x0, y0, 0), proj(xf, y0, zf), proj(xf, y1, zf), proj(x0, y1, 0)])
+    bx, bz = xf + sn * BOARD, zf - c * BOARD          # the board's other face, at the free end
+    edge = np.float32([proj(xf, y0, zf), proj(xf, y1, zf), proj(bx, y1, bz), proj(bx, y0, bz)])
+    return face, edge
+
+
+def quad_box(quad, out):
+    OH, OW = out.shape[:2]
+    bx0 = max(0, int(math.floor(quad[:, 0].min())))
+    by0 = max(0, int(math.floor(quad[:, 1].min())))
+    bx1 = min(OW, int(math.ceil(quad[:, 0].max())) + 1)
+    by1 = min(OH, int(math.ceil(quad[:, 1].max())) + 1)
+    return bx0, by0, bx1, by1
+
+
+def fill_quad(out, quad, color):
+    bx0, by0, bx1, by1 = quad_box(quad, out)
+    if bx1 <= bx0 or by1 <= by0:
+        return
+    m = np.zeros((by1 - by0, bx1 - bx0), np.uint8)
+    pts = np.int32(np.round((quad - np.float32([bx0, by0])) * 16))
+    cv2.fillConvexPoly(m, pts, 255, cv2.LINE_AA, shift=4)
+    a = (m.astype(np.float32) / 255.0)[..., None]
+    reg = out[by0:by1, bx0:bx1]
+    reg *= 1 - a
+    reg += a * color
+
+
+def warp_quad(out, tex, quad, flip, gain):
+    """Perspective-map a padded premultiplied RGBA texture onto a screen quad
+    (hinge-top, free-top, free-bottom, hinge-bottom)."""
+    bx0, by0, bx1, by1 = quad_box(quad, out)
+    if bx1 <= bx0 or by1 <= by0:
+        return
+    th, tw = tex.shape[:2]
+    p = 2
+    src = np.float32([[p, p], [tw - p, p], [tw - p, th - p], [p, th - p]])
+    if flip:                       # inside face: the spine is on the texture's right
+        src = src[[1, 0, 3, 2]]
+    Hm = cv2.getPerspectiveTransform(src, quad - np.float32([bx0, by0]))
+    patch = cv2.warpPerspective(tex, Hm, (bx1 - bx0, by1 - by0), flags=cv2.INTER_LINEAR,
+                                borderMode=cv2.BORDER_CONSTANT)
+    reg = out[by0:by1, bx0:bx1]
+    reg *= 1 - patch[..., 3:4]
+    reg += patch[..., :3] * gain
+
+
+def face_shade(nx, nz):
+    lit = max(0.0, nx * float(LIGHT[0]) + nz * float(LIGHT[2]))
+    return (0.55 + 0.6 * lit) / (0.55 + 0.6 * float(LIGHT[2]))
+
+
+def cover_shimmer(tex, t, mip):
+    """A band of light sweeping over the cover's gold foil."""
+    for t0, dur in COVER_SWEEPS:
+        u = (t - t0) / dur
+        if 0 < u < 1:
+            bk = ASSETS['book']
+            proj, foil = bk['proj' + mip], bk['foil' + mip]
+            lo, hi = bk['proj_range' + mip]
+            pos = lo - 0.1 * (hi - lo) + 1.2 * (hi - lo) * float(ease_in_out_sine(u))
+            band = np.exp(-0.5 * ((proj - pos) / (0.04 * (hi - lo))) ** 2)
+            amt = (foil * band * (0.9 * math.sin(math.pi * u) ** 0.5))[..., None]
+            tex = tex.copy()
+            tex[..., :3] += amt * (SHINE_COLOR - tex[..., :3])
+    return tex
+
+
+def draw_cover(out, t, theta, M, s, eye):
+    bk = ASSETS['book']
+    face, edge = cover_geometry(theta, M, eye)
+    c, sn = math.cos(theta), math.sin(theta)
+    front = c >= 0
+    shade = face_shade(-sn, c) if front else face_shade(sn, -c)
+    if sn > 0.02:
+        fill_quad(out, edge, LEATHER * 0.55 * shade)
+    if abs(c) < 0.012:             # edge-on
+        return
+    mip = '2' if s > 1.3 else '1'
+    tex = bk[('front' if front else 'inside') + mip]
+    if theta == 0:
+        tex = cover_shimmer(tex, t, mip)
+    warp_quad(out, tex, face, not front, shade)
+
+
+def shade_page(out, theta, M, s, eye):
+    """Soft shadow of the lifted cover on the page, then on the gutter."""
+    if not 0 < theta < math.pi:
+        return
+    OH, OW = out.shape[:2]
+    face, _ = cover_geometry(theta, M, eye)
+    X0, Y0, X1, Y1 = page_rect(M)
+    ref = float(face[1, 0] if theta < math.pi / 2 else face[0, 0])
+    strength = 0.42 * math.sin(theta)
+    lam = (30 + 50 * math.sin(theta)) * s
+    c0, c1 = max(0, int(ref)), min(OW, int(math.ceil(X1)))
+    r0, r1 = max(0, int(Y0)), min(OH, int(math.ceil(Y1)))
+    if c1 <= c0 or r1 <= r0 or strength < 0.01:
+        return
+    xs = np.arange(c0, c1, dtype=np.float32)
+    sh = strength * np.exp(-np.maximum(xs - ref, 0) / lam)
+    out[r0:r1, c0:c1] *= (1 - sh)[None, :, None]
+
+
+def render_book(src, t, theta, M, s, eye):
+    """A frame with the book in view: backdrop, boards and page edges, the
+    page (if the cover is not shut) and the cover."""
+    OW, OH = SCENE['out']
+    bk = ASSETS['book']
+    out = SCENE['backdrop'] * (1.0 + 0.035 * SCENE['flicker'][0](t * 0.7))
+    blit_affine(out, bk['base'], bk['base_origin'], M)
+    left = float(smoothstep((theta - 0.8 * math.pi) / (0.2 * math.pi)))
+    if left > 0:
+        blit_affine(out, bk['left'], bk['left_origin'], M, left)
+    if src is not None:
+        page = cv2.warpAffine(src, M, (OW, OH), flags=cv2.INTER_LANCZOS4,
+                              borderMode=cv2.BORDER_REPLICATE)
+        if SCENE['sharpen']:
+            page = sharpen(page, s)
+        pa = page_alpha(M)
+        dim = 0.72 + 0.28 * float(smoothstep(theta / (0.65 * math.pi)))
+        out = out * (1 - pa) + page * (pa * dim)
+        shade_page(out, theta, M, s, eye)
+    draw_cover(out, t, theta, M, s, eye)
+    return out
+
+
+def render_frame(fi):
+    t = fi / FPS
+    theta = cover_angle(t)
+    M, s, eye = camera(t)
+    OW, OH = SCENE['out']
+    src = page_source(t) if theta > 0 else None
+    if theta >= math.pi and page_fills_frame(M):
+        out = cv2.warpAffine(src, M, (OW, OH), flags=cv2.INTER_LANCZOS4,
+                             borderMode=cv2.BORDER_REFLECT)
+        if SCENE['sharpen']:
+            out = sharpen(out, s)
+    else:
+        out = render_book(src, t, theta, M, s, eye)
+    draw_sparkles(out, t, M, s, theta)
     draw_particles(out, t)
     out *= SCENE['vignette']
-    fade = 0.70 + 0.30 * float(ease_out_cubic(t / 1.0))
+    fade = 0.75 + 0.25 * float(ease_out_cubic(t / 1.0))
     fade *= 1.0 - float(smoothstep((t - (DURATION - 1.0)) / 1.0))
     out *= fade
     return np.clip(out + 0.5, 0, 255).astype(np.uint8)
@@ -677,6 +921,245 @@ def make_rose_petal(h=180, seed=0, palette=0):
     return np.dstack([col * a[..., None], a]).astype(np.float32)
 
 
+# ---------------------------------------------------------------------------
+# The book: leather boards stamped in gold foil, page edges, drop shadows
+# ---------------------------------------------------------------------------
+def element_alpha(A, name):
+    el = next(e for e in A['elements'] if e['name'] == name)
+    X0, Y0 = el['box'][:2]
+    bx0, by0, bx1, by1 = el['tight']
+    return el['A'][by0 - Y0:by1 - Y0, bx0 - X0:bx1 - X0]
+
+
+def stamp(mask, a, cx, cy, scale):
+    """Resize alpha `a` by `scale` and max it into `mask`, centred at (cx, cy)."""
+    w = max(1, int(round(a.shape[1] * scale)))
+    h = max(1, int(round(a.shape[0] * scale)))
+    a = smoothstep((cv2.resize(a, (w, h), interpolation=cv2.INTER_CUBIC) - 0.15) / 0.45)
+    x0, y0 = int(round(cx - w / 2)), int(round(cy - h / 2))
+    sub = mask[y0:y0 + h, x0:x0 + w]
+    np.maximum(sub, a[:sub.shape[0], :sub.shape[1]], out=sub)
+
+
+def tex_noise(rng, h, w, sigma, step=1):
+    n = rng.normal(0, 1, (h // step + 2, w // step + 2)).astype(np.float32)
+    n = cv2.GaussianBlur(n, (0, 0), sigma)
+    n = cv2.resize(n, (w, h), interpolation=cv2.INTER_CUBIC) if step > 1 else n[:h, :w]
+    return n / (n.std() + 1e-6)
+
+
+def make_leather(h, w, rng, tone=1.0):
+    grain = tex_noise(rng, h, w, 2.2)
+    emb = -(cv2.Sobel(grain, cv2.CV_32F, 1, 0, ksize=3) * 0.55 +
+            cv2.Sobel(grain, cv2.CV_32F, 0, 1, ksize=3) * 0.8)
+    emb /= emb.std() + 1e-6
+    f = 1 + 0.075 * emb + 0.03 * tex_noise(rng, h, w, 0.8) + 0.07 * tex_noise(rng, h, w, 10, 8)
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    light = 0.86 + 0.26 * np.exp(-(((xx / w - 0.68) / 0.55) ** 2 + ((yy / h - 0.28) / 0.6) ** 2))
+    d = np.minimum(np.minimum(xx, w - 1 - xx), np.minimum(yy, h - 1 - yy))
+    worn = 0.74 + 0.26 * smoothstep(d / (0.035 * w))
+    return LEATHER * tone * (f * light * worn)[..., None]
+
+
+def bevel(col, width):
+    """Rounded board edges: lit along the top and left, shaded bottom and right."""
+    h, w = col.shape[:2]
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    lit = np.maximum(clamp01(1 - yy / width), clamp01(1 - xx / width)) ** 2
+    dark = np.maximum(clamp01(1 - (h - 1 - yy) / width), clamp01(1 - (w - 1 - xx) / width)) ** 2
+    return col * (1 + 0.35 * lit - 0.35 * dark)[..., None]
+
+
+def gild(col, foil, rng, emboss=5.0):
+    """Stamp `foil` (alpha) into `col` as embossed, polished gold."""
+    h, w = foil.shape
+    height = cv2.GaussianBlur(foil, (0, 0), 1.8)
+    gx = cv2.Sobel(height, cv2.CV_32F, 1, 0, ksize=3)
+    gy = cv2.Sobel(height, cv2.CV_32F, 0, 1, ksize=3)
+    n = np.dstack([-gx * emboss, -gy * emboss, np.ones_like(gx)])
+    n /= np.linalg.norm(n, axis=2, keepdims=True)
+    L = np.float32([-0.45, -0.6, 0.66])
+    L /= np.linalg.norm(L)
+    Hv = L + np.float32([0, 0, 1])
+    Hv /= np.linalg.norm(Hv)
+    diff = clamp01(n @ L)
+    spec = clamp01(n @ Hv) ** 24
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+    tone = clamp01(0.55 + 0.22 * np.sin(xx * 0.0045 + yy * 0.0021) + 0.12 * tex_noise(rng, h, w, 3, 16))
+    dark, light = np.float32([150, 102, 38]), np.float32([252, 218, 132])
+    metal = (dark + (light - dark) * tone[..., None]) * (0.30 + 0.85 * diff)[..., None]
+    metal += 255 * 0.6 * spec[..., None]
+    shadow = np.roll(cv2.GaussianBlur(foil, (0, 0), 3.0), (3, 2), axis=(0, 1))
+    col = col * (1 - 0.5 * shadow * (1 - foil))[..., None]
+    return col * (1 - foil[..., None]) + metal * foil[..., None]
+
+
+def flower_motif(A):
+    """The little four-petal flower from the middle of the card's divider."""
+    div = element_alpha(A, 'divider')
+    c = div.shape[1] // 2
+    return div[:, max(0, c - 20):c + 21]
+
+
+def cover_foil(A, tw, th):
+    """Gold work for the front cover: a double border, a mihrab arch, and the
+    card's own Bismillah, ornaments, names and date."""
+    m = np.zeros((th, tw), np.uint8)
+    for inset, thick in ((0.042, 7), (0.058, 3)):
+        i = int(inset * tw)
+        cv2.rectangle(m, (i, i), (tw - 1 - i, th - 1 - i), 255, thick, cv2.LINE_AA)
+    cx = tw / 2
+    apex = None
+    for a_frac, yb, thick in ((0.36, 0.935, 6), (0.335, 0.92, 3)):
+        a = a_frac * tw
+        R = 1.15 * a
+        ys = 0.40 * th
+        phi = np.linspace(math.pi, math.acos((a - R) / R), 90)
+        left = np.stack([cx + (R - a) + R * np.cos(phi), ys - R * np.sin(phi)], 1)
+        right = np.stack([2 * cx - left[::-1, 0], left[::-1, 1]], 1)
+        pts = np.vstack([[[cx - a, yb * th]], left, right, [[cx + a, yb * th]]])
+        cv2.polylines(m, [np.int32(np.round(pts * 16))], True, 255, thick, cv2.LINE_AA, shift=4)
+        apex = left[-1, 1] if apex is None else apex
+    foil = m.astype(np.float32) / 255.0
+    for name, v, scale in (('bismillah', 0.215, 3.2), ('divider', 0.276, 2.6), ('walima', 0.395, 3.6),
+                           ('name1', 0.522, 2.6), ('amp', 0.578, 2.6), ('name2', 0.634, 2.6),
+                           ('flourish', 0.735, 2.8), ('date', 0.83, 1.9)):
+        stamp(foil, element_alpha(A, name), cx, v * th, scale)
+    flower = flower_motif(A)
+    i = 0.05 * tw
+    for x, y in ((i, i), (tw - i, i), (i, th - i), (tw - i, th - i)):
+        stamp(foil, flower, x, y, 2.4)
+    stamp(foil, flower, cx, apex - 0.022 * th, 3.0)
+    return foil
+
+
+def make_cover_front(A, tw, th, rng):
+    col = make_leather(th, tw, rng)
+    g = int(0.035 * tw)                     # hinge groove beside the spine
+    col[:, g - 3:g + 2] *= 0.62
+    col[:, g + 2:g + 5] *= 1.15
+    foil = cover_foil(A, tw, th)
+    return bevel(gild(col, foil, rng), 8), foil
+
+
+def make_endpaper(A, tw, th, rng):
+    """Inside of the cover: leather turn-ins around a patterned endpaper."""
+    col = make_leather(th, tw, rng, tone=1.1)
+    b = int(0.055 * tw)
+    ph, pw = th - 2 * b, tw - 2 * b
+    paper = np.float32([229, 216, 190]) * (1 + 0.025 * tex_noise(rng, ph, pw, 0.9))[..., None]
+    yy, xx = np.mgrid[0:ph, 0:pw].astype(np.float32)
+    paper *= (0.9 + 0.1 * np.exp(-(((xx / pw - 0.5) / 0.6) ** 2 + ((yy / ph - 0.45) / 0.7) ** 2)))[..., None]
+    pattern = np.zeros((ph, pw), np.float32)
+    flower = flower_motif(A)
+    step = int(0.09 * tw)
+    for r, y in enumerate(range(step // 2, ph - step // 3, step)):
+        for x in range(step // 2 + (r % 2) * (step // 2), pw - step // 3, step):
+            stamp(pattern, flower, x, y, 1.7)
+    p = (0.35 * pattern)[..., None]
+    col[b:b + ph, b:b + pw] = paper * (1 - p) + np.float32([196, 168, 118]) * p
+    line = np.zeros((th, tw), np.uint8)
+    cv2.rectangle(line, (b + 14, b + 14), (tw - b - 15, th - b - 15), 255, 3, cv2.LINE_AA)
+    return bevel(gild(col, line.astype(np.float32) / 255.0, rng, emboss=3.0), 8)
+
+
+def rect_mask(shape, origin, x0, y0, x1, y1):
+    m = np.zeros(shape, np.uint8)
+    pts = np.float64([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]) - np.float64(origin)
+    cv2.fillConvexPoly(m, np.int32(np.round(pts * 16)), 255, cv2.LINE_AA, shift=4)
+    return m.astype(np.float32) / 255.0
+
+
+def stack_layers(shape, layers):
+    """Premultiplied RGBA from (mask, colour) layers composited bottom first."""
+    rgb = np.zeros(shape + (3,), np.float32)
+    a = np.zeros(shape, np.float32)
+    for m, color in layers:
+        rgb = rgb * (1 - m[..., None]) + np.float32(color) * m[..., None]
+        a = a * (1 - m) + m
+    return np.dstack([rgb, a])
+
+
+def make_book_base(W, H):
+    """Back board, page edges and the book's drop shadow, as a premultiplied
+    RGBA canvas in card pixels (it stays put under the page and the cover)."""
+    o = COVER_OVERHANG
+    dx, dy = BOOK_DEPTH
+    origin = (-o - 40, -o - 40)
+    shape = (H + 2 * o + dy + 130, W + 2 * o + dx + 120)
+    shadow = rect_mask(shape, origin, -o + dx / 2 + 10, -o + dy / 2 + 16, W + o + dx + 14, H + o + dy + 22)
+    layers = [(cv2.GaussianBlur(shadow, (0, 0), 20) * 0.62, (0, 0, 0)),
+              (rect_mask(shape, origin, -o + dx, -o + dy, W + o + dx, H + o + dy), LEATHER * 0.62)]
+    for k, d in enumerate(np.linspace(0.9, 0.06, 7)):        # the sheets, deepest first
+        sheet = np.float32([236, 226, 204] if k % 2 == 0 else [214, 202, 178])
+        layers.append((rect_mask(shape, origin, d * dx, d * dy, W + d * dx, H + d * dy),
+                       sheet * (0.82 + 0.18 * (1 - d))))
+    return stack_layers(shape, layers), origin
+
+
+def make_book_left(W, H):
+    """Shadow and board edge under the cover once it lies open on the left."""
+    o = COVER_OVERHANG
+    x1 = -o                                  # the spine
+    x0 = x1 - (W + 2 * o)
+    origin = (x0 - 40, -o - 40)
+    shape = (H + 2 * o + 130, W + 2 * o + 120)
+    shadow = rect_mask(shape, origin, x0 + 8, -o + 14, x1 + 4, H + o + 18)
+    return stack_layers(shape, [(cv2.GaussianBlur(shadow, (0, 0), 14) * 0.55, (0, 0, 0)),
+                                (rect_mask(shape, origin, x0 + 3, -o + 4, x1, H + o + 4),
+                                 LEATHER * 0.5)]), origin
+
+
+def pad_rgba(col, p=2):
+    """Premultiplied RGBA with a transparent border so warped edges antialias."""
+    h, w = col.shape[:2]
+    out = np.zeros((h + 2 * p, w + 2 * p, 4), np.float32)
+    out[p:p + h, p:p + w, :3] = np.clip(col, 0, 255)
+    out[p:p + h, p:p + w, 3] = 1.0
+    return out
+
+
+def build_book(A):
+    W, H = A['W'], A['H']
+    o = COVER_OVERHANG
+    tw, th = (W + 2 * o) * TEX, (H + 2 * o) * TEX
+    rng = np.random.default_rng(31)
+    front, foil = make_cover_front(A, tw, th, rng)
+    inside = make_endpaper(A, tw, th, rng)
+    bk = dict(rect=(-o, -o, W + o, H + o))
+    ang = math.radians(32)
+    for mip, k in (('2', 1), ('1', 2)):      # full and half resolution textures
+        def down(img):
+            return img if k == 1 else cv2.resize(img, (tw // k, th // k), interpolation=cv2.INTER_AREA)
+        bk['front' + mip] = pad_rgba(down(front))
+        bk['inside' + mip] = pad_rgba(down(inside))
+        f = np.pad(down(foil), 2)
+        yy, xx = np.mgrid[0:f.shape[0], 0:f.shape[1]].astype(np.float32)
+        proj = xx * math.cos(ang) + yy * math.sin(ang)
+        bk['foil' + mip], bk['proj' + mip] = f, proj
+        bk['proj_range' + mip] = (float(proj.min()), float(proj.max()))
+    bk['base'], bk['base_origin'] = make_book_base(W, H)
+    bk['left'], bk['left_origin'] = make_book_left(W, H)
+    ys, xs = np.nonzero(foil > 0.9)
+    pick = rng.choice(len(xs), size=min(800, len(xs)), replace=False)
+    bk['glint_pts'] = np.stack([xs[pick] / TEX - o, ys[pick] / TEX - o], 1).astype(np.float32)
+    return bk
+
+
+def make_backdrop(img8, OW, OH):
+    """The card's own candle-lit scene, enlarged, blurred and dimmed."""
+    H, W = img8.shape[:2]
+    sc = max(OW / W, OH / H) * 1.12
+    img = cv2.resize(img8, (int(W * sc) + 2, int(H * sc) + 2), interpolation=cv2.INTER_LINEAR)
+    y0, x0 = (img.shape[0] - OH) // 2, (img.shape[1] - OW) // 2
+    img = np.ascontiguousarray(img[y0:y0 + OH, x0:x0 + OW]).astype(np.float32)
+    img = cv2.GaussianBlur(img, (0, 0), 26 * OW / 1080)
+    yy, xx = np.mgrid[0:OH, 0:OW].astype(np.float32)
+    r = np.sqrt(((xx - OW / 2) / (OW / 2)) ** 2 + ((yy - OH / 2) / (OH / 2)) ** 2)
+    img *= (0.52 * (1 - 0.35 * smoothstep((r - 0.3) / 0.9)))[..., None]
+    return img * np.float32([1.04, 0.96, 0.88])
+
+
 def make_scene(fmt, hq=False):
     OW, OH = FORMATS[fmt]
     if hq:                                   # 1440 wide master, sharpened
@@ -685,9 +1168,14 @@ def make_scene(fmt, hq=False):
     rng = np.random.default_rng(2026)
     sc = dict(out=(OW, OH), s0=max(OW / W, OH / H), sharpen=hq)
 
-    ts = np.array([k[0] for k in CAM_KEYS])
-    sc['cam_z'] = PchipInterpolator(ts, np.log([k[1] for k in CAM_KEYS]), extrapolate=True)
-    sc['cam_y'] = PchipInterpolator(ts, [k[2] for k in CAM_KEYS], extrapolate=True)
+    # zoom at which the whole closed book (boards, page edges) fills ~88% of the frame
+    bw = W + 2 * COVER_OVERHANG + BOOK_DEPTH[0]
+    bh = H + 2 * COVER_OVERHANG + BOOK_DEPTH[1]
+    keys = camera_keys(0.88 * min(OW / (bw * sc['s0']), OH / (bh * sc['s0'])))
+    ts = np.array([k[0] for k in keys])
+    sc['cam_z'] = PchipInterpolator(ts, np.log([k[1] for k in keys]), extrapolate=True)
+    sc['cam_y'] = PchipInterpolator(ts, [k[2] for k in keys], extrapolate=True)
+    sc['backdrop'] = make_backdrop(ASSETS['img'], OW, OH)
 
     # candle flicker: smooth noise from a few incommensurate sines
     def make_flicker(seed):
@@ -708,11 +1196,11 @@ def make_scene(fmt, hq=False):
     # glints on the gold work: a Poisson schedule, placed where the camera looks
     glints = []
     pts = ASSETS['glint_pts']
-    t = 0.4
-    while t < DURATION - 0.8:
-        rate = 3.0 if t < 23 else 6.0
+    t = BOOK_OPEN[0] + BOOK_OPEN[1] + 0.1
+    while t < BOOK_CLOSE[0] - 1.0:
+        rate = 3.0 if t < 27.5 else 6.0
         t += rng.exponential(1.0 / rate)
-        M, s = _camera_with(sc, t)
+        M, s, _ = _camera_with(sc, t)
         x = M[0, 0] * pts[:, 0] + M[0, 2]
         y = M[1, 1] * pts[:, 1] + M[1, 2]
         vis = np.nonzero((x > 20) & (x < OW - 20) & (y > 20) & (y < OH - 20))[0]
@@ -749,6 +1237,20 @@ def make_scene(fmt, hq=False):
                            el['pen'][ci] + rng.normal(0, 7), rng.uniform(4, 8),
                            rng.uniform(0.5, 0.9), rng.uniform(0, 90)))
     sc['glints'] = glints
+
+    # glints on the cover's gold foil while the book is shut
+    cover = []
+    pts = ASSETS['book']['glint_pts']
+    for a, b in ((0.2, BOOK_OPEN[0] - 0.3), (BOOK_CLOSE[0] + BOOK_CLOSE[1] + 0.1, DURATION - 1.0)):
+        t = a
+        while True:
+            t += rng.exponential(1.0 / 4.0)
+            if t > b:
+                break
+            p = pts[rng.integers(len(pts))]
+            cover.append((t, rng.uniform(0.6, 1.0), p[0], p[1], rng.uniform(8, 15),
+                          rng.uniform(0.6, 1.0), rng.uniform(0, 90)))
+    sc['cover_glints'] = cover
 
     # gold dust motes
     unit = OW / 1080.0
@@ -791,7 +1293,7 @@ def make_scene(fmt, hq=False):
             if t > DURATION:
                 break
             sz = rng.uniform(*size) * unit
-            if t > 21.5 and rng.random() < 0.75:
+            if t > 26.0 and rng.random() < 0.75:
                 x0 = rng.uniform(0, OW * 0.22) if rng.random() < 0.5 else rng.uniform(OW * 0.78, OW)
             else:
                 x0 = rng.uniform(0, OW)
@@ -863,6 +1365,32 @@ def bell(freq, dur):
     return y / np.abs(y).max()
 
 
+def whoosh(dur, seed=0):
+    """Soft swish of the cover moving through the air (a swept band of noise)."""
+    rng = np.random.default_rng(seed)
+    n = int(dur * SR)
+    u = np.arange(n) / n
+    x = rng.normal(0, 1, n)
+    a = np.exp(-2 * np.pi * (250 + 2200 * np.sin(np.pi * u) ** 2) / SR)
+    y = np.empty(n)
+    l1 = l2 = 0.0
+    for i in range(n):
+        l1 = (1 - a[i]) * x[i] + a[i] * l1
+        l2 = (1 - a[i]) * l1 + a[i] * l2
+        y[i] = l2
+    b, aa = butter(2, 180 / (SR / 2), 'highpass')
+    y = lfilter(b, aa, y) * np.sin(np.pi * u) ** 1.6
+    return y / (np.abs(y).max() + 1e-9)
+
+
+def thump(dur=0.5):
+    """The cover settling shut: a soft, low knock."""
+    t = np.arange(int(dur * SR)) / SR
+    y = np.sin(2 * np.pi * 68 * t) * np.exp(-t / 0.09) + 0.4 * np.sin(2 * np.pi * 112 * t) * np.exp(-t / 0.05)
+    y *= 1 - np.exp(-t / 0.003)
+    return y / np.abs(y).max()
+
+
 def pad_voice(freq, dur):
     t = np.arange(int(dur * SR)) / SR
     y = np.zeros_like(t)
@@ -900,10 +1428,12 @@ def make_audio(path, duration=DURATION):
         dry[i:i + len(sig), 0] += sig * gain * lg
         dry[i:i + len(sig), 1] += sig * gain * rg
 
-    # D major: D - Bm - G - A - D - Bm - G/A - D, one bar (8 harp notes) every 4 s
+    # D major, one bar (8 harp notes) every 4 s: a G/A lead-in while the book
+    # opens, D - Bm - G - A - D - Bm - G/A - D, and D again as it closes
     D_, Bm, G_, A_ = ([50, 57, 62, 66, 69, 74], [47, 54, 59, 62, 66, 71],
                       [43, 50, 55, 59, 62, 67], [45, 52, 57, 61, 64, 69])
-    bars = [[D_] * 8, [Bm] * 8, [G_] * 8, [A_] * 8, [D_] * 8, [Bm] * 8, [G_] * 4 + [A_] * 4, [D_] * 8]
+    bars = [[G_] * 4 + [A_] * 4, [D_] * 8, [Bm] * 8, [G_] * 8, [A_] * 8, [D_] * 8, [Bm] * 8,
+            [G_] * 4 + [A_] * 4, [D_] * 8, [D_] * 8]
     pattern = [0, 2, 3, 4, 5, 4, 3, 2]
     beat = 0.5
     for b, bar in enumerate(bars):
@@ -924,17 +1454,21 @@ def make_audio(path, duration=DURATION):
                 put(pad_voice(midi_hz(note), length + (2.0 if last else 0.0)), t0 + half * 2.0 - 0.3,
                     0.05, pan=rng.uniform(-0.3, 0.3))
     # a gentle music-box melody on top
-    melody = [(4.6, 78), (5.6, 74), (6.1, 76), (6.6, 78), (7.6, 71),
-              (8.6, 74), (9.6, 71), (10.1, 74), (10.6, 79), (11.6, 78),
-              (12.6, 76), (13.6, 73), (14.1, 76), (14.6, 81), (15.6, 79),
-              (16.6, 78), (17.6, 81), (18.1, 78), (18.6, 76), (19.6, 74),
-              (20.6, 78), (21.6, 74), (22.1, 76), (22.6, 78), (23.6, 83),
-              (24.6, 79), (25.1, 78), (25.6, 76), (26.6, 76), (27.1, 73), (27.6, 76),
-              (28.6, 74)]
+    melody = [(8.6, 78), (9.6, 74), (10.1, 76), (10.6, 78), (11.6, 71),
+              (12.6, 74), (13.6, 71), (14.1, 74), (14.6, 79), (15.6, 78),
+              (16.6, 76), (17.6, 73), (18.1, 76), (18.6, 81), (19.6, 79),
+              (20.6, 78), (21.6, 81), (22.1, 78), (22.6, 76), (23.6, 74),
+              (24.6, 78), (25.6, 74), (26.1, 76), (26.6, 78), (27.6, 83),
+              (28.6, 79), (29.1, 78), (29.6, 76), (30.6, 76), (31.1, 73), (31.6, 76),
+              (32.6, 74), (34.6, 81), (35.1, 78), (35.6, 76), (36.6, 74)]
     for tm, note in melody:
-        put(bell(midi_hz(note), 3.0 if tm >= 28 else 2.4), tm, 0.10, pan=0.25)
-    # shimmering chime runs on the key reveals
-    for tm in [0.9, 5.7, 7.95, 8.6, 11.0, 20.0, 21.0, 26.3, 29.6]:
+        put(bell(midi_hz(note), 3.0 if tm >= 32 else 2.4), tm, 0.10, pan=0.25)
+    # the cover swishing open and shut
+    put(whoosh(BOOK_OPEN[1] - 0.2, seed=1), BOOK_OPEN[0] + 0.1, 0.07, pan=-0.2)
+    put(whoosh(BOOK_CLOSE[1] - 0.2, seed=2), BOOK_CLOSE[0] + 0.1, 0.07, pan=-0.2)
+    put(thump(), BOOK_CLOSE[0] + BOOK_CLOSE[1] - 0.03, 0.16)
+    # shimmering chime runs on the key moments
+    for tm in [2.7, 5.4, 10.2, 12.45, 13.1, 15.5, 24.5, 25.5, 30.8, 37.8]:
         for k, note in enumerate([86, 90, 93, 98, 102]):
             put(bell(midi_hz(note), 1.6), tm + k * 0.055, 0.035 * (1 - k * 0.12), pan=-0.6 + 0.3 * k)
 

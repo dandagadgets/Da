@@ -1,11 +1,15 @@
 # Animated Walima invitation
 
-`make_video.py` turns a static invitation card into a ~32 second animated video
+`make_video.py` turns a static invitation card into a ~40 second animated video
 with music, ready to share on WhatsApp.
 
 What happens in the video:
 
-- The card starts blank and every line is revealed in reading order: the
+- A closed leather-bound book sits in candle light. Its cover is stamped in
+  gold foil with the card's own Bismillah, "Walima", names and date. The
+  cover swings open in 3D to reveal the card, and at the end the camera pulls
+  back and the book closes again.
+- Inside, the card starts blank and every line is revealed in reading order: the
   Bismillah writes itself right to left, the names and *Walima* are written in
   with a glowing gold pen, the other lines fade up, the ornaments open out from
   the centre. The lettering is the card's own pixels, so fonts and spelling
