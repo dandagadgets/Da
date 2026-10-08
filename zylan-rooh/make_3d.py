@@ -362,6 +362,7 @@ def build_scene(width, height, samples):
         ld.energy, ld.color = energy, color
         o = bpy.data.objects.new(name, ld)
         o.location = loc
+        o.visible_camera = False                       # lights never show up as panels
         scn.collection.objects.link(o)
         c = o.constraints.new('TRACK_TO')
         c.target, c.track_axis, c.up_axis = target, 'TRACK_NEGATIVE_Z', 'UP_Y'
@@ -376,9 +377,10 @@ def build_scene(width, height, samples):
     top_aim.location = (0, 0, 1.9)
     scn.collection.objects.link(top_aim)
     area('top', (0.4, -0.6, 3.6), 0.8, 0.8, 90, (1.0, 1.0, 1.0), top_aim)
-    sweep = area('sweep', (-9, -2.2, 1.2), 0.22, 4.0, 1500, (1.0, 1.0, 1.0))
+    sweep = area('sweep', (-9, -2.2, 1.2), 0.22, 4.0, 550, (1.0, 1.0, 1.0))
     sweep.constraints.clear()
     sweep.rotation_euler = (math.pi / 2, 0, 0)
+    sweep.visible_diffuse = False                      # only a glint on glass and gold
 
     # floating droplets
     rng = np.random.default_rng(17)
