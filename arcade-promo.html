@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Arcade Promo Edits</title>
+<meta name="description" content="Four promo edits for tryarcade.com. Pick one with ?edit=1 to ?edit=4.">
+<link rel="icon" href="data:,">
+<style>
+  @font-face{font-family:'Rubik';src:url(fonts/rubik-latin.woff2) format('woff2');font-weight:300 900;font-display:block;}
+  @font-face{font-family:'Inter';src:url(fonts/inter-latin.woff2) format('woff2');font-weight:100 900;font-display:block;}
+  @font-face{font-family:'Caveat';src:url(fonts/caveat-latin.woff2) format('woff2');font-weight:400 700;font-display:block;}
+  :root{--bg:#0b0615;--v:#8d4ff9;--v-hi:#a676fa;--v-lo:#6b3eba;--v-deep:#573494;--gold:#f2c907;--tag:#251d30;--discord:#5865f2;--muted:#a2a0ac;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:#000;color:#fff;font-family:'Inter',system-ui,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;}
+  body{display:flex;align-items:center;justify-content:center;}
+  .stage{position:relative;overflow:hidden;background:var(--bg);cursor:pointer;}
+  .stage.v{width:min(100vw,56.25vh);aspect-ratio:9/16;font-size:calc(min(100vw,56.25vh) / 36);}
+  .stage.h{width:min(100vw,177.78vh);aspect-ratio:16/9;font-size:calc(min(100vw,177.78vh) / 64);}
+  #cam{position:absolute;inset:0;transform-origin:50% 50%;}
+  .scene{position:absolute;inset:0;display:none;overflow:hidden;}
+  .abs{position:absolute;}
+  .fill{position:absolute;inset:0;}
+  .row{position:absolute;left:0;right:0;display:flex;justify-content:center;text-align:center;}
+  .row > *{will-change:transform,opacity;}
+  .fx{opacity:0;will-change:opacity,transform;}
+  .d{font-family:'Rubik',sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;line-height:.95;}
+  .shadow{text-shadow:0 .06em .5em rgba(5,2,15,.55);}
+  .hl{display:inline-block;background:var(--v);color:#fff;padding:.06em .22em .02em;border-radius:.14em;box-shadow:0 .2em .8em rgba(141,79,249,.55);}
+  .mask{overflow:hidden;display:block;}
+  .mask > span{display:block;will-change:transform;}
+  img{display:block;}
+  .bg-dark{background:radial-gradient(70% 45% at 50% 100%, rgba(141,79,249,.35), transparent 70%),var(--bg);}
+  .bg-banner{background:radial-gradient(65% 42% at 50% 92%, #8230d9 0%, rgba(130,48,217,0) 75%),radial-gradient(80% 60% at 15% 0%, #1b0a47, transparent 70%),linear-gradient(180deg,#22104f 0%,#391777 55%,#43198a 100%);}
+  .bg-img{position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;}
+  .shade{position:absolute;inset:0;}
+  /* game cards */
+  .gc{position:absolute;border-radius:1.1em;overflow:hidden;background:#140d22;box-shadow:0 1.6em 4em rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.08);}
+  .gc img{width:100%;height:100%;object-fit:cover;}
+  .gtitle{font-family:'Rubik',sans-serif;font-weight:800;letter-spacing:-.01em;line-height:1.05;}
+  .meta{display:flex;align-items:center;gap:.45em;color:#e9e6f2;font-weight:600;}
+  .meta svg{width:1.1em;height:1.1em;fill:currentColor;}
+  .stars{display:inline-flex;gap:.12em;}
+  .stars svg{width:1em;height:1em;}
+  /* 3D wall */
+  .wallwrap{position:absolute;inset:0;perspective:70em;overflow:hidden;}
+  .wall{position:absolute;left:50%;top:50%;}
+  .wall .col{position:absolute;top:0;}
+  .wall img{position:absolute;left:0;border-radius:.8em;object-fit:cover;box-shadow:0 .8em 2em rgba(0,0,0,.5);}
+  /* UI bits */
+  .pill{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font-family:'Rubik',sans-serif;font-weight:900;text-transform:uppercase;border-radius:.6em;padding:.62em 1.15em;white-space:nowrap;position:relative;overflow:hidden;}
+  .pill.white{background:#fff;color:#0b0615;}
+  .pill.violet{background:var(--v);color:#fff;}
+  .pill.discord{background:var(--discord);color:#fff;font-family:'Inter',sans-serif;font-weight:700;text-transform:none;}
+  .pill svg{width:1.05em;height:1.05em;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
+  .pill .sheen{position:absolute;top:-20%;bottom:-20%;width:35%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);}
+  .glass{background:rgba(30,22,48,.9);border:1px solid rgba(255,255,255,.14);box-shadow:0 1.5em 4em rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(.6em);}
+  .pbox{position:absolute;border-radius:1.2em;padding:1.1em 1.2em 1.1em 1.3em;display:flex;align-items:flex-end;gap:.8em;}
+  .ptxt{flex:1;font-size:1.45em;line-height:1.35;font-weight:500;min-height:2.7em;}
+  .ph{color:#8d86a0;}
+  .caret{display:inline-block;width:.08em;height:1.05em;background:var(--v-hi);vertical-align:-.15em;margin-left:.04em;}
+  .send{width:2.9em;height:2.9em;border-radius:50%;background:#3a2f52;display:flex;align-items:center;justify-content:center;flex:none;}
+  .send.ready{background:var(--v);box-shadow:0 0 1.4em rgba(141,79,249,.7);}
+  .send svg{width:1.4em;height:1.4em;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
+  .tagline{font-weight:600;color:#ece8f6;line-height:1.35;}
+  .hand{font-family:'Caveat',cursive;font-weight:700;color:#c7a6ff;line-height:.9;}
+  /* podium */
+  .pod{position:absolute;display:flex;align-items:flex-end;}
+  .blk{position:relative;overflow:visible;}
+  .blk .clip{position:absolute;left:0;right:0;bottom:0;overflow:hidden;}
+  .blk .body{position:absolute;left:0;right:0;bottom:0;}
+  .blk .top{position:absolute;left:0;right:0;top:0;height:2.2em;}
+  .blk .front{position:absolute;left:0;right:0;top:2.2em;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25em;}
+  .blk .num{font-family:'Rubik',sans-serif;font-weight:900;font-size:6.2em;line-height:.9;color:#fff;text-shadow:0 .03em 0 #e6dcff,0 .06em 0 #c6b3f7,0 .09em 0 #a58ae8,0 .15em .25em rgba(20,6,50,.45);}
+  .blk .prize{font-family:'Rubik',sans-serif;font-weight:800;font-size:1.75em;color:#fff;letter-spacing:.01em;white-space:nowrap;}
+  .b1 .top{background:#a676fa;clip-path:polygon(9% 0,91% 0,100% 100%,0 100%);} .b1 .front{background:#8d4ff9;}
+  .b2 .top{background:#9861fa;clip-path:polygon(14% 0,100% 0,100% 100%,0 100%);} .b2 .front{background:#6b3eba;}
+  .b3 .top{background:#7945d3;clip-path:polygon(0 0,86% 0,100% 100%,0 100%);} .b3 .front{background:#573494;}
+  .b1 .num{font-size:7.4em;}
+  /* leaderboard */
+  .lb{position:absolute;overflow:hidden;}
+  .lrow{position:absolute;left:0;right:0;height:4.2em;border-radius:1em;background:#191126;display:flex;align-items:center;gap:1em;padding:0 1.2em;font-weight:700;font-size:1em;}
+  .lrow .rk{width:2.6em;color:var(--muted);font-family:'Rubik',sans-serif;font-weight:800;font-size:1.25em;}
+  .lrow .nm{flex:1;font-size:1.3em;}
+  .lrow .pts{color:var(--muted);font-size:1.15em;}
+  .lrow.you{background:linear-gradient(90deg,#8d4ff9,#6b3eba);box-shadow:0 0 2em rgba(141,79,249,.6);}
+  .lrow.you .rk,.lrow.you .pts{color:#fff;}
+  .av{width:2.6em;height:2.6em;border-radius:50%;flex:none;}
+  .toast{position:absolute;border-radius:.8em;padding:.6em 1em;font-weight:800;font-family:'Rubik',sans-serif;display:flex;align-items:center;gap:.5em;white-space:nowrap;}
+  .quest{position:absolute;border-radius:1.2em;padding:1.2em 1.3em;}
+  .qi{display:flex;align-items:center;gap:.8em;font-size:1.35em;font-weight:600;padding:.45em 0;}
+  .qi .box{width:1.5em;height:1.5em;border-radius:.4em;border:.14em solid #5c4f78;display:flex;align-items:center;justify-content:center;flex:none;}
+  .qi .box.on{background:var(--v);border-color:var(--v);}
+  .qi .box svg{width:1em;height:1em;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;}
+  .qi .xp{margin-left:auto;color:var(--v-hi);font-family:'Rubik',sans-serif;font-weight:800;}
+  .dcard{position:absolute;background:#fff;color:#14101c;border-radius:1.3em;overflow:hidden;}
+  /* overlays */
+  #fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+  #grain{position:absolute;inset:-20%;pointer-events:none;opacity:.07;mix-blend-mode:overlay;}
+  #vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(130% 95% at 50% 45%, transparent 58%, rgba(0,0,0,.42));}
+  #flash{position:absolute;inset:0;pointer-events:none;background:#fff;opacity:0;}
+  .progress{position:absolute;left:0;bottom:0;height:.2em;background:var(--v);width:0;z-index:50;opacity:.9;}
+  .capture .progress{display:none;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="mb" x="-20%" y="-5%" width="140%" height="110%" color-interpolation-filters="sRGB"><feGaussianBlur id="mbB" stdDeviation="0 0"/></filter>
+  </defs>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M1.5 20.5c0-4 3.4-6.6 7.5-6.6s7.5 2.6 7.5 6.6z"/><circle cx="17.5" cy="7" r="3"/><path d="M16 13.2c3.7-.6 7 1.6 7 5.6v1.7h-5c0-2.9-.6-5.3-2-7.3z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.1l-6.1 3.5 1.5-6.8L2.2 9.2l6.9-.7z"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17L17 7M8.5 7H17v8.5"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-discord" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol>
+</svg>
+<div class="stage" id="stage" role="img" aria-label="Arcade promo video">
+  <div id="cam"></div>
+  <canvas id="fx"></canvas>
+  <div id="grain"></div>
+  <div id="vig"></div>
+  <div id="flash"></div>
+  <div class="progress" id="progress"></div>
+</div>
+
+<script>
+(() => {
+  // Four promo edits for tryarcade.com, built from screenshots of the site (arcade-assets/).
+  // Every edit is a pure function of time t (ms), so it plays live or renders frame-by-frame
+  // (?capture) with its sound cues exported through AD.events for tools/playabl-ad-audio.js.
+  const Q = new URLSearchParams(location.search);
+  const EDIT = Math.max(1, Math.min(4, Math.round(+Q.get('edit') || 1)));
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), cam = $('cam');
+  const capture = Q.has('capture');
+  if (capture) document.body.classList.add('capture');
+
+  // ---------- helpers ----------
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const E = {
+    out: p => 1 - Math.pow(1 - p, 3), expo: p => p >= 1 ? 1 : 1 - Math.pow(2, -10 * p),
+    in: p => p * p * p, inout: p => p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2,
+    sine: p => -(Math.cos(Math.PI * p) - 1) / 2,
+    back: p => { const c = 1.5; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); },
+    elastic: p => p <= 0 ? 0 : p >= 1 ? 1 : Math.pow(2, -10 * p) * Math.sin((p * 10 - .75) * (2 * Math.PI / 3)) + 1,
+  };
+  const prog = (t, t0, d, e = E.expo) => e(clamp((t - t0) / d));
+  const lerp = (a, b, p) => a + (b - a) * p;
+  const cache = new WeakMap();
+  const setHTML = (el, s) => { if (cache.get(el) !== s){ cache.set(el, s); el.innerHTML = s; } };
+  const show = (el, on) => { el.style.visibility = on ? 'visible' : 'hidden'; };
+  function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; }; }
+  const IMGS = [];
+  function h(parent, cls = '', html = '', style = ''){
+    const e = document.createElement('div');
+    if (cls) e.className = cls; if (html) e.innerHTML = html; if (style) e.style.cssText = style;
+    parent.appendChild(e); return e;
+  }
+  function im(parent, src, cls = '', style = ''){
+    const e = new Image(); e.src = src; if (cls) e.className = cls; if (style) e.style.cssText = style;
+    e.draggable = false; parent.appendChild(e); IMGS.push(e); return e;
+  }
+  const icon = (id, cls = '') => `<svg class="${cls}"><use href="#${id}"/></svg>`;
+  const A = f => 'arcade-assets/' + f;
+
+  // fades in (and optionally out) with a soft rise + blur
+  function fade(el, p, y = 1, blur = .3, extra = ''){
+    p = clamp(p);
+    el.style.opacity = p;
+    el.style.transform = `translate3d(0,${(1 - p) * y}em,0) ${extra}`;
+    el.style.filter = p < .999 && blur ? `blur(${(1 - p) * blur}em)` : 'none';
+  }
+  const win = (t, a, b, d = 500, d2 = 350) => prog(t, a, d, E.out) * (1 - prog(t, b - d2, d2, E.inout));
+  // kinetic "slam": drops in big and blurred, lands with a snap
+  function slam(el, t, at, {s0 = 1.9, d = 420, rot = 0, base = ''} = {}){
+    if (t < at){ el.style.opacity = 0; return 0; }
+    const p = prog(t, at, d, E.expo);
+    el.style.opacity = clamp((t - at) / 70);
+    el.style.transform = `${base} scale(${lerp(s0, 1, p)}) rotate(${rot * (1 - p)}deg)`;
+    el.style.filter = p < .97 ? `blur(${(1 - p) * .22}em)` : 'none';
+    return p;
+  }
+  // pops in with overshoot
+  function pop(el, t, at, {d = 520, base = '', s0 = .2} = {}){
+    if (t < at){ el.style.opacity = 0; return 0; }
+    const p = clamp((t - at) / d);
+    el.style.opacity = clamp((t - at) / 90);
+    el.style.transform = `${base} scale(${lerp(s0, 1, E.back(p))})`;
+    return p;
+  }
+  const maskIn = (span, t, a, d = 700) => { span.style.transform = `translate3d(0,${(1 - prog(t, a, d)) * 112}%,0)`; };
+  function keystrokes(text, t0, seed, base = 40, jit = 30){
+    const r = rng(seed), out = []; let t = t0;
+    for (let i = 1; i <= text.length; i++){ t += base + r() * jit + (text[i - 1] === ' ' ? 22 : 0); out.push({t, s: text.slice(0, i)}); }
+    return out;
+  }
+  const fmtInt = n => Math.round(n).toLocaleString('en-US');
+  const euro = n => `${Math.round(n)},00 €`;
+  const count = (t, a, d, to, from = 0) => lerp(from, to, prog(t, a, d, E.out));
+
+  // ---------- data from the site ----------
+  const GAMES = {
+    wrongland: {t: 'WrongLand', p: 198, f: 'wrongland'},
+    burger: {t: 'Burger Minute', p: 356, f: 'burger-minute'},
+    heist: {t: 'The Heist', p: 159, f: 'the-heist'},
+    wanted: {t: 'Wanted dead or alive', p: 820, f: 'wanted'},
+    lastman: {t: 'The Last man alive', p: 28, f: 'last-man'},
+    lastlight: {t: 'Last Light Evacuation', f: 'last-light'},
+    sprouts: {t: 'Sunny Sprouts', f: 'sunny-sprouts'},
+    bunker: {t: 'BUNKER SIGNAL: 161.80', p: 36, f: 'bunker-signal'},
+  };
+  const ALL = Object.keys(GAMES);
+  const gsrc = k => A(`game-${GAMES[k].f}.jpg`);
+  const RATIO = 624 / 1112;   // thumbnail height / width
+
+  // ---------- shared pieces ----------
+  // a tilted wall of game thumbnails, columns drifting in opposite directions
+  function makeWall(parent, {cols = 5, cw = 10.5, gap = 1, rx = 26, rz = -14, sc = 1.2, speed = 3.2, seed = 3} = {}){
+    const wrap = h(parent, 'wallwrap'), plane = h(wrap, 'wall');
+    const chh = cw * RATIO, rowH = chh + gap, N = ALL.length, seqH = N * rowH, W = cols * (cw + gap) - gap;
+    plane.style.cssText = `width:${W}em;height:${seqH}em;`;
+    const r = rng(seed), colEls = [];
+    for (let c = 0; c < cols; c++){
+      const col = h(plane, 'col', '', `left:${c * (cw + gap)}em;width:${cw}em;`);
+      const off = (c * 3) % N;
+      for (let i = 0; i < N * 3; i++) im(col, gsrc(ALL[(i + off) % N]), '', `top:${i * rowH}em;width:${cw}em;height:${chh}em;`);
+      colEls.push({col, dir: c % 2 ? 1 : -1, ph: r(), sp: .8 + r() * .4});
+    }
+    return (t, {boost = 0, rot = 0, scale = 1} = {}) => {
+      plane.style.transform = `translate(-50%,-50%) rotateX(${rx}deg) rotateZ(${rz + rot}deg) scale(${sc * scale})`;
+      const s = t / 1000 * speed + boost;
+      for (const c of colEls){
+        const y = (((s * c.sp * c.dir + c.ph * seqH) % seqH) + seqH) % seqH;
+        c.col.style.transform = `translate3d(0,${-y - seqH * .5}em,0)`;
+      }
+    };
+  }
+  // a game card (thumbnail with the site's own genre tags) + optional title row
+  function makeCard(parent, key, {w = 30, left = 3, top = 10, title = true, tsize = 2.6, meta = true} = {}){
+    const box = h(parent, 'abs', '', `left:${left}em;top:${top}em;width:${w}em;`);
+    const card = h(box, 'gc', '', `position:relative;width:${w}em;height:${w * RATIO}em;border-radius:${w * .045}em;`);
+    im(card, gsrc(key));
+    let tEl = null, mEl = null, nEl = null;
+    if (title){
+      tEl = h(box, 'gtitle fx', GAMES[key].t, `font-size:${tsize}em;margin-top:.45em;`);
+      if (meta && GAMES[key].p){
+        mEl = h(box, 'meta fx', `${icon('i-user')}<span></span>`, `font-size:${tsize * .52}em;margin-top:.45em;`);
+        nEl = mEl.querySelector('span');
+      }
+    }
+    return {box, card, tEl, mEl, nEl, g: GAMES[key]};
+  }
+  function starsHTML(n){ return `<span class="stars">${Array.from({length: 5}, (_, i) => `<svg style="fill:${i < n ? 'var(--gold)' : '#3b3248'}"><use href="#i-star"/></svg>`).join('')}</span>`; }
+
+  // the Ladder podium from the site (blocks 2 · 1 · 3 with the weekly prizes)
+  function makePodium(parent, {left = 3.6, base, bw = 9.6, hs = [14.5, 19, 11.5], fs = 1}){
+    const pod = h(parent, 'pod', '', `left:${left}em;top:${base - Math.max(...hs) * fs}em;height:${Math.max(...hs) * fs}em;font-size:${fs}em;`);
+    const spec = [{n: 2, cls: 'b2', prize: 150}, {n: 1, cls: 'b1', prize: 250}, {n: 3, cls: 'b3', prize: 100}];
+    const blocks = spec.map((s, i) => {
+      const b = h(pod, 'blk ' + s.cls, '', `width:${bw}em;height:${hs[i]}em;`);
+      const clip = h(b, 'clip', '', `top:-1px;`);
+      const body = h(clip, 'body', `<div class="top"></div><div class="front"><div class="num">${s.n}</div><div class="prize">${euro(0)}</div></div>`, `top:0;`);
+      return {b, body, prizeEl: body.querySelector('.prize'), ...s};
+    });
+    // rise: [t for block 2, block 1, block 3]; prize counters run after each block lands
+    return (t, rise, {countD = 700} = {}) => {
+      blocks.forEach((bk, i) => {
+        const p = prog(t, rise[i], 650, E.back);
+        bk.body.style.transform = `translate3d(0,${(1 - Math.min(1, p)) * 105}%,0)`;
+        bk.body.style.top = `${(1 - p) * 0}em`;
+        setHTML(bk.prizeEl, euro(count(t, rise[i] + 250, countD, bk.prize)));
+      });
+    };
+  }
+  // the site's prompt box: "Describe it to Morph…"
+  function makePrompt(parent, {left, top, w, text, t0, sendAt, seed = 7, placeholder = 'Describe your game to Morph…', speed = 40, fs = 1}){
+    const box = h(parent, 'pbox glass', '', `left:${left / fs}em;top:${top / fs}em;width:${w / fs}em;font-size:${fs}em;`);
+    const txt = h(box, 'ptxt');
+    const send = h(box, 'send', icon('i-up'));
+    const K = keystrokes(text, t0, seed, speed, speed * .7);
+    return {box, K, render(t){
+      let s = null; for (const k of K){ if (k.t <= t) s = k.s; else break; }
+      const sent = t >= sendAt;
+      if (s === null){ txt.classList.add('ph'); setHTML(txt, placeholder + `<span class="caret" style="opacity:${Math.floor(t / 480) % 2 ? 0 : 1}"></span>`); }
+      else { txt.classList.remove('ph'); setHTML(txt, s + (sent ? '' : `<span class="caret" style="opacity:${t < K[K.length - 1].t + 150 || Math.floor(t / 480) % 2 === 0 ? 1 : 0}"></span>`)); }
+      send.classList.toggle('ready', s !== null && s.length === text.length);
+      const d = (t - sendAt) / 260;
+      send.style.transform = d > 0 && d < 1 ? `scale(${1 - .18 * Math.sin(Math.PI * d)})` : '';
+    }};
+  }
+  // little clay-style avatar (the site's characters are faceless clay figures with two oval eyes)
+  function avatarSVG(bg, skin = '#e9d3b4'){
+    return `<svg class="av" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="${bg}"/><circle cx="20" cy="23" r="12" fill="${skin}"/><ellipse cx="16.2" cy="21.5" rx="1.5" ry="2.6" fill="#1a1420"/><ellipse cx="23.8" cy="21.5" rx="1.5" ry="2.6" fill="#1a1420"/></svg>`;
+  }
+  function logoHTML(size){ return `<img src="${A('logo.svg')}" style="width:${size}em;display:block;filter:drop-shadow(0 0 .5em rgba(166,118,250,.65));">`; }
+
+  // ---------- global camera, whips, flashes, particles ----------
+  let ED = null;
+  const mbB = $('mbB');
+  function camera(t){
+    let x = 0, y = 0, s = 1, blur = 0, r = 0;
+    (ED.whips || []).forEach((w, i) => {
+      const at = w.t ?? w, dir = w.dir ?? (i % 2 ? -1 : 1), d = t - at, amp = ED.H ? 10 : 7;
+      if (d > -130 && d < 0){ const p = (d + 130) / 130; x -= dir * E.in(p) * amp; blur = Math.max(blur, p * 34); }
+      else if (d >= 0 && d < 300){ const p = d / 300; x += dir * (1 - E.expo(p)) * amp; blur = Math.max(blur, Math.pow(1 - p, 2) * 34); }
+    });
+    (ED.hits || []).forEach(hh => {
+      const at = hh.t ?? hh, k = hh.k ?? 1, d = t - at;
+      if (d >= 0 && d < 600){ const a = Math.exp(-d / 120) * k; x += Math.sin(d / 15) * a * .35; y += Math.cos(d / 12) * a * .35; s += .045 * a; r += Math.sin(d / 20) * a * .4; }
+    });
+    cam.style.transform = `translate3d(${x}em,${y}em,0) scale(${s}) rotate(${r}deg)`;
+    if (blur > .6){ mbB.setAttribute('stdDeviation', `${blur.toFixed(1)} 0`); cam.style.filter = 'url(#mb)'; }
+    else cam.style.filter = 'none';
+    let f = 0;
+    (ED.flashes || []).forEach(fl => { const at = fl.t ?? fl, k = fl.k ?? .7, d = t - at; if (d >= 0) f = Math.max(f, Math.exp(-d / 160) * k); });
+    (ED.ramps || []).forEach(rp => { if (t >= rp.a && t < rp.b) f = Math.max(f, Math.pow((t - rp.a) / (rp.b - rp.a), 2.2) * (rp.k ?? .85)); });
+    $('flash').style.opacity = f;
+    $('flash').style.background = 'radial-gradient(circle at 50% 50%, #fff, #e9dcff)';
+  }
+
+  const fx = $('fx'), fctx = fx.getContext('2d');
+  const COLORS = ['#8d4ff9', '#a676fa', '#ffffff', '#f2c907', '#5865f2', '#ff7ab6', '#7ae8ff'];
+  function particles(t){
+    const W = stage.clientWidth, H = stage.clientHeight, dpr = window.devicePixelRatio || 1;
+    if (fx.width !== Math.round(W * dpr)){ fx.width = Math.round(W * dpr); fx.height = Math.round(H * dpr); }
+    const em = parseFloat(getComputedStyle(stage).fontSize) * dpr;
+    fctx.clearRect(0, 0, fx.width, fx.height);
+    for (const b of (ED.bursts || [])){
+      const age0 = (t - b.t) / 1000; if (age0 < 0 || age0 > 4 || (b.until && t >= b.until)) continue;
+      const r = rng(b.seed || 11);
+      for (let i = 0; i < (b.n || 70); i++){
+        const ang = (b.ang ?? -90) * Math.PI / 180 + (r() - .5) * (b.spread ?? 2.4), sp = (b.v ?? 38) * (.45 + r() * .75);
+        const vx = Math.cos(ang) * sp, vy = Math.sin(ang) * sp, k = 1.9, delay = r() * (b.stagger || 0), a = age0 - delay;
+        const life = 2.2 + r() * 1.4; if (a < 0 || a > life) continue;
+        const dr = (1 - Math.exp(-k * a)) / k;
+        const x = (b.x + vx * dr + Math.sin(a * 3 + i) * .6 * a) * em, y = (b.y + vy * dr + .5 * (b.g ?? 26) * a * a * .45) * em;
+        const alpha = clamp((life - a) / .5) * clamp(a / .05);
+        fctx.save(); fctx.globalAlpha = alpha; fctx.translate(x, y); fctx.rotate(r() * 6 + a * (r() * 8 - 4));
+        if (b.kind === 'coins'){
+          const s = (.9 + r() * .6) * em, flip = Math.cos(a * (5 + r() * 6) + r() * 6);
+          fctx.scale(Math.abs(flip) * .9 + .1, 1);
+          const g = fctx.createRadialGradient(-s * .25, -s * .25, s * .1, 0, 0, s);
+          g.addColorStop(0, '#fff3a6'); g.addColorStop(.5, '#f2c907'); g.addColorStop(1, '#c08c00');
+          fctx.fillStyle = g; fctx.beginPath(); fctx.arc(0, 0, s, 0, Math.PI * 2); fctx.fill();
+          fctx.strokeStyle = '#b37f00'; fctx.lineWidth = s * .12; fctx.beginPath(); fctx.arc(0, 0, s * .72, 0, Math.PI * 2); fctx.stroke();
+          fctx.fillStyle = '#9a6a00'; fctx.font = `900 ${s * 1.05}px Rubik`; fctx.textAlign = 'center'; fctx.textBaseline = 'middle'; fctx.fillText('€', 0, s * .06);
+        } else {
+          const w = (.35 + r() * .35) * em, hh = (.6 + r() * .5) * em;
+          fctx.scale(1, Math.cos(a * (6 + r() * 8) + r() * 6));
+          fctx.fillStyle = COLORS[(r() * COLORS.length) | 0]; fctx.fillRect(-w / 2, -hh / 2, w, hh);
+        }
+        fctx.restore();
+      }
+    }
+  }
+  // film grain: one noise tile, jittered per frame
+  {
+    const c = document.createElement('canvas'); c.width = c.height = 256;
+    const x = c.getContext('2d'), d = x.createImageData(256, 256), r = rng(5);
+    for (let i = 0; i < d.data.length; i += 4){ const v = r() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+    x.putImageData(d, 0, 0);
+    $('grain').style.backgroundImage = `url(${c.toDataURL()})`;
+  }
+  function grain(t){ const f = Math.floor(t / 41.7), r = rng(f * 7 + 1); $('grain').style.transform = `translate(${(r() * 20 - 10).toFixed(2)}%,${(r() * 20 - 10).toFixed(2)}%)`; }
+
+  // ---------- scenes ----------
+  const scenes = [];
+  function scene(a, b, cls = ''){ const el = h(cam, 'scene ' + cls); const sc = {a, b, el, fns: []}; scenes.push(sc); return sc; }
+  const on = (sc, fn) => sc.fns.push(fn);
+
+  // ============ EDIT 1 · "Get paid to play" (The Ladder, 9:16) ============
+  function edit1(){
+    const BAR = 2000, G = 2000, DROP = 14000;
+    const ev = [], hits = [], whips = [], flashes = [], bursts = [];
+
+    // 1 · hook
+    {
+      const s = scene(0, 2000, 'bg-dark');
+      const wall = makeWall(s.el, {cw: 11, speed: 5, rz: -16});
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(11,6,21,.72),rgba(11,6,21,.42) 45%,rgba(11,6,21,.85));');
+      const l1 = h(h(s.el, 'row', '', 'top:20.5em;'), 'd shadow', 'Play games.', 'font-size:4.6em;');
+      const l2 = h(h(s.el, 'row', '', 'top:26.4em;'), 'd', '<span class="hl">Get paid</span>', 'font-size:6em;');
+      const l3 = h(h(s.el, 'row', '', 'top:34.4em;'), 'd shadow', 'every week.', 'font-size:4.6em;');
+      on(s, t => {
+        wall(t, {boost: prog(t, 0, 2000, E.out) * 1.5});
+        slam(l1, t, -140); slam(l2, t, 500, {base: 'rotate(-3deg)', s0: 2.2}); slam(l3, t, 1000);
+        const out = prog(t, 1720, 280, E.in);
+        s.el.style.transform = `scale(${1 + out * .5})`; s.el.style.opacity = 1 - out;
+      });
+      ev.push({t: 0, type: 'slam'}, {t: 500, type: 'slam'}, {t: 500, type: 'coin', i: 0}, {t: 1000, type: 'slam'});
+      hits.push({t: 0, k: .6}, 500, 1000);
+      bursts.push({t: 520, kind: 'coins', x: 18, y: 31, n: 26, v: 40, spread: 3.2, g: 30, seed: 4, until: 2000});
+      flashes.push({t: 2000, k: .55});
+    }
+
+    // 2 · The Ladder banner (clay podium + crew)
+    {
+      const s = scene(2000, 5000, 'bg-banner');
+      const title = h(h(s.el, 'row', '', 'top:10em;'), 'd shadow', 'The Ladder', 'font-size:5.4em;');
+      const hand = h(s.el, 'abs fx', `<div class="hand" style="font-size:2.3em;transform:rotate(-9deg);">Weekly<br>competition</div>`, 'left:22.5em;top:5.2em;');
+      const sub = h(h(s.el, 'row', '', 'top:16.4em;padding:0 3.5em;'), 'tagline fx', 'Play, complete quests, climb the ladder and get paid every week!', 'font-size:1.6em;');
+      const pod = im(s.el, A('podium-3d.png'), 'abs', 'left:2em;top:23.5em;width:32em;');
+      const cl = im(s.el, A('crew-left.png'), 'abs', 'left:-1.5em;top:34.5em;width:17.5em;');
+      const cr = im(s.el, A('crew-right.png'), 'abs', 'left:13.5em;top:38em;width:24em;');
+      on(s, lt => {
+        const t = lt + 2000;
+        slam(title, t, 2000, {s0: 1.6});
+        fade(sub, prog(t, 2350, 600), 1);
+        const hp = prog(t, 2900, 500, E.back); hand.style.opacity = clamp((t - 2900) / 150); hand.style.transform = `scale(${hp})`;
+        const pp = prog(t, 2100, 800, E.back); pod.style.transform = `translate3d(0,${(1 - pp) * 26}em,0)`;
+        const lp = prog(t, 2500, 700, E.back), rp = prog(t, 3000, 700, E.back);
+        cl.style.transform = `translate3d(${(1 - lp) * -20}em,${Math.sin(t / 420) * .25}em,0)`;
+        cr.style.transform = `translate3d(${(1 - rp) * 24}em,${Math.sin(t / 380 + 1) * .25}em,0)`;
+        s.el.style.transform = `scale(${1 + lt / 3000 * .05})`;
+      });
+      whips.push({t: 2000, dir: 1});
+      ev.push({t: 2000, type: 'cut'}, {t: 2100, type: 'rise'}, {t: 2500, type: 'swipe'}, {t: 3000, type: 'swipe'}, {t: 2900, type: 'chime', m: 84});
+      hits.push({t: 2000, k: .7});
+    }
+
+    // 3 · prize podium (flat UI from the Ladder page)
+    {
+      const s = scene(5000, 10000, 'bg-dark');
+      const head = h(s.el, 'abs fx', `<div class="d" style="font-size:1.9em;">The Ladder</div>`, 'left:2.2em;top:6.6em;');
+      const reset = h(h(s.el, 'abs', '', 'right:2.2em;top:6.9em;'), 'fx', '', 'color:var(--muted);font-size:1.4em;font-weight:500;');
+      const l1 = h(h(s.el, 'row', '', 'top:11em;'), 'd shadow', 'Win up to <span class="hl">250 €</span>', 'font-size:3.6em;');
+      const l2 = h(h(s.el, 'row', '', 'top:15.6em;'), 'd shadow', 'every week', 'font-size:3.6em;');
+      const podium = makePodium(s.el, {base: 47.5});
+      const cl = im(s.el, A('crew-left.png'), 'abs', 'left:-2.2em;top:46.5em;width:13em;');
+      const cr = im(s.el, A('crew-right.png'), 'abs', 'left:19.4em;top:48.2em;width:17.5em;');
+      const you = h(s.el, 'abs fx', `<div style="display:flex;flex-direction:column;align-items:center;gap:.4em;">${avatarSVG('#8d4ff9').replace('class="av"', 'class="av" style="width:4.4em;height:4.4em;box-shadow:0 0 0 .25em #fff,0 0 2em rgba(166,118,250,.9);border-radius:50%;"')}<div class="d" style="font-size:1.6em;">You?</div></div>`, 'left:13em;top:21.4em;width:10em;display:flex;justify-content:center;');
+      on(s, lt => {
+        const t = lt + 5000;
+        fade(head, prog(t, 5000, 500), .6); fade(reset, prog(t, 5100, 500), .6);
+        const left = 1 * 86400 + 8 * 3600 + 41 * 60 + 48 - Math.floor((t - 5000) / 1000);
+        setHTML(reset, `Resets in 1d ${String(Math.floor(left % 86400 / 3600)).padStart(2, '0')}:${String(Math.floor(left % 3600 / 60)).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`);
+        slam(l1, t, 5000); slam(l2, t, 5250, {s0: 1.5});
+        podium(t, [5500, 6000, 6500]);
+        const lp = prog(t, 6800, 700, E.back), rp = prog(t, 7000, 700, E.back);
+        cl.style.transform = `translate3d(${(1 - lp) * -16}em,${Math.sin(t / 420) * .2}em,0)`;
+        cr.style.transform = `translate3d(${(1 - rp) * 20}em,${Math.sin(t / 380 + 1) * .2}em,0)`;
+        const yp = prog(t, 7500, 600, E.back); you.style.opacity = clamp((t - 7500) / 120);
+        you.style.transform = `translate3d(0,${(1 - yp) * 3 + Math.sin(t / 300) * .3}em,0) scale(${.6 + .4 * yp})`;
+        s.el.style.transform = `scale(${1 + lt / 5000 * .04})`;
+      });
+      whips.push({t: 5000, dir: -1});
+      ev.push({t: 5000, type: 'cut'}, {t: 5000, type: 'slam'});
+      [5500, 6000, 6500].forEach((at, i) => { ev.push({t: at, type: 'stat', i}); hits.push({t: at + 120, k: .5}); ev.push({t: at + 950, type: 'coin', i: i === 1 ? 0 : 1}); });
+      ev.push({t: 7500, type: 'like'});
+      bursts.push({t: 6420, kind: 'confetti', x: 18, y: 26, n: 90, v: 44, spread: 2.6, seed: 9});
+    }
+
+    // 4 · four beats: play · quest · climb · get paid
+    {
+      const s = scene(10000, 12000, 'bg-dark');
+      const words = ['Play.', 'Quest.', 'Climb.', 'Get paid.'];
+      const big = h(h(s.el, 'row', '', 'top:12em;'), 'd shadow', '', 'font-size:7.2em;');
+      const num = h(h(s.el, 'row', '', 'top:9em;'), '', '', 'font-family:Rubik;font-weight:800;font-size:1.5em;color:var(--v-hi);letter-spacing:.2em;');
+      // visuals
+      const v1 = h(s.el, 'fill'); const fan = ['burger', 'wanted', 'wrongland'].map((k, i) => makeCard(v1, k, {w: 21, left: 7.5, top: 26.5, title: false}));
+      const v2 = h(s.el, 'fill');
+      const q = h(v2, 'quest glass', ['Play 3 games', 'Try a new game', 'Win a match'].map((x, i) => `<div class="qi"><div class="box">${icon('i-check')}</div>${x}<span class="xp">+${[50, 75, 100][i]}</span></div>`).join(''), 'left:2.4em;top:20.5em;width:26.2em;font-size:1.2em;');
+      const qBoxes = [...q.querySelectorAll('.box')], qSvgs = [...q.querySelectorAll('.box svg')];
+      const v3 = h(s.el, 'fill');
+      const rank = h(h(v3, 'row', '', 'top:24.5em;'), 'd', '', 'font-size:12em;color:#fff;');
+      const arrow = h(h(v3, 'row', '', 'top:37.5em;'), '', `<svg style="width:6em;height:6em;fill:none;stroke:var(--v-hi);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round"><use href="#i-up"/></svg>`);
+      const v4 = h(s.el, 'fill');
+      const pz = h(h(v4, 'row', '', 'top:29em;'), 'pill violet', '250,00 €', 'font-size:4em;border-radius:.4em;');
+      const vs = [v1, v2, v3, v4];
+      on(s, lt => {
+        const t = lt + 10000, i = Math.min(3, Math.floor(lt / 500)), lt2 = lt - i * 500;
+        setHTML(big, words[i]); setHTML(num, `0${i + 1} / 04`);
+        slam(big, lt2, 0, {s0: 1.7, d: 300});
+        vs.forEach((v, k) => show(v, k === i));
+        if (i === 0) fan.forEach((c, k) => { const p = prog(lt2, 40 + k * 60, 380, E.back); c.box.style.transform = `translate3d(${(k - 1) * 6 * p}em,${(1 - p) * 10}em,0) rotate(${(k - 1) * 11 * p}deg)`; c.box.style.zIndex = k === 1 ? 3 : 1; });
+        if (i === 1){ fade(q, prog(lt2, 0, 250), 2, 0); qBoxes.forEach((b, k) => { const done = lt2 > 120 + k * 100; b.classList.toggle('on', done); qSvgs[k].style.opacity = done ? 1 : 0; }); }
+        if (i === 2){ setHTML(rank, '#' + Math.max(1, Math.round(lerp(42, 1, prog(lt2, 0, 420, E.out))))); arrow.style.transform = `translate3d(0,${-prog(lt2, 0, 400) * 2}em,0)`; }
+        if (i === 3) pop(pz, lt2, 0, {d: 380});
+      });
+      [10000, 10500, 11000, 11500].forEach((at, i) => { whips.push({t: at, dir: i % 2 ? -1 : 1}); ev.push({t: at, type: 'slam'}); hits.push({t: at, k: .6}); });
+      [10620, 10720, 10820].forEach(at => ev.push({t: at, type: 'tick'}));
+      ev.push({t: 11500, type: 'coin', i: 0});
+      bursts.push({t: 11520, kind: 'coins', x: 18, y: 32, n: 30, v: 42, spread: 3.4, g: 30, seed: 21, until: 12000});
+    }
+
+    // 5 · build: climb the leaderboard
+    {
+      const s = scene(12000, 14000, 'bg-dark');
+      const head = h(h(s.el, 'row', '', 'top:7em;'), 'd', 'Climb the ladder', 'font-size:2.6em;color:var(--v-hi);');
+      const rk = h(h(s.el, 'row', '', 'top:11em;'), 'd shadow', '', 'font-size:10em;');
+      const lb = h(s.el, 'lb', '', 'left:3em;top:25em;width:30em;height:27em;');
+      const names = ['NovaBlitz', 'PixelPanda', 'Mango', 'Zyra', 'NightOwl', 'Rexy', 'Kiwi', 'Blaze', 'Moxie', 'Tofu', 'Juno', 'Bolt'];
+      const avs = ['#ff7ab6', '#7ae8ff', '#f2c907', '#5865f2', '#ff9a52', '#41d39b'];
+      const rows = names.map((n, i) => h(lb, 'lrow', `<div class="rk"></div>${avatarSVG(avs[i % avs.length])}<div class="nm">${n}</div><div class="pts"></div>`));
+      const fin = ['NovaBlitz', 'PixelPanda', 'Mango', 'Zyra'].map((n, i) => h(lb, 'lrow', `<div class="rk">#${i + 2}</div>${avatarSVG(avs[i])}<div class="nm">${n}</div><div class="pts">${fmtInt(3925 - i * 25)}</div>`));
+      const you = h(lb, 'lrow you', `<div class="rk"></div>${avatarSVG('#fff')}<div class="nm">You</div><div class="pts"></div>`);
+      const toasts = [12250, 12750, 13250].map((at, i) => h(h(s.el, 'row', '', 'top:21.2em;'), 'toast fx', `${icon('i-check', '')}<span>Quest complete</span><span style="color:var(--gold)">+${[150, 200, 250][i]}</span>`, 'position:relative;background:#fff;color:#0b0615;font-size:1.5em;box-shadow:0 .5em 1.5em rgba(0,0,0,.4);'));
+      toasts.forEach(x => { const sv = x.querySelector('svg'); sv.style.cssText = 'width:1.2em;height:1.2em;fill:none;stroke:#8d4ff9;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;'; });
+      const RANK = lt => Math.max(1, Math.round(128 * Math.pow(1 - prog(lt, 0, 1650, E.inout), 1.6)));
+      on(s, lt => {
+        const r = RANK(lt), pts = Math.round(lerp(1200, 3950, prog(lt, 0, 1650, E.inout)));
+        setHTML(rk, '#' + r); fade(head, prog(lt, 0, 300), .6, 0);
+        rk.style.transform = `scale(${1 + .05 * Math.sin(lt / 40) * (1 - prog(lt, 1500, 300))})`;
+        // others scroll past while "You" holds the middle, then everything settles with you on top
+        const settle = prog(lt, 1450, 450, E.out), youY = lerp(12, 0, settle);
+        you.style.transform = `translate3d(0,${youY}em,0) scale(${1 + .04 * settle})`;
+        setHTML(you.querySelector('.rk'), '#' + r); setHTML(you.querySelector('.pts'), fmtInt(pts));
+        // the pack streams past while "You" holds the middle; at the top the pack fades and #2–#5 settle in below
+        const scroll = Math.min(lt, 1450) / 1000 * 38, L = rows.length * 4.8;
+        rows.forEach((row, i) => {
+          const y = ((i * 4.8 - scroll) % L + L) % L - 4.8;
+          row.style.transform = `translate3d(0,${y}em,0)`;
+          row.style.opacity = 1 - clamp(settle * 3);
+          setHTML(row.querySelector('.rk'), '#' + Math.max(2, r + Math.round((y - 12) / 4.8)));
+          setHTML(row.querySelector('.pts'), fmtInt(Math.max(0, pts - Math.round((y - 12) * 30))));
+        });
+        fin.forEach((row, i) => { const p = prog(lt, 1520 + i * 60, 380, E.out); row.style.opacity = p; row.style.transform = `translate3d(0,${4.8 * (1 + i) + (1 - p) * 3}em,0)`; });
+        toasts.forEach((x, i) => { const at = [250, 750, 1250][i]; fade(x, win(lt, at, at + 480, 160, 140), -1.2, 0, `scale(${.9 + .1 * prog(lt, at, 200, E.back)})`); });
+      });
+      whips.push({t: 12000, dir: 1});
+      ev.push({t: 12000, type: 'cut'});
+      for (let lt = 0, last = -1, lastTick = -999; lt < 1700; lt += 16){ const r = RANK(lt); if (r !== last && lt - lastTick > 70){ ev.push({t: 12000 + lt, type: 'tick'}); lastTick = lt; } last = r; }
+      [12250, 12750, 13250].forEach(at => ev.push({t: at, type: 'like'}));
+    }
+
+    // 6 · end card
+    {
+      const s = scene(14000, 18000, 'bg-banner');
+      const logo = h(h(s.el, 'row', '', 'top:6.5em;'), '', logoHTML(8.5));
+      const word = h(h(s.el, 'row', '', 'top:14.6em;'), 'd', 'Arcade', 'font-size:2.4em;letter-spacing:.32em;padding-left:.32em;');
+      const l1 = h(h(s.el, 'row', '', 'top:19.6em;'), 'd shadow', 'Play. Climb.', 'font-size:5em;');
+      const l2 = h(h(s.el, 'row', '', 'top:24.6em;'), 'd', '<span class="hl" style="background:#fff;color:#0b0615;box-shadow:0 .2em 1em rgba(255,255,255,.35)">Get paid.</span>', 'font-size:5em;');
+      const cta = h(h(s.el, 'row', '', 'top:33.6em;'), 'pill white', `Climb the ladder<span class="sheen"></span>`, 'font-size:2.3em;padding:.75em 1.4em;border-radius:.7em;box-shadow:0 .6em 2em rgba(0,0,0,.35);');
+      const url = h(h(s.el, 'row', '', 'top:39.8em;'), 'fx', 'tryarcade.com', 'font-size:1.9em;font-weight:700;letter-spacing:.04em;color:#e2d6ff;');
+      const cl = im(s.el, A('crew-left.png'), 'abs', 'left:-1em;top:45.5em;width:15em;');
+      const cr = im(s.el, A('crew-right.png'), 'abs', 'left:15.5em;top:47.5em;width:21.5em;');
+      const sheen = cta.querySelector('.sheen');
+      on(s, lt => {
+        const t = lt + 14000;
+        const lp = prog(t, 14000, 900, E.back); logo.style.opacity = clamp((t - 14000) / 100); logo.style.transform = `scale(${.4 + .6 * lp}) rotate(${(1 - lp) * -140}deg)`;
+        fade(word, prog(t, 14250, 500), .8);
+        slam(l1, t, 14500); slam(l2, t, 15000, {base: 'rotate(-2deg)'});
+        const cp = pop(cta, t, 15500); if (cp >= 1) cta.style.transform = `scale(${1 + .03 * Math.sin((t - 16020) / 260)})`;
+        sheen.style.left = `${lerp(-50, 150, ((t - 15800) % 1600) / 900)}%`;
+        fade(url, prog(t, 15800, 500), .6);
+        const a = prog(t, 14300, 800, E.back), b = prog(t, 14500, 800, E.back);
+        cl.style.transform = `translate3d(0,${(1 - a) * 22 + Math.sin(t / 420) * .25}em,0)`;
+        cr.style.transform = `translate3d(0,${(1 - b) * 22 + Math.sin(t / 380 + 1) * .25}em,0)`;
+      });
+      ev.push({t: DROP, type: 'drop'}, {t: 14500, type: 'slam'}, {t: 15000, type: 'slam'}, {t: 15500, type: 'tap'});
+      hits.push({t: DROP, k: 1.2}, {t: 14500, k: .4}, {t: 15000, k: .4});
+      bursts.push({t: DROP + 20, kind: 'confetti', x: 18, y: 66, n: 140, v: 70, spread: 1.2, g: 24, seed: 33, stagger: .1});
+    }
+    return {DURATION: 18000, groove: G, drop: DROP, bars: 6, transpose: 0, mood: 'hype', events: () => ev, hits, whips, flashes, bursts, ramps: [{a: 13600, b: 14000, k: .9}]};
+  }
+
+  // ============ EDIT 2 · "Trending on Arcade" (game reel, 9:16) ============
+  function edit2(){
+    const G = 2000, DROP = 14000;
+    const ev = [], hits = [], whips = [], flashes = [], bursts = [];
+
+    // 1 · hook
+    {
+      const s = scene(0, 2000, 'bg-dark');
+      const wall = makeWall(s.el, {cw: 12, speed: 6, rz: 14, rx: 30, seed: 8});
+      h(s.el, 'shade', '', 'background:radial-gradient(80% 50% at 50% 45%,rgba(11,6,21,.55),rgba(11,6,21,.9));');
+      const l1 = h(h(s.el, 'row', '', 'top:22em;'), 'd shadow', 'Bored?', 'font-size:9em;');
+      const l2 = h(h(s.el, 'row', '', 'top:32.4em;'), 'd', '<span class="hl">Play something new</span>', 'font-size:3em;');
+      on(s, t => {
+        wall(t, {boost: prog(t, 0, 2000, E.inout) * 2, scale: 1 + t / 2000 * .1});
+        slam(l1, t, -140, {s0: 2.2}); slam(l2, t, 1000, {base: 'rotate(-2deg)'});
+        const out = prog(t, 1750, 250, E.in); s.el.style.opacity = 1 - out * .6;
+      });
+      ev.push({t: 0, type: 'slam'}, {t: 1000, type: 'slam'});
+      hits.push({t: 0, k: .6}, 1000);
+    }
+
+    // 2 · trending: one game per two beats
+    const TR = ['wrongland', 'burger', 'heist', 'wanted'];
+    TR.forEach((k, i) => {
+      const a = 2000 + i * 1000, s = scene(a, a + 1000, 'bg-dark');
+      const bg = im(s.el, gsrc(k), 'bg-img', 'filter:blur(1.4em) brightness(.5) saturate(1.3);');
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(11,6,21,.92),rgba(11,6,21,.25) 42%,rgba(11,6,21,.88));');
+      const head = h(s.el, 'abs', `<div class="d" style="font-size:2.3em;display:flex;align-items:center;gap:.2em;">Trending games <svg style="width:.9em;height:.9em;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round"><use href="#i-chev"/></svg></div>`, 'left:2.2em;top:10em;');
+      const idx = h(s.el, 'abs', `<div class="d" style="font-size:1.6em;color:var(--v-hi);">0${i + 1} / 04</div>`, 'right:2.4em;top:10.5em;');
+      const c = makeCard(s.el, k, {w: 32, left: 2, top: 15.5, tsize: 3.4});
+      const play = h(s.el, 'abs', `<div class="pill violet" style="font-size:1.7em;border-radius:.6em;"><svg style="fill:#fff;stroke:none" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg>Play</div>`, 'left:2em;top:47.4em;');
+      on(s, lt => {
+        pop(play, lt, 420, {d: 420, s0: .6});
+        if (i === 0) fade(head, prog(lt, 0, 400), -1, 0);
+        const p = prog(lt, 0, 650, E.expo);
+        c.card.style.transform = `perspective(60em) rotateY(${(1 - p) * -18}deg) scale(${lerp(1.18, 1, p) + lt / 1000 * .03})`;
+        bg.style.transform = `scale(${1.05 + lt / 1000 * .06})`;
+        const tp = prog(lt, 160, 500); fade(c.tEl, tp, 1.2, .2);
+        if (c.mEl){ fade(c.mEl, prog(lt, 300, 400), .8, 0); setHTML(c.nEl, `${fmtInt(count(lt, 300, 600, c.g.p))} players`); }
+      });
+      whips.push({t: a, dir: 1});
+      ev.push({t: a, type: 'cut'}, {t: a + 160, type: 'tap'});
+      hits.push({t: a, k: .45});
+      if (c.g.p) for (let j = 0; j < 6; j++) ev.push({t: a + 320 + j * 90, type: 'tick'});
+    });
+
+    // 3 · new this week: 2×2 grid, then zoom on the five-star one
+    {
+      const s = scene(6000, 10000, 'bg-dark');
+      const head = h(s.el, 'abs', `<div class="d" style="font-size:2.3em;display:flex;align-items:center;gap:.2em;">New this week <svg style="width:.9em;height:.9em;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round"><use href="#i-chev"/></svg></div>`, 'left:2.2em;top:10em;');
+      const grid = h(s.el, 'fill');
+      const NW = ['lastman', 'lastlight', 'sprouts', 'bunker'];
+      const cards = NW.map((k, i) => makeCard(grid, k, {w: 16.4, left: 1.2 + (i % 2) * 17.2, top: 16 + Math.floor(i / 2) * 14, tsize: 1.4, meta: false}));
+      const name = h(h(s.el, 'row', '', 'top:41.4em;'), 'd fx', 'Bunker Signal: 161.80', 'font-size:3em;');
+      const stars = h(h(s.el, 'row', '', 'top:45.6em;'), '', starsHTML(5), 'font-size:3.4em;');
+      const starEls = [...stars.querySelectorAll('svg')];
+      on(s, lt => {
+        const t = lt + 6000;
+        fade(head, prog(t, 6000, 400), -1, 0);
+        cards.forEach((c, i) => { const at = 6500 + i * 500; pop(c.box, t, at, {d: 480, s0: .5}); fade(c.tEl, prog(t, at + 120, 350), .6, 0); });
+        // zoom into BUNKER SIGNAL (bottom-right) — scale the grid around it
+        const z = prog(t, 8900, 700, E.inout), last = cards[3];
+        const cx = 1.2 + 17.2 + 8.2, cy = 16 + 14 + 4.6;
+        grid.style.transformOrigin = `${cx}em ${cy}em`;
+        grid.style.transform = `translate3d(${(18 - cx) * z}em,${(29 - cy) * z}em,0) scale(${1 + z * .95})`;
+        cards.forEach((c, i) => { if (i < 3) c.box.style.opacity = Math.min(+c.box.style.opacity, 1 - z); });
+        last.tEl.style.opacity = 1 - z;
+        fade(name, prog(t, 9300, 400), .8, .2);
+        starEls.forEach((st, i) => { const p = prog(t, 9450 + i * 110, 300, E.back); st.style.transform = `scale(${p})`; st.style.opacity = clamp((t - 9450 - i * 110) / 60); });
+      });
+      whips.push({t: 6000, dir: -1});
+      ev.push({t: 6000, type: 'cut'});
+      [6500, 7000, 7500, 8000].forEach(at => { ev.push({t: at, type: 'slam'}); hits.push({t: at, k: .35}); });
+      ev.push({t: 8900, type: 'rise'});
+      for (let i = 0; i < 5; i++) ev.push({t: 9450 + i * 110, type: 'chime', m: [76, 79, 83, 86, 88][i], pan: (i - 2) * .3});
+    }
+
+    // 4 · made by players
+    {
+      const s = scene(10000, 12000, 'bg-dark');
+      const wall = makeWall(s.el, {cw: 10, speed: 4, rz: -12, rx: 34, sc: 1.35, seed: 2});
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(11,6,21,.88),rgba(11,6,21,.45) 50%,rgba(11,6,21,.9));');
+      const l1 = h(h(s.el, 'row', '', 'top:21em;'), 'd shadow', 'Made by<br>players.', 'font-size:6em;line-height:.95;');
+      const l2 = h(h(s.el, 'row', '', 'top:35em;'), 'd', '<span class="hl">Played by you.</span>', 'font-size:4.2em;');
+      on(s, lt => { wall(lt); slam(l1, lt, 0); slam(l2, lt, 1000, {base: 'rotate(-2deg)'}); });
+      whips.push({t: 10000, dir: 1});
+      ev.push({t: 10000, type: 'slam'}, {t: 11000, type: 'slam'}); hits.push(10000, 11000);
+    }
+
+    // 5 · build: rapid-fire flicker through every game
+    {
+      const s = scene(12000, 14000, 'bg-dark');
+      const bg = im(s.el, gsrc('wrongland'), 'bg-img', 'filter:blur(1.4em) brightness(.45) saturate(1.3);');
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(11,6,21,.85),rgba(11,6,21,.2) 45%,rgba(11,6,21,.85));');
+      const card = h(s.el, 'gc', '', `left:3em;top:25em;width:30em;height:${30 * RATIO}em;border-radius:1.35em;`);
+      const ci = im(card, gsrc('wrongland'));
+      const words = ['What', 'will', 'you', 'play?'];
+      const wEls = words.map(w => h(h(s.el, 'row', '', 'top:12.5em;'), 'd shadow', w, 'font-size:8em;'));
+      // cut times speed up from 1/4 to 1/16 notes
+      const flips = []; { let tt = 0, step = 250; while (tt < 1950){ flips.push(tt); tt += step; if (tt > 1000) step = 125; if (tt > 1500) step = 62.5; } }
+      on(s, lt => {
+        let k = 0; for (let i = 0; i < flips.length; i++) if (flips[i] <= lt) k = i;
+        const key = ALL[k % ALL.length];
+        if (ci.dataset.k !== key){ ci.src = gsrc(key); bg.src = gsrc(key); ci.dataset.k = key; }
+        const z = 1 + lt / 2000 * .25; card.style.transform = `scale(${z})`;
+        const wi = Math.min(3, Math.floor(lt / 500));
+        wEls.forEach((w, i) => { w.style.display = i === wi ? '' : 'none'; });
+        slam(wEls[wi], lt, wi * 500, {s0: 1.6, d: 300});
+      });
+      ev.push({t: 12000, type: 'cut'});
+      flips.forEach(f => ev.push({t: 12000 + f, type: 'tick'}));
+      [12000, 12500, 13000, 13500].forEach(at => { ev.push({t: at, type: 'slam'}); hits.push({t: at, k: .4}); });
+    }
+
+    // 6 · end card
+    {
+      const s = scene(14000, 17000, 'bg-dark');
+      const wall = makeWall(s.el, {cw: 11, speed: 2, rz: -14, seed: 5});
+      h(s.el, 'shade', '', 'background:radial-gradient(70% 45% at 50% 40%,rgba(36,14,80,.82),rgba(11,6,21,.94));');
+      const logo = h(h(s.el, 'row', '', 'top:11em;'), '', logoHTML(9));
+      const word = h(h(s.el, 'row', '', 'top:19.8em;'), 'd', 'Arcade', 'font-size:2.6em;letter-spacing:.32em;padding-left:.32em;');
+      const l1 = h(h(s.el, 'row', '', 'top:25em;'), 'd shadow', 'Your next', 'font-size:4.4em;');
+      const l2 = h(h(s.el, 'row', '', 'top:29.4em;'), 'd shadow', 'favorite game', 'font-size:4.4em;');
+      const cta = h(h(s.el, 'row', '', 'top:37.4em;'), 'pill white', `Play now ${icon('i-arrow')}<span class="sheen"></span>`, 'font-size:2.5em;padding:.7em 1.5em;border-radius:.7em;');
+      const url = h(h(s.el, 'row', '', 'top:43.6em;'), 'fx', 'tryarcade.com', 'font-size:1.9em;font-weight:700;letter-spacing:.04em;color:#e2d6ff;');
+      const sheen = cta.querySelector('.sheen');
+      on(s, lt => {
+        const t = lt + 14000;
+        wall(t);
+        const lp = prog(t, 14000, 900, E.back); logo.style.opacity = clamp((t - 14000) / 100); logo.style.transform = `scale(${.4 + .6 * lp}) rotate(${(1 - lp) * -140}deg)`;
+        fade(word, prog(t, 14250, 500), .8);
+        slam(l1, t, 14500); slam(l2, t, 14750, {s0: 1.5});
+        const cp = pop(cta, t, 15250); if (cp >= 1) cta.style.transform = `scale(${1 + .03 * Math.sin((t - 15770) / 260)})`;
+        sheen.style.left = `${lerp(-50, 150, ((t - 15500) % 1600) / 900)}%`;
+        fade(url, prog(t, 15500, 500), .6);
+      });
+      ev.push({t: DROP, type: 'drop'}, {t: 14500, type: 'slam'}, {t: 15250, type: 'tap'});
+      hits.push({t: DROP, k: 1.2}, {t: 14500, k: .4});
+      bursts.push({t: DROP + 20, kind: 'confetti', x: 18, y: 66, n: 130, v: 70, spread: 1.2, g: 24, seed: 44, stagger: .1});
+    }
+    return {DURATION: 17000, groove: G, drop: DROP, bars: 6, transpose: 3, mood: 'hype', events: () => ev, hits, whips, flashes, bursts, ramps: [{a: 13650, b: 14000, k: .9}]};
+  }
+
+  // ============ EDIT 3 · "Make your first game" (creator story, 9:16) ============
+  function edit3(){
+    const G = 4000, DROP = 16000;
+    const ev = [], hits = [], whips = [], flashes = [], bursts = [];
+    const galaxyBG = (s, dim = .55) => {
+      const g = im(s.el, A('galaxy.jpg'), 'bg-img', `filter:brightness(${dim}) saturate(1.15);`);
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(11,6,21,.55),rgba(11,6,21,.1) 45%,rgba(11,6,21,.8));');
+      return t => { g.style.transform = `scale(${1.15 + Math.sin(t / 5000) * .05}) rotate(${t / 1000 * .6}deg)`; };
+    };
+
+    // 1 · hook
+    {
+      const s = scene(0, 2600);
+      const bg = galaxyBG(s, .5);
+      const l1 = h(h(s.el, 'row', '', 'top:13em;'), 'd shadow', 'What if you could', 'font-size:2.7em;');
+      const l2 = h(h(s.el, 'row', '', 'top:17.4em;'), 'd', '<span class="hl">make a game</span>', 'font-size:5.4em;');
+      const l3 = h(h(s.el, 'row', '', 'top:25.6em;'), 'd shadow', 'just by<br>describing it?', 'font-size:4.4em;line-height:.98;');
+      const morph = im(s.el, A('morph.png'), 'abs', 'left:9.5em;top:51.5em;width:17em;');
+      on(s, t => {
+        bg(t);
+        slam(l1, t, -120, {s0: 1.4}); slam(l2, t, 600, {base: 'rotate(-2deg)'}); slam(l3, t, 1200, {s0: 1.5});
+        const mp = prog(t, 1700, 800, E.back); morph.style.transform = `translate3d(0,${(1 - mp) * 22 + Math.sin(t / 300) * .3}em,0) scaleY(${t > 2250 && t < 2350 ? .85 : 1})`;
+      });
+      ev.push({t: 0, type: 'slam'}, {t: 600, type: 'slam'}, {t: 1200, type: 'slam'}, {t: 1700, type: 'hop'});
+      hits.push({t: 0, k: .4}, {t: 600, k: .5}, {t: 1200, k: .4});
+    }
+
+    // 2 · describe it to Morph
+    const P1 = 'A cowboy fighting zombies in the wild west';
+    let prompt1;
+    {
+      const s = scene(2600, 5500);
+      const bg = galaxyBG(s, .4);
+      const l1 = h(h(s.el, 'row', '', 'top:13em;'), 'd shadow', 'Describe it<br>to Morph', 'font-size:5em;line-height:.98;');
+      const morph = im(s.el, A('morph.png'), 'abs', 'left:20em;top:26.6em;width:11em;');
+      prompt1 = makePrompt(s.el, {left: 2.2, top: 32.4, w: 31.6, text: P1, t0: 2950, sendAt: 5000, seed: 11, speed: 34, fs: 1.15});
+      on(s, lt => {
+        const t = lt + 2600;
+        bg(t); slam(l1, t, 2600, {s0: 1.5});
+        fade(prompt1.box, prog(t, 2650, 500), 3, 0);
+        prompt1.render(t);
+        const mp = prog(t, 2800, 700, E.back), jump = t > 5000 ? Math.sin(clamp((t - 5000) / 400) * Math.PI) * 2.5 : 0;
+        morph.style.transformOrigin = '50% 100%';
+        morph.style.transform = `translate3d(0,${(1 - mp) * 6 - jump + Math.sin(t / 320) * .2}em,0) scale(${1 + jump * .04},${1 - jump * .02})`;
+        morph.style.opacity = clamp((t - 2800) / 150);
+        const sp = prog(t, 5050, 450, E.in); prompt1.box.style.filter = sp > 0 ? `blur(${sp * .4}em)` : 'none'; prompt1.box.style.opacity = 1 - sp;
+      });
+      whips.push({t: 2600, dir: 1});
+      ev.push({t: 2600, type: 'cut'}, {t: 2800, type: 'hop'}, ...prompt1.K.map(k => ({t: k.t, type: 'key'})), {t: 5000, type: 'send'}, {t: 5050, type: 'rise'});
+    }
+
+    // 3 · it comes to life
+    {
+      const s = scene(5500, 8000);
+      const bg = galaxyBG(s, .32);
+      const l1 = h(h(s.el, 'row', '', 'top:9em;'), 'd shadow', 'Watch it come<br>to life!', 'font-size:4.4em;line-height:.98;');
+      const c = makeCard(s.el, 'wanted', {w: 32, left: 2, top: 19.5, tsize: 3.2});
+      on(s, lt => {
+        const t = lt + 5500;
+        bg(t);
+        const p = prog(t, 5500, 900, E.back);
+        c.card.style.transform = `perspective(60em) rotateX(${(1 - p) * 40}deg) scale(${.3 + .7 * p})`; c.card.style.opacity = clamp((t - 5500) / 120);
+        c.card.style.boxShadow = `0 1.6em 4em rgba(0,0,0,.55),0 0 ${3 * (1 - prog(t, 5600, 1400))}em ${1 * (1 - prog(t, 5600, 1400))}em rgba(166,118,250,.8)`;
+        slam(l1, t, 6000, {s0: 1.5});
+        fade(c.tEl, prog(t, 6300, 500), 1); fade(c.mEl, prog(t, 6500, 400), .8, 0);
+        setHTML(c.nEl, `${fmtInt(count(t, 6500, 1100, 820))} players`);
+      });
+      flashes.push({t: 5500, k: .8});
+      ev.push({t: 5500, type: 'upgrade'}, {t: 6000, type: 'slam'});
+      hits.push({t: 5500, k: .7}, {t: 6000, k: .4});
+      bursts.push({t: 5520, kind: 'confetti', x: 18, y: 28, n: 70, v: 40, spread: 6.2, g: 16, seed: 12, until: 8000});
+      for (let j = 0; j < 10; j++) ev.push({t: 6500 + j * 100, type: 'tick'});
+    }
+
+    // 4 · anything you can describe
+    {
+      const s = scene(8000, 12000);
+      const bg = galaxyBG(s, .3);
+      const items = [{k: 'burger', p: 'A burger joint where you race the clock', at: 8000}, {k: 'heist', p: 'A heist in a golden museum', at: 10000}];
+      const parts = items.map((it, i) => {
+        const grp = h(s.el, 'fill');
+        const pr = makePrompt(grp, {left: 2.2, top: 11.5, w: 31.6, text: it.p, t0: it.at + 100, sendAt: it.at + 900, seed: 20 + i, speed: 18, fs: 1.15});
+        const c = makeCard(grp, it.k, {w: 32, left: 2, top: 21.5, tsize: 3.2});
+        return {grp, pr, c, ...it};
+      });
+      on(s, lt => {
+        const t = lt + 8000;
+        bg(t);
+        parts.forEach((pt, i) => {
+          const active = t >= pt.at && (i === parts.length - 1 || t < parts[i + 1].at);
+          show(pt.grp, active); if (!active) return;
+          fade(pt.pr.box, prog(t, pt.at, 300), 2, 0); pt.pr.render(t);
+          const p = prog(t, pt.at + 1000, 800, E.back);
+          pt.c.card.style.opacity = clamp((t - pt.at - 1000) / 100);
+          pt.c.card.style.transform = `perspective(60em) rotateX(${(1 - p) * 40}deg) scale(${.3 + .7 * p})`;
+          fade(pt.c.tEl, prog(t, pt.at + 1200, 400), 1); fade(pt.c.mEl, prog(t, pt.at + 1350, 400), .8, 0);
+          if (pt.c.nEl) setHTML(pt.c.nEl, `${fmtInt(count(t, pt.at + 1350, 600, pt.c.g.p))} players`);
+        });
+      });
+      parts.forEach(pt => {
+        whips.push({t: pt.at, dir: pt.at === 8000 ? 1 : -1});
+        ev.push({t: pt.at, type: 'cut'}, ...pt.pr.K.map(k => ({t: k.t, type: 'key'})), {t: pt.at + 900, type: 'send'}, {t: pt.at + 1000, type: 'upgrade'});
+        flashes.push({t: pt.at + 1000, k: .5});
+      });
+    }
+
+    // 5 · publish → climb the ladder
+    {
+      const s = scene(12000, 14000, 'bg-dark');
+      const l1 = h(h(s.el, 'row', '', 'top:9em;'), 'd shadow', 'Publish it.', 'font-size:5.2em;');
+      const l2 = h(h(s.el, 'row', '', 'top:14.4em;'), 'd', '<span class="hl">Share it.</span>', 'font-size:5.2em;');
+      const grid = h(s.el, 'fill');
+      const ks = ['sprouts', 'wanted', 'lastman', 'bunker', 'wrongland', 'burger'];
+      const cards = ks.map((k, i) => makeCard(grid, k, {w: 16.4, left: 1.2 + (i % 2) * 17.2, top: 23.5 + Math.floor(i / 2) * 10.4, title: false}));
+      const badge = h(cards[1].box, 'abs', `<div class="pill violet" style="font-size:1.1em;padding:.45em .8em;border-radius:.5em;">Yours</div>`, 'left:.6em;top:.6em;');
+      on(s, lt => {
+        slam(l1, lt, 0); slam(l2, lt, 500, {base: 'rotate(-2deg)'});
+        cards.forEach((c, i) => { const p = prog(lt, 150 + i * 70, 500, E.back); c.box.style.opacity = clamp((lt - 150 - i * 70) / 100); c.box.style.transform = `translate3d(0,${(1 - p) * 8}em,0)`; });
+        const gl = .5 + .5 * Math.sin(lt / 140); cards[1].card.style.boxShadow = `0 0 0 .28em #a676fa,0 0 ${2 + gl * 2}em rgba(141,79,249,.9)`;
+        pop(badge, lt, 700);
+        grid.style.transform = `translate3d(0,${-lt / 2000 * 3}em,0)`;
+      });
+      whips.push({t: 12000, dir: 1});
+      ev.push({t: 12000, type: 'slam'}, {t: 12500, type: 'slam'}, {t: 12700, type: 'like'}); hits.push(12000, 12500);
+    }
+    {
+      const s = scene(14000, 16000, 'bg-dark');
+      const l1 = h(h(s.el, 'row', '', 'top:9em;'), 'd shadow', 'Climb the ladder.', 'font-size:4em;');
+      const l2 = h(h(s.el, 'row', '', 'top:13.6em;'), 'd', '<span class="hl">Get paid every week.</span>', 'font-size:3.2em;');
+      const podium = makePodium(s.el, {base: 47.5});
+      const cl = im(s.el, A('crew-left.png'), 'abs', 'left:-2.2em;top:46.5em;width:13em;');
+      const cr = im(s.el, A('crew-right.png'), 'abs', 'left:19.4em;top:48.2em;width:17.5em;');
+      on(s, lt => {
+        slam(l1, lt, 0); slam(l2, lt, 500, {base: 'rotate(-2deg)'});
+        podium(lt, [400, 800, 1200], {countD: 500});
+        const lp = prog(lt, 900, 600, E.back), rp = prog(lt, 1100, 600, E.back);
+        cl.style.transform = `translate3d(${(1 - lp) * -16}em,0,0)`; cr.style.transform = `translate3d(${(1 - rp) * 20}em,0,0)`;
+        s.el.style.transform = `scale(${1 + lt / 2000 * .06})`;
+      });
+      whips.push({t: 14000, dir: -1});
+      ev.push({t: 14000, type: 'slam'}, {t: 14500, type: 'slam'});
+      [14400, 14800, 15200].forEach((at, i) => { ev.push({t: at, type: 'stat', i}); ev.push({t: at + 750, type: 'coin', i: 1}); });
+      hits.push(14000, 14500);
+    }
+
+    // 6 · end card
+    {
+      const s = scene(16000, 20000);
+      const bg = galaxyBG(s, .45);
+      const logo = h(h(s.el, 'row', '', 'top:5.5em;'), '', logoHTML(6.5));
+      const l1 = h(h(s.el, 'row', '', 'top:13.4em;'), 'd shadow', 'Make your<br>first game!', 'font-size:5.4em;line-height:.98;');
+      const sub = h(h(s.el, 'row', '', 'top:24.2em;padding:0 3em;'), 'tagline fx', 'Describe it to Morph and watch it come to life!', 'font-size:1.6em;');
+      const cta = h(h(s.el, 'row', '', 'top:29.4em;'), 'pill white', `${icon('i-arrow')} Start creating<span class="sheen"></span>`, 'font-size:2.3em;padding:.7em 1.3em;border-radius:.7em;text-transform:none;font-weight:800;');
+      const dc = h(s.el, 'dcard', `<div style="padding:1.5em 1.6em;"><svg style="width:2.6em;height:2.6em;fill:#5865f2"><use href="#i-discord"/></svg><div style="font-family:Rubik;font-weight:800;font-size:1.9em;line-height:1.12;margin-top:.35em;">Let’s build<br>together on <span style="color:#5865f2">Discord</span></div><div class="pill discord" style="margin-top:1em;font-size:1.3em;padding:.7em 1.2em;border-radius:.6em;">Join the server</div></div>`, 'left:3em;top:37.2em;width:30em;height:15.2em;');
+      const buddy = im(dc, A('buddy.png'), 'abs', 'right:1em;bottom:0;width:10.5em;');
+      const url = h(h(s.el, 'row', '', 'top:54em;'), 'fx', 'tryarcade.com', 'font-size:1.9em;font-weight:700;letter-spacing:.04em;color:#e2d6ff;');
+      const sheen = cta.querySelector('.sheen');
+      on(s, lt => {
+        const t = lt + 16000; bg(t);
+        const lp = prog(t, 16000, 900, E.back); logo.style.opacity = clamp((t - 16000) / 100); logo.style.transform = `scale(${.4 + .6 * lp}) rotate(${(1 - lp) * -140}deg)`;
+        slam(l1, t, 16250, {s0: 1.5}); fade(sub, prog(t, 16700, 500), .8);
+        const cp = pop(cta, t, 17000); if (cp >= 1) cta.style.transform = `scale(${1 + .03 * Math.sin((t - 17520) / 260)})`;
+        sheen.style.left = `${lerp(-50, 150, ((t - 17300) % 1600) / 900)}%`;
+        const dp = prog(t, 17400, 700, E.back); dc.style.opacity = clamp((t - 17400) / 120); dc.style.transform = `translate3d(0,${(1 - dp) * 6}em,0)`;
+        buddy.style.transformOrigin = '50% 100%'; buddy.style.transform = `rotate(${Math.sin(t / 220) * 4}deg)`;
+        fade(url, prog(t, 17800, 500), .6);
+      });
+      ev.push({t: DROP, type: 'drop'}, {t: 16250, type: 'slam'}, {t: 17000, type: 'tap'}, {t: 17400, type: 'reply'});
+      hits.push({t: DROP, k: 1}, {t: 16250, k: .4});
+      bursts.push({t: DROP + 20, kind: 'confetti', x: 18, y: 66, n: 120, v: 70, spread: 1.2, g: 24, seed: 55, stagger: .1});
+    }
+    return {DURATION: 20000, groove: G, drop: DROP, bars: 6, transpose: 5, mood: 'clean', events: () => ev, hits, whips, flashes, bursts, ramps: [{a: 15700, b: 16000, k: .85}]};
+  }
+
+  // ============ EDIT 4 · brand trailer (16:9) ============
+  function edit4(){
+    const G = 2000, DROP = 18000;
+    const ev = [], hits = [], whips = [], flashes = [], bursts = [];
+    const bigWord = (s, text, at, {to = [3, 3.2], size = 11, small = 3.4} = {}) => {
+      const w = h(s.el, 'abs d shadow', text, `left:0;top:0;font-size:${size}em;transform-origin:0 0;white-space:nowrap;`);
+      return t => {
+        // slams in at the center, then glides up to the corner as the section label (or zooms away when to is null)
+        if (!to){
+          const em = parseFloat(getComputedStyle(stage).fontSize), out = prog(t, at + 560, 260, E.in);
+          if (t < at){ w.style.opacity = 0; return; }
+          const q = prog(t, at, 420, E.expo);
+          w.style.opacity = clamp((t - at) / 70) * (1 - out);
+          w.style.transform = `translate3d(${(64 * em - w.offsetWidth) / 2}px,${(36 * em - w.offsetHeight) / 2}px,0) scale(${lerp(1.8, 1, q) * (1 + out * .6)})`;
+          w.style.transformOrigin = '50% 50%';
+          w.style.filter = q < .97 ? `blur(${(1 - q) * .2}em)` : out > 0 ? `blur(${out * .3}em)` : 'none';
+          return;
+        }
+        const p = prog(t, at + 650, 600, E.inout), sc = lerp(1, small / size, p);
+        const ww = w.offsetWidth * sc, hh = w.offsetHeight * sc, em = parseFloat(getComputedStyle(stage).fontSize);
+        const cx = lerp((64 * em - ww) / 2, to[0] * em, p), cy = lerp((36 * em - hh) / 2, to[1] * em, p);
+        if (t < at){ w.style.opacity = 0; return; }
+        const q = prog(t, at, 420, E.expo);
+        w.style.opacity = clamp((t - at) / 70);
+        w.style.transform = `translate3d(${cx}px,${cy}px,0) scale(${sc * lerp(1.8, 1, q)})`;
+        w.style.filter = q < .97 ? `blur(${(1 - q) * .2}em)` : 'none';
+      };
+    };
+
+    // 1 · logo sting
+    {
+      const s = scene(0, 2000, 'bg-dark');
+      const ring = h(s.el, 'fill', `<svg viewBox="0 0 640 360" style="width:100%;height:100%"><ellipse id="orb" cx="320" cy="107" rx="130" ry="46" fill="none" stroke="#a676fa" stroke-width="3" stroke-linecap="round" transform="rotate(-18 320 107)" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" style="filter:drop-shadow(0 0 6px #8d4ff9)"/></svg>`);
+      const orb = ring.querySelector('#orb');
+      const logo = h(h(s.el, 'row', '', 'top:6.5em;'), '', logoHTML(11));
+      const word = h(h(s.el, 'row', '', 'top:20.5em;'), 'd', 'Arcade', 'font-size:4.6em;letter-spacing:.34em;padding-left:.34em;');
+      const tag = h(h(s.el, 'row', '', 'top:27.4em;'), 'fx', 'Play · Create · Compete', 'font-size:1.6em;font-weight:600;letter-spacing:.3em;color:#cbb8ff;text-transform:uppercase;');
+      on(s, t => {
+        const op = prog(t, 0, 900, E.inout); orb.setAttribute('stroke-dashoffset', 1 - op); orb.style.opacity = 1 - prog(t, 900, 400);
+        const lp = prog(t, 250, 900, E.back); logo.style.opacity = clamp((t - 250) / 120); logo.style.transform = `scale(${.3 + .7 * lp}) rotate(${(1 - lp) * -160}deg)`;
+        slam(word, t, 750, {s0: 1.4}); fade(tag, prog(t, 1100, 500), .6);
+        s.el.style.transform = `scale(${1 + t / 2000 * .05})`;
+      });
+      ev.push({t: 250, type: 'boot'}, {t: 750, type: 'slam'}, {t: 1500, type: 'rise'});
+      hits.push({t: 750, k: .5}); flashes.push({t: 250, k: .25});
+    }
+
+    // 2 · PLAY.
+    {
+      const s = scene(2000, 4000, 'bg-dark');
+      const wall = makeWall(s.el, {cols: 7, cw: 12, speed: 6, rx: 30, rz: -12, sc: 1.1, seed: 4});
+      h(s.el, 'shade', '', 'background:linear-gradient(90deg,rgba(11,6,21,.92),rgba(11,6,21,.4) 60%,rgba(11,6,21,.6));');
+      const w = h(h(s.el, 'abs', '', 'left:4em;top:9em;'), 'd shadow', 'Play.', 'font-size:12em;transform-origin:0 50%;');
+      const sub = h(h(s.el, 'abs', '', 'left:4.4em;top:21.6em;'), 'tagline fx', 'Trending games, and new ones<br>every week.', 'font-size:2em;');
+      on(s, lt => { wall(lt, {boost: prog(lt, 0, 2000, E.out) * 2}); slam(w, lt, 0); fade(sub, prog(lt, 400, 500), 1); });
+      whips.push({t: 2000, dir: 1});
+      ev.push({t: 2000, type: 'slam'}); hits.push({t: 2000, k: .7});
+    }
+
+    // 3 · carousel of trending games
+    {
+      const s = scene(4000, 8000, 'bg-dark');
+      const ks = ['wrongland', 'burger', 'heist', 'wanted', 'bunker'];
+      const bgs = ks.map(k => im(s.el, gsrc(k), 'bg-img', 'filter:blur(1.6em) brightness(.4) saturate(1.3);opacity:0;'));
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(11,6,21,.6),rgba(11,6,21,.1) 40%,rgba(11,6,21,.75));');
+      const head = h(s.el, 'abs', `<div class="d" style="font-size:2em;display:flex;align-items:center;gap:.2em;">Trending games <svg style="width:.9em;height:.9em;fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round"><use href="#i-chev"/></svg></div>`, 'left:3em;top:2.6em;');
+      const track = h(s.el, 'fill');
+      const CW = 34, GAP = 3;
+      const cards = ks.map((k, i) => makeCard(track, k, {w: CW, left: 15 + i * (CW + GAP), top: 6.6, tsize: 2.6}));
+      on(s, lt => {
+        const t = lt + 4000, idx = clamp(Math.floor((t - 4000) / 1000), 0, 3);
+        let pos = 0; for (let i = 1; i <= 3; i++) pos += prog(t, 4000 + i * 1000, 450, E.expo);
+        track.style.transform = `translate3d(${-pos * (CW + GAP)}em,0,0)`;
+        cards.forEach((c, i) => {
+          const d = Math.abs(i - pos), f = clamp(1 - d);
+          c.card.style.transform = `scale(${.82 + .18 * f})`; c.box.style.opacity = .35 + .65 * f;
+          fade(c.tEl, f * prog(t, 4000 + Math.max(0, i - (i > 0 ? 0 : 0)) * 1000 + 150, 400), .8, 0);
+          if (c.mEl){ c.mEl.style.opacity = f; setHTML(c.nEl, `${fmtInt(c.g.p)} players`); }
+        });
+        bgs.forEach((b, i) => { b.style.opacity = clamp(1 - Math.abs(i - pos)); b.style.transform = `scale(${1.1 + lt / 4000 * .05})`; });
+        fade(head, prog(t, 4000, 400), -1, 0);
+      });
+      whips.push({t: 4000, dir: -1});
+      ev.push({t: 4000, type: 'cut'});
+      [5000, 6000, 7000].forEach(at => { ev.push({t: at, type: 'swipe'}); hits.push({t: at, k: .3}); });
+    }
+
+    // 4 · CREATE.
+    {
+      const s = scene(8000, 12000);
+      const g = im(s.el, A('galaxy.jpg'), 'bg-img', 'filter:brightness(.42) saturate(1.15);');
+      h(s.el, 'shade', '', 'background:linear-gradient(90deg,rgba(11,6,21,.85),rgba(11,6,21,.25) 55%,rgba(11,6,21,.5));');
+      const word = bigWord(s, 'Create.', 8000);
+      const sub = h(h(s.el, 'abs', '', 'left:3.2em;top:14em;'), 'tagline fx', 'Describe it to Morph and<br>watch it come to life!', 'font-size:2.1em;');
+      const morph = im(s.el, A('morph.png'), 'abs', 'left:48.5em;top:8.6em;width:10em;');
+      const pr = makePrompt(s.el, {left: 32.5, top: 15.2, w: 29, text: 'A cozy farm where veggies grow', t0: 8800, sendAt: 9850, seed: 31, speed: 26, fs: 1.1});
+      const c = makeCard(s.el, 'sprouts', {w: 28, left: 32, top: 9, tsize: 2.4, meta: false});
+      on(s, lt => {
+        const t = lt + 8000;
+        g.style.transform = `scale(${1.12 + lt / 4000 * .06}) rotate(${lt / 1000 * .5}deg)`;
+        word(t); fade(sub, prog(t, 8900, 500), 1);
+        const sent = prog(t, 9900, 300, E.in);
+        fade(pr.box, prog(t, 8650, 400) * (1 - sent), 2, 0); pr.render(t);
+        const mp = prog(t, 8750, 600, E.back), jump = t > 9850 ? Math.sin(clamp((t - 9850) / 400) * Math.PI) * 2 : 0;
+        morph.style.opacity = clamp((t - 8750) / 150); morph.style.transform = `translate3d(0,${(1 - mp) * 5 - jump + Math.sin(t / 320) * .2}em,0)`;
+        const p = prog(t, 10000, 900, E.back);
+        c.card.style.opacity = clamp((t - 10000) / 100); c.card.style.transform = `perspective(60em) rotateY(${(1 - p) * -50}deg) scale(${.3 + .7 * p})`;
+        fade(c.tEl, prog(t, 10300, 400), 1);
+        const mv = prog(t, 9950, 500, E.inout);
+        morph.style.left = `${lerp(48.5, 51.5, mv)}em`; morph.style.top = `${lerp(8.6, 2.9, mv)}em`;
+      });
+      whips.push({t: 8000, dir: 1});
+      ev.push({t: 8000, type: 'slam'}, {t: 8750, type: 'hop'}, ...pr.K.map(k => ({t: k.t, type: 'key'})), {t: 9850, type: 'send'}, {t: 10000, type: 'upgrade'});
+      hits.push({t: 8000, k: .7}, {t: 10000, k: .4}); flashes.push({t: 10000, k: .5});
+      bursts.push({t: 10020, kind: 'confetti', x: 46, y: 17, n: 60, v: 34, spread: 6.2, g: 14, seed: 14});
+    }
+
+    // 5 · COMPETE. (the Ladder banner, wide like the site)
+    {
+      const s = scene(12000, 16000, 'bg-banner');
+      const title = h(h(s.el, 'row', '', 'top:2.6em;'), 'd shadow fx', 'The Ladder', 'font-size:4.6em;');
+      const hand = h(s.el, 'abs fx', `<div class="hand" style="font-size:2.1em;transform:rotate(-9deg);">Weekly<br>competition</div>`, 'left:46.6em;top:1.2em;');
+      const sub = h(h(s.el, 'row', '', 'top:7.9em;'), 'tagline fx', 'Play, complete quests, climb the ladder and get paid every week!', 'font-size:1.5em;');
+      const pod = im(s.el, A('podium-3d.png'), 'abs', 'left:14em;top:15.5em;width:36em;');
+      const cl = im(s.el, A('crew-left.png'), 'abs', 'left:1.5em;top:12.5em;width:15em;');
+      const cr = im(s.el, A('crew-right.png'), 'abs', 'left:46em;top:15.6em;width:18em;');
+      const prizes = [{v: 150, x: 27.7, y: 16.9}, {v: 250, x: 33.8, y: 13.7}, {v: 100, x: 39.7, y: 18.6}].map(p => ({...p, el: h(s.el, 'abs fx', `<div class="pill white" style="font-size:1.15em;padding:.45em .75em;border-radius:.5em;box-shadow:0 .4em 1.2em rgba(20,6,50,.45);">${euro(p.v)}</div>`, `left:${p.x - 5}em;top:${p.y}em;width:10em;display:flex;justify-content:center;`)}));
+      const word = bigWord(s, 'Compete.', 12000, {to: null});
+      on(s, lt => {
+        const t = lt + 12000;
+        word(t);
+        slam(title, t, 12700, {s0: 1.5}); fade(sub, prog(t, 13000, 500), .8);
+        const hp = prog(t, 13300, 500, E.back); hand.style.opacity = clamp((t - 13300) / 150); hand.style.transform = `scale(${hp})`;
+        const pp = prog(t, 12500, 800, E.back); pod.style.transform = `translate3d(0,${(1 - pp) * 22}em,0)`;
+        const lp = prog(t, 12700, 700, E.back), rp = prog(t, 12900, 700, E.back);
+        cl.style.transform = `translate3d(${(1 - lp) * -22}em,${Math.sin(t / 420) * .25}em,0)`;
+        cr.style.transform = `translate3d(${(1 - rp) * 26}em,${Math.sin(t / 380 + 1) * .25}em,0)`;
+        prizes.forEach((p, i) => { const at = 14000 + [0, 500, 1000][i]; const q = prog(t, at, 500, E.back); p.el.style.opacity = clamp((t - at) / 100); p.el.style.transform = `translate3d(0,${(1 - q) * 2 + Math.sin(t / 300 + i) * .15}em,0) scale(${.5 + .5 * q})`; });
+        s.el.style.transform = `scale(${1 + lt / 4000 * .04})`;
+      });
+      whips.push({t: 12000, dir: -1});
+      ev.push({t: 12000, type: 'slam'}, {t: 12500, type: 'rise'}, {t: 12700, type: 'slam'}, {t: 13300, type: 'chime', m: 84});
+      [14000, 14500, 15000].forEach((at, i) => { ev.push({t: at, type: 'coin', i: i === 1 ? 0 : 1}); hits.push({t: at, k: .3}); });
+      hits.push({t: 12000, k: .7}, {t: 12700, k: .4});
+      bursts.push({t: 14520, kind: 'coins', x: 33.8, y: 15, n: 22, v: 20, spread: 2.6, g: 34, seed: 6, until: 16000});
+    }
+
+    // 6 · build: play / create / compete strobe
+    {
+      const s = scene(16000, 18000, 'bg-dark');
+      const imgs = [gsrc('wanted'), A('galaxy.jpg'), A('podium-3d.png'), gsrc('heist'), A('galaxy.jpg'), A('podium-3d.png'), gsrc('burger'), A('galaxy.jpg'), A('podium-3d.png'), gsrc('wrongland'), A('galaxy.jpg'), A('podium-3d.png'), gsrc('sprouts')];
+      const ban = h(s.el, 'fill bg-banner');
+      const bg = im(s.el, imgs[0], 'bg-img', 'filter:brightness(.55) saturate(1.2);');
+      h(s.el, 'shade', '', 'background:rgba(11,6,21,.3);');
+      const w = h(h(s.el, 'row', '', 'top:11.5em;'), 'd shadow', '', 'font-size:11em;');
+      const words = ['Play.', 'Create.', 'Compete.'];
+      const flips = []; { let tt = 0, step = 500; while (tt < 1960){ flips.push(tt); tt += step; if (tt >= 1000) step = 250; if (tt >= 1500) step = 125; } }
+      on(s, lt => {
+        let k = 0; for (let i = 0; i < flips.length; i++) if (flips[i] <= lt) k = i;
+        const src = imgs[k % imgs.length]; if (bg.dataset.k !== src){ bg.src = src; bg.dataset.k = src; }
+        const pod = src.includes('podium');
+        ban.style.display = pod ? 'block' : 'none';
+        bg.style.objectFit = pod ? 'contain' : 'cover'; bg.style.filter = pod ? 'brightness(.8)' : 'brightness(.55) saturate(1.2)';
+        bg.style.transform = `scale(${(pod ? .8 : 1.1) + lt / 2000 * .25}) translate3d(0,${pod ? 8 : 0}%,0)`;
+        setHTML(w, words[k % 3]); slam(w, lt, flips[k], {s0: 1.4, d: 200});
+      });
+      flips.forEach(f => { ev.push({t: 16000 + f, type: 'slam'}); hits.push({t: 16000 + f, k: .3}); });
+    }
+
+    // 7 · end card
+    {
+      const s = scene(18000, 22000, 'bg-banner');
+      const logo = h(h(s.el, 'row', '', 'top:2.2em;'), '', logoHTML(7.6));
+      const word = h(h(s.el, 'row', '', 'top:8.9em;'), 'd', 'Arcade', 'font-size:2.6em;letter-spacing:.34em;padding-left:.34em;');
+      const l1 = h(h(s.el, 'row', '', 'top:13.2em;'), 'd shadow', 'Play. Create.', 'font-size:4em;');
+      const l2 = h(h(s.el, 'row', '', 'top:17.4em;'), 'd', '<span class="hl" style="background:#fff;color:#0b0615;box-shadow:0 .2em 1em rgba(255,255,255,.3);">Get paid.</span>', 'font-size:4em;');
+      const cta = h(h(s.el, 'row', '', 'top:24.4em;'), 'pill white', `tryarcade.com ${icon('i-arrow')}<span class="sheen"></span>`, 'font-size:2.1em;padding:.7em 1.4em;border-radius:.7em;text-transform:none;');
+      const dsc = h(h(s.el, 'row', '', 'top:30.4em;'), 'fx', `<div style="display:flex;align-items:center;gap:.5em;color:#d9ccff;font-weight:600;"><svg style="width:1.4em;height:1.4em;fill:#fff"><use href="#i-discord"/></svg>Let’s build together on Discord</div>`, 'font-size:1.4em;');
+      const cl = im(s.el, A('crew-left.png'), 'abs', 'left:1.5em;top:13.5em;width:14em;');
+      const cr = im(s.el, A('crew-right.png'), 'abs', 'left:46.5em;top:17.2em;width:17em;');
+      const sheen = cta.querySelector('.sheen');
+      on(s, lt => {
+        const t = lt + 18000;
+        const lp = prog(t, 18000, 900, E.back); logo.style.opacity = clamp((t - 18000) / 100); logo.style.transform = `scale(${.4 + .6 * lp}) rotate(${(1 - lp) * -140}deg)`;
+        fade(word, prog(t, 18250, 500), .8);
+        slam(l1, t, 18500, {s0: 1.5}); slam(l2, t, 18850, {base: 'rotate(-2deg)'});
+        const cp = pop(cta, t, 19300); if (cp >= 1) cta.style.transform = `scale(${1 + .03 * Math.sin((t - 19720) / 260)})`;
+        sheen.style.left = `${lerp(-50, 150, ((t - 19500) % 1600) / 900)}%`;
+        fade(dsc, prog(t, 19600, 500), .6);
+        const a = prog(t, 18300, 800, E.back), b = prog(t, 18500, 800, E.back);
+        cl.style.transform = `translate3d(${(1 - a) * -20}em,${Math.sin(t / 420) * .25}em,0)`;
+        cr.style.transform = `translate3d(${(1 - b) * 24}em,${Math.sin(t / 380 + 1) * .25}em,0)`;
+      });
+      ev.push({t: DROP, type: 'drop'}, {t: 18500, type: 'slam'}, {t: 18850, type: 'slam'}, {t: 19300, type: 'tap'});
+      hits.push({t: DROP, k: 1.2}, {t: 18500, k: .4}, {t: 18850, k: .4});
+      bursts.push({t: DROP + 20, kind: 'confetti', x: 32, y: 38, n: 150, v: 55, spread: 1.6, g: 22, seed: 66, stagger: .1});
+    }
+    return {H: true, DURATION: 22000, groove: G, drop: DROP, bars: 8, transpose: -2, mood: 'hype', events: () => ev, hits, whips, flashes, bursts, ramps: [{a: 17650, b: 18000, k: .9}]};
+  }
+
+  ED = [edit1, edit2, edit3, edit4][EDIT - 1]();
+  stage.classList.add(ED.H ? 'h' : 'v');
+  const SIZE = ED.H ? {width: 1920, height: 1080} : {width: 1080, height: 1920};
+
+  function render(t){
+    t = clamp(t, 0, ED.DURATION - 1);
+    for (const sc of scenes){
+      const live = t >= sc.a && t < sc.b;
+      sc.el.style.display = live ? 'block' : 'none';
+      if (live) sc.fns.forEach(fn => fn(t - sc.a));
+    }
+    camera(t); particles(t); grain(t);
+    $('progress').style.width = (t / ED.DURATION * 100) + '%';
+  }
+
+  // headlines never run off the frame: shrink any that are wider than the safe width
+  function fitText(){
+    const em = parseFloat(getComputedStyle(stage).fontSize), maxW = (ED.H ? 58 : 32.6) * em;
+    scenes.forEach(sc => {
+      sc.el.style.display = 'block';
+      sc.el.querySelectorAll('.row > .d').forEach(el => {
+        el.style.whiteSpace = 'nowrap';
+        const w = el.offsetWidth;
+        if (w > maxW) el.style.fontSize = (parseFloat(el.style.fontSize) * maxW / w).toFixed(3) + 'em';
+      });
+      sc.el.style.display = 'none';
+    });
+  }
+  const fontsReady = document.fonts ? Promise.all(['900 1em Rubik', '800 1em Rubik', '600 1em Inter', '700 1em Caveat'].map(f => document.fonts.load(f))).catch(() => {}) : Promise.resolve();
+  const imgsReady = Promise.all(IMGS.map(i => i.decode().catch(() => {})));
+  const ready = Promise.all([fontsReady, imgsReady]).then(fitText);
+  window.AD = {DURATION: ED.DURATION, SIZE, render, ready,
+    events: () => ({duration: ED.DURATION, groove: ED.groove, drop: ED.drop, bars: ED.bars, transpose: ED.transpose, mood: ED.mood, events: ED.events().filter(e => e.type).sort((a, b) => a.t - b.t)})};
+  if (capture){ ready.then(() => render(0)); return; }
+  let start = 0;
+  function loop(now){ render((now - start) % ED.DURATION); requestAnimationFrame(loop); }
+  stage.addEventListener('click', () => { start = performance.now(); });
+  ready.then(() => { start = performance.now(); requestAnimationFrame(loop); });
+})();
+</script>
+</body>
+</html>

@@ -14,6 +14,8 @@ const fs = require('fs');
   const page = process.env.AD_PAGE || 'playabl-ad.html';   // may carry its own query, e.g. playabl-clean.html?edit=2
   await p.goto('file://' + process.cwd() + '/' + page + (page.includes('?') ? '&' : '?') + 'capture');
   await p.evaluate(() => window.AD.ready);
+  const size = await p.evaluate(() => window.AD.SIZE);   // pages can ask for another frame size, e.g. 16:9
+  if (size) await p.setViewportSize(size);
 
   if (mode === 'events') {
     fs.writeFileSync(out, JSON.stringify(await p.evaluate(() => AD.events()), null, 1));
