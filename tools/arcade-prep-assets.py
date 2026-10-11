@@ -27,11 +27,12 @@ def mask(im):
     return Image.fromarray((p * 255).astype(np.uint8)).resize(im.size, Image.LANCZOS)
 def done(name):
     return any(os.path.exists(f'{OUT}/{name}.{e}') for e in ('png', 'jpg'))
-def cutout(crop, name, clean=None):   # 4x upscale, then matte
+def cutout(crop, name, clean=None, post=None):   # 4x upscale, then matte
     if done(name): return
     im = up4(crop); m = mask(im)
     if clean: m = clean(m)
     rgba = im.copy(); rgba.putalpha(m)
+    if post: rgba = post(rgba)
     rgba = rgba.crop(rgba.getbbox())
     rgba.save(f'{OUT}/{name}.png', optimize=True)
     print('cutout', name, rgba.size)
@@ -102,7 +103,19 @@ def key_title(crop, name):
     print('keyed', name, rgba.size)
 key_title(spooky.crop((25, 14, 620, 462)), 'spooky-title')
 save_jpg(spooky.crop((610, 0, 1159, 467)), 'spooky-scene', 88)
-cutout(spooky.crop((728, 78, 985, 467)), 'spooky-scared', keep_largest(1))
+def solid_clay(rgba):
+    # the matte fades out over the figure's legs: where it is unsure, keep warm beige clay and drop the
+    # blue-violet night, then fill the shadowed holes that leaves inside the body
+    a = np.asarray(rgba).astype(np.float32); R, G, B, A = a[..., 0], a[..., 1], a[..., 2], a[..., 3]
+    warm = cv2.GaussianBlur((((.3 * R + .59 * G + .11 * B) > 55) & (R > B + 2) & (G > B - 6)).astype(np.float32), (9, 9), 0)
+    out = np.where(A >= 215, 255, np.where((A > 40) & (A < 215), np.maximum(A * .3, warm * 255), A))
+    n, lab, st, _ = cv2.connectedComponentsWithStats((out > 128).astype(np.uint8), 8)
+    m = (lab == 1 + np.argmax(st[1:, cv2.CC_STAT_AREA])).astype(np.uint8)
+    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31)))
+    pad = np.pad(m, 1); cv2.floodFill(pad, np.zeros((pad.shape[0] + 2, pad.shape[1] + 2), np.uint8), (0, 0), 2)
+    m = (pad[1:-1, 1:-1] != 2).astype(np.float32)
+    return Image.fromarray(np.dstack([a[..., :3], cv2.GaussianBlur(m * 255, (7, 7), 0)]).clip(0, 255).astype(np.uint8), 'RGBA')
+cutout(spooky.crop((728, 78, 985, 467)), 'spooky-scared', keep_largest(1), solid_clay)
 cutout(spooky.crop((982, 305, 1072, 455)), 'spooky-bunny', keep_largest(1))
 
 # --- logo: trace the white mark into a clean vector ---
