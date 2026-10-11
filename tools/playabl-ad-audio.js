@@ -281,6 +281,7 @@ for (const e of CUES.events){
     case 'rise':   whoosh(t, .5, .1, 1); break;
     case 'hop':    pop(t, .045, 420, 760, (rnd() - .5) * .6); break;
     case 'flip':   pop(t, .06, 500, 1200, (rnd() - .5) * .6); whoosh(t + .2, .25, .06, 1); break;
+    case 'thunder': impact(t, .38); whoosh(t + .5, 1.1, .1, -1); break;
     case 'slam':   kick(t, .5); pop(t, .16, 240, 70); hat(t, .07, true, 0); break;
     case 'upgrade': whoosh(t + .1, .45, .14, 1); [76, 79, 83, 88].forEach((m, i) => bell(t + i * .06, m, .07, (i - 1.5) * .3, 3)); break;
   }

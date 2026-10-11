@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Arcade Promo Edits</title>
-<meta name="description" content="Four promo edits for tryarcade.com. Pick one with ?edit=1 to ?edit=4.">
+<meta name="description" content="Six promo edits for tryarcade.com. Pick one with ?edit=1 to ?edit=6.">
 <link rel="icon" href="data:,">
 <style>
   @font-face{font-family:'Rubik';src:url(fonts/rubik-latin.woff2) format('woff2');font-weight:300 900;font-display:block;}
@@ -101,6 +101,24 @@
   #flash{position:absolute;inset:0;pointer-events:none;background:#fff;opacity:0;}
   .progress{position:absolute;left:0;bottom:0;height:.2em;background:var(--v);width:0;z-index:50;opacity:.9;}
   .capture .progress{display:none;}
+  /* spooky season */
+  .bg-night{background:radial-gradient(55% 35% at 72% 8%, rgba(150,140,255,.32), transparent 70%),linear-gradient(180deg,#1b1745 0%,#100c28 55%,#07050f 100%);}
+  .slime{color:#0b0615;background:#7dee3f;box-shadow:0 0 1.2em rgba(125,238,63,.6),0 .2em .8em rgba(0,0,0,.4);}
+  .glow-g{text-shadow:0 0 .35em rgba(125,238,63,.75),0 .06em .4em rgba(5,2,15,.6);}
+  .badge{display:inline-flex;align-items:center;gap:.5em;font-family:'Rubik',sans-serif;font-weight:800;text-transform:uppercase;border-radius:.5em;padding:.4em .75em;}
+  .medal{width:2.6em;height:2.6em;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Rubik',sans-serif;font-weight:900;font-size:1em;color:#3a2600;box-shadow:inset 0 -.2em 0 rgba(0,0,0,.18),0 .3em .8em rgba(0,0,0,.35);}
+  /* your mold */
+  .moldcard{position:absolute;overflow:hidden;background:radial-gradient(80% 50% at 30% 20%, rgba(255,255,255,.14), transparent 60%),radial-gradient(70% 60% at 80% 90%, rgba(20,30,90,.45), transparent 70%),linear-gradient(160deg,#3d60c4,#2a47a7 55%,#22409e);}
+  .tabs{position:absolute;display:flex;gap:2em;font-size:1.55em;font-weight:500;color:#b9b4c6;}
+  .tabs .on{color:#fff;position:relative;}
+  .tabs .on::after{content:'';position:absolute;left:-.4em;right:-.4em;bottom:-.55em;height:.14em;border-radius:.1em;background:#8d4ff9;}
+  .chips{position:absolute;display:flex;gap:.6em;}
+  .chip{flex:1;text-align:center;border-radius:.6em;background:#181322;color:#cfcadb;font-weight:700;font-size:1.25em;padding:.6em 0;}
+  .chip.on{background:#2f2a38;color:#fff;}
+  .sw{position:absolute;border-radius:1em;background:#181322;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:.8em;}
+  .sw img{position:absolute;left:50%;top:.8em;height:72%;transform:translateX(-50%);}
+  .sw .nm{font-weight:600;font-size:1.2em;}
+  .sw.on{box-shadow:0 0 0 .2em #8d4ff9,0 0 1.5em rgba(141,79,249,.6);}
 </style>
 </head>
 <body>
@@ -127,11 +145,11 @@
 
 <script>
 (() => {
-  // Four promo edits for tryarcade.com, built from screenshots of the site (arcade-assets/).
+  // Six promo edits for tryarcade.com, built from screenshots of the site (arcade-assets/).
   // Every edit is a pure function of time t (ms), so it plays live or renders frame-by-frame
   // (?capture) with its sound cues exported through AD.events for tools/playabl-ad-audio.js.
   const Q = new URLSearchParams(location.search);
-  const EDIT = Math.max(1, Math.min(4, Math.round(+Q.get('edit') || 1)));
+  const EDIT = Math.max(1, Math.min(6, Math.round(+Q.get('edit') || 1)));
   const $ = id => document.getElementById(id);
   const stage = $('stage'), cam = $('cam');
   const capture = Q.has('capture');
@@ -255,13 +273,13 @@
   function starsHTML(n){ return `<span class="stars">${Array.from({length: 5}, (_, i) => `<svg style="fill:${i < n ? 'var(--gold)' : '#3b3248'}"><use href="#i-star"/></svg>`).join('')}</span>`; }
 
   // the Ladder podium from the site (blocks 2 · 1 · 3 with the weekly prizes)
-  function makePodium(parent, {left = 3.6, base, bw = 9.6, hs = [14.5, 19, 11.5], fs = 1}){
+  function makePodium(parent, {left = 3.6, base, bw = 9.6, hs = [14.5, 19, 11.5], fs = 1, prizes = [150, 250, 100], fmt = euro}){
     const pod = h(parent, 'pod', '', `left:${left}em;top:${base - Math.max(...hs) * fs}em;height:${Math.max(...hs) * fs}em;font-size:${fs}em;`);
-    const spec = [{n: 2, cls: 'b2', prize: 150}, {n: 1, cls: 'b1', prize: 250}, {n: 3, cls: 'b3', prize: 100}];
+    const spec = [{n: 2, cls: 'b2', prize: prizes[0]}, {n: 1, cls: 'b1', prize: prizes[1]}, {n: 3, cls: 'b3', prize: prizes[2]}];
     const blocks = spec.map((s, i) => {
       const b = h(pod, 'blk ' + s.cls, '', `width:${bw}em;height:${hs[i]}em;`);
       const clip = h(b, 'clip', '', `top:-1px;`);
-      const body = h(clip, 'body', `<div class="top"></div><div class="front"><div class="num">${s.n}</div><div class="prize">${euro(0)}</div></div>`, `top:0;`);
+      const body = h(clip, 'body', `<div class="top"></div><div class="front"><div class="num">${s.n}</div><div class="prize">${fmt(0)}</div></div>`, `top:0;`);
       return {b, body, prizeEl: body.querySelector('.prize'), ...s};
     });
     // rise: [t for block 2, block 1, block 3]; prize counters run after each block lands
@@ -270,7 +288,7 @@
         const p = prog(t, rise[i], 650, E.back);
         bk.body.style.transform = `translate3d(0,${(1 - Math.min(1, p)) * 105}%,0)`;
         bk.body.style.top = `${(1 - p) * 0}em`;
-        setHTML(bk.prizeEl, euro(count(t, rise[i] + 250, countD, bk.prize)));
+        setHTML(bk.prizeEl, fmt(count(t, rise[i] + 250, countD, bk.prize)));
       });
     };
   }
@@ -295,6 +313,14 @@
     return `<svg class="av" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="${bg}"/><circle cx="20" cy="23" r="12" fill="${skin}"/><ellipse cx="16.2" cy="21.5" rx="1.5" ry="2.6" fill="#1a1420"/><ellipse cx="23.8" cy="21.5" rx="1.5" ry="2.6" fill="#1a1420"/></svg>`;
   }
   function logoHTML(size){ return `<img src="${A('logo.svg')}" style="width:${size}em;display:block;filter:drop-shadow(0 0 .5em rgba(166,118,250,.65));">`; }
+
+  // sets a headline's text and shrinks it to the safe width (for words swapped at runtime)
+  function setWord(el, text, base){
+    if (cache.get(el) === text) return;
+    cache.set(el, text); el.innerHTML = text; el.style.fontSize = base + 'em'; el.style.whiteSpace = 'nowrap';
+    const em = parseFloat(getComputedStyle(stage).fontSize), maxW = (ED && ED.H ? 58 : 32.6) * em, w = el.offsetWidth;
+    if (w > maxW) el.style.fontSize = (base * maxW / w).toFixed(3) + 'em';
+  }
 
   // ---------- global camera, whips, flashes, particles ----------
   let ED = null;
@@ -345,7 +371,7 @@
           g.addColorStop(0, '#fff3a6'); g.addColorStop(.5, '#f2c907'); g.addColorStop(1, '#c08c00');
           fctx.fillStyle = g; fctx.beginPath(); fctx.arc(0, 0, s, 0, Math.PI * 2); fctx.fill();
           fctx.strokeStyle = '#b37f00'; fctx.lineWidth = s * .12; fctx.beginPath(); fctx.arc(0, 0, s * .72, 0, Math.PI * 2); fctx.stroke();
-          fctx.fillStyle = '#9a6a00'; fctx.font = `900 ${s * 1.05}px Rubik`; fctx.textAlign = 'center'; fctx.textBaseline = 'middle'; fctx.fillText('€', 0, s * .06);
+          fctx.fillStyle = '#9a6a00'; fctx.font = `900 ${s * 1.05}px Rubik`; fctx.textAlign = 'center'; fctx.textBaseline = 'middle'; fctx.fillText(b.sym || '€', 0, s * .06);
         } else {
           const w = (.35 + r() * .35) * em, hh = (.6 + r() * .5) * em;
           fctx.scale(1, Math.cos(a * (6 + r() * 8) + r() * 6));
@@ -1073,7 +1099,334 @@
     return {H: true, DURATION: 22000, groove: G, drop: DROP, bars: 8, transpose: -2, mood: 'hype', events: () => ev, hits, whips, flashes, bursts, ramps: [{a: 17650, b: 18000, k: .9}]};
   }
 
-  ED = [edit1, edit2, edit3, edit4][EDIT - 1]();
+
+  // ============ EDIT 5 · Spooky Season $1,000 Halloween contest (9:16) ============
+  function edit5(){
+    const G = 2000, DROP = 16000;
+    const ev = [], hits = [], whips = [], flashes = [], bursts = [];
+    const usd = n => '$' + fmtInt(n);
+    const sceneBG = (s, dim = .5, blur = .25) => {
+      const g = im(s.el, A('spooky-scene.jpg'), 'bg-img', `filter:brightness(${dim}) saturate(1.1) blur(${blur}em);object-position:40% 50%;`);
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(8,6,20,.55),rgba(8,6,20,.1) 40%,rgba(8,6,20,.85));');
+      return (t, z = .04) => { g.style.transform = `scale(${1.08 + (t % 6000) / 6000 * z})`; };
+    };
+    const lightning = (t, at) => { const d = t - at; return d < 0 ? 0 : Math.exp(-d / 90) + (d > 140 ? .6 * Math.exp(-(d - 140) / 70) : 0); };
+
+    // 1 · hook
+    {
+      const s = scene(0, 2000);
+      const g = im(s.el, A('spooky-scene.jpg'), 'bg-img', 'object-position:40% 50%;');
+      h(s.el, 'shade', '', 'background:linear-gradient(180deg,rgba(8,6,20,.75),rgba(8,6,20,.45) 45%,rgba(8,6,20,.92));');
+      const l1 = h(h(s.el, 'row', '', 'top:14.5em;'), 'd shadow', 'Build a', 'font-size:3.4em;');
+      const l2 = h(h(s.el, 'row', '', 'top:18.6em;'), 'd', '<span class="hl slime">Halloween game</span>', 'font-size:4.6em;');
+      const l3 = h(h(s.el, 'row', '', 'top:26.4em;'), 'd glow-g', '$1,000', 'font-size:9em;color:#f8f2df;');
+      const l4 = h(h(s.el, 'row', '', 'top:35.4em;'), 'd shadow', 'in cash prizes', 'font-size:3.4em;');
+      const bunny = im(s.el, A('spooky-bunny.png'), 'abs', 'left:29.6em;top:46em;width:7.5em;');
+      on(s, t => {
+        const L = lightning(t, 900);
+        g.style.filter = `brightness(${.42 + L * .9}) saturate(1.1) blur(.15em)`;
+        g.style.transform = `scale(${1.12 + t / 2000 * .04})`;
+        slam(l1, t, -140, {s0: 1.4}); slam(l2, t, 300, {base: 'rotate(-2deg)'}); slam(l3, t, 1000, {s0: 2.2}); slam(l4, t, 1300, {s0: 1.4});
+        const bp = prog(t, 1450, 450, E.back); bunny.style.transform = `translate3d(${(1 - bp) * 8}em,0,0) rotate(${-8 + Math.sin(t / 160) * 3}deg)`;
+      });
+      ev.push({t: 0, type: 'slam'}, {t: 300, type: 'slam'}, {t: 900, type: 'thunder'}, {t: 1000, type: 'slam'}, {t: 1000, type: 'coin', i: 0}, {t: 1300, type: 'slam'}, {t: 1450, type: 'hop'});
+      hits.push({t: 0, k: .4}, {t: 300, k: .5}, {t: 1000, k: .9}, {t: 1300, k: .3});
+      flashes.push({t: 900, k: .45});
+      bursts.push({t: 1020, kind: 'coins', sym: '$', x: 18, y: 31, n: 26, v: 40, spread: 3.2, g: 30, seed: 7, until: 2000});
+    }
+
+    // 2 · the Spooky Season banner, rebuilt in layers
+    {
+      const s = scene(2000, 5000);
+      const bg = sceneBG(s, .55, .45);
+      const title = im(s.el, A('spooky-title.png'), 'abs', 'left:3em;top:4.6em;width:30em;transform-origin:50% 0;');
+      const badge = h(h(s.el, 'row', '', 'top:29.4em;'), 'fx', `<div style="display:flex;align-items:center;gap:.8em;"><span class="badge" style="background:#12b886;color:#04251a;">Active</span><span style="font-weight:600;color:#e7e1f5;">Oct 5 – Oct 18</span></div>`, 'font-size:1.6em;');
+      const fig = im(s.el, A('spooky-scared.png'), 'abs', 'left:6.5em;top:33em;width:23em;');
+      const bunny = im(s.el, A('spooky-bunny.png'), 'abs', 'left:28.8em;top:48em;width:7.5em;');
+      on(s, lt => {
+        const t = lt + 2000;
+        bg(lt);
+        const tp = prog(t, 2000, 900, E.elastic);
+        title.style.opacity = clamp((t - 2000) / 80);
+        title.style.transform = `translate3d(0,${(1 - tp) * -14}em,0) scale(${1 + Math.sin((t - 2000) / 90) * .02 * Math.exp(-(t - 2000) / 600)},${1 - Math.sin((t - 2000) / 90) * .03 * Math.exp(-(t - 2000) / 600)})`;
+        fade(badge, prog(t, 3300, 450), .8);
+        const fp = prog(t, 2300, 700, E.back), shake = Math.sin(t / 28) * .12;
+        fig.style.transform = `translate3d(${shake}em,${(1 - fp) * 30}em,0) rotate(${Math.sin(t / 45) * .8}deg)`;
+        const bp = prog(t, 2900, 500, E.back); bunny.style.transform = `translate3d(${(1 - bp) * 8}em,0,0) rotate(${-8 + Math.sin(t / 170) * 3}deg)`;
+      });
+      whips.push({t: 2000, dir: 1});
+      ev.push({t: 2000, type: 'cut'}, {t: 2050, type: 'rivals'}, {t: 2300, type: 'swipe'}, {t: 2900, type: 'hop'}, {t: 3300, type: 'tap'});
+      hits.push({t: 2100, k: .6});
+    }
+
+    // 3 · step 1: build it with Morph
+    const P = 'A haunted graveyard where zombies chase you';
+    {
+      const s = scene(5000, 8500, 'bg-night');
+      const step = h(h(s.el, 'row', '', 'top:8em;'), 'fx', '01 · Build', 'font-family:Rubik;font-weight:800;font-size:1.6em;letter-spacing:.2em;color:#7dee3f;text-transform:uppercase;');
+      const l1 = h(h(s.el, 'row', '', 'top:11.2em;'), 'd shadow', 'Build a<br>Halloween game', 'font-size:4.4em;line-height:.98;');
+      const morph = im(s.el, A('morph.png'), 'abs', 'left:21em;top:20.6em;width:10em;');
+      const pr = makePrompt(s.el, {left: 2.2, top: 26.4, w: 31.6, text: P, t0: 5450, sendAt: 6900, seed: 41, speed: 26, fs: 1.15});
+      const card = h(s.el, 'gc', '', `left:4em;top:21.5em;width:28em;height:${28 / 1.176}em;border-radius:1.4em;`);
+      im(card, A('spooky-scene.jpg'));
+      h(card, 'abs', `<span class="badge" style="background:rgba(37,29,48,.9);color:#fff;font-size:1.3em;text-transform:none;font-family:Inter;font-weight:700;">Horror</span>`, 'right:.9em;top:.9em;');
+      const yours = h(h(s.el, 'row', '', 'top:46.6em;'), 'd fx', 'Your Halloween game', 'font-size:2.5em;');
+      on(s, lt => {
+        const t = lt + 5000;
+        fade(step, prog(t, 5000, 400), .6); slam(l1, t, 5000, {s0: 1.4});
+        fade(pr.box, prog(t, 5100, 400) * (1 - prog(t, 6950, 250, E.in)), 2, 0); pr.render(t);
+        const mp = prog(t, 5200, 600, E.back), jump = t > 6900 ? Math.sin(clamp((t - 6900) / 400) * Math.PI) * 2.5 : 0;
+        morph.style.opacity = clamp((t - 5200) / 150) * (1 - prog(t, 7100, 200));
+        morph.style.transform = `translate3d(0,${(1 - mp) * 6 - jump + Math.sin(t / 320) * .2}em,0)`;
+        const p = prog(t, 7150, 850, E.back);
+        card.style.opacity = clamp((t - 7150) / 100);
+        card.style.transform = `perspective(60em) rotateX(${(1 - p) * 40}deg) scale(${.3 + .7 * p})`;
+        card.style.boxShadow = `0 1.6em 4em rgba(0,0,0,.55),0 0 ${3 * (1 - prog(t, 7200, 1200))}em ${(1 - prog(t, 7200, 1200))}em rgba(125,238,63,.8)`;
+        fade(yours, prog(t, 7500, 450), 1);
+      });
+      whips.push({t: 5000, dir: -1});
+      ev.push({t: 5000, type: 'slam'}, {t: 5200, type: 'hop'}, ...pr.K.map(k => ({t: k.t, type: 'key'})), {t: 6900, type: 'send'}, {t: 7150, type: 'upgrade'});
+      hits.push({t: 5000, k: .5}, {t: 7150, k: .5}); flashes.push({t: 7150, k: .45});
+      bursts.push({t: 7170, kind: 'confetti', x: 18, y: 33, n: 60, v: 38, spread: 6.2, g: 16, seed: 17, until: 8500});
+    }
+
+    // 4 · step 2: publish it on the marketplace
+    {
+      const s = scene(8500, 10500, 'bg-night');
+      const step = h(h(s.el, 'row', '', 'top:8em;'), 'fx', '02 · Publish', 'font-family:Rubik;font-weight:800;font-size:1.6em;letter-spacing:.2em;color:#7dee3f;text-transform:uppercase;');
+      const l1 = h(h(s.el, 'row', '', 'top:11.2em;'), 'd shadow', 'Publish it on the<br>marketplace', 'font-size:4em;line-height:.98;');
+      const grid = h(s.el, 'fill');
+      const mine = h(grid, 'abs', '', 'left:1.2em;top:22em;width:16.4em;');
+      const mc = h(mine, 'gc', '', `position:relative;width:16.4em;height:${16.4 * RATIO}em;border-radius:.75em;`); im(mc, A('spooky-scene.jpg'));
+      h(mine, 'gtitle', 'Your game', 'font-size:1.4em;margin-top:.45em;');
+      const others = ['bunker', 'lastman', 'lastlight'].map((k, i) => makeCard(grid, k, {w: 16.4, left: 1.2 + ((i + 1) % 2) * 17.2, top: 22 + Math.floor((i + 1) / 2) * 13.6, tsize: 1.4, meta: false}));
+      const tag = h(mine, 'abs', `<span class="badge slime" style="font-size:1em;">Yours</span>`, 'left:.6em;top:.6em;');
+      on(s, lt => {
+        const t = lt + 8500;
+        fade(step, prog(t, 8500, 400), .6); slam(l1, t, 8500, {s0: 1.4});
+        pop(mine, t, 8800, {d: 480, s0: .5});
+        others.forEach((c, i) => { pop(c.box, t, 9050 + i * 160, {d: 450, s0: .6}); fade(c.tEl, prog(t, 9150 + i * 160, 300), .5, 0); });
+        const gl = .5 + .5 * Math.sin(t / 140); mc.style.boxShadow = `0 0 0 .22em #7dee3f,0 0 ${1.5 + gl * 2}em rgba(125,238,63,.8)`;
+        pop(tag, t, 9200, {d: 400});
+        grid.style.transform = `translate3d(0,${-lt / 2000 * 2}em,0)`;
+      });
+      whips.push({t: 8500, dir: 1});
+      ev.push({t: 8500, type: 'slam'}, {t: 8800, type: 'slam'}, {t: 9050, type: 'tap'}, {t: 9210, type: 'tap'}, {t: 9370, type: 'tap'}, {t: 9200, type: 'like'});
+      hits.push({t: 8500, k: .5}, {t: 8800, k: .4});
+    }
+
+    // 5 · step 3: top 3 win
+    {
+      const s = scene(10500, 14000, 'bg-night');
+      const step = h(h(s.el, 'row', '', 'top:8em;'), 'fx', '03 · Win', 'font-family:Rubik;font-weight:800;font-size:1.6em;letter-spacing:.2em;color:#7dee3f;text-transform:uppercase;');
+      const l1 = h(h(s.el, 'row', '', 'top:11.2em;'), 'd shadow', 'Top 3 games', 'font-size:4.2em;');
+      const l2 = h(h(s.el, 'row', '', 'top:15.8em;'), 'd', '<span class="hl slime">win $1,000</span>', 'font-size:4.2em;');
+      const podium = makePodium(s.el, {base: 49, prizes: [300, 500, 200], fmt: usd});
+      const medals = [['#e9eef5', '#b9c3cf', 2, 9.4 + 3.6, 29], ['#ffe27a', '#e6a817', 1, 4.8 + 3.6 + 9.6, 24.5], ['#f2b27c', '#c4743a', 3, 4.8 + 3.6 + 19.2, 32]].map(([a, b, n, x, y]) => h(s.el, 'abs fx', `<div class="medal" style="background:radial-gradient(circle at 35% 30%,${a},${b});font-size:1.5em;">${n}</div>`, `left:${x - 1.95}em;top:${y}em;`));
+      const fig = im(s.el, A('spooky-scared.png'), 'abs', 'left:-3em;top:47em;width:14em;');
+      const bunny = im(s.el, A('spooky-bunny.png'), 'abs', 'left:28em;top:50em;width:7em;');
+      on(s, lt => {
+        const t = lt + 10500;
+        fade(step, prog(t, 10500, 400), .6); slam(l1, t, 10500, {s0: 1.4}); slam(l2, t, 10900, {base: 'rotate(-2deg)'});
+        podium(t, [11300, 11700, 12100], {countD: 600});
+        medals.forEach((m, i) => { const at = [11300, 11700, 12100][i] + 600; pop(m, t, at, {d: 500, base: `translate3d(0,${Math.sin(t / 300 + i) * .2}em,0)`}); });
+        const fp = prog(t, 12500, 600, E.back); fig.style.transform = `translate3d(${(1 - fp) * -12 + Math.sin(t / 28) * .1}em,0,0) rotate(${Math.sin(t / 45)}deg)`;
+        const bp = prog(t, 12700, 600, E.back); bunny.style.transform = `translate3d(${(1 - bp) * 10}em,0,0) rotate(${Math.sin(t / 170) * 4}deg)`;
+        s.el.style.transform = `scale(${1 + lt / 3500 * .04})`;
+      });
+      whips.push({t: 10500, dir: -1});
+      ev.push({t: 10500, type: 'slam'}, {t: 10900, type: 'slam'}, {t: 12500, type: 'hop'}, {t: 12700, type: 'hop'});
+      [11300, 11700, 12100].forEach((at, i) => { ev.push({t: at, type: 'stat', i}); ev.push({t: at + 600, type: 'coin', i: i === 1 ? 0 : 1}); hits.push({t: at + 100, k: .45}); });
+      bursts.push({t: 12320, kind: 'coins', sym: '$', x: 18, y: 28, n: 30, v: 40, spread: 3, g: 30, seed: 27, until: 14000});
+    }
+
+    // 6 · build: the deadline
+    {
+      const s = scene(14000, 16000);
+      const g = im(s.el, A('spooky-scene.jpg'), 'bg-img', 'object-position:40% 50%;');
+      h(s.el, 'shade', '', 'background:rgba(8,6,20,.55);');
+      const pre = h(h(s.el, 'row', '', 'top:13em;'), 'd shadow', 'Ends', 'font-size:4em;');
+      const date = h(h(s.el, 'row', '', 'top:18.4em;'), 'd glow-g', 'Oct 18', 'font-size:10.5em;color:#f8f2df;');
+      const utc = h(h(s.el, 'row', '', 'top:31em;'), 'fx', '11:59 PM UTC', 'font-family:Rubik;font-weight:800;font-size:2.4em;letter-spacing:.12em;color:#7dee3f;');
+      const go = h(h(s.el, 'row', '', 'top:38em;'), 'd', '<span class="hl slime">Start building</span>', 'font-size:3.6em;');
+      const strikes = [14000, 14500, 15000, 15250, 15500, 15625, 15750, 15875];
+      on(s, lt => {
+        const t = lt + 14000;
+        let L = 0; strikes.forEach(at => { L = Math.max(L, lightning(t, at) * .8); });
+        g.style.filter = `brightness(${.35 + L}) saturate(1.1) blur(.12em)`; g.style.transform = `scale(${1.1 + lt / 2000 * .2})`;
+        slam(pre, t, 14000, {s0: 1.4}); slam(date, t, 14500, {s0: 1.8}); fade(utc, prog(t, 14900, 400), .6); slam(go, t, 15250, {base: 'rotate(-2deg)'});
+      });
+      ev.push({t: 14000, type: 'slam'}, {t: 14000, type: 'thunder'}, {t: 14500, type: 'slam'}, {t: 15250, type: 'slam'});
+      [15500, 15625, 15750, 15875].forEach(at => ev.push({t: at, type: 'tick'}));
+      hits.push({t: 14000, k: .5}, {t: 14500, k: .9}, {t: 15250, k: .5});
+    }
+
+    // 7 · end card
+    {
+      const s = scene(16000, 20000);
+      const bg = sceneBG(s, .4, .5);
+      const logo = h(h(s.el, 'row', '', 'top:5.2em;'), '', logoHTML(5.2));
+      const title = im(s.el, A('spooky-title.png'), 'abs', 'left:5em;top:10.6em;width:26em;transform-origin:50% 0;');
+      const l1 = h(h(s.el, 'row', '', 'top:31.4em;'), 'd shadow', 'Build. Publish. Win.', 'font-size:3.4em;');
+      const cta = h(h(s.el, 'row', '', 'top:36.4em;'), 'pill white', `${icon('i-arrow')} Start creating<span class="sheen"></span>`, 'font-size:2.3em;padding:.7em 1.3em;border-radius:.7em;text-transform:none;font-weight:800;');
+      const url = h(h(s.el, 'row', '', 'top:42.6em;'), 'fx', 'tryarcade.com', 'font-size:1.9em;font-weight:700;letter-spacing:.04em;color:#e2d6ff;');
+      const ends = h(h(s.el, 'row', '', 'top:45.8em;'), 'fx', 'Contest ends Oct 18, 11:59 PM UTC', 'font-size:1.35em;font-weight:600;color:#7dee3f;');
+      const bunny = im(s.el, A('spooky-bunny.png'), 'abs', 'left:28.6em;top:50em;width:7.5em;');
+      const sheen = cta.querySelector('.sheen');
+      on(s, lt => {
+        const t = lt + 16000; bg(lt);
+        const lp = prog(t, 16000, 900, E.back); logo.style.opacity = clamp((t - 16000) / 100); logo.style.transform = `scale(${.4 + .6 * lp}) rotate(${(1 - lp) * -140}deg)`;
+        const tp = prog(t, 16150, 900, E.elastic); title.style.opacity = clamp((t - 16150) / 80);
+        title.style.transform = `translate3d(0,${(1 - tp) * -10}em,0) scale(${1 + Math.sin(t / 400) * .01})`;
+        slam(l1, t, 16700, {s0: 1.4});
+        const cp = pop(cta, t, 17200); if (cp >= 1) cta.style.transform = `scale(${1 + .03 * Math.sin((t - 17720) / 260)})`;
+        sheen.style.left = `${lerp(-50, 150, ((t - 17500) % 1600) / 900)}%`;
+        fade(url, prog(t, 17500, 500), .6); fade(ends, prog(t, 17700, 500), .6);
+        const bp = prog(t, 17900, 500, E.back); bunny.style.transform = `translate3d(${(1 - bp) * 8}em,0,0) rotate(${-8 + Math.sin(t / 170) * 3}deg)`;
+      });
+      ev.push({t: DROP, type: 'drop'}, {t: 16150, type: 'rivals'}, {t: 16700, type: 'slam'}, {t: 17200, type: 'tap'}, {t: 17900, type: 'hop'});
+      hits.push({t: DROP, k: 1.1}, {t: 16700, k: .4});
+      bursts.push({t: DROP + 20, kind: 'confetti', x: 18, y: 66, n: 130, v: 70, spread: 1.2, g: 24, seed: 77, stagger: .1});
+    }
+    return {DURATION: 20000, groove: G, drop: DROP, bars: 7, transpose: -3, mood: 'hype', events: () => ev, hits, whips, flashes, bursts, ramps: [{a: 15650, b: 16000, k: .85}]};
+  }
+
+  // ============ EDIT 6 · Your Mold: make your character yours (9:16) ============
+  function edit6(){
+    const G = 2000, DROP = 12000;
+    const ev = [], hits = [], whips = [], flashes = [], bursts = [];
+    // textures: the three from the editor, then the amethyst figure re-tinted for the rest of the palette
+    const TEX = [{f: 'clay', n: 'Clay'}, {f: 'bone', n: 'Bone Clay'}, {f: 'amethyst', n: 'Amethyst'},
+      {f: 'amethyst', hue: -130}, {f: 'amethyst', hue: 115}, {f: 'amethyst', hue: -55}, {f: 'amethyst', hue: 50}];
+    const texFilter = x => x.hue ? `hue-rotate(${x.hue}deg) saturate(1.15)` : 'none';
+    // one figure that swaps texture with a squash-and-stretch pop
+    function makeFigure(parent, {left, top, w}){
+      const wrap = h(parent, 'abs', '', `left:${left}em;top:${top}em;width:${w}em;transform-origin:50% 100%;`);
+      const imgs = {}; ['clay', 'bone', 'amethyst'].forEach(f => { imgs[f] = im(wrap, A(`mold-${f}.png`), '', `width:${w}em;display:none;`); });
+      h(wrap, 'abs', '', `left:${w * .1}em;right:${w * .1}em;bottom:-.4em;height:1em;border-radius:50%;background:rgba(10,20,60,.35);filter:blur(.3em);z-index:-1;`);
+      return (t, swaps) => {
+        let k = 0, at = -1e9; swaps.forEach((sw, i) => { if (t >= sw.t){ k = sw.k; at = sw.t; } });
+        const x = TEX[k];
+        for (const f in imgs){ imgs[f].style.display = f === x.f ? 'block' : 'none'; }
+        imgs[x.f].style.filter = texFilter(x);
+        const d = (t - at) / 420, sq = d >= 0 && d < 1 ? Math.sin(d * Math.PI * 2) * Math.exp(-d * 3) * .14 : 0;
+        wrap.style.transform = `scale(${1 - sq},${1 + sq}) translate3d(0,${Math.sin(t / 500) * .15}em,0)`;
+        return k;
+      };
+    }
+
+    // 1 · hook
+    {
+      const s = scene(0, 2000, 'bg-dark');
+      const card = h(s.el, 'moldcard', '', 'left:3em;top:22em;width:30em;height:32em;border-radius:2em;');
+      const fig = makeFigure(card, {left: 9.6, top: 5, w: 10.8});
+      const l1 = h(h(s.el, 'row', '', 'top:9.5em;'), 'd shadow', 'Make it', 'font-size:5em;');
+      const l2 = h(h(s.el, 'row', '', 'top:14.6em;'), 'd', '<span class="hl">yours.</span>', 'font-size:6em;');
+      const swaps = [0, 500, 1000, 1250, 1500, 1750].map((t, i) => ({t, k: [0, 1, 2, 3, 4, 5][i]}));
+      on(s, t => { fig(t, swaps); slam(l1, t, -140, {s0: 1.4}); slam(l2, t, 600, {base: 'rotate(-3deg)', s0: 2}); const cp = prog(t, -200, 600, E.back); card.style.transform = `scale(${.9 + .1 * cp})`; });
+      ev.push({t: 0, type: 'slam'}, {t: 600, type: 'slam'}, ...swaps.slice(1).map(sw => ({t: sw.t, type: 'flip'})));
+      hits.push({t: 0, k: .4}, {t: 600, k: .6});
+    }
+
+    // 2 · the editor: Your Mold → Textures
+    {
+      const s = scene(2000, 8000, 'bg-dark');
+      const tabs = h(s.el, 'tabs fx', '<span class="on">Your Mold</span><span>Morph</span><span>Showcase</span>', `left:${2.6 / 1.55}em;top:${6.2 / 1.55}em;`);
+      const chips = h(s.el, 'chips fx', '<div class="chip on">Textures</div><div class="chip">Closet</div><div class="chip">Emotes</div>', 'left:2em;top:10.6em;width:32em;');
+      const card = h(s.el, 'moldcard', '', 'left:2em;top:15em;width:32em;height:23em;border-radius:1.8em;');
+      const fig = makeFigure(card, {left: 11.7, top: 3.9, w: 8.6});
+      const label = h(h(s.el, 'row', '', 'top:16.3em;'), 'd', '', 'font-size:1.8em;letter-spacing:.08em;');
+      const cats = h(s.el, 'abs fx', ['Clay', 'Stones', 'Elements', 'Fabric'].map((c, i) => `<span class="pill" style="font-family:Inter;text-transform:none;font-weight:600;font-size:1.25em;padding:.5em .9em;border-radius:.6em;background:${i === 0 ? '#2f2a38' : '#181322'};color:${i === 0 ? '#fff' : '#cfcadb'};">${c}</span>`).join(''), 'left:2em;top:39.6em;display:flex;gap:.6em;');
+      const track = h(s.el, 'abs', '', 'left:2em;top:43.6em;height:13em;width:120em;');
+      const SW = 10.2, SG = .7;
+      const sws = TEX.map((x, i) => { const e = h(track, 'sw', `<img src="${A(`mold-${x.f}.png`)}" style="filter:${texFilter(x)}"><div class="nm">${x.n || '&nbsp;'}</div>`, `left:${i * (SW + SG)}em;top:0;width:${SW}em;height:12.6em;`); IMGS.push(e.querySelector('img')); return e; });
+      const swaps = [{t: 0, k: 1}, ...[2600, 3600, 4600, 5600, 6100, 6600, 7100].map((t, i) => ({t, k: i}))];
+      on(s, lt => {
+        const t = lt + 2000;
+        fade(tabs, prog(t, 2000, 400), -1, 0); fade(chips, prog(t, 2100, 400), -1, 0); fade(cats, prog(t, 2300, 400), 1, 0);
+        const cp = prog(t, 2000, 600, E.back); card.style.transform = `scale(${.9 + .1 * cp})`;
+        const k = fig(t, swaps);
+        setHTML(label, TEX[k].n || '');
+        label.style.opacity = TEX[k].n ? 1 : 0;
+        const cur = swaps.filter(sw => t >= sw.t).pop(), sel = t >= 2600 ? cur.k : -1;
+        sws.forEach((e, i) => { e.classList.toggle('on', i === sel); const p = prog(t, 2200 + i * 80, 450, E.back); e.style.opacity = clamp((t - 2200 - i * 80) / 100); e.style.transform = `translate3d(0,${(1 - p) * 4}em,0) scale(${i === sel ? 1.04 : 1})`; });
+        const scroll = sel <= 1 ? 0 : (sel - 1) * (SW + SG);
+        const prev = swaps.filter(sw => t >= sw.t + 0).length > 1 ? swaps[Math.max(0, swaps.indexOf(cur) - 1)] : cur;
+        const from = prev.k <= 1 ? 0 : (prev.k - 1) * (SW + SG), sp = prog(t, cur.t, 380, E.expo);
+        track.style.transform = `translate3d(${-lerp(from, scroll, sp)}em,0,0)`;
+        if (t >= 2600) setHTML(label, TEX[k].n || '');
+      });
+      whips.push({t: 2000, dir: 1});
+      ev.push({t: 2000, type: 'cut'});
+      [2600, 3600, 4600, 5600, 6100, 6600, 7100].forEach((at, i) => { ev.push({t: at, type: i < 3 ? 'upgrade' : 'flip'}); hits.push({t: at, k: .25}); bursts.push({t: at + 20, kind: 'confetti', x: 18, y: 27, n: 26, v: 22, spread: 6.2, g: 10, seed: 90 + i, until: 8000}); });
+    }
+
+    // 3 · texture families
+    {
+      const s = scene(8000, 10000, 'bg-banner');
+      const words = ['Clay.', 'Stones.', 'Elements.', 'Fabric.'];
+      const w = h(h(s.el, 'row', '', 'top:12em;'), 'd shadow', '', 'font-size:7em;');
+      const sub = h(h(s.el, 'row', '', 'top:6.6em;'), 'fx', 'Textures', 'font-family:Rubik;font-weight:800;font-size:1.6em;letter-spacing:.25em;color:#d9c8ff;text-transform:uppercase;');
+      const clay = im(s.el, A('mold-clay.png'), 'abs', 'left:11.5em;top:23em;width:13em;');
+      const cl = im(s.el, A('crew-left.png'), 'abs', 'left:6em;top:25em;width:24em;');
+      const cr = im(s.el, A('crew-right.png'), 'abs', 'left:1em;top:28em;width:34em;');
+      on(s, lt => {
+        const i = Math.min(3, Math.floor(lt / 500)), l2 = lt - i * 500;
+        setWord(w, words[i], 7); slam(w, l2, 0, {s0: 1.6, d: 300}); fade(sub, prog(lt, 0, 300), .5, 0);
+        const e = [clay, cr, cl, cr][i], p = prog(l2, 0, 420, E.back);
+        [clay, cl, cr].forEach(x => show(x, x === e));
+        e.style.transform = `translate3d(${(1 - p) * (i % 2 ? 12 : -12)}em,0,0) scale(${.92 + .08 * p})`;
+      });
+      [8000, 8500, 9000, 9500].forEach((at, i) => { whips.push({t: at, dir: i % 2 ? -1 : 1}); ev.push({t: at, type: 'slam'}); hits.push({t: at, k: .45}); });
+    }
+
+    // 4 · build: textures · closet · emotes
+    {
+      const s = scene(10000, 12000, 'bg-dark');
+      const card = h(s.el, 'moldcard', '', 'left:3em;top:22em;width:30em;height:32em;border-radius:2em;');
+      const fig = makeFigure(card, {left: 9.6, top: 5, w: 10.8});
+      const w = h(h(s.el, 'row', '', 'top:11em;'), 'd shadow', '', 'font-size:6.4em;');
+      const words = ['Textures.', 'Closet.', 'Emotes.', 'All yours.'];
+      const swaps = []; { let t = 0, step = 250, k = 0; while (t < 1950){ swaps.push({t, k: k++ % TEX.length}); t += step; if (t >= 1000) step = 125; if (t >= 1500) step = 62.5; } }
+      on(s, lt => {
+        fig(lt, swaps);
+        const i = Math.min(3, Math.floor(lt / 500)); setWord(w, words[i], 6.4); slam(w, lt - i * 500, 0, {s0: 1.5, d: 280});
+        card.style.transform = `scale(${1 + lt / 2000 * .08})`;
+      });
+      whips.push({t: 10000, dir: 1});
+      [10000, 10500, 11000, 11500].forEach(at => { ev.push({t: at, type: 'slam'}); hits.push({t: at, k: .4}); });
+      swaps.forEach(sw => ev.push({t: 10000 + sw.t, type: 'tick'}));
+    }
+
+    // 5 · end card
+    {
+      const s = scene(12000, 16000, 'bg-dark');
+      const logo = h(h(s.el, 'row', '', 'top:5.6em;'), '', logoHTML(5.6));
+      const l1 = h(h(s.el, 'row', '', 'top:12em;'), 'd shadow', 'Make your', 'font-size:4.6em;');
+      const l2 = h(h(s.el, 'row', '', 'top:16.6em;'), 'd', '<span class="hl">mold</span>', 'font-size:6em;');
+      const card = h(s.el, 'moldcard', '', 'left:7em;top:24.4em;width:22em;height:17.4em;border-radius:1.8em;');
+      const pv = im(card, A('mold-preview.png'), 'abs', 'left:6.6em;top:1.2em;width:8.8em;');
+      const cta = h(h(s.el, 'row', '', 'top:43.6em;'), 'pill white', `Customize yours ${icon('i-arrow')}<span class="sheen"></span>`, 'font-size:2.3em;padding:.7em 1.3em;border-radius:.7em;');
+      const url = h(h(s.el, 'row', '', 'top:49.6em;'), 'fx', 'tryarcade.com', 'font-size:1.9em;font-weight:700;letter-spacing:.04em;color:#e2d6ff;');
+      const sheen = cta.querySelector('.sheen');
+      on(s, lt => {
+        const t = lt + 12000;
+        const lp = prog(t, 12000, 900, E.back); logo.style.opacity = clamp((t - 12000) / 100); logo.style.transform = `scale(${.4 + .6 * lp}) rotate(${(1 - lp) * -140}deg)`;
+        slam(l1, t, 12250, {s0: 1.4}); slam(l2, t, 12600, {base: 'rotate(-3deg)', s0: 2});
+        const cp = prog(t, 12300, 700, E.back); card.style.opacity = clamp((t - 12300) / 100); card.style.transform = `translate3d(0,${(1 - cp) * 5}em,0)`;
+        pv.style.transform = `translate3d(0,${Math.sin(t / 500) * .2}em,0)`;
+        const pp = pop(cta, t, 13100); if (pp >= 1) cta.style.transform = `scale(${1 + .03 * Math.sin((t - 13620) / 260)})`;
+        sheen.style.left = `${lerp(-50, 150, ((t - 13400) % 1600) / 900)}%`;
+        fade(url, prog(t, 13400, 500), .6);
+      });
+      ev.push({t: DROP, type: 'drop'}, {t: 12250, type: 'slam'}, {t: 12600, type: 'slam'}, {t: 13100, type: 'tap'});
+      hits.push({t: DROP, k: 1.1}, {t: 12600, k: .5});
+      bursts.push({t: DROP + 20, kind: 'confetti', x: 18, y: 66, n: 130, v: 70, spread: 1.2, g: 24, seed: 88, stagger: .1});
+    }
+    return {DURATION: 16000, groove: G, drop: DROP, bars: 5, transpose: 2, mood: 'hype', events: () => ev, hits, whips, flashes, bursts, ramps: [{a: 11650, b: 12000, k: .85}]};
+  }
+
+  ED = [edit1, edit2, edit3, edit4, edit5, edit6][EDIT - 1]();
   stage.classList.add(ED.H ? 'h' : 'v');
   const SIZE = ED.H ? {width: 1920, height: 1080} : {width: 1080, height: 1920};
 
